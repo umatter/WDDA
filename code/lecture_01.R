@@ -84,6 +84,8 @@ markets |> slice(2) |> select(trades)  # Wähle zuerst die zweite Zeile, dann di
 # Zusätzlich: Zeige die ersten sechs Zeilen des Dataframes an
 head(markets)
 
+# Zeige die letzten sechs Zeilen des Dataframes an
+tail(markets)
 
 
 

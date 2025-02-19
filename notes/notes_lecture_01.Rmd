@@ -9,6 +9,7 @@ output: html_document
 
 Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 01 Folien zusammen. Es enthält zusätzliche Kommentare, Erklärungen und Beispiele, um das Verständnis für die einzelnen Code-Snippets zu erleichtern.
 
+
 # 1. Import eines Datensatzes
 
 In diesem Abschnitt importieren wir einen Datensatz mit dem **readxl**-Paket. Dabei erkennt `read_excel()` automatisch die Datentypen. Zur Überprüfung der importierten Datenstruktur kannst Du `str()` verwenden.
@@ -24,6 +25,7 @@ str(markets)  # Zeigt die Struktur des Dataframes 'markets'
 ```
 
 *Hinweis:* R speichert das Objekt `markets` als einen Dataframe.
+
 
 # 2. R Syntax-Stile
 
@@ -57,6 +59,7 @@ Die Pipe-Syntax (`|>`) wurde in R 4.1.0 eingeführt und ist jetzt der empfohlene
 Tools -> Global Options -> Code -> "Use native pipe operator" 
 (Quelle: [Stack Overflow](https://stackoverflow.com/questions/68667933/how-to-fast-insert-new-pipe-operator-in-rstudio))
 
+
 # 3. Navigation in Dataframes
 
 Hier zeigen wir verschiedene Methoden, um ein Dataframe zu inspizieren und zu unterteilen. Jede Methode ist für unterschiedliche Aufgaben nützlich.
@@ -86,6 +89,7 @@ markets |> slice(2) |> select(trades)   # Wähle zuerst die zweite Zeile und ans
 ```{r}
 head(markets)  # Zeige die ersten sechs Zeilen des Dataframes
 ```
+
 
 # 4. Verwendung von attach() und detach()
 
