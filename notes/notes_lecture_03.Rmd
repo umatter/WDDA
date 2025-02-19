@@ -1,0 +1,162 @@
+---
+title: "R-Code Beispiele aus WDDA Vorlesung 03"
+author: "Ulrich Matter"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Einleitung
+
+Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 03 Folien zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf numerischen Maßen wie Lage-, Streuungs- und Zusammenhangsmaße.
+
+# 1. Lagemaße
+
+## 1.1 Arithmetischer Mittelwert
+
+Der arithmetische Mittelwert ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen.
+
+```{r mittelwert, eval=FALSE}
+# Manuelle Berechnung
+sum_Salary <- Salary |> sum()
+n_Salary <- Salary |> length()
+mittelwert_manual <- sum_Salary / n_Salary
+
+# Eingebaute Funktion
+mittelwert_builtin <- Salary |> mean()
+```
+
+## 1.2 Median
+
+Der Median teilt die geordneten Daten in zwei Hälften. Er ist robust gegenüber Ausreißern.
+
+```{r median, eval=FALSE}
+median_salary <- Salary |> median()
+```
+
+## 1.3 Modus
+
+Der Modus ist der am häufigsten vorkommende Wert. Besonders nützlich für kategoriale Daten.
+
+```{r modus, eval=FALSE}
+# Häufigkeitstabelle erstellen
+brand_table <- Brand |> table()
+
+# Modus ermitteln
+modus_brand <- brand_table |> 
+  which.max() |> 
+  names()
+```
+
+# 2. Streuungsmaße
+
+## 2.1 Spannweite
+
+Die Spannweite ist die Differenz zwischen Maximum und Minimum.
+
+```{r spannweite, eval=FALSE}
+max_salary <- Salary |> max()
+min_salary <- Salary |> min()
+spannweite <- max_salary - min_salary
+```
+
+## 2.2 Quartile und Interquartilsabstand (IQR)
+
+Quartile teilen die geordneten Daten in vier gleiche Teile.
+
+```{r quartile, eval=FALSE}
+Q1 <- Salary |> quantile(0.25)
+Q3 <- Salary |> quantile(0.75)
+IQR_salary <- Q3 - Q1
+```
+
+## 2.3 Varianz und Standardabweichung
+
+Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert.
+
+```{r varianz, eval=FALSE}
+# Varianz
+var_manual <- Salary |> 
+  (\(x) sum((x - mean(x))^2))() / (length(Salary) - 1)
+var_builtin <- Salary |> var()
+
+# Standardabweichung
+sd_manual <- Salary |> var() |> sqrt()
+sd_builtin <- Salary |> sd()
+```
+
+*Tipp*: Die Standardabweichung hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
+
+# 3. Empirische Regel
+
+Die empirische Regel (68-95-99,7-Regel) beschreibt die Verteilung der Daten um den Mittelwert.
+
+```{r empirische-regel, eval=FALSE}
+# Intervall [mean - sd, mean + sd]
+untere_grenze <- Salary |> mean() - (Salary |> sd())
+obere_grenze <- Salary |> mean() + (Salary |> sd())
+```
+
+# 4. Standardisierung
+
+Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichbar.
+
+```{r standardisierung, eval=FALSE}
+Salary_z <- (Salary - (Salary |> mean())) / (Salary |> sd())
+```
+
+# 5. Schiefe
+
+Die Schiefe misst die Asymmetrie der Verteilung.
+
+```{r schiefe, eval=FALSE}
+n <- Salary_z |> length()
+schiefe <- n / ((n - 1) * (n - 2)) * (Salary_z^3 |> sum())
+```
+
+# 6. Zusammenhangsmaße
+
+## 6.1 Kovarianz
+
+Die Kovarianz misst den linearen Zusammenhang zwischen zwei Variablen.
+
+```{r kovarianz, eval=FALSE}
+n_sales <- sales |> length()
+cov_manual <- 1 / (n_sales - 1) * sum((sales - (sales |> mean())) * 
+                                     (adverts - (adverts |> mean())))
+cov_builtin <- cov(sales, adverts)
+```
+
+## 6.2 Korrelationskoeffizient
+
+Der Korrelationskoeffizient normiert die Kovarianz auf den Bereich [-1, 1].
+
+```{r korrelation, eval=FALSE}
+corr_manual <- cov(sales, adverts) / ((sales |> sd()) * (adverts |> sd()))
+corr_builtin <- cor(sales, adverts)
+```
+
+*Hinweis zur Interpretation*:
+- r = 1: perfekter positiver linearer Zusammenhang
+- r = 0: kein linearer Zusammenhang
+- r = -1: perfekter negativer linearer Zusammenhang
+
+# 7. Visualisierung
+
+## 7.1 Boxplots
+
+Boxplots zeigen die Verteilung der Daten über ihre Quartile.
+
+```{r boxplots, eval=FALSE}
+# Einfacher Boxplot
+boxplot(Salary, 
+        main = "Boxplot von Salary",
+        ylab = "Salary")
+
+# Gruppierter Boxplot
+boxplot(Salary ~ Major,
+        main = "Boxplot von Salary nach Major",
+        xlab = "Major",
+        ylab = "Salary")
+```
+
+*Tipp*: Boxplots sind besonders nützlich zum Erkennen von Ausreißern und zum Vergleich von Gruppen.
