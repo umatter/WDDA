@@ -24,11 +24,9 @@
 
 # Eindeutige Werte der Variable 'Brand' ermitteln
 unique_brands <- Brand |> unique()
-print(unique_brands)
 
 # Häufigkeit der Werte in 'Brand' zählen
 freq <- Brand |> table()
-print(freq)
 
 
 
@@ -45,7 +43,6 @@ print(freq)
 
 # Berechnung der relativen Häufigkeiten
 relfreq <- freq / sum(freq)
-print(relfreq)
 
 
 
@@ -96,15 +93,14 @@ pie(freq,
 # -----------------------------------------------------------------------------
 
 # Erstellen einer Häufigkeitstabelle für die Variable 'Time'
-print(table(Time))
+table(Time)
 
 # Definieren von Klassen (Bins). Beispiel: Beginn bei 0, Schrittweite 5, obere Grenze abhängig von den Daten.
 bins <- c(0, 14 + 5 * (0:4))
-print(bins)
 
 # Zuweisen der Werte in 'Time' zu den entsprechenden Bins
-Time_binned <- cut(Time, bins)  # Alternativ: Time |> cut(bins)
-print(table(Time_binned))
+Time_binned <- Time |> cut(bins)
+table(Time_binned)
 
 
 
@@ -123,11 +119,12 @@ print(table(Time_binned))
 # -----------------------------------------------------------------------------
 
 # Gesamtsumme der Werte in 'Time' (nur als Beispiel, nicht immer sinnvoll)
-print(sum(Time))
+sum(Time)
 
 # Erstellen der kumulierten Häufigkeitstabelle aus den gruppierten Daten
-cum_freq <- table(Time_binned) |> cumsum()
-print(cum_freq)
+cum_freq <- Time_binned |> 
+  table() |> 
+  cumsum()
 
 
 
@@ -266,8 +263,9 @@ print(ct2)
 library(stringr)
 
 # Aufteilen der 'shirt'-Variable in drei Teile
-shirt_split <- Inventory |> pull(shirt) |> str_split_fixed(',', 3)
-print(shirt_split)
+shirt_split <- Inventory |> 
+  pull(shirt) |> 
+  str_split_fixed(',', 3)
 
 
 
@@ -311,8 +309,8 @@ str(Inventory2)
 # Aggregating fasst Daten zusammen. Hier wird Inventory2 hinsichtlich der Variable 'colour' aggregiert.
 # -----------------------------------------------------------------------------
 
-agg_result <- Inventory2 |> aggregate(list(Inventory2$colour), length)
-print(agg_result)
+agg_result <- Inventory2 |> 
+  aggregate(list(Inventory2$colour), length)
 
 
 
