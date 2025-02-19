@@ -25,7 +25,36 @@ str(markets)
 
 
 # -------------------------------------------------------------------
-# 2. Navigation in Dataframes
+# 2. R Syntax-Stile
+# -------------------------------------------------------------------
+
+# Demonstration verschiedener R Syntax-Stile
+
+# Beispieldaten erstellen
+x <- c(-2, -1, 0, 1, 2)
+
+# 1. Klassische (verschachtelte) Syntax
+# Lese von innen nach außen
+mean(sqrt(abs(x)))  # Erst abs(), dann sqrt(), dann mean()
+
+# 2. Pipe-Syntax mit |>
+# Lese von links nach rechts
+x |> abs() |> sqrt() |> mean()  # Gleiche Operation, besser lesbar
+
+# Komplexeres Beispiel mit dem markets Dataframe:
+# Klassisch (verschachtelt)
+head(subset(transform(markets, 
+                     total = trades + volume), 
+            total > 1000))
+
+# Mit Pipe (übersichtlicher)
+markets |>
+  transform(total = trades + volume) |>
+  subset(total > 1000) |>
+  head()
+
+# -------------------------------------------------------------------
+# 3. Navigation in Dataframes
 # -------------------------------------------------------------------
 
 # Zeige das gesamte Dataframe an
@@ -62,7 +91,7 @@ head(markets)
 
 
 # -------------------------------------------------------------------
-# 3. Verwendung von attach() und detach()
+# 4. Verwendung von attach() und detach()
 # -------------------------------------------------------------------
 
 # Hänge das Dataframe an, sodass dessen Spalten direkt zugänglich sind
@@ -94,7 +123,7 @@ with(markets, summary(trades))  # Fasst die Spalte 'trades' zusammen, ohne das D
 
 
 # -------------------------------------------------------------------
-# 4. Dimensionen vom Dataframe (Anzahl Spalten, Zeilen)
+# 5. Dimensionen vom Dataframe (Anzahl Spalten, Zeilen)
 # -------------------------------------------------------------------
 
 # Bei einem Dataframe gibt length() die Anzahl der Spalten zurück:

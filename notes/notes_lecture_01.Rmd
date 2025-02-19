@@ -25,7 +25,35 @@ str(markets)  # Zeigt die Struktur des Dataframes 'markets'
 
 *Hinweis:* R speichert das Objekt `markets` als einen Dataframe.
 
-# 2. Navigation in Dataframes
+# 2. R Syntax-Stile
+
+R bietet verschiedene Möglichkeiten, Code zu schreiben. Die zwei Hauptstile sind:
+
+1. **Klassische (verschachtelte) Syntax**: Funktionen werden von innen nach außen gelesen
+2. **Pipe-Syntax**: Funktionen werden von links nach rechts gelesen (wie in einer Pipeline)
+
+Hier ein Vergleich der beiden Stile:
+
+```{r syntax-vergleich, eval=FALSE}
+# Klassische Syntax (verschachtelt)
+mean(sqrt(abs(x)))  # Lese von innen nach außen: erst abs(), dann sqrt(), dann mean()
+
+# Pipe-Syntax mit |>
+x |> abs() |> sqrt() |> mean()  # Lese von links nach rechts: erst abs(), dann sqrt(), dann mean()
+
+# Komplexeres Beispiel:
+# Klassisch
+subset(transform(data, z = x + y), z > 0)
+
+# Mit Pipe
+data |> 
+  transform(z = x + y) |> 
+  subset(z > 0)
+```
+
+Die Pipe-Syntax (`|>`) wurde in R 4.1.0 eingeführt und ist jetzt der empfohlene Stil für lesbaren Code. Der ältere Pipe-Operator (`%>%`) aus dem magrittr-Paket funktioniert ähnlich.
+
+# 3. Navigation in Dataframes
 
 Hier zeigen wir verschiedene Methoden, um ein Dataframe zu inspizieren und zu unterteilen. Jede Methode ist für unterschiedliche Aufgaben nützlich.
 
@@ -55,7 +83,7 @@ markets |> slice(2) |> select(trades)   # Wähle zuerst die zweite Zeile und ans
 head(markets)  # Zeige die ersten sechs Zeilen des Dataframes
 ```
 
-# 3. Verwendung von attach() und detach()
+# 4. Verwendung von attach() und detach()
 
 Die Funktion `attach()` erleichtert den Zugriff auf die Variablen eines Dataframes, indem sie diese dem Suchpfad hinzufügt. Allerdings kann dies zu Namenskonflikten führen, wenn mehrere Objekte denselben Namen haben. Eine Alternative ist die Verwendung von `with()`, die den Gültigkeitsbereich einschränkt.
 
