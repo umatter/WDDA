@@ -1,1 +1,53 @@
 .aider*
+# R specific files
+.Rhistory
+.Rapp.history
+.RData
+.RDataTmp
+.Ruserdata
+*.Rproj.user/
+*.Rproj.user
+*.Rcheck/
+_targets/
+
+# RStudio files
+.Rproj.user/
+*.Rproj
+
+# R package build files
+/*_cache/
+/cache/
+*.utf8.md
+*.knit.md
+.Renviron
+.Rprofile
+*-Ex.R
+
+# Compiled files
+*.o
+*.so
+*.dll
+
+# Output files
+*.html
+*.pdf
+*.log
+/doc/
+/Meta/
+/docs/
+
+# Data files (uncomment if you want to ignore data files)
+#*.csv
+#*.rds
+#*.RData
+#*.rda
+
+# System specific files
+.DS_Store
+Thumbs.db
+.directory
+
+# Temporary files
+*~
+~$*
+*.swp
