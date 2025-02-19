@@ -41,7 +41,7 @@ install.packages(c("readxl", "tidyverse"))
 
 1. The `code/` directory contains standalone R scripts that can be run directly
 2. The `notes/` directory contains R Markdown files that can be rendered to HTML for detailed explanations
-3. Place your data files in the `data/` directory (note: data files are not tracked in git)
+3. Place your data files in the `data/` directory
 
 ## Content Overview
 
