@@ -7,7 +7,8 @@ output: html_document
 
 # Einleitung
 
-Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 02 Folien zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf tabellarischen und grafischen Darstellungen von Daten.
+Dieses Dokument fasst alle R-Code-Beispiele der WDDA Folien aus Vorlesung 2 zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf tabellarischen und grafischen Darstellungen von Daten.
+
 
 # 1. Häufigkeitsverteilungen
 
@@ -21,6 +22,7 @@ unique_brands <- Brand |> unique()
 freq <- Brand |> table()
 ```
 
+
 # 2. Relative Häufigkeiten
 
 Die relative Häufigkeit einer Kategorie entspricht dem Anteil der absoluten Häufigkeit an der Gesamthäufigkeit.
@@ -29,6 +31,7 @@ Die relative Häufigkeit einer Kategorie entspricht dem Anteil der absoluten Hä
 # Berechnung der relativen Häufigkeiten
 relfreq <- freq / sum(freq)
 ```
+
 
 # 3. Grafische Darstellungen
 
@@ -45,6 +48,7 @@ barplot(freq,
         ylab = "Häufigkeit")
 ```
 
+
 ## 3.2 Kuchendiagramme
 
 Kreisdiagramme visualisieren die relative Häufigkeit von nominalen Daten.
@@ -54,6 +58,7 @@ Kreisdiagramme visualisieren die relative Häufigkeit von nominalen Daten.
 pie(freq,
     main = "Kuchendiagramm der relativen Häufigkeiten")
 ```
+
 
 # 4. Zusammenfassen quantitativer Daten
 
@@ -71,6 +76,7 @@ Time_binned <- Time |> cut(bins)
 table(Time_binned)
 ```
 
+
 # 5. Kumulierte Häufigkeiten
 
 Die kumulierte Häufigkeit gibt an, wie viele Datenwerte kleiner oder gleich der oberen Grenze der jeweiligen Klasse sind.
@@ -81,6 +87,7 @@ cum_freq <- Time_binned |>
   table() |> 
   cumsum()
 ```
+
 
 # 6. Histogramme
 
@@ -103,6 +110,7 @@ hist(Time,
 
 *Tipp*: Bei der Wahl der Klassenanzahl gilt es, das Signal (Muster) zu modellieren und nicht das Rauschen.
 
+
 # 7. Filterung von Datensätzen
 
 Filter ermöglichen die Auswahl von Teilmengen eines Datensatzes anhand von Bedingungen.
@@ -121,6 +129,7 @@ num_good_and_cheap <- Restaurant |>
   nrow()
 ```
 
+
 # 8. Kreuztabellen
 
 Kreuztabellen (Kontingenztafeln) fassen die Daten für zwei Variablen tabellarisch zusammen.
@@ -134,6 +143,7 @@ bins <- 10 * (0:5)
 Price_ranges <- Price |> cut(bins)
 ct2 <- table(Quality, Price_ranges)
 ```
+
 
 # 9. Recoding und Umgestalten
 
@@ -152,6 +162,7 @@ Inventory2 <- shirt_split |>
   data.frame() |>
   setNames(c('style', 'colour', 'size'))
 ```
+
 
 # 10. Streudiagramme
 
