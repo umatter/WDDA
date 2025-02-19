@@ -53,6 +53,10 @@ data |>
 
 Die Pipe-Syntax (`|>`) wurde in R 4.1.0 eingeführt und ist jetzt der empfohlene Stil für lesbaren Code. Der ältere Pipe-Operator (`%>%`) aus dem magrittr-Paket funktioniert ähnlich.
 
+*Tipp*: In RStudio können Sie die Tastenkombination `Ctrl + Shift + M` verwenden, um den Pipe-Operator einzufügen. Um zwischen dem nativen (`|>`) und dem magrittr (`%>%`) Pipe-Operator zu wechseln, gehen Sie zu:
+Tools -> Global Options -> Code -> "Use native pipe operator" 
+(Quelle: [Stack Overflow](https://stackoverflow.com/questions/68667933/how-to-fast-insert-new-pipe-operator-in-rstudio))
+
 # 3. Navigation in Dataframes
 
 Hier zeigen wir verschiedene Methoden, um ein Dataframe zu inspizieren und zu unterteilen. Jede Methode ist für unterschiedliche Aufgaben nützlich.
