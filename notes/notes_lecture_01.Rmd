@@ -1,0 +1,100 @@
+---
+title: "R-Code Beispiele aus WDDA Vorlesung 01"
+author: "Ulrich Matter"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Einleitung
+
+Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 01 Folien zusammen. Es enthält zusätzliche Kommentare, Erklärungen und Beispiele, um das Verständnis für die einzelnen Code-Snippets zu erleichtern.
+
+# 1. Import eines Datensatzes
+
+In diesem Abschnitt importieren wir einen Datensatz mit dem **readxl**-Paket. Dabei erkennt `read_excel()` automatisch die Datentypen. Zur Überprüfung der importierten Datenstruktur kannst Du `str()` verwenden.
+
+```{r import-datensatz, eval=FALSE}
+library(readxl)  # Lade das Paket readxl zum Importieren von Excel-Dateien
+markets <- read_excel("WDDA_01.xlsx", sheet = "Exchanges")  # Importiere die Daten aus dem Blatt "Exchanges"
+```
+
+*Zusätzlicher Tipp:* Prüfe die Struktur des importierten Dataframes:
+```{r}
+str(markets)  # Zeigt die Struktur des Dataframes 'markets'
+```
+
+*Hinweis:* R speichert das Objekt `markets` als einen Dataframe.
+
+# 2. Navigation in Dataframes
+
+Hier zeigen wir verschiedene Methoden, um ein Dataframe zu inspizieren und zu unterteilen. Jede Methode ist für unterschiedliche Aufgaben nützlich.
+
+```{r navigation-dataframes, eval=FALSE}
+# Zeige das gesamte Dataframe an
+markets
+
+# Zeige die Spaltennamen des Dataframes an
+names(markets)
+
+# Klassische Subsetting-Beispiele:
+markets$trades        # Greife auf die Spalte 'trades' zu
+markets[3,]           # Greife auf die dritte Zeile zu
+markets[,2]           # Greife auf die zweite Spalte zu
+markets[3,2]          # Greife auf das Element in der 3. Zeile und 2. Spalte zu
+
+# Mit tidyverse-Funktionen für eine lesbarere Syntax:
+markets |> pull(trades)         # Extrahiere die Spalte 'trades' als Vektor
+markets |> slice(3)             # Greife auf die dritte Zeile zu
+markets |> select(2)            # Wähle die zweite Spalte anhand ihrer Position aus
+markets |> select(trades)       # Wähle die Spalte 'trades' anhand ihres Namens aus
+markets |> slice(2) |> select(trades)   # Wähle zuerst die zweite Zeile und anschließend die Spalte 'trades'
+```
+
+*Zusätzliches Beispiel:* Zeige die ersten sechs Zeilen des Dataframes an:
+```{r}
+head(markets)  # Zeige die ersten sechs Zeilen des Dataframes
+```
+
+# 3. Verwendung von attach() und detach()
+
+Die Funktion `attach()` erleichtert den Zugriff auf die Variablen eines Dataframes, indem sie diese dem Suchpfad hinzufügt. Allerdings kann dies zu Namenskonflikten führen, wenn mehrere Objekte denselben Namen haben. Eine Alternative ist die Verwendung von `with()`, die den Gültigkeitsbereich einschränkt.
+
+```{r attach-detach, eval=FALSE}
+# Hänge das Dataframe an, sodass dessen Spalten direkt zugänglich sind
+markets |> attach()
+
+# Jetzt kann auf 'trades' direkt zugegriffen werden, ohne den Dataframe-Namen zu verwenden
+trades
+
+# Entferne das Dataframe aus dem Suchpfad, um Namenskonflikte zu vermeiden
+markets |> detach()
+
+# Nach dem Detach führt der Zugriff auf 'trades' ohne Dataframe-Namen zu einem Fehler:
+trades
+```
+
+*Zusätzlicher Hinweis:* Eine Alternative zu `attach()` ist die Verwendung von `with()`, die nur innerhalb eines bestimmten Ausdrucks wirkt:
+```{r}
+with(markets, summary(trades))  # Fasst die Spalte 'trades' zusammen, ohne das Dataframe dauerhaft anzuhängen
+```
+
+# 4. Verwendung von length()
+
+Die Funktion `length()` verhält sich bei Dataframes und Vektoren unterschiedlich. Bei einem Dataframe gibt `length()` die Anzahl der Spalten (Variablen) zurück, nicht die Anzahl der Zeilen (Beobachtungen). Für die Zeilenzählung solltest Du `nrow()` verwenden.
+
+```{r laenge-beispiele, eval=FALSE}
+# Bei einem Dataframe gibt length() die Anzahl der Spalten zurück
+markets |> length()
+
+# Bei einem Vektor gibt length() die Anzahl der Elemente (Beobachtungen) zurück
+trades |> length()
+
+# Um die Anzahl der Zeilen (Beobachtungen) eines Dataframes zu erhalten, verwende nrow():
+nrow(markets)
+```
+
+*Zusätzlicher Tipp:* Mit `ncol()` kannst Du die Anzahl der Spalten ermitteln:
+```{r}
+ncol(markets)
+```
+
