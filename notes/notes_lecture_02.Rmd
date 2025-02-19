@@ -1,0 +1,178 @@
+---
+title: "R-Code Beispiele aus WDDA Vorlesung 02"
+author: "Ulrich Matter"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Einleitung
+
+Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 02 Folien zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf tabellarischen und grafischen Darstellungen von Daten.
+
+# 1. Häufigkeitsverteilungen
+
+Eine Häufigkeitsverteilung fasst die Daten tabellarisch zusammen, indem sie die Anzahl der Elemente in nicht-überlappenden Klassen angibt.
+
+```{r haeufigkeitsverteilung, eval=FALSE}
+# Eindeutige Werte ermitteln
+unique_brands <- Brand |> unique()
+
+# Häufigkeiten zählen
+freq <- Brand |> table()
+```
+
+# 2. Relative Häufigkeiten
+
+Die relative Häufigkeit einer Kategorie entspricht dem Anteil der absoluten Häufigkeit an der Gesamthäufigkeit.
+
+```{r relative-haeufigkeiten, eval=FALSE}
+# Berechnung der relativen Häufigkeiten
+relfreq <- freq / sum(freq)
+```
+
+# 3. Grafische Darstellungen
+
+## 3.1 Balkendiagramme
+
+Balkendiagramme visualisieren die absolute Häufigkeit von kategorialen Daten.
+
+```{r balkendiagramm, eval=FALSE}
+# Erstellen eines Balkendiagramms
+barplot(freq,
+        main = "Balkendiagramm der Häufigkeiten",
+        col = "lightblue",
+        xlab = "Kategorien",
+        ylab = "Häufigkeit")
+```
+
+## 3.2 Kuchendiagramme
+
+Kreisdiagramme visualisieren die relative Häufigkeit von nominalen Daten.
+
+```{r kuchendiagramm, eval=FALSE}
+# Erstellen eines Kreisdiagramms
+pie(freq,
+    main = "Kuchendiagramm der relativen Häufigkeiten")
+```
+
+# 4. Zusammenfassen quantitativer Daten
+
+Bei quantitativen Daten mit vielen einzigartigen Werten ist eine Gruppierung in Klassen (Bins) sinnvoll.
+
+```{r quantitative-daten, eval=FALSE}
+# Häufigkeitstabelle für ungegruppierte Daten
+table(Time)
+
+# Definieren von Klassen (Bins)
+bins <- c(0, 14 + 5 * (0:4))
+
+# Gruppierung der Daten
+Time_binned <- Time |> cut(bins)
+table(Time_binned)
+```
+
+# 5. Kumulierte Häufigkeiten
+
+Die kumulierte Häufigkeit gibt an, wie viele Datenwerte kleiner oder gleich der oberen Grenze der jeweiligen Klasse sind.
+
+```{r kumulierte-haeufigkeiten, eval=FALSE}
+# Erstellen der kumulierten Häufigkeitstabelle
+cum_freq <- Time_binned |> 
+  table() |> 
+  cumsum()
+```
+
+# 6. Histogramme
+
+Histogramme sind die wichtigste grafische Darstellung für quantitative Daten.
+
+```{r histogramme, eval=FALSE}
+# Standard-Histogramm
+hist(Time,
+     main = "Histogramm von Time",
+     xlab = "Time",
+     col = "lightgreen")
+
+# Histogramm mit angepasster Klassenanzahl
+hist(Time,
+     breaks = 10,
+     main = "Histogramm von Time (10 Klassen)",
+     xlab = "Time",
+     col = "lightgreen")
+```
+
+*Tipp*: Bei der Wahl der Klassenanzahl gilt es, das Signal (Muster) zu modellieren und nicht das Rauschen.
+
+# 7. Filterung von Datensätzen
+
+Filter ermöglichen die Auswahl von Teilmengen eines Datensatzes anhand von Bedingungen.
+
+```{r filter, eval=FALSE}
+library(dplyr)
+
+# Beispiele für Filteroperationen
+good_price <- Restaurant |> 
+  filter(Quality == 'Good') |> 
+  select(Price)
+
+# Kombinierte Bedingungen
+num_good_and_cheap <- Restaurant |> 
+  filter(Quality == 'Good' & Price <= 20) |> 
+  nrow()
+```
+
+# 8. Kreuztabellen
+
+Kreuztabellen (Kontingenztafeln) fassen die Daten für zwei Variablen tabellarisch zusammen.
+
+```{r kreuztabellen, eval=FALSE}
+# Einfache Kreuztabelle
+ct1 <- table(Quality, Price)
+
+# Kreuztabelle mit gruppierten Preisen
+bins <- 10 * (0:5)
+Price_ranges <- Price |> cut(bins)
+ct2 <- table(Quality, Price_ranges)
+```
+
+# 9. Recoding und Umgestalten
+
+Beim Recoding werden Variablen umkodiert oder neu strukturiert.
+
+```{r recoding, eval=FALSE}
+library(stringr)
+
+# Aufteilen einer Variable
+shirt_split <- Inventory |> 
+  pull(shirt) |> 
+  str_split_fixed(',', 3)
+
+# Erstellen eines neuen Dataframes
+Inventory2 <- shirt_split |> 
+  data.frame() |>
+  setNames(c('style', 'colour', 'size'))
+```
+
+# 10. Streudiagramme
+
+Streudiagramme visualisieren die Beziehung zwischen zwei quantitativen Variablen.
+
+```{r streudiagramm, eval=FALSE}
+# Erstellen eines Streudiagramms
+plot(Sales ~ Commercials,
+     data = Stereo,
+     main = "Streudiagramm: Sales vs Commercials",
+     xlab = "Commercials",
+     ylab = "Sales",
+     pch = 19,
+     col = "blue")
+
+# Hinzufügen einer Trendlinie
+fit <- lm(Sales ~ Commercials, data = Stereo)
+abline(fit, col = "red", lwd = 2)
+```
+
+*Hinweis zur Interpretation*: Die Steigung der Trendlinie gibt Aufschluss über die Art des Zusammenhangs:
+- Positive Steigung: positive Beziehung
+- Keine Steigung: kein Zusammenhang
+- Negative Steigung: negative Beziehung
