@@ -1,6 +1,6 @@
 # WDDA Lecture Materials
 
-This repository contains R code examples and lecture notes for the WDDA (Web Data and Digital Analytics) course. The materials focus on practical data analysis using R, demonstrating various syntax styles and data manipulation techniques.
+This repository contains R code examples and lecture notes for the WDDA (Datenmanagement und Datenanalyse) course at BUAS. The materials focus on practical data analysis using R, demonstrating various syntax styles and data manipulation techniques.
 
 ## Repository Structure
 
