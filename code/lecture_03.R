@@ -12,13 +12,10 @@
 # ---------------------------------------------------------------
 
 # Beispiel: Berechnung des Mittelwerts für die Variable Salary
-sum_Salary <- sum(Salary)
-n_Salary <- length(Salary)
+sum_Salary <- Salary |> sum()
+n_Salary <- Salary |> length()
 mittelwert_manual <- sum_Salary / n_Salary  # Manuelle Berechnung
-mittelwert_builtin <- mean(Salary)         # Eingebaute Funktion
-
-print(mittelwert_manual)
-print(mittelwert_builtin)
+mittelwert_builtin <- Salary |> mean()      # Eingebaute Funktion
 
 
 # ---------------------------------------------------------------
@@ -29,8 +26,7 @@ print(mittelwert_builtin)
 # ---------------------------------------------------------------
 
 # Beispiel: Berechnung des Medians
-median_salary <- median(Salary)
-print(median_salary)
+median_salary <- Salary |> median()
 
 
 # ---------------------------------------------------------------
@@ -41,11 +37,11 @@ print(median_salary)
 # ---------------------------------------------------------------
 
 # Beispiel: Modus für die Variable Brand
-brand_table <- table(Brand)
-print(brand_table)
+brand_table <- Brand |> table()
 # Den häufigsten Wert (Modus) ermitteln:
-modus_brand <- names(which.max(brand_table))
-print(modus_brand)
+modus_brand <- brand_table |> 
+  which.max() |> 
+  names()
 
 
 # ---------------------------------------------------------------
@@ -65,12 +61,9 @@ print(gewichteter_mittelwert)
 # Die Spannweite ist die Differenz zwischen dem größten und dem kleinsten Wert.
 # ---------------------------------------------------------------
 
-max_salary <- max(Salary)
-min_salary <- min(Salary)
+max_salary <- Salary |> max()
+min_salary <- Salary |> min()
 spannweite <- max_salary - min_salary
-print(max_salary)
-print(min_salary)
-print(spannweite)
 
 
 # ---------------------------------------------------------------
@@ -79,12 +72,9 @@ print(spannweite)
 # IQR = Q3 - Q1 gibt den Bereich der mittleren 50% der Daten an.
 # ---------------------------------------------------------------
 
-Q1 <- quantile(Salary, 0.25)
-Q3 <- quantile(Salary, 0.75)
+Q1 <- Salary |> quantile(0.25)
+Q3 <- Salary |> quantile(0.75)
 IQR_salary <- Q3 - Q1
-print(Q1)
-print(Q3)
-print(IQR_salary)
 
 
 # ---------------------------------------------------------------
@@ -93,8 +83,7 @@ print(IQR_salary)
 # Beispiel: Das 95. Perzentil.
 # ---------------------------------------------------------------
 
-perzentil95 <- quantile(Salary, 0.95)
-print(perzentil95)
+perzentil95 <- Salary |> quantile(0.95)
 
 
 # ---------------------------------------------------------------
@@ -117,11 +106,9 @@ boxplot(Salary ~ Major, main = "Boxplot von Salary nach Major", xlab = "Major", 
 # ---------------------------------------------------------------
 
 # Manuelle Berechnung der Stichprobenvarianz:
-var_manual <- sum((Salary - mean(Salary))^2) / (length(Salary) - 1)
-var_builtin <- var(Salary)
-
-print(var_manual)
-print(var_builtin)
+var_manual <- Salary |> 
+  (\(x) sum((x - mean(x))^2))() / (length(Salary) - 1)
+var_builtin <- Salary |> var()
 
 
 # ---------------------------------------------------------------
@@ -130,11 +117,8 @@ print(var_builtin)
 # Abweichung in den Originaleinheiten an.
 # ---------------------------------------------------------------
 
-sd_manual <- sqrt(var(Salary))
-sd_builtin <- sd(Salary)
-
-print(sd_manual)
-print(sd_builtin)
+sd_manual <- Salary |> var() |> sqrt()
+sd_builtin <- Salary |> sd()
 
 
 # ---------------------------------------------------------------
@@ -142,10 +126,8 @@ print(sd_builtin)
 # Beispiel: Berechnung des Intervalls [mean - sd, mean + sd]
 # ---------------------------------------------------------------
 
-untere_grenze <- mean(Salary) - sd(Salary)
-obere_grenze <- mean(Salary) + sd(Salary)
-print(untere_grenze)
-print(obere_grenze)
+untere_grenze <- Salary |> mean() - (Salary |> sd())
+obere_grenze <- Salary |> mean() + (Salary |> sd())
 
 
 # ---------------------------------------------------------------
@@ -153,10 +135,7 @@ print(obere_grenze)
 # Standardisierte Werte geben an, wie viele Standardabweichungen ein Datenpunkt vom Mittelwert entfernt ist.
 # ---------------------------------------------------------------
 
-Salary_z <- (Salary - mean(Salary)) / sd(Salary)
-# Mittelwert und Standardabweichung der z-Werte sollten ca. 0 bzw. 1 sein:
-print(mean(Salary_z))
-print(sd(Salary_z))
+Salary_z <- (Salary - (Salary |> mean())) / (Salary |> sd())
 
 
 # ---------------------------------------------------------------
@@ -165,9 +144,8 @@ print(sd(Salary_z))
 # Für eine Stichprobe kann sie wie folgt manuell berechnet werden:
 # ---------------------------------------------------------------
 
-n <- length(Salary_z)
-schiefe <- n / ((n - 1) * (n - 2)) * sum(Salary_z^3)
-print(schiefe)
+n <- Salary_z |> length()
+schiefe <- n / ((n - 1) * (n - 2)) * (Salary_z^3 |> sum())
 # Alternativ kann auch das Paket e1071 verwendet werden:
 # library(e1071)
 # print(skewness(Salary))
@@ -179,12 +157,10 @@ print(schiefe)
 # ---------------------------------------------------------------
 
 # Beispiel: Kovarianz zwischen sales und adverts (Datensatz Advertising)
-n_sales <- length(sales)
-cov_manual <- 1 / (n_sales - 1) * sum((sales - mean(sales)) * (adverts - mean(adverts)))
+n_sales <- sales |> length()
+cov_manual <- 1 / (n_sales - 1) * sum((sales - (sales |> mean())) * 
+                                     (adverts - (adverts |> mean())))
 cov_builtin <- cov(sales, adverts)
-
-print(cov_manual)
-print(cov_builtin)
 
 
 # ---------------------------------------------------------------
@@ -192,10 +168,7 @@ print(cov_builtin)
 # Der Korrelationskoeffizient (r) normiert die Kovarianz und liegt zwischen -1 und +1.
 # ---------------------------------------------------------------
 
-corr_manual <- cov(sales, adverts) / (sd(sales) * sd(adverts))
+corr_manual <- cov(sales, adverts) / ((sales |> sd()) * (adverts |> sd()))
 corr_builtin <- cor(sales, adverts)
-
-print(corr_manual)
-print(corr_builtin)
 
 # Hinweis: Der Korrelationskoeffizient hat keine Einheit.
