@@ -10,11 +10,13 @@ output: html_document
 Dieses Dokument fasst alle R-Code-Beispiele der WDDA Folien aus Vorlesung 2 zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf tabellarischen und grafischen Darstellungen von Daten.
 Die hier verwendeten Daten finden Sie in `data/WDDA_02.xlsx`.
 
+Die deskriptive Statistik ist ein grundlegender Bereich der Statistik, der sich mit der Zusammenfassung, Visualisierung und Interpretation von Daten befasst. Im Gegensatz zur inferentiellen Statistik, die Schlussfolgerungen über eine Grundgesamtheit auf Basis von Stichproben zieht, beschreibt die deskriptive Statistik die vorliegenden Daten ohne darüber hinausgehende Schlussfolgerungen.
+
 # 0. Vorbereitung
 
 ```{r vorbereitung, eval=TRUE}
 # Laden der benötigten Pakete
-library(readxl)
+library(readxl)  # Paket zum Einlesen von Excel-Dateien
 
 # Laden der Datensätze
 # (Auto, Variable "Brand")
@@ -23,6 +25,8 @@ Brand <- read_excel("../data/WDDA_02.xlsx", sheet = "Auto")
 # (Audit, Variable "Time")
 Time <- read_excel("../data/WDDA_02.xlsx", sheet = "Audit")
 # Convert Time to numeric vector
+# unlist() wandelt die Datenstruktur in einen Vektor um
+# as.numeric() konvertiert die Werte in numerische Werte
 Time <- as.numeric(unlist(Time))
 
 # (Restaurant)
@@ -33,8 +37,11 @@ Inventory <- read_excel("../data/WDDA_02.xlsx", sheet = "Inventory")
 
 # (Stereo, Variablen "Week", "Commercials", "Sales")
 Stereo <- read_excel("../data/WDDA_02.xlsx", sheet = "Stereo")
-
 ```
+
+**Hinweis zu R-Paketen**: In R werden zusätzliche Funktionalitäten durch Pakete bereitgestellt. Das Paket `readxl` ermöglicht das Einlesen von Excel-Dateien. Pakete müssen zunächst mit `install.packages("paketname")` installiert und dann mit `library(paketname)` geladen werden.
+
+**Hinweis zu Datenpfaden**: Beachten Sie, dass in den R-Markdown-Dateien relative Pfade verwendet werden (`../data/`), während im R-Skript direkte Pfade (`data/`) verwendet werden. Dies liegt daran, dass R-Markdown-Dateien vom Speicherort der Datei aus arbeiten, während R-Skripte vom Arbeitsverzeichnis aus arbeiten.
 
 # 1. Häufigkeitsverteilungen
 
@@ -42,11 +49,19 @@ Eine Häufigkeitsverteilung fasst die Daten tabellarisch zusammen, indem sie die
 
 ```{r haeufigkeitsverteilung, eval=TRUE}
 # Eindeutige Werte ermitteln
-unique_brands <- Brand |> unique()
+unique_brands <- Brand |> unique()  # Alternative Schreibweise: unique(Brand)
 
 # Häufigkeiten zählen
-freq <- Brand |> table()
+freq <- Brand |> table()  # Die table()-Funktion erstellt eine Häufigkeitstabelle
+print(freq)  # Ausgabe der Häufigkeitstabelle
 ```
+
+**Statistische Erklärung**: Eine Häufigkeitsverteilung ist eine grundlegende Methode zur Zusammenfassung von Daten. Sie zeigt, wie oft jeder Wert oder jede Kategorie in einem Datensatz vorkommt. Bei kategorialen Daten (wie Automarken) ist dies besonders nützlich, um einen Überblick über die Verteilung zu erhalten.
+
+**R-Erklärung**: 
+- Die Pipe-Operator `|>` in R (eingeführt in R 4.1.0) leitet das Ergebnis des linken Ausdrucks als erstes Argument an die rechte Funktion weiter.
+- Die Funktion `unique()` gibt alle eindeutigen Werte in einem Vektor zurück.
+- Die Funktion `table()` erstellt eine Häufigkeitstabelle, die für jede eindeutige Kategorie die Anzahl der Vorkommen zählt.
 
 
 # 2. Relative Häufigkeiten
@@ -56,7 +71,19 @@ Die relative Häufigkeit einer Kategorie entspricht dem Anteil der absoluten Hä
 ```{r relative-haeufigkeiten, eval=TRUE}
 # Berechnung der relativen Häufigkeiten
 relfreq <- freq / sum(freq)
+print(relfreq)  # Ausgabe der relativen Häufigkeiten
+
+# Alternative Methode mit prop.table()
+relfreq_alt <- prop.table(freq)
+print(relfreq_alt)  # Gibt das gleiche Ergebnis wie oben
 ```
+
+**Statistische Erklärung**: Relative Häufigkeiten geben den Anteil jeder Kategorie an der Gesamtmenge an und werden als Dezimalzahlen oder Prozentsätze ausgedrückt. Sie sind besonders nützlich für Vergleiche zwischen Datensätzen unterschiedlicher Größe. Die Summe aller relativen Häufigkeiten ergibt immer 1 (oder 100%).
+
+**R-Erklärung**:
+- Die Division einer Häufigkeitstabelle durch ihre Summe (`freq / sum(freq)`) berechnet die relativen Häufigkeiten.
+- Die Funktion `prop.table()` ist eine spezialisierte Funktion in R, die direkt relative Häufigkeiten aus einer Häufigkeitstabelle berechnet.
+- Beide Methoden liefern das gleiche Ergebnis, aber `prop.table()` ist oft kürzer und lesbarer.
 
 
 # 3. Grafische Darstellungen
@@ -68,11 +95,30 @@ Balkendiagramme visualisieren die absolute Häufigkeit von kategorialen Daten.
 ```{r balkendiagramm, eval=TRUE}
 # Erstellen eines Balkendiagramms
 barplot(freq,
-        main = "Balkendiagramm der Häufigkeiten",
-        col = "lightblue",
-        xlab = "Kategorien",
-        ylab = "Häufigkeit")
+        main = "Balkendiagramm der Häufigkeiten",  # Titel des Diagramms
+        col = "lightblue",                         # Farbe der Balken
+        xlab = "Kategorien",                       # Beschriftung der x-Achse
+        ylab = "Häufigkeit")                       # Beschriftung der y-Achse
+
+# Erstellung eines horizontalen Balkendiagramms
+barplot(freq, 
+        horiz = TRUE,                              # Horizontale Ausrichtung
+        main = "Horizontales Balkendiagramm",
+        col = "salmon",
+        xlab = "Häufigkeit", 
+        ylab = "Kategorien")
 ```
+
+**Statistische Erklärung**: Balkendiagramme sind eine der häufigsten Methoden zur Visualisierung kategorialer Daten. Jeder Balken repräsentiert eine Kategorie, und die Höhe (oder Länge bei horizontalen Diagrammen) entspricht der Häufigkeit. Balkendiagramme eignen sich besonders gut für nominale Daten (Kategorien ohne natürliche Reihenfolge) und ordinale Daten (Kategorien mit einer natürlichen Reihenfolge).
+
+**R-Erklärung**:
+- Die Funktion `barplot()` erstellt ein Balkendiagramm aus einer Häufigkeitstabelle oder einem numerischen Vektor.
+- Mit dem Parameter `horiz = TRUE` kann ein horizontales Balkendiagramm erstellt werden.
+- Weitere wichtige Parameter sind:
+  - `main`: Titel des Diagramms
+  - `col`: Farbe der Balken (R unterstützt viele Farbnamen und RGB-Werte)
+  - `xlab` und `ylab`: Beschriftungen der Achsen
+  - `names.arg`: Alternative Beschriftungen für die Kategorien
 
 
 ## 3.2 Kuchendiagramme
@@ -82,8 +128,25 @@ Kreisdiagramme visualisieren die relative Häufigkeit von nominalen Daten.
 ```{r kuchendiagramm, eval=TRUE}
 # Erstellen eines Kreisdiagramms
 pie(freq,
-    main = "Kuchendiagramm der relativen Häufigkeiten")
+    main = "Kuchendiagramm der relativen Häufigkeiten",
+    col = rainbow(length(freq)))  # Verwendung verschiedener Farben
+
+# Kreisdiagramm mit Prozentangaben
+pie(freq,
+    main = "Kuchendiagramm mit Prozentangaben",
+    labels = paste0(names(freq), " (", round(100*relfreq, 1), "%)"),
+    col = heat.colors(length(freq)))
 ```
+
+**Statistische Erklärung**: Kreisdiagramme (auch Kuchendiagramme genannt) stellen die relativen Anteile verschiedener Kategorien als Sektoren eines Kreises dar. Die Größe jedes Sektors ist proportional zum relativen Anteil der entsprechenden Kategorie. Kreisdiagramme eignen sich am besten für nominale Daten mit wenigen Kategorien (idealerweise nicht mehr als 5-7), da zu viele Sektoren die Lesbarkeit beeinträchtigen können.
+
+**R-Erklärung**:
+- Die Funktion `pie()` erstellt ein Kreisdiagramm aus einem numerischen Vektor.
+- Mit `rainbow()`, `heat.colors()` und ähnlichen Funktionen können automatisch Farbpaletten erstellt werden.
+- Der Parameter `labels` ermöglicht benutzerdefinierte Beschriftungen für die Sektoren.
+- Die Funktion `paste0()` verbindet Zeichenketten ohne Trennzeichen, während `paste()` standardmäßig Leerzeichen einfügt.
+
+**Hinweis zur Visualisierung**: Obwohl Kreisdiagramme weit verbreitet sind, werden sie in der professionellen Datenanalyse oft kritisch gesehen, da Menschen Winkel und Flächen schwerer vergleichen können als Längen. Balkendiagramme sind daher oft die bessere Wahl für präzise Vergleiche.
 
 
 # 4. Zusammenfassen quantitativer Daten
@@ -96,11 +159,26 @@ table(Time)
 
 # Definieren von Klassen (Bins)
 bins <- c(0, 14 + 5 * (0:5))  # Erweitert auf 0, 14, 19, 24, 29, 34, 39
+print(bins)  # Zeigt die definierten Klassengrenzen an
 
 # Gruppierung der Daten
 Time_binned <- Time |> cut(bins)
 table(Time_binned)
 ```
+
+**Statistische Erklärung**: Bei kontinuierlichen oder diskreten Daten mit vielen verschiedenen Werten ist es oft sinnvoll, die Daten in Klassen (Bins) zu gruppieren. Dies vereinfacht die Darstellung und Interpretation der Daten. Die Wahl der Klassenanzahl und -breite ist ein wichtiger Schritt, der die Aussagekraft der Analyse beeinflussen kann:
+
+- Zu wenige Klassen können wichtige Muster verbergen
+- Zu viele Klassen können zu einer fragmentierten Darstellung führen, die schwer zu interpretieren ist
+
+Eine Faustregel ist die Sturges-Regel: k ≈ 1 + 3.322 × log10(n), wobei k die Anzahl der Klassen und n die Stichprobengröße ist.
+
+**R-Erklärung**:
+- Die Funktion `cut()` teilt numerische Daten in Intervalle (Bins) ein.
+- Der erste Parameter ist der zu gruppierende Vektor.
+- Der zweite Parameter gibt die Grenzen der Intervalle an.
+- Das Ergebnis ist ein Faktor, dessen Levels die Intervalle darstellen.
+- Die Notation `(a,b]` bedeutet, dass das Intervall a ausschließt und b einschließt.
 
 
 # 5. Kumulierte Häufigkeiten
@@ -115,7 +193,24 @@ sum(Time)
 cum_freq <- Time_binned |> 
   table() |> 
   cumsum()
+print(cum_freq)  # Ausgabe der kumulierten Häufigkeiten
+
+# Berechnung der kumulierten relativen Häufigkeiten
+cum_rel_freq <- cum_freq / sum(table(Time_binned))
+print(cum_rel_freq)  # Ausgabe der kumulierten relativen Häufigkeiten
 ```
+
+**Statistische Erklärung**: Kumulierte Häufigkeiten summieren die Häufigkeiten bis zu einem bestimmten Punkt auf. Sie sind nützlich, um zu bestimmen, wie viele Beobachtungen unter einem bestimmten Wert liegen. Kumulierte relative Häufigkeiten geben diesen Anteil als Proportion (zwischen 0 und 1) an.
+
+Kumulierte Häufigkeiten werden oft verwendet für:
+- Die Berechnung von Perzentilen und Quartilen
+- Die Erstellung von kumulativen Verteilungsfunktionen
+- Die Analyse von Schwellenwerten in Daten
+
+**R-Erklärung**:
+- Die Funktion `cumsum()` berechnet die kumulierte Summe eines Vektors.
+- In der Pipe-Kette wird zuerst eine Häufigkeitstabelle erstellt und dann die kumulierte Summe berechnet.
+- Die Division durch die Gesamtsumme ergibt die kumulierten relativen Häufigkeiten.
 
 
 # 6. Histogramme
@@ -135,9 +230,32 @@ hist(Time,
      main = "Histogramm von Time (10 Klassen)",
      xlab = "Time",
      col = "lightgreen")
+
+# Histogramm mit Wahrscheinlichkeitsdichte statt Häufigkeiten
+hist(Time,
+     freq = FALSE,  # Zeigt Dichte statt Häufigkeiten
+     main = "Histogramm mit Wahrscheinlichkeitsdichte",
+     xlab = "Time",
+     col = "lightblue")
 ```
 
-*Tipp*: Bei der Wahl der Klassenanzahl gilt es, das Signal (Muster) zu modellieren und nicht das Rauschen.
+**Statistische Erklärung**: Histogramme sind eine grundlegende grafische Darstellung für kontinuierliche Daten. Sie teilen den Wertebereich in Intervalle (Bins) und zeigen die Häufigkeit oder Dichte der Beobachtungen in jedem Intervall. Histogramme helfen dabei:
+
+- Die Form der Verteilung zu erkennen (symmetrisch, rechtsschief, linksschief, bimodal, etc.)
+- Ausreißer zu identifizieren
+- Die Streuung und zentrale Tendenz der Daten visuell zu erfassen
+
+Die Wahl der Klassenanzahl ist entscheidend: Zu wenige Klassen können wichtige Muster verbergen, zu viele können zu einer verrauschten Darstellung führen.
+
+**R-Erklärung**:
+- Die Funktion `hist()` erstellt ein Histogramm aus einem numerischen Vektor.
+- Der Parameter `breaks` kontrolliert die Anzahl oder Position der Klassenintervalle:
+  - Eine einzelne Zahl gibt die ungefähre Anzahl der gewünschten Klassen an
+  - Ein Vektor gibt die exakten Klassengrenzen an
+- Mit `freq = FALSE` wird die Wahrscheinlichkeitsdichte statt der absoluten Häufigkeit dargestellt.
+- Die Fläche unter einem Dichte-Histogramm summiert sich zu 1.
+
+*Tipp*: Bei der Wahl der Klassenanzahl gilt es, das Signal (Muster) zu modellieren und nicht das Rauschen. Experimentieren Sie mit verschiedenen Werten für `breaks`, um die aussagekräftigste Darstellung zu finden.
 
 
 # 7. Schiefe
@@ -149,9 +267,31 @@ Histogramme können Hinweise auf die Schiefe (Asymmetrie) der Verteilung geben.
 library(e1071)
 skewness_value <- skewness(Time)
 print(skewness_value)
+
+# Visualisierung der Schiefe mit einem Histogramm und einer Dichtefunktion
+hist(Time, 
+     freq = FALSE, 
+     main = "Histogramm mit Dichtefunktion",
+     xlab = "Time", 
+     col = "lightcyan",
+     border = "darkblue")
+# Hinzufügen einer Dichtefunktion
+lines(density(Time), col = "red", lwd = 2)
 ```
 
-Eine positive Schiefe bedeutet, dass der rechte Schwanz länger ist, eine negative Schiefe einen längeren linken Schwanz.
+**Statistische Erklärung**: Die Schiefe (Skewness) ist ein Maß für die Asymmetrie einer Verteilung. Sie beschreibt, ob die Verteilung symmetrisch ist oder ob sie einen längeren Schwanz auf einer Seite hat:
+
+- **Positive Schiefe (> 0)**: Der rechte Schwanz ist länger; die meisten Werte liegen links vom Mittelwert (rechtsschief)
+- **Negative Schiefe (< 0)**: Der linke Schwanz ist länger; die meisten Werte liegen rechts vom Mittelwert (linksschief)
+- **Keine Schiefe (≈ 0)**: Die Verteilung ist symmetrisch (wie bei einer Normalverteilung)
+
+Die Schiefe ist wichtig für die Wahl geeigneter statistischer Methoden, da viele Verfahren eine symmetrische Verteilung voraussetzen.
+
+**R-Erklärung**:
+- Die Funktion `skewness()` aus dem Paket `e1071` berechnet die Schiefe eines numerischen Vektors.
+- Die Funktion `density()` schätzt die Wahrscheinlichkeitsdichtefunktion der Daten.
+- Mit `lines()` kann eine Linie zu einem bestehenden Plot hinzugefügt werden.
+- Die Parameter `col` und `lwd` steuern die Farbe und Breite der Linie.
 
 
 # 8. Filterung von Datensätzen
@@ -159,13 +299,13 @@ Eine positive Schiefe bedeutet, dass der rechte Schwanz länger ist, eine negati
 Filter ermöglichen die Auswahl von Teilmengen eines Datensatzes anhand von Bedingungen.
 
 ```{r filter, eval=TRUE}
-library(dplyr)
+library(dplyr)  # Laden des dplyr-Pakets für Datenmanipulation
 
 # Auswahl der 'Price'-Spalte für Restaurants mit guter Qualität
 good_price <- 
   Restaurant |> 
-  filter(Quality == 'Good') |>
-  select(Price)
+  filter(Quality == 'Good') |>  # Filtert Zeilen, wo Quality gleich 'Good' ist
+  select(Price)                 # Wählt nur die Price-Spalte aus
 
 print(good_price)
 
@@ -184,7 +324,33 @@ print(num_good_and_cheap)
 # Anzahl der Restaurants mit guter Qualität ODER Price <= 20
 num_good_or_cheap <- Restaurant |> filter(Quality == 'Good' | Price <= 20) |> nrow()
 print(num_good_or_cheap)
+
+# Beispiel für komplexere Filterung mit mehreren Bedingungen
+complex_filter <- Restaurant |>
+  filter((Quality == 'Good' | Quality == 'Excellent') & Price < 30) |>
+  arrange(Price)  # Sortiert nach Preis
+head(complex_filter)
 ```
+
+**Statistische Erklärung**: Die Filterung von Daten ist ein grundlegender Schritt in der explorativen Datenanalyse. Sie ermöglicht es, bestimmte Teilmengen eines Datensatzes zu isolieren und separat zu analysieren. Dies ist besonders nützlich, um:
+
+- Hypothesen über Untergruppen zu testen
+- Beziehungen zwischen Variablen in spezifischen Segmenten zu untersuchen
+- Daten für bestimmte Analysen vorzubereiten
+
+**R-Erklärung**:
+- Das Paket `dplyr` ist Teil der Tidyverse-Sammlung und bietet leistungsstarke Funktionen zur Datenmanipulation.
+- Die Funktion `filter()` wählt Zeilen basierend auf Bedingungen aus.
+- Logische Operatoren in R:
+  - `==`: Gleichheit
+  - `!=`: Ungleichheit
+  - `<`, `<=`, `>`, `>=`: Vergleichsoperatoren
+  - `&`: Logisches UND (beide Bedingungen müssen erfüllt sein)
+  - `|`: Logisches ODER (mindestens eine Bedingung muss erfüllt sein)
+  - `!`: Logische Negation
+- Die Funktion `select()` wählt Spalten aus.
+- Die Funktion `arrange()` sortiert die Daten nach einer oder mehreren Spalten.
+- Die Funktion `nrow()` gibt die Anzahl der Zeilen zurück.
 
 
 # 9. Kreuztabellen
@@ -206,7 +372,37 @@ Price_ranges <- Price |> cut(bins)
 # Erstellen einer Kreuztabelle mit den Preisbereichen
 ct2 <- table(Quality, Price_ranges)
 print(ct2)
+
+# Berechnung der relativen Häufigkeiten (zeilenweise)
+prop.table(ct2, margin = 1)  # margin = 1 bedeutet zeilenweise
+
+# Berechnung der relativen Häufigkeiten (spaltenweise)
+prop.table(ct2, margin = 2)  # margin = 2 bedeutet spaltenweise
+
+# Visualisierung der Kreuztabelle als Mosaikplot
+mosaicplot(ct2, 
+           main = "Mosaikplot: Qualität vs. Preisbereich",
+           color = TRUE)
 ```
+
+**Statistische Erklärung**: Kreuztabellen (auch Kontingenztafeln oder Häufigkeitstabellen mit zwei Eingängen genannt) zeigen die gemeinsame Häufigkeitsverteilung zweier kategorialer Variablen. Sie sind ein wichtiges Werkzeug, um Beziehungen zwischen kategorialen Variablen zu untersuchen:
+
+- Die Zeilen repräsentieren die Kategorien der ersten Variable
+- Die Spalten repräsentieren die Kategorien der zweiten Variable
+- Jede Zelle enthält die Anzahl der Beobachtungen, die zu beiden Kategorien gehören
+
+Kreuztabellen können verwendet werden, um:
+- Zusammenhänge zwischen kategorialen Variablen zu identifizieren
+- Bedingte Verteilungen zu analysieren
+- Chi-Quadrat-Tests auf Unabhängigkeit durchzuführen
+
+**R-Erklärung**:
+- Die Funktion `table()` erstellt eine Kreuztabelle aus zwei oder mehr Vektoren.
+- Mit `prop.table()` können relative Häufigkeiten berechnet werden:
+  - `margin = 1`: Zeilenweise relative Häufigkeiten (Summe jeder Zeile = 1)
+  - `margin = 2`: Spaltenweise relative Häufigkeiten (Summe jeder Spalte = 1)
+  - Ohne `margin`: Gesamtrelative Häufigkeiten (Summe aller Zellen = 1)
+- Die Funktion `mosaicplot()` erstellt eine grafische Darstellung einer Kreuztabelle, bei der die Flächen proportional zu den Häufigkeiten sind.
 
 
 # 10. Recoding und Umgestalten
@@ -214,17 +410,20 @@ print(ct2)
 Beim Recoding werden Variablen umkodiert oder neu strukturiert.
 
 ```{r recoding, eval=TRUE}
-library(stringr)
+library(stringr)  # Paket für String-Manipulation
 
 # Aufteilen einer Variable
 shirt_split <- Inventory |>
-  pull(shirt) |>
-  str_split_fixed(',', 3)
+  pull(shirt) |>                # Extrahiert die shirt-Spalte als Vektor
+  str_split_fixed(',', 3)       # Teilt jeden String an Kommas in 3 Teile
+
+# Anzeigen der ersten Zeilen des Ergebnisses
+head(shirt_split)
 
 # Erstellen eines neuen Dataframes
 Inventory2 <- shirt_split |>
-  data.frame() |>
-  setNames(c('style', 'colour', 'size'))
+  data.frame() |>               # Konvertiert die Matrix in einen Dataframe
+  setNames(c('style', 'colour', 'size'))  # Benennt die Spalten
 
 # Hinzufügen der Preise als neue Spalte
 Inventory2$price <- Inventory |> pull(price)
@@ -234,7 +433,33 @@ Inventory2$discount <- Inventory2$price * (1 - 0.30)
 
 # Überprüfe die Struktur des neuen Dataframes
 str(Inventory2)
+
+# Beispiel für Umkodierung einer kategorialen Variable
+# Erstellen einer neuen Spalte 'price_category' basierend auf dem Preis
+Inventory2$price_category <- cut(Inventory2$price, 
+                                breaks = c(0, 20, 40, 60, Inf),
+                                labels = c("Günstig", "Mittel", "Teuer", "Premium"))
+
+# Anzeigen der Häufigkeiten der Preiskategorien
+table(Inventory2$price_category)
 ```
+
+**Statistische Erklärung**: Recoding (Umkodierung) ist ein wichtiger Schritt in der Datenaufbereitung, bei dem Variablen transformiert oder neu strukturiert werden. Dies kann verschiedene Zwecke erfüllen:
+
+- **Aufteilen von Variablen**: Eine Variable, die mehrere Informationen enthält, wird in separate Variablen aufgeteilt
+- **Kategorisierung**: Kontinuierliche Variablen werden in Kategorien umgewandelt
+- **Umkodierung**: Ändern von Werten oder Labels für eine klarere Interpretation
+- **Berechnung abgeleiteter Variablen**: Erstellen neuer Variablen basierend auf bestehenden
+
+Diese Transformationen sind oft notwendig, um Daten für spezifische Analysen vorzubereiten oder um die Interpretation zu erleichtern.
+
+**R-Erklärung**:
+- Das Paket `stringr` bietet leistungsstarke Funktionen zur Manipulation von Zeichenketten.
+- Die Funktion `pull()` aus `dplyr` extrahiert eine Spalte als Vektor.
+- `str_split_fixed()` teilt Zeichenketten an einem bestimmten Trennzeichen und gibt eine Matrix mit fester Anzahl von Spalten zurück.
+- `data.frame()` konvertiert eine Matrix in einen Dataframe.
+- `setNames()` benennt die Spalten eines Dataframes um.
+- Der `$`-Operator wird verwendet, um auf Spalten zuzugreifen oder neue Spalten zu erstellen.
 
 # 11. Aggregation
 
@@ -244,7 +469,44 @@ Aggregation fasst Daten zusammen.
 # Aggregieren nach der Variable 'colour'
 agg_result <- Inventory2 |> 
   aggregate(list(Inventory2$colour), length)
+print(agg_result)
+
+# Berechnung des durchschnittlichen Preises pro Farbe
+avg_price_by_color <- Inventory2 |>
+  aggregate(price ~ colour, data = ., mean)
+print(avg_price_by_color)
+
+# Mehrere Aggregationen gleichzeitig mit dplyr
+library(dplyr)
+summary_by_color <- Inventory2 |>
+  group_by(colour) |>
+  summarise(
+    count = n(),
+    avg_price = mean(price),
+    min_price = min(price),
+    max_price = max(price),
+    total_value = sum(price)
+  )
+print(summary_by_color)
 ```
+
+**Statistische Erklärung**: Aggregation ist der Prozess, bei dem Daten gruppiert und zusammengefasst werden, um Muster und Trends auf einer höheren Ebene zu erkennen. Typische Aggregationsfunktionen sind:
+
+- **Zählen**: Anzahl der Beobachtungen in jeder Gruppe
+- **Summe**: Gesamtsumme der Werte in jeder Gruppe
+- **Mittelwert**: Durchschnittswert in jeder Gruppe
+- **Median**: Mittlerer Wert in jeder Gruppe
+- **Minimum/Maximum**: Kleinster/größter Wert in jeder Gruppe
+- **Standardabweichung**: Maß für die Streuung in jeder Gruppe
+
+Aggregation ist ein zentraler Bestandteil der deskriptiven Statistik und der explorativen Datenanalyse, da sie komplexe Datensätze auf interpretierbare Kennzahlen reduziert.
+
+**R-Erklärung**:
+- Die Funktion `aggregate()` in Base R gruppiert Daten und wendet eine Funktion auf jede Gruppe an.
+- Die Formel-Notation `price ~ colour` bedeutet "aggregiere price nach colour".
+- Das Paket `dplyr` bietet mit `group_by()` und `summarise()` eine intuitivere und flexiblere Methode zur Aggregation.
+- Die Funktion `n()` in `dplyr` zählt die Anzahl der Beobachtungen in jeder Gruppe.
+- Mit `summarise()` können mehrere Aggregationen gleichzeitig durchgeführt werden.
 
 
 # 12. Streudiagramme
@@ -258,15 +520,51 @@ plot(Sales ~ Commercials,
      main = "Streudiagramm: Sales vs Commercials",
      xlab = "Commercials",
      ylab = "Sales",
-     pch = 19,
+     pch = 19,                   # Punktsymbol (gefüllter Kreis)
      col = "blue")
 
 # Hinzufügen einer Trendlinie mittels linearer Regression
-fit <- lm(Sales ~ Commercials, data = Stereo)
-abline(fit, col = "red", lwd = 2)
+fit <- lm(Sales ~ Commercials, data = Stereo)  # Lineares Regressionsmodell
+abline(fit, col = "red", lwd = 2)              # Regressionslinie hinzufügen
+
+# Anzeigen der Modellzusammenfassung
+summary(fit)
+
+# Erweitertes Streudiagramm mit ggplot2
+library(ggplot2)
+ggplot(Stereo, aes(x = Commercials, y = Sales)) +
+  geom_point(color = "blue", size = 3, alpha = 0.7) +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Verkäufe vs. Werbung",
+       subtitle = "Mit Konfidenzintervall für die Regressionslinie",
+       x = "Anzahl der Werbespots",
+       y = "Verkaufszahlen") +
+  theme_minimal()
 ```
 
+**Statistische Erklärung**: Streudiagramme (Scatterplots) sind eine grundlegende Methode zur Visualisierung der Beziehung zwischen zwei kontinuierlichen Variablen. Jeder Punkt im Diagramm repräsentiert eine Beobachtung, wobei die Position des Punktes durch die Werte der beiden Variablen bestimmt wird.
+
+Streudiagramme helfen dabei:
+- Die Art der Beziehung zu erkennen (linear, nicht-linear)
+- Die Stärke der Beziehung einzuschätzen
+- Muster, Cluster und Ausreißer zu identifizieren
+
+Die lineare Regression ist eine statistische Methode, um den linearen Zusammenhang zwischen zwei Variablen zu modellieren. Die Regressionslinie minimiert die Summe der quadrierten vertikalen Abstände zwischen den Datenpunkten und der Linie.
+
+**R-Erklärung**:
+- Die Funktion `plot()` mit der Formel-Notation `y ~ x` erstellt ein Streudiagramm.
+- Parameter für `plot()`:
+  - `pch`: Plot character (Symbol für die Punkte)
+  - `col`: Farbe der Punkte
+  - `main`, `xlab`, `ylab`: Titel und Achsenbeschriftungen
+- Die Funktion `lm()` (linear model) berechnet eine lineare Regression.
+- Die Funktion `abline()` fügt eine Linie zu einem bestehenden Plot hinzu.
+- Die Funktion `summary()` gibt eine detaillierte Zusammenfassung des Regressionsmodells aus.
+- Das Paket `ggplot2` bietet eine alternative, leistungsstarke Methode zur Erstellung von Grafiken.
+
 *Hinweis zur Interpretation*: Die Steigung der Trendlinie gibt Aufschluss über die Art des Zusammenhangs:
-- Positive Steigung: positive Beziehung
+- Positive Steigung: positive Beziehung (wenn x steigt, steigt auch y)
 - Keine Steigung: kein Zusammenhang
-- Negative Steigung: negative Beziehung
+- Negative Steigung: negative Beziehung (wenn x steigt, sinkt y)
+
+Der R²-Wert (im `summary(fit)` als "Multiple R-squared" angegeben) gibt an, welcher Anteil der Varianz in der abhängigen Variable durch das Modell erklärt wird. Ein höherer Wert deutet auf einen stärkeren linearen Zusammenhang hin.
