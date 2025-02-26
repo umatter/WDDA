@@ -22,6 +22,8 @@ Brand <- read_excel("../data/WDDA_02.xlsx", sheet = "Auto")
 
 # (Audit, Variable "Time")
 Time <- read_excel("../data/WDDA_02.xlsx", sheet = "Audit")
+# Convert Time to numeric vector
+Time <- as.numeric(unlist(Time))
 
 # (Restaurant)
 Restaurant <- read_excel("../data/WDDA_02.xlsx", sheet = "Restaurant")
@@ -87,7 +89,7 @@ Bei quantitativen Daten mit vielen einzigartigen Werten ist eine Gruppierung in 
 table(Time)
 
 # Definieren von Klassen (Bins)
-bins <- c(0, 14 + 5 * (0:4))
+bins <- c(0, 14 + 5 * (0:5))  # Erweitert auf 0, 14, 19, 24, 29, 34, 39
 
 # Gruppierung der Daten
 Time_binned <- Time |> cut(bins)

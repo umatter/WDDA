@@ -24,6 +24,8 @@ Brand <- read_excel("data/WDDA_02.xlsx", sheet = "Auto")
 
 # (Audit, Variable "Time")
 Time <- read_excel("data/WDDA_02.xlsx", sheet = "Audit")
+# Convert Time to numeric vector
+Time <- as.numeric(unlist(Time))
 
 # (Restaurant)
 Restaurant <- read_excel("data/WDDA_02.xlsx", sheet = "Restaurant")
@@ -116,7 +118,8 @@ pie(freq,
 table(Time)
 
 # Definieren von Klassen (Bins). Beispiel: Beginn bei 0, Schrittweite 5, obere Grenze abhängig von den Daten.
-bins <- c(0, 14 + 5 * (0:4))
+# Stellen Sie sicher, dass die Bins alle Werte abdecken
+bins <- c(0, 14 + 5 * (0:5))  # Erweitert auf 0, 14, 19, 24, 29, 34, 39
 
 # Zuweisen der Werte in 'Time' zu den entsprechenden Bins
 Time_binned <- Time |> cut(bins)
