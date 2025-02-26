@@ -108,6 +108,9 @@ table(Time_binned)
 Die kumulierte Häufigkeit gibt an, wie viele Datenwerte kleiner oder gleich der oberen Grenze der jeweiligen Klasse sind.
 
 ```{r kumulierte-haeufigkeiten, eval=TRUE}
+# Gesamtsumme der Werte in 'Time' (nur als Beispiel, nicht immer sinnvoll)
+sum(Time)
+
 # Erstellen der kumulierten Häufigkeitstabelle
 cum_freq <- Time_binned |> 
   table() |> 
@@ -137,26 +140,54 @@ hist(Time,
 *Tipp*: Bei der Wahl der Klassenanzahl gilt es, das Signal (Muster) zu modellieren und nicht das Rauschen.
 
 
-# 7. Filterung von Datensätzen
+# 7. Schiefe
+
+Histogramme können Hinweise auf die Schiefe (Asymmetrie) der Verteilung geben.
+
+```{r schiefe, eval=TRUE}
+# Berechnung der Schiefe mit dem Paket 'e1071'
+library(e1071)
+skewness_value <- skewness(Time)
+print(skewness_value)
+```
+
+Eine positive Schiefe bedeutet, dass der rechte Schwanz länger ist, eine negative Schiefe einen längeren linken Schwanz.
+
+
+# 8. Filterung von Datensätzen
 
 Filter ermöglichen die Auswahl von Teilmengen eines Datensatzes anhand von Bedingungen.
 
 ```{r filter, eval=TRUE}
 library(dplyr)
 
-# Beispiele für Filteroperationen
-good_price <- Restaurant |> 
-  filter(Quality == 'Good') |> 
+# Auswahl der 'Price'-Spalte für Restaurants mit guter Qualität
+good_price <- 
+  Restaurant |> 
+  filter(Quality == 'Good') |>
   select(Price)
 
-# Kombinierte Bedingungen
-num_good_and_cheap <- Restaurant |> 
-  filter(Quality == 'Good' & Price <= 20) |> 
-  nrow()
+print(good_price)
+
+# Anzahl der Restaurants mit guter Qualität
+num_good <- Restaurant |> filter(Quality == 'Good') |> nrow()
+print(num_good)
+
+# Anzahl der Restaurants mit Price <= 20
+num_cheap <- Restaurant |> filter(Price <= 20) |> nrow()
+print(num_cheap)
+
+# Anzahl der Restaurants mit guter Qualität UND Price <= 20
+num_good_and_cheap <- Restaurant |> filter(Quality == 'Good' & Price <= 20) |> nrow()
+print(num_good_and_cheap)
+
+# Anzahl der Restaurants mit guter Qualität ODER Price <= 20
+num_good_or_cheap <- Restaurant |> filter(Quality == 'Good' | Price <= 20) |> nrow()
+print(num_good_or_cheap)
 ```
 
 
-# 8. Kreuztabellen
+# 9. Kreuztabellen
 
 Kreuztabellen (Kontingenztafeln) fassen die Daten für zwei Variablen tabellarisch zusammen.
 
@@ -167,15 +198,18 @@ Price <- Restaurant$Price
 
 # Einfache Kreuztabelle
 ct1 <- table(Quality, Price)
+print(ct1)
 
 # Kreuztabelle mit gruppierten Preisen
 bins <- 10 * (0:5)
 Price_ranges <- Price |> cut(bins)
+# Erstellen einer Kreuztabelle mit den Preisbereichen
 ct2 <- table(Quality, Price_ranges)
+print(ct2)
 ```
 
 
-# 9. Recoding und Umgestalten
+# 10. Recoding und Umgestalten
 
 Beim Recoding werden Variablen umkodiert oder neu strukturiert.
 
@@ -197,10 +231,23 @@ Inventory2$price <- Inventory |> pull(price)
 
 # Berechnen eines 30%-Rabattes auf den Preis und Hinzufügen als neue Spalte 'discount'
 Inventory2$discount <- Inventory2$price * (1 - 0.30)
+
+# Überprüfe die Struktur des neuen Dataframes
+str(Inventory2)
+```
+
+# 11. Aggregation
+
+Aggregation fasst Daten zusammen.
+
+```{r aggregation, eval=TRUE}
+# Aggregieren nach der Variable 'colour'
+agg_result <- Inventory2 |> 
+  aggregate(list(Inventory2$colour), length)
 ```
 
 
-# 10. Streudiagramme
+# 12. Streudiagramme
 
 Streudiagramme visualisieren die Beziehung zwischen zwei quantitativen Variablen.
 
@@ -214,7 +261,7 @@ plot(Sales ~ Commercials,
      pch = 19,
      col = "blue")
 
-# Hinzufügen einer Trendlinie
+# Hinzufügen einer Trendlinie mittels linearer Regression
 fit <- lm(Sales ~ Commercials, data = Stereo)
 abline(fit, col = "red", lwd = 2)
 ```
