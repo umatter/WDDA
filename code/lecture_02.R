@@ -195,10 +195,10 @@ hist(Time,
 # eine negative Schiefe einen längeren linken Schwanz.
 # -----------------------------------------------------------------------------
 
-# Hinweis: Für die Berechnung der Schiefe kann z.B. das Paket 'e1071' genutzt werden.
-# library(e1071)
-# skewness_value <- skewness(Time)
-# print(skewness_value)
+#Hinweis: Für die Berechnung der Schiefe kann z.B. das Paket 'e1071' genutzt werden.
+library(e1071)
+skewness_value <- skewness(Time)
+print(skewness_value)
 
 
 
@@ -347,8 +347,12 @@ Inventory2$discount <- Inventory2$price * (1 - 0.30)
 # Überprüfe die Struktur des neuen Dataframes
 str(Inventory2)
 
+
+
+
+
 # -----------------------------------------------------------------------------
-# 13. Aggregating
+# 13. Aggregation/Aggregating
 # Aggregating fasst Daten zusammen. Hier wird Inventory2 hinsichtlich der Variable 'colour' aggregiert.
 # -----------------------------------------------------------------------------
 
@@ -390,11 +394,3 @@ plot(Sales ~ Commercials,
 fit <- lm(Sales ~ Commercials, data = Stereo)
 abline(fit, col = "red", lwd = 2)
 
-# -----------------------------------------------------------------------------
-# 15. Typen des Zusammenhangs
-# Die Steigung der Trendlinie gibt einen Hinweis auf die Art des Zusammenhangs zwischen den Variablen:
-# - Positive Steigung: positive Beziehung
-# - Keine Steigung: kein Zusammenhang
-# - Negative Steigung: negative Beziehung
-# Dieser Abschnitt enthält keine weiteren Code-Beispiele.
-# -----------------------------------------------------------------------------
