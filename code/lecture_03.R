@@ -4,12 +4,29 @@
 # Hinweis: Die folgenden Beispiele gehen davon aus, dass die entsprechenden Variablen
 # (z. B. Salary, Brand, Major, sales, adverts) bereits im Workspace vorhanden sind.
 
+
+#----------------------------------------------------------------
+# 0. Vorbereitung
+# Laden von Paketen und Beispiel-Daten
+#----------------------------------------------------------------
+
+# Pakete laden
+library(readxl)
+
+# Daten importieren
+Graduates <- read_excel("data/WDDA_03.xlsx", sheet = "Graduates")
+Brand <- read_excel("data/WDDA_03.xlsx", sheet = "Auto")
+Advertising <- read_excel("data/WDDA_03.xlsx", sheet = "Advertising")
+
 # ---------------------------------------------------------------
 # 1. Arithmetischer Mittelwert
 # Der arithmetische Mittelwert (Mittelwert) ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen.
 # Für Stichproben: mean = sum(Salary)/length(Salary)
 # Für Populationen gibt es einen ähnlichen Ansatz.
 # ---------------------------------------------------------------
+
+# Salary Variable aus dem Graduates Dataframe extrahieren
+Salary <- Graduates$Salary
 
 # Beispiel: Berechnung des Mittelwerts für die Variable Salary
 sum_Salary <- Salary |> sum()
@@ -96,7 +113,10 @@ perzentil95 <- Salary |> quantile(0.95)
 boxplot(Salary, main = "Boxplot von Salary", ylab = "Salary")
 
 # Boxplot von Salary gruppiert nach Major (z. B. Studienfach)
-boxplot(Salary ~ Major, main = "Boxplot von Salary nach Major", xlab = "Major", ylab = "Salary")
+boxplot(Salary ~ Major,
+        data = Graduates,
+        main = "Boxplot von Salary nach Major",
+        xlab = "Major", ylab = "Salary")
 
 
 # ---------------------------------------------------------------
@@ -155,6 +175,10 @@ schiefe <- n / ((n - 1) * (n - 2)) * (Salary_z^3 |> sum())
 # 14. Kovarianz
 # Die Kovarianz misst den linearen Zusammenhang zwischen zwei Variablen.
 # ---------------------------------------------------------------
+
+# Extrahieren der Variablen sales und adverts aus dem Datensatz Advertising
+sales <- Advertising$sales
+adverts <- Advertising$adverts
 
 # Beispiel: Kovarianz zwischen sales und adverts (Datensatz Advertising)
 n_sales <- sales |> length()
