@@ -9,11 +9,18 @@ output: html_document
 
 Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 03 Folien zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf numerischen Massen wie Lage-, Streuungs- und Zusammenhangsmasse.
 
+Die deskriptive Statistik ist ein fundamentaler Bereich der Statistik, der sich mit der Zusammenfassung, Beschreibung und Darstellung von Daten befasst. Im Gegensatz zur inferentiellen Statistik, die Schlussfolgerungen über eine Grundgesamtheit auf Basis von Stichproben zieht, beschreibt die deskriptive Statistik die vorliegenden Daten ohne darüber hinausgehende Schlussfolgerungen.
+
+Numerische Maße in der deskriptiven Statistik können in drei Hauptkategorien eingeteilt werden:
+1. **Lagemaße**: Beschreiben das Zentrum oder die zentrale Tendenz der Daten (z.B. Mittelwert, Median)
+2. **Streuungsmaße**: Beschreiben die Variabilität oder Dispersion der Daten (z.B. Varianz, Standardabweichung)
+3. **Zusammenhangsmaße**: Beschreiben die Beziehung zwischen zwei oder mehr Variablen (z.B. Kovarianz, Korrelation)
+
 # 0. Vorbereitung
 
 ```{r vorbereitung, eval=TRUE}
 # Pakete laden
-library(readxl)
+library(readxl)  # Paket zum Einlesen von Excel-Dateien
 
 # Daten importieren
 Graduates <- read_excel("../data/WDDA_03.xlsx", sheet = "Graduates")
@@ -21,45 +28,107 @@ Brand <- read_excel("../data/WDDA_03.xlsx", sheet = "Auto")
 Advertising <- read_excel("../data/WDDA_03.xlsx", sheet = "Advertising")
 
 # Variablen extrahieren für spätere Verwendung
-Salary <- Graduates$Salary
-Major <- Graduates$Major
-sales <- Advertising$sales
-adverts <- Advertising$adverts
+Salary <- Graduates$Salary  # Extrahiert die Spalte 'Salary' aus dem Graduates-Dataframe
+Major <- Graduates$Major    # Extrahiert die Spalte 'Major' aus dem Graduates-Dataframe
+sales <- Advertising$sales  # Extrahiert die Spalte 'sales' aus dem Advertising-Dataframe
+adverts <- Advertising$adverts  # Extrahiert die Spalte 'adverts' aus dem Advertising-Dataframe
+
+# Überprüfen der Datenstruktur
+str(Graduates)  # Zeigt die Struktur des Graduates-Dataframes
+head(Salary)    # Zeigt die ersten Werte der Salary-Variable
 ```
+
+**R-Erklärung**: 
+- Die Funktion `library()` lädt ein installiertes Paket in die aktuelle R-Sitzung.
+- Mit `read_excel()` aus dem Paket `readxl` können Excel-Dateien eingelesen werden. Der Parameter `sheet` gibt an, welches Tabellenblatt verwendet werden soll.
+- Der `$`-Operator wird verwendet, um auf eine Spalte eines Dataframes zuzugreifen.
+- Die Funktion `str()` zeigt die Struktur eines Objekts, einschließlich Datentypen und Dimensionen.
+- Die Funktion `head()` zeigt die ersten Zeilen eines Dataframes oder Vektors.
+
+**Hinweis zu Datenpfaden**: In R-Markdown-Dateien werden relative Pfade vom Speicherort der Datei aus interpretiert, daher der Pfad `"../data/WDDA_03.xlsx"`. In regulären R-Skripten würde der Pfad relativ zum Arbeitsverzeichnis angegeben werden.
 
 
 # 1. Lagemasse
 
+Lagemaße beschreiben die zentrale Tendenz einer Verteilung und geben an, wo sich das Zentrum der Daten befindet. Sie sind wichtige Kennzahlen, um einen ersten Eindruck von der Lage der Daten zu bekommen.
+
 ## 1.1 Arithmetischer Mittelwert
 
-Der arithmetische Mittelwert ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen.
+Der arithmetische Mittelwert ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen. Er ist das am häufigsten verwendete Lagemaß, hat jedoch den Nachteil, dass er empfindlich gegenüber Ausreißern ist.
+
+Mathematische Formel: $\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i$
 
 ```{r mittelwert, eval=TRUE}
 # Manuelle Berechnung
-sum_Salary <- Salary |> sum()
-n_Salary <- Salary |> length()
-mittelwert_manual <- sum_Salary / n_Salary
+sum_Salary <- Salary |> sum()  # Berechnet die Summe aller Gehälter
+n_Salary <- Salary |> length() # Zählt die Anzahl der Beobachtungen
+mittelwert_manual <- sum_Salary / n_Salary  # Teilt die Summe durch die Anzahl
 
 # Eingebaute Funktion
-mittelwert_builtin <- Salary |> mean()
+mittelwert_builtin <- Salary |> mean()  # Verwendet die eingebaute mean()-Funktion
 
 # Ausgabe der Ergebnisse
-print(mittelwert_manual)
-print(mittelwert_builtin)
+print(paste("Mittelwert (manuell):", round(mittelwert_manual, 2)))
+print(paste("Mittelwert (eingebaut):", round(mittelwert_builtin, 2)))
+
+# Demonstration der Ausreißerempfindlichkeit
+salary_with_outlier <- c(Salary, 1000000)  # Fügt einen extremen Ausreißer hinzu
+print(paste("Mittelwert ohne Ausreißer:", round(mean(Salary), 2)))
+print(paste("Mittelwert mit Ausreißer:", round(mean(salary_with_outlier), 2)))
 ```
+
+**Statistische Erklärung**: Der arithmetische Mittelwert ist ein Schwerpunkt der Daten. Er minimiert die Summe der quadrierten Abweichungen und ist daher optimal für symmetrische Verteilungen ohne Ausreißer. Bei schiefen Verteilungen oder bei Vorhandensein von Ausreißern kann der Mittelwert jedoch ein verzerrtes Bild der zentralen Tendenz geben.
+
+**R-Erklärung**:
+- Die Funktion `sum()` berechnet die Summe aller Werte in einem Vektor.
+- Die Funktion `length()` gibt die Anzahl der Elemente in einem Vektor zurück.
+- Die Funktion `mean()` berechnet direkt den arithmetischen Mittelwert.
+- Der Pipe-Operator `|>` leitet das Ergebnis des linken Ausdrucks als erstes Argument an die rechte Funktion weiter.
+- Die Funktion `round()` rundet auf eine bestimmte Anzahl von Dezimalstellen.
 
 ## 1.2 Median
 
-Der Median teilt die geordneten Daten in zwei Hälften. Er ist robust gegenüber Ausreissern.
+Der Median teilt die geordneten Daten in zwei Hälften. Er ist robust gegenüber Ausreissern und daher besonders nützlich für schiefe Verteilungen oder Daten mit extremen Werten.
+
+Mathematische Definition:
+- Bei ungerader Anzahl n: Der Wert an Position (n+1)/2 in der geordneten Reihe
+- Bei gerader Anzahl n: Der Mittelwert der Werte an den Positionen n/2 und n/2+1
 
 ```{r median, eval=TRUE}
+# Berechnung des Medians mit der eingebauten Funktion
 median_salary <- Salary |> median()
-print(median_salary)
+print(paste("Median:", median_salary))
+
+# Manuelle Berechnung zur Demonstration
+sorted_salary <- sort(Salary)  # Sortiert die Gehälter aufsteigend
+n <- length(sorted_salary)     # Anzahl der Beobachtungen
+
+# Bestimmt den Median je nach gerader oder ungerader Anzahl
+if (n %% 2 == 1) {  # Ungerade Anzahl
+  median_manual <- sorted_salary[(n+1)/2]
+} else {            # Gerade Anzahl
+  median_manual <- (sorted_salary[n/2] + sorted_salary[n/2 + 1]) / 2
+}
+print(paste("Median (manuell):", median_manual))
+
+# Vergleich von Median und Mittelwert bei Ausreißern
+print(paste("Median mit Ausreißer:", median(salary_with_outlier)))
+print(paste("Mittelwert mit Ausreißer:", round(mean(salary_with_outlier), 2)))
 ```
+
+**Statistische Erklärung**: Der Median ist ein robustes Lagemaß, das die Daten in zwei gleich große Hälften teilt. Im Gegensatz zum Mittelwert wird er kaum von Ausreißern beeinflusst, da er nur von der Rangordnung der Daten abhängt, nicht von ihren exakten Werten. Der Median ist besonders geeignet für:
+- Schiefe Verteilungen (z.B. Einkommensverteilungen)
+- Daten mit Ausreißern
+- Ordinalskalierte Daten (bei denen nur die Rangordnung, nicht aber die genauen Abstände bekannt sind)
+
+**R-Erklärung**:
+- Die Funktion `median()` berechnet den Median eines Vektors.
+- Die Funktion `sort()` sortiert einen Vektor in aufsteigender Reihenfolge.
+- Der Modulo-Operator `%%` gibt den Rest einer Division zurück und wird hier verwendet, um zu prüfen, ob die Anzahl gerade oder ungerade ist.
 
 ## 1.3 Modus
 
-Der Modus ist der am häufigsten vorkommende Wert. Besonders nützlich für kategoriale Daten.
+Der Modus ist der am häufigsten vorkommende Wert in einem Datensatz. Er ist besonders nützlich für kategoriale Daten und kann im Gegensatz zu Mittelwert und Median auch für nominalskalierte Daten berechnet werden.
 
 ```{r modus, eval=TRUE}
 # Häufigkeitstabelle erstellen
@@ -68,115 +137,388 @@ print(brand_table)
 
 # Modus ermitteln
 modus_brand <- brand_table |> 
-  which.max() |> 
-  names()
+  which.max() |>  # Gibt die Position des größten Wertes zurück
+  names()         # Extrahiert den Namen (die Kategorie) an dieser Position
 print(paste("Modus:", modus_brand))
+
+# Visualisierung der Häufigkeitsverteilung
+barplot(brand_table, 
+        main = "Häufigkeitsverteilung der Automarken",
+        xlab = "Marke", 
+        ylab = "Häufigkeit",
+        col = "steelblue")
+# Markierung des Modus
+text(which(names(brand_table) == modus_brand), 
+     brand_table[modus_brand] + 1, 
+     "Modus", 
+     col = "red")
 ```
+
+**Statistische Erklärung**: Der Modus ist das einzige Lagemaß, das für alle Skalenniveaus (nominal, ordinal, intervall, ratio) anwendbar ist. Ein Datensatz kann unimodal (ein Modus), bimodal (zwei Modi) oder multimodal (mehrere Modi) sein. Bei kontinuierlichen Daten wird der Modus oft als der Wert definiert, bei dem die Wahrscheinlichkeitsdichtefunktion ihr Maximum erreicht.
+
+**R-Erklärung**:
+- Die Funktion `table()` erstellt eine Häufigkeitstabelle, die für jede eindeutige Kategorie die Anzahl der Vorkommen zählt.
+- Die Funktion `which.max()` gibt den Index (die Position) des größten Wertes in einem Vektor zurück.
+- Die Funktion `names()` extrahiert die Namen eines benannten Vektors oder einer Tabelle.
+- R hat keine eingebaute Funktion für den Modus, daher wird er typischerweise mit einer Kombination aus `table()` und `which.max()` berechnet.
+
+**Hinweis**: Bei mehreren gleich häufigen Werten gibt `which.max()` nur den ersten zurück. Um alle Modi zu finden, müsste man alle Positionen identifizieren, an denen die Häufigkeit dem Maximum entspricht.
 
 
 # 2. Streuungsmasse
 
+Streuungsmaße beschreiben, wie stark die Daten um das Zentrum (Lagemaß) verteilt sind. Sie geben Aufschluss über die Variabilität oder Dispersion der Daten und sind wichtig, um die Homogenität oder Heterogenität eines Datensatzes zu beurteilen.
+
 ## 2.1 Spannweite
 
-Die Spannweite ist die Differenz zwischen Maximum und Minimum.
+Die Spannweite (Range) ist die Differenz zwischen dem größten und dem kleinsten Wert in einem Datensatz. Sie ist das einfachste Streuungsmaß, hat jedoch den Nachteil, dass sie nur von zwei extremen Werten abhängt und nichts über die Verteilung dazwischen aussagt.
 
 ```{r spannweite, eval=TRUE}
-max_salary <- Salary |> max()
-min_salary <- Salary |> min()
-spannweite <- max_salary - min_salary
+max_salary <- Salary |> max()  # Größter Wert
+min_salary <- Salary |> min()  # Kleinster Wert
+spannweite <- max_salary - min_salary  # Differenz
+print(paste("Maximum:", max_salary))
+print(paste("Minimum:", min_salary))
 print(paste("Spannweite:", spannweite))
+
+# Visualisierung der Spannweite
+hist(Salary, 
+     main = "Histogramm der Gehälter mit Spannweite",
+     xlab = "Gehalt", 
+     col = "lightblue")
+abline(v = min_salary, col = "red", lwd = 2)
+abline(v = max_salary, col = "red", lwd = 2)
+text(min_salary, max(hist(Salary, plot = FALSE)$counts) * 0.9, 
+     "Min", pos = 4, col = "red")
+text(max_salary, max(hist(Salary, plot = FALSE)$counts) * 0.9, 
+     "Max", pos = 2, col = "red")
 ```
+
+**Statistische Erklärung**: Die Spannweite gibt einen ersten Eindruck von der Streuung der Daten, ist aber sehr empfindlich gegenüber Ausreißern. Sie wird oft als ergänzende Information zu robusteren Streuungsmaßen wie dem Interquartilsabstand angegeben. Die Spannweite ist besonders nützlich für:
+- Einen schnellen Überblick über die Gesamtstreuung
+- Die Identifikation möglicher Ausreißer
+- Die Festlegung von Achsenbereichen in Grafiken
+
+**R-Erklärung**:
+- Die Funktionen `max()` und `min()` geben den größten bzw. kleinsten Wert eines Vektors zurück.
+- Die Funktion `abline()` mit dem Parameter `v` fügt vertikale Linien zu einem bestehenden Plot hinzu.
+- Die Funktion `hist()` mit dem Parameter `plot = FALSE` berechnet die Histogramm-Statistiken, ohne sie zu plotten.
 
 ## 2.2 Gewichteter Mittelwert
 
-Beim gewichteten Mittelwert wird jedem Datenwert ein Gewicht zugeordnet.
+Beim gewichteten Mittelwert wird jedem Datenwert ein Gewicht zugeordnet, das seine relative Bedeutung widerspiegelt. Dies ist besonders nützlich, wenn nicht alle Beobachtungen gleich wichtig sind oder wenn Daten bereits in aggregierter Form vorliegen.
+
+Mathematische Formel: $\bar{x}_w = \frac{\sum_{i=1}^{n} w_i x_i}{\sum_{i=1}^{n} w_i}$
 
 ```{r gewichteter-mittelwert, eval=TRUE}
 # Beispiel: Berechnung des gewichteten Mittelwerts
-xvar <- c(3, 3.4, 2.8, 2.9, 3.25)
-weight <- c(1200, 500, 2750, 1000, 800)
+xvar <- c(3, 3.4, 2.8, 2.9, 3.25)  # Werte
+weight <- c(1200, 500, 2750, 1000, 800)  # Gewichte
+
+# Berechnung des gewichteten Mittelwerts
 gewichteter_mittelwert <- sum(xvar * weight) / sum(weight)
-print(paste("Gewichteter Mittelwert:", gewichteter_mittelwert))
+print(paste("Gewichteter Mittelwert:", round(gewichteter_mittelwert, 4)))
+
+# Vergleich mit dem ungewichteten Mittelwert
+ungewichteter_mittelwert <- mean(xvar)
+print(paste("Ungewichteter Mittelwert:", round(ungewichteter_mittelwert, 4)))
+
+# Visualisierung der Gewichtung
+barplot(xvar, 
+        names.arg = xvar, 
+        col = "lightblue",
+        main = "Werte mit ihren Gewichten",
+        xlab = "Werte", 
+        ylab = "Wert")
+# Füge Gewichte als Text hinzu
+text(1:length(xvar), xvar/2, 
+     labels = paste("Gewicht:", weight), 
+     col = "darkblue")
 ```
+
+**Statistische Erklärung**: Der gewichtete Mittelwert berücksichtigt die unterschiedliche Bedeutung oder Häufigkeit der einzelnen Beobachtungen. Typische Anwendungsfälle sind:
+
+1. **Aggregierte Daten**: Wenn Daten bereits in Gruppen zusammengefasst sind (z.B. Durchschnittsgehälter nach Abteilungen mit unterschiedlicher Mitarbeiterzahl)
+2. **Ungleiche Stichprobengrößen**: Wenn verschiedene Teilstichproben unterschiedlich groß sind
+3. **Qualitätsunterschiede**: Wenn einige Messungen zuverlässiger sind als andere
+4. **Zeitreihen**: Bei der Berechnung gleitender Durchschnitte, bei denen neuere Daten oft stärker gewichtet werden
+
+**R-Erklärung**:
+- Die elementweise Multiplikation von Vektoren in R erfolgt mit dem `*`-Operator.
+- Die Funktion `weighted.mean(x, w)` ist eine eingebaute Alternative zur manuellen Berechnung.
+- Bei der Visualisierung mit `barplot()` kann der Parameter `names.arg` verwendet werden, um die Balken zu beschriften.
 
 ## 2.3 Quartile und Interquartilsabstand (IQR)
 
-Quartile teilen die geordneten Daten in vier gleiche Teile.
+Quartile teilen die geordneten Daten in vier gleiche Teile. Der Interquartilsabstand (IQR) ist die Differenz zwischen dem dritten Quartil (Q3) und dem ersten Quartil (Q1) und umfasst die mittleren 50% der Daten. Er ist ein robustes Streuungsmaß, das nicht von Ausreißern beeinflusst wird.
 
 ```{r quartile, eval=TRUE}
-Q1 <- Salary |> quantile(0.25)
-Q3 <- Salary |> quantile(0.75)
+# Berechnung der Quartile
+Q1 <- Salary |> quantile(0.25)  # Erstes Quartil (25. Perzentil)
+Q2 <- Salary |> quantile(0.50)  # Zweites Quartil = Median (50. Perzentil)
+Q3 <- Salary |> quantile(0.75)  # Drittes Quartil (75. Perzentil)
+
+# Berechnung des Interquartilsabstands
 IQR_salary <- Q3 - Q1
-print(paste("Q1:", Q1))
-print(paste("Q3:", Q3))
+
+print(paste("Q1 (25%):", Q1))
+print(paste("Q2 (Median, 50%):", Q2))
+print(paste("Q3 (75%):", Q3))
 print(paste("IQR:", IQR_salary))
 
 # Perzentile
-perzentil95 <- Salary |> quantile(0.95)
+perzentil10 <- Salary |> quantile(0.10)  # 10. Perzentil
+perzentil95 <- Salary |> quantile(0.95)  # 95. Perzentil
+print(paste("10. Perzentil:", perzentil10))
 print(paste("95. Perzentil:", perzentil95))
+
+# Identifikation von Ausreißern mit der 1.5*IQR-Regel
+lower_fence <- Q1 - 1.5 * IQR_salary
+upper_fence <- Q3 + 1.5 * IQR_salary
+print(paste("Untere Grenze für Ausreißer:", lower_fence))
+print(paste("Obere Grenze für Ausreißer:", upper_fence))
+
+# Anzahl der Ausreißer
+outliers <- Salary[Salary < lower_fence | Salary > upper_fence]
+print(paste("Anzahl der Ausreißer:", length(outliers)))
+
+# Visualisierung mit Boxplot
+boxplot(Salary, 
+        main = "Boxplot der Gehälter mit Quartilen",
+        ylab = "Gehalt",
+        col = "lightblue")
+text(1.3, Q1, "Q1", col = "red")
+text(1.3, Q2, "Median", col = "red")
+text(1.3, Q3, "Q3", col = "red")
+text(1.3, upper_fence, "Obere Ausreißergrenze", col = "darkred")
+text(1.3, lower_fence, "Untere Ausreißergrenze", col = "darkred")
 ```
+
+**Statistische Erklärung**: 
+- **Quartile** teilen die geordneten Daten in vier gleich große Gruppen:
+  - Q1 (25. Perzentil): 25% der Daten liegen darunter
+  - Q2 (50. Perzentil = Median): 50% der Daten liegen darunter
+  - Q3 (75. Perzentil): 75% der Daten liegen darunter
+- Der **Interquartilsabstand (IQR)** = Q3 - Q1 umfasst die mittleren 50% der Daten
+- Die **1.5*IQR-Regel** wird häufig verwendet, um Ausreißer zu identifizieren:
+  - Werte < Q1 - 1.5*IQR oder > Q3 + 1.5*IQR gelten als Ausreißer
+  - Diese Grenzen werden in Boxplots als "Whiskers" (Antennen) dargestellt
+
+**R-Erklärung**:
+- Die Funktion `quantile()` berechnet Quantile (Perzentile) eines Vektors. Der zweite Parameter gibt den Prozentsatz als Dezimalzahl an.
+- Die Funktion `IQR()` ist eine eingebaute Alternative zur manuellen Berechnung des Interquartilsabstands.
+- In Boxplots werden Ausreißer typischerweise als einzelne Punkte dargestellt.
 
 ## 2.4 Varianz und Standardabweichung
 
-Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert.
+Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert und ist ein zentrales Maß für die Streuung der Daten. Die Standardabweichung ist die Quadratwurzel der Varianz und hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
+
+Mathematische Formeln:
+- Varianz (Stichprobe): $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2$
+- Standardabweichung (Stichprobe): $s = \sqrt{s^2}$
 
 ```{r varianz, eval=TRUE}
 # Varianz
 var_manual <- Salary |> 
-  (\(x) sum((x - mean(x))^2))() / (length(Salary) - 1)
-var_builtin <- Salary |> var()
+  (\(x) sum((x - mean(x))^2))() / (length(Salary) - 1)  # Anonyme Funktion mit R-Pipe
+var_builtin <- Salary |> var()  # Eingebaute Funktion
 
 # Standardabweichung
-sd_manual <- Salary |> var() |> sqrt()
-sd_builtin <- Salary |> sd()
+sd_manual <- Salary |> var() |> sqrt()  # Quadratwurzel der Varianz
+sd_builtin <- Salary |> sd()  # Eingebaute Funktion
 
-print(paste("Varianz (manuell):", var_manual))
-print(paste("Varianz (eingebaut):", var_builtin))
-print(paste("Standardabweichung (manuell):", sd_manual))
-print(paste("Standardabweichung (eingebaut):", sd_builtin))
+print(paste("Varianz (manuell):", round(var_manual, 2)))
+print(paste("Varianz (eingebaut):", round(var_builtin, 2)))
+print(paste("Standardabweichung (manuell):", round(sd_manual, 2)))
+print(paste("Standardabweichung (eingebaut):", round(sd_builtin, 2)))
+
+# Visualisierung der Standardabweichung
+hist(Salary, 
+     main = "Histogramm der Gehälter mit Standardabweichung",
+     xlab = "Gehalt", 
+     col = "lightblue")
+abline(v = mean(Salary), col = "red", lwd = 2)
+abline(v = mean(Salary) + sd(Salary), col = "blue", lwd = 2, lty = 2)
+abline(v = mean(Salary) - sd(Salary), col = "blue", lwd = 2, lty = 2)
+legend("topright", 
+       legend = c("Mittelwert", "±1 Standardabweichung"), 
+       col = c("red", "blue"), 
+       lwd = 2, 
+       lty = c(1, 2))
 ```
 
-*Tipp*: Die Standardabweichung hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
+**Statistische Erklärung**: 
+- Die **Varianz** misst, wie weit die Daten im Durchschnitt vom Mittelwert entfernt sind. Die Abweichungen werden quadriert, um negative und positive Abweichungen gleich zu gewichten.
+- Bei der Berechnung der Stichprobenvarianz wird durch (n-1) statt durch n geteilt, um eine unverzerrte Schätzung der Populationsvarianz zu erhalten (Bessel-Korrektur).
+- Die **Standardabweichung** ist die Quadratwurzel der Varianz und hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist, was die Interpretation erleichtert.
+- Bei normalverteilten Daten liegen etwa 68% der Werte innerhalb einer Standardabweichung vom Mittelwert (empirische Regel).
+
+**R-Erklärung**:
+- Die anonyme Funktion `\(x) ...` ist eine neue Syntax in R (ab Version 4.1.0) für anonyme Funktionen.
+- Die Klammern `()` nach der anonymen Funktion führen diese sofort aus.
+- Die Funktionen `var()` und `sd()` berechnen die Stichprobenvarianz bzw. -standardabweichung.
+- Der Parameter `lty` in `abline()` steuert den Linientyp (1 = durchgezogen, 2 = gestrichelt).
+- Die Funktion `legend()` fügt eine Legende zum Plot hinzu.
+
+*Tipp*: Die Standardabweichung hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist, was die Interpretation erleichtert. Sie ist besonders nützlich für:
+- Vergleiche zwischen verschiedenen Datensätzen
+- Die Beurteilung der Präzision von Messungen
+- Die Berechnung von Konfidenzintervallen
 
 
 # 3. Empirische Regel
 
-Die empirische Regel (68-95-99,7-Regel) beschreibt die Verteilung der Daten um den Mittelwert.
+Die empirische Regel (auch 68-95-99,7-Regel genannt) beschreibt die Verteilung der Daten um den Mittelwert bei annähernd normalverteilten Daten. Sie besagt, dass:
+- Etwa 68% der Daten innerhalb einer Standardabweichung vom Mittelwert liegen
+- Etwa 95% der Daten innerhalb von zwei Standardabweichungen vom Mittelwert liegen
+- Etwa 99,7% der Daten innerhalb von drei Standardabweichungen vom Mittelwert liegen
 
 ```{r empirische-regel, eval=TRUE}
-# Intervall [mean - sd, mean + sd]
-untere_grenze <- Salary |> mean() - (Salary |> sd())
-obere_grenze <- Salary |> mean() + (Salary |> sd())
-print(paste("Intervall [mean - sd, mean + sd]:", untere_grenze, "bis", obere_grenze))
+# Mittelwert und Standardabweichung
+mean_salary <- mean(Salary)
+sd_salary <- sd(Salary)
 
-# Berechnen des Anteils der Daten in diesem Intervall
-anteil_im_intervall <- mean(Salary >= untere_grenze & Salary <= obere_grenze)
-print(paste("Anteil der Daten im Intervall:", round(anteil_im_intervall * 100, 1), "%"))
+# Intervall [mean - sd, mean + sd] (68%-Regel)
+untere_grenze_1sd <- mean_salary - sd_salary
+obere_grenze_1sd <- mean_salary + sd_salary
+print(paste("Intervall [mean ± 1sd]:", round(untere_grenze_1sd, 2), "bis", round(obere_grenze_1sd, 2)))
+
+# Intervall [mean - 2sd, mean + 2sd] (95%-Regel)
+untere_grenze_2sd <- mean_salary - 2*sd_salary
+obere_grenze_2sd <- mean_salary + 2*sd_salary
+print(paste("Intervall [mean ± 2sd]:", round(untere_grenze_2sd, 2), "bis", round(obere_grenze_2sd, 2)))
+
+# Intervall [mean - 3sd, mean + 3sd] (99.7%-Regel)
+untere_grenze_3sd <- mean_salary - 3*sd_salary
+obere_grenze_3sd <- mean_salary + 3*sd_salary
+print(paste("Intervall [mean ± 3sd]:", round(untere_grenze_3sd, 2), "bis", round(obere_grenze_3sd, 2)))
+
+# Berechnen des Anteils der Daten in diesen Intervallen
+anteil_1sd <- mean(Salary >= untere_grenze_1sd & Salary <= obere_grenze_1sd)
+anteil_2sd <- mean(Salary >= untere_grenze_2sd & Salary <= obere_grenze_2sd)
+anteil_3sd <- mean(Salary >= untere_grenze_3sd & Salary <= obere_grenze_3sd)
+
+print(paste("Anteil der Daten im 1sd-Intervall:", round(anteil_1sd * 100, 1), "% (Erwartung: ~68%)"))
+print(paste("Anteil der Daten im 2sd-Intervall:", round(anteil_2sd * 100, 1), "% (Erwartung: ~95%)"))
+print(paste("Anteil der Daten im 3sd-Intervall:", round(anteil_3sd * 100, 1), "% (Erwartung: ~99.7%)"))
+
+# Visualisierung der empirischen Regel
+x <- seq(min(Salary), max(Salary), length.out = 100)
+y <- dnorm(x, mean = mean_salary, sd = sd_salary)
+
+plot(x, y, type = "l", lwd = 2, col = "blue",
+     main = "Normalverteilung mit empirischer Regel",
+     xlab = "Gehalt", ylab = "Dichte")
+
+# Füllen der Bereiche unter der Kurve
+polygon(c(untere_grenze_1sd, x[x >= untere_grenze_1sd & x <= obere_grenze_1sd], obere_grenze_1sd),
+        c(0, y[x >= untere_grenze_1sd & x <= obere_grenze_1sd], 0),
+        col = rgb(1, 0, 0, 0.3))  # 68% (±1sd) in Rot
+
+polygon(c(untere_grenze_2sd, x[x >= untere_grenze_2sd & x < untere_grenze_1sd], untere_grenze_1sd),
+        c(0, y[x >= untere_grenze_2sd & x < untere_grenze_1sd], 0),
+        col = rgb(0, 1, 0, 0.3))  # Zusätzliche 13.5% links (±2sd) in Grün
+
+polygon(c(obere_grenze_1sd, x[x > obere_grenze_1sd & x <= obere_grenze_2sd], obere_grenze_2sd),
+        c(0, y[x > obere_grenze_1sd & x <= obere_grenze_2sd], 0),
+        col = rgb(0, 1, 0, 0.3))  # Zusätzliche 13.5% rechts (±2sd) in Grün
+
+# Legende
+legend("topright", 
+       legend = c("68% (±1sd)", "95% (±2sd)"), 
+       fill = c(rgb(1, 0, 0, 0.3), rgb(0, 1, 0, 0.3)))
 ```
+
+**Statistische Erklärung**: Die empirische Regel ist eine Faustregel für die Verteilung von Daten in einer Normalverteilung. Sie ist nützlich für:
+- Die schnelle Abschätzung, welcher Anteil der Daten in bestimmten Bereichen liegt
+- Die Identifikation potenzieller Ausreißer (Werte außerhalb von 3 Standardabweichungen)
+- Die Beurteilung, ob Daten annähernd normalverteilt sind (durch Vergleich der tatsächlichen Anteile mit den erwarteten)
+
+Die Abweichungen der tatsächlichen Anteile von den erwarteten Werten (68%, 95%, 99,7%) können Hinweise auf die Form der Verteilung geben:
+- Größere Anteile in den Intervallen deuten auf eine spitzere Verteilung hin (höhere Kurtosis)
+- Kleinere Anteile deuten auf schwerere Ränder hin (niedrigere Kurtosis)
+
+**R-Erklärung**:
+- Die Funktion `mean()` mit einem logischen Vektor berechnet den Anteil der `TRUE`-Werte.
+- Die Funktion `dnorm()` berechnet die Dichte der Normalverteilung an gegebenen Punkten.
+- Die Funktion `polygon()` füllt einen Bereich unter einer Kurve.
+- Die Funktion `rgb()` erstellt Farben mit Transparenz (der vierte Parameter ist Alpha).
 
 
 # 4. Standardisierung
 
-Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichbar.
+Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichbar, indem sie sie auf eine gemeinsame Skala mit Mittelwert 0 und Standardabweichung 1 bringt. Dies ist besonders nützlich, wenn Variablen mit unterschiedlichen Einheiten oder Größenordnungen verglichen werden sollen.
+
+Mathematische Formel: $z = \frac{x - \mu}{\sigma}$, wobei $\mu$ der Mittelwert und $\sigma$ die Standardabweichung ist.
 
 ```{r standardisierung, eval=TRUE}
+# Standardisierung der Gehaltsdaten
 Salary_z <- (Salary - (Salary |> mean())) / (Salary |> sd())
 head(Salary_z)  # Zeigt die ersten standardisierten Werte
 
 # Überprüfen der Eigenschaften der standardisierten Daten
-mean(Salary_z)  # Sollte nahe 0 sein
-sd(Salary_z)    # Sollte nahe 1 sein
+print(paste("Mittelwert der z-Werte:", round(mean(Salary_z), 10)))  # Sollte nahe 0 sein
+print(paste("Standardabweichung der z-Werte:", round(sd(Salary_z), 10)))  # Sollte nahe 1 sein
+
+# Beispiel: Standardisierung einer zweiten Variable zum Vergleich
+# Angenommen, wir haben auch Daten über Berufserfahrung in Jahren
+Experience <- c(5, 3, 8, 12, 7, 10, 15, 2, 6, 9, 11, 4, 8, 7, 5)
+
+# Standardisierung beider Variablen
+Experience_z <- (Experience - mean(Experience)) / sd(Experience)
+
+# Vergleich der ursprünglichen und standardisierten Werte
+par(mfrow = c(2, 2))  # 2x2 Plotanordnung
+
+# Ursprüngliche Werte
+hist(Salary, main = "Ursprüngliche Gehälter", xlab = "Gehalt", col = "lightblue")
+hist(Experience, main = "Ursprüngliche Erfahrung", xlab = "Jahre", col = "lightgreen")
+
+# Standardisierte Werte
+hist(Salary_z, main = "Standardisierte Gehälter", xlab = "z-Wert", col = "lightblue")
+hist(Experience_z, main = "Standardisierte Erfahrung", xlab = "z-Wert", col = "lightgreen")
+
+# Zurücksetzen auf ein einzelnes Plot
+par(mfrow = c(1, 1))
+
+# Interpretation der z-Werte
+# Beispiel: Identifikation von Werten, die mehr als 2 Standardabweichungen vom Mittelwert entfernt sind
+extreme_values <- Salary[abs(Salary_z) > 2]
+print(paste("Anzahl extremer Werte (|z| > 2):", length(extreme_values)))
+if (length(extreme_values) > 0) {
+  print("Extreme Werte:")
+  print(extreme_values)
+}
 ```
+
+**Statistische Erklärung**: Die Standardisierung (z-Transformation) hat mehrere wichtige Anwendungen:
+
+1. **Vergleichbarkeit**: Variablen mit unterschiedlichen Einheiten oder Größenordnungen können direkt verglichen werden.
+2. **Interpretation**: z-Werte geben an, wie viele Standardabweichungen ein Wert vom Mittelwert entfernt ist.
+   - z = 0: Der Wert entspricht genau dem Mittelwert
+   - z = 1: Der Wert liegt eine Standardabweichung über dem Mittelwert
+   - z = -1: Der Wert liegt eine Standardabweichung unter dem Mittelwert
+3. **Ausreißererkennung**: Werte mit |z| > 2 oder |z| > 3 werden oft als potenzielle Ausreißer betrachtet.
+4. **Voraussetzung für viele statistische Verfahren**: Viele multivariate Verfahren setzen standardisierte Variablen voraus.
+
+**R-Erklärung**:
+- Die Standardisierung kann manuell mit der Formel `(x - mean(x)) / sd(x)` durchgeführt werden.
+- Die Funktion `scale()` ist eine eingebaute Alternative: `scale(x)` standardisiert einen Vektor oder die Spalten einer Matrix.
+- Die Funktion `par(mfrow = c(rows, cols))` teilt das Grafikfenster in eine Matrix mit `rows` Zeilen und `cols` Spalten.
+- Die Funktion `abs()` berechnet den Absolutbetrag eines Wertes.
 
 
 # 5. Schiefe
 
-Die Schiefe misst die Asymmetrie der Verteilung.
+Die Schiefe (Skewness) misst die Asymmetrie der Verteilung. Sie gibt an, ob die Verteilung symmetrisch ist oder ob sie einen längeren Schwanz auf einer Seite hat.
+
+Mathematische Formel für die Stichprobenschiefe: $g_1 = \frac{n}{(n-1)(n-2)} \sum_{i=1}^{n} \left(\frac{x_i - \bar{x}}{s}\right)^3$
 
 ```{r schiefe, eval=TRUE}
+# Manuelle Berechnung der Schiefe mit standardisierten Werten
 n <- Salary_z |> length()
 schiefe <- n / ((n - 1) * (n - 2)) * (Salary_z^3 |> sum())
-print(paste("Schiefe:", schiefe))
+print(paste("Schiefe (manuell):", round(schiefe, 4)))
 
 # Alternative mit dem Paket e1071
 if (!requireNamespace("e1071", quietly = TRUE)) {
@@ -184,69 +526,268 @@ if (!requireNamespace("e1071", quietly = TRUE)) {
 }
 library(e1071)
 schiefe_e1071 <- skewness(Salary)
-print(paste("Schiefe (mit e1071):", schiefe_e1071))
+print(paste("Schiefe (mit e1071):", round(schiefe_e1071, 4)))
+
+# Visualisierung verschiedener Schiefe-Typen
+par(mfrow = c(1, 3))
+
+# Rechtsschiefe Verteilung (positive Schiefe)
+x_right <- rbeta(1000, 2, 5) * 100  # Beta-Verteilung mit positiver Schiefe
+hist(x_right, 
+     main = "Rechtsschiefe Verteilung\n(positive Schiefe)",
+     xlab = "Wert", 
+     col = "lightblue")
+text(60, 200, paste("Schiefe:", round(skewness(x_right), 2)), col = "red")
+
+# Symmetrische Verteilung (keine Schiefe)
+x_symm <- rnorm(1000, 50, 10)  # Normalverteilung (symmetrisch)
+hist(x_symm, 
+     main = "Symmetrische Verteilung\n(keine Schiefe)",
+     xlab = "Wert", 
+     col = "lightgreen")
+text(70, 100, paste("Schiefe:", round(skewness(x_symm), 2)), col = "red")
+
+# Linksschiefe Verteilung (negative Schiefe)
+x_left <- 100 - rbeta(1000, 2, 5) * 100  # Umgekehrte Beta-Verteilung
+hist(x_left, 
+     main = "Linksschiefe Verteilung\n(negative Schiefe)",
+     xlab = "Wert", 
+     col = "lightpink")
+text(40, 200, paste("Schiefe:", round(skewness(x_left), 2)), col = "red")
+
+# Zurücksetzen auf ein einzelnes Plot
+par(mfrow = c(1, 1))
+
+# Interpretation der Schiefe der Gehaltsdaten
+if (schiefe > 0.5) {
+  print("Die Gehaltsdaten sind deutlich rechtsschief (positive Schiefe).")
+  print("Dies bedeutet, dass es einige wenige hohe Gehälter gibt, die den Mittelwert nach oben ziehen.")
+  print("In diesem Fall ist der Median oft aussagekräftiger als der Mittelwert.")
+} else if (schiefe < -0.5) {
+  print("Die Gehaltsdaten sind deutlich linksschief (negative Schiefe).")
+  print("Dies bedeutet, dass es einige wenige niedrige Gehälter gibt, die den Mittelwert nach unten ziehen.")
+} else {
+  print("Die Gehaltsdaten sind annähernd symmetrisch.")
+  print("Mittelwert und Median liegen nahe beieinander.")
+}
 ```
+
+**Statistische Erklärung**: Die Schiefe ist ein Maß für die Asymmetrie einer Verteilung:
+
+- **Positive Schiefe (> 0)**: Rechtsschiefe Verteilung mit einem längeren rechten Schwanz. Der Mittelwert ist größer als der Median, da er von den hohen Werten im rechten Schwanz nach oben gezogen wird.
+- **Negative Schiefe (< 0)**: Linksschiefe Verteilung mit einem längeren linken Schwanz. Der Mittelwert ist kleiner als der Median, da er von den niedrigen Werten im linken Schwanz nach unten gezogen wird.
+- **Keine Schiefe (≈ 0)**: Symmetrische Verteilung, bei der Mittelwert und Median annähernd gleich sind.
+
+Richtwerte für die Interpretation der Schiefe:
+- |Schiefe| < 0.5: annähernd symmetrisch
+- 0.5 ≤ |Schiefe| < 1: mäßig schief
+- |Schiefe| ≥ 1: stark schief
+
+Die Schiefe ist wichtig für die Wahl geeigneter statistischer Methoden, da viele Verfahren eine symmetrische Verteilung voraussetzen.
+
+**R-Erklärung**:
+- Die Funktion `skewness()` aus dem Paket `e1071` berechnet die Schiefe eines numerischen Vektors.
+- Die Funktionen `rbeta()` und `rnorm()` erzeugen Zufallszahlen aus der Beta- bzw. Normalverteilung.
+- Die Beta-Verteilung mit Parametern `shape1 < shape2` ist rechtsschief, mit `shape1 > shape2` linksschief.
+- Die Normalverteilung ist immer symmetrisch (Schiefe = 0).
 
 
 # 6. Zusammenhangsmasse
 
+Zusammenhangsmaße quantifizieren die Stärke und Richtung der Beziehung zwischen zwei oder mehr Variablen. Sie sind grundlegend für die Analyse von Abhängigkeiten und Korrelationen in Daten.
+
 ## 6.1 Kovarianz
 
-Die Kovarianz misst den linearen Zusammenhang zwischen zwei Variablen.
+Die Kovarianz misst den linearen Zusammenhang zwischen zwei Variablen. Sie gibt an, ob die Variablen tendenziell gemeinsam steigen und fallen (positive Kovarianz) oder gegenläufig sind (negative Kovarianz).
+
+Mathematische Formel für die Stichprobenkovarianz: $\text{cov}(X,Y) = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})$
 
 ```{r kovarianz, eval=TRUE}
 # Überprüfen der ersten Werte der Variablen
+print("Erste Werte von 'sales':")
 head(sales)
+print("Erste Werte von 'adverts':")
 head(adverts)
 
+# Manuelle Berechnung der Kovarianz
 n_sales <- sales |> length()
 cov_manual <- 1 / (n_sales - 1) * sum((sales - (sales |> mean())) * 
                                      (adverts - (adverts |> mean())))
+
+# Berechnung mit der eingebauten Funktion
 cov_builtin <- cov(sales, adverts)
 
-print(paste("Kovarianz (manuell):", cov_manual))
-print(paste("Kovarianz (eingebaut):", cov_builtin))
-```
+print(paste("Kovarianz (manuell):", round(cov_manual, 2)))
+print(paste("Kovarianz (eingebaut):", round(cov_builtin, 2)))
 
-## 6.2 Korrelationskoeffizient
-
-Der Korrelationskoeffizient normiert die Kovarianz auf den Bereich [-1, 1].
-
-```{r korrelation, eval=TRUE}
-corr_manual <- cov(sales, adverts) / ((sales |> sd()) * (adverts |> sd()))
-corr_builtin <- cor(sales, adverts)
-
-print(paste("Korrelation (manuell):", corr_manual))
-print(paste("Korrelation (eingebaut):", corr_builtin))
-
-# Visualisierung des Zusammenhangs
+# Visualisierung der Kovarianz
 plot(adverts, sales, 
      main = "Streudiagramm: Verkäufe vs. Werbung",
      xlab = "Werbeausgaben", 
      ylab = "Verkäufe",
      pch = 19, 
      col = "blue")
-abline(lm(sales ~ adverts), col = "red", lwd = 2)
+
+# Berechnung der Mittelwerte
+mean_sales <- mean(sales)
+mean_adverts <- mean(adverts)
+
+# Zeichnen der Mittelwertlinien
+abline(h = mean_sales, col = "red", lty = 2)
+abline(v = mean_adverts, col = "red", lty = 2)
+
+# Einteilung des Plots in Quadranten
+text(min(adverts), mean_sales + 0.1*(max(sales)-min(sales)), 
+     "Q2: (x_i < mean(x)) & (y_i > mean(y))\nNegative Kovarianz", 
+     pos = 4, col = "darkgreen")
+text(max(adverts), mean_sales + 0.1*(max(sales)-min(sales)), 
+     "Q1: (x_i > mean(x)) & (y_i > mean(y))\nPositive Kovarianz", 
+     pos = 2, col = "darkgreen")
+text(min(adverts), mean_sales - 0.1*(max(sales)-min(sales)), 
+     "Q3: (x_i < mean(x)) & (y_i < mean(y))\nPositive Kovarianz", 
+     pos = 4, col = "darkgreen")
+text(max(adverts), mean_sales - 0.1*(max(sales)-min(sales)), 
+     "Q4: (x_i > mean(x)) & (y_i < mean(y))\nNegative Kovarianz", 
+     pos = 2, col = "darkgreen")
+
+# Hinzufügen einer Legende
+legend("topleft", 
+       legend = c("Datenpunkte", "Mittelwerte"), 
+       col = c("blue", "red"), 
+       pch = c(19, NA), 
+       lty = c(NA, 2))
 ```
 
-*Hinweis zur Interpretation*:
-- r = 1: perfekter positiver linearer Zusammenhang
-- r = 0: kein linearer Zusammenhang
-- r = -1: perfekter negativer linearer Zusammenhang
+**Statistische Erklärung**: Die Kovarianz misst, wie zwei Variablen gemeinsam variieren:
+
+- **Positive Kovarianz**: Die Variablen tendieren dazu, gemeinsam zu steigen und zu fallen. Wenn eine Variable über ihrem Mittelwert liegt, liegt die andere tendenziell auch über ihrem Mittelwert.
+- **Negative Kovarianz**: Die Variablen tendieren dazu, in entgegengesetzte Richtungen zu variieren. Wenn eine Variable über ihrem Mittelwert liegt, liegt die andere tendenziell unter ihrem Mittelwert.
+- **Kovarianz nahe 0**: Es gibt keinen linearen Zusammenhang zwischen den Variablen.
+
+Die Kovarianz hat jedoch einen Nachteil: Ihr Wert hängt von den Einheiten der Variablen ab, was den Vergleich zwischen verschiedenen Variablenpaaren erschwert. Dieses Problem wird durch den Korrelationskoeffizienten gelöst.
+
+**R-Erklärung**:
+- Die Funktion `cov()` berechnet die Kovarianz zwischen zwei Vektoren.
+- Die Funktion `abline()` mit den Parametern `h` und `v` fügt horizontale bzw. vertikale Linien zu einem Plot hinzu.
+- Der Parameter `lty` steuert den Linientyp (1 = durchgezogen, 2 = gestrichelt, etc.).
+- Die Funktion `text()` fügt Text an bestimmten Koordinaten hinzu.
+
+## 6.2 Korrelationskoeffizient
+
+Der Korrelationskoeffizient (Pearson's r) normiert die Kovarianz auf den Bereich [-1, 1], indem er sie durch das Produkt der Standardabweichungen teilt. Dies macht ihn unabhängig von den Einheiten der Variablen und ermöglicht direkte Vergleiche zwischen verschiedenen Variablenpaaren.
+
+Mathematische Formel: $r = \frac{\text{cov}(X,Y)}{s_X \cdot s_Y} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}}$
+
+```{r korrelation, eval=TRUE}
+# Manuelle Berechnung des Korrelationskoeffizienten
+corr_manual <- cov(sales, adverts) / ((sales |> sd()) * (adverts |> sd()))
+
+# Berechnung mit der eingebauten Funktion
+corr_builtin <- cor(sales, adverts)
+
+print(paste("Korrelation (manuell):", round(corr_manual, 4)))
+print(paste("Korrelation (eingebaut):", round(corr_builtin, 4)))
+
+# Visualisierung des Zusammenhangs
+plot(adverts, sales, 
+     main = paste("Streudiagramm: Verkäufe vs. Werbung\nr =", round(corr_builtin, 2)),
+     xlab = "Werbeausgaben", 
+     ylab = "Verkäufe",
+     pch = 19, 
+     col = "blue")
+
+# Hinzufügen einer Regressionslinie
+fit <- lm(sales ~ adverts)
+abline(fit, col = "red", lwd = 2)
+
+# Konfidenzintervall für die Regressionslinie
+newx <- seq(min(adverts), max(adverts), length.out = 100)
+conf_interval <- predict(fit, newdata = data.frame(adverts = newx), interval = "confidence", level = 0.95)
+
+lines(newx, conf_interval[, "lwr"], col = "darkred", lty = 2)
+lines(newx, conf_interval[, "upr"], col = "darkred", lty = 2)
+
+# Hinzufügen einer Legende
+legend("topleft", 
+       legend = c("Datenpunkte", "Regressionslinie", "95% Konfidenzintervall"), 
+       col = c("blue", "red", "darkred"), 
+       pch = c(19, NA, NA), 
+       lty = c(NA, 1, 2))
+
+# Demonstration verschiedener Korrelationsstärken
+par(mfrow = c(2, 2))
+
+# Starke positive Korrelation (r ≈ 0.9)
+set.seed(123)
+x1 <- rnorm(50)
+y1 <- 0.9*x1 + rnorm(50, 0, 0.4)
+plot(x1, y1, main = paste("Starke positive Korrelation\nr =", round(cor(x1, y1), 2)),
+     xlab = "X", ylab = "Y", pch = 19, col = "blue")
+abline(lm(y1 ~ x1), col = "red")
+
+# Moderate positive Korrelation (r ≈ 0.5)
+y2 <- 0.5*x1 + rnorm(50, 0, 0.8)
+plot(x1, y2, main = paste("Moderate positive Korrelation\nr =", round(cor(x1, y2), 2)),
+     xlab = "X", ylab = "Y", pch = 19, col = "blue")
+abline(lm(y2 ~ x1), col = "red")
+
+# Keine Korrelation (r ≈ 0)
+y3 <- rnorm(50)
+plot(x1, y3, main = paste("Keine Korrelation\nr =", round(cor(x1, y3), 2)),
+     xlab = "X", ylab = "Y", pch = 19, col = "blue")
+abline(lm(y3 ~ x1), col = "red")
+
+# Negative Korrelation (r ≈ -0.7)
+y4 <- -0.7*x1 + rnorm(50, 0, 0.6)
+plot(x1, y4, main = paste("Negative Korrelation\nr =", round(cor(x1, y4), 2)),
+     xlab = "X", ylab = "Y", pch = 19, col = "blue")
+abline(lm(y4 ~ x1), col = "red")
+
+# Zurücksetzen auf ein einzelnes Plot
+par(mfrow = c(1, 1))
+```
+
+**Statistische Erklärung**: Der Korrelationskoeffizient (Pearson's r) misst die Stärke und Richtung des linearen Zusammenhangs zwischen zwei Variablen:
+
+- **r = 1**: Perfekter positiver linearer Zusammenhang. Alle Datenpunkte liegen exakt auf einer steigenden Geraden.
+- **r = -1**: Perfekter negativer linearer Zusammenhang. Alle Datenpunkte liegen exakt auf einer fallenden Geraden.
+- **r = 0**: Kein linearer Zusammenhang. Die Variablen sind linear unabhängig.
+
+Richtwerte für die Interpretation der Korrelationsstärke:
+- |r| < 0.3: schwache Korrelation
+- 0.3 ≤ |r| < 0.7: moderate Korrelation
+- |r| ≥ 0.7: starke Korrelation
+
+**Wichtige Hinweise zur Interpretation**:
+1. Korrelation impliziert nicht Kausalität. Ein starker Zusammenhang bedeutet nicht, dass eine Variable die andere verursacht.
+2. Der Korrelationskoeffizient misst nur lineare Zusammenhänge. Nichtlineare Beziehungen können trotz r ≈ 0 stark sein.
+3. Der Korrelationskoeffizient ist empfindlich gegenüber Ausreißern.
+4. Der Determinationskoeffizient r² gibt den Anteil der Varianz in einer Variable an, der durch die andere Variable erklärt wird.
+
+**R-Erklärung**:
+- Die Funktion `cor()` berechnet den Pearson-Korrelationskoeffizienten zwischen zwei Vektoren.
+- Mit `method = "spearman"` oder `method = "kendall"` können auch Rangkorrelationen berechnet werden.
+- Die Funktion `predict()` mit `interval = "confidence"` berechnet Konfidenzintervalle für die Vorhersagen eines linearen Modells.
+- Die Funktion `set.seed()` setzt den Startwert für den Zufallszahlengenerator, um reproduzierbare Ergebnisse zu erhalten.
+- Die Funktion `rnorm()` erzeugt normalverteilte Zufallszahlen.
 
 
 # 7. Visualisierung
 
+Visualisierungen sind ein mächtiges Werkzeug in der deskriptiven Statistik, um Muster, Trends und Beziehungen in Daten zu erkennen und zu kommunizieren. Sie ergänzen numerische Maße und helfen, komplexe Zusammenhänge intuitiv zu erfassen.
+
 ## 7.1 Boxplots
 
-Boxplots zeigen die Verteilung der Daten über ihre Quartile.
+Boxplots (auch Box-Whisker-Plots genannt) zeigen die Verteilung der Daten über ihre Quartile. Sie sind besonders nützlich zum Erkennen von Ausreißern und zum Vergleich von Gruppen.
 
 ```{r boxplots, eval=TRUE}
 # Einfacher Boxplot
 boxplot(Salary, 
         main = "Boxplot von Salary",
         ylab = "Salary",
-        col = "lightblue")
+        col = "lightblue",
+        horizontal = FALSE,  # Vertikale Ausrichtung
+        notch = FALSE)       # Ohne Einkerbung
 
 # Gruppierter Boxplot
 boxplot(Salary ~ Major,
@@ -254,12 +795,94 @@ boxplot(Salary ~ Major,
         main = "Boxplot von Salary nach Major",
         xlab = "Major",
         ylab = "Salary",
-        col = c("lightblue", "lightgreen", "lightpink"))
+        col = c("lightblue", "lightgreen", "lightpink"),
+        notch = TRUE)  # Mit Einkerbung für Medianvergleich
 
-# Erklärung der Boxplot-Elemente
-text(1.5, max(Salary) * 0.9, "Oberes Quartil (Q3)", pos = 4)
-text(1.5, median(Salary), "Median", pos = 4)
-text(1.5, min(Salary) * 1.1, "Unteres Quartil (Q1)", pos = 4)
+# Erklärung der Boxplot-Elemente mit detaillierten Beschriftungen
+bp <- boxplot(Salary, 
+              main = "Anatomie eines Boxplots",
+              ylab = "Salary",
+              col = "lightblue",
+              outline = TRUE,  # Zeigt Ausreißer als Punkte
+              plot = TRUE)     # Erzeugt den Plot
+
+# Extrahieren der Boxplot-Statistiken
+stats <- bp$stats
+outliers <- bp$out
+
+# Beschriftung der Boxplot-Elemente
+text(1.3, stats[5, 1], "Maximum (ohne Ausreißer)", pos = 4, col = "darkblue")
+text(1.3, stats[4, 1], "Oberes Quartil (Q3, 75%)", pos = 4, col = "darkblue")
+text(1.3, stats[3, 1], "Median (Q2, 50%)", pos = 4, col = "darkblue")
+text(1.3, stats[2, 1], "Unteres Quartil (Q1, 25%)", pos = 4, col = "darkblue")
+text(1.3, stats[1, 1], "Minimum (ohne Ausreißer)", pos = 4, col = "darkblue")
+
+# Beschriftung der Ausreißer, falls vorhanden
+if (length(outliers) > 0) {
+  text(rep(1.1, length(outliers)), outliers, "Ausreißer", pos = 4, col = "red")
+}
+
+# Hinzufügen von Linien für IQR und Whiskers
+arrows(0.8, stats[2, 1], 0.8, stats[4, 1], code = 3, angle = 90, length = 0.1, col = "darkred")
+text(0.7, (stats[2, 1] + stats[4, 1])/2, "IQR", col = "darkred")
+
+arrows(0.8, stats[1, 1], 0.8, stats[2, 1], code = 3, angle = 90, length = 0.1, col = "darkgreen")
+text(0.7, (stats[1, 1] + stats[2, 1])/2, "Unterer Whisker", col = "darkgreen")
+
+arrows(0.8, stats[4, 1], 0.8, stats[5, 1], code = 3, angle = 90, length = 0.1, col = "darkgreen")
+text(0.7, (stats[4, 1] + stats[5, 1])/2, "Oberer Whisker", col = "darkgreen")
+
+# Vergleich von Boxplots mit anderen Visualisierungen
+par(mfrow = c(1, 3))
+
+# Boxplot
+boxplot(Salary, 
+        main = "Boxplot",
+        ylab = "Salary",
+        col = "lightblue")
+
+# Histogramm
+hist(Salary, 
+     main = "Histogramm",
+     xlab = "Salary", 
+     col = "lightgreen")
+
+# Violin-Plot (Kombination aus Boxplot und Dichteplot)
+if (!requireNamespace("vioplot", quietly = TRUE)) {
+  install.packages("vioplot")
+}
+library(vioplot)
+vioplot(Salary, 
+        col = "lightpink",
+        main = "Violin-Plot",
+        ylab = "Salary")
+
+# Zurücksetzen auf ein einzelnes Plot
+par(mfrow = c(1, 1))
 ```
+
+**Statistische Erklärung**: Boxplots bieten eine kompakte Darstellung der wichtigsten Verteilungseigenschaften:
+
+1. **Box**: Repräsentiert den Interquartilsabstand (IQR) von Q1 bis Q3, der die mittleren 50% der Daten enthält.
+2. **Linie in der Box**: Zeigt den Median (Q2).
+3. **Whiskers (Antennen)**:
+   - In der Standardimplementierung in R: Erstrecken sich bis zum äußersten Datenpunkt innerhalb von 1.5*IQR von Q1 bzw. Q3.
+   - Alternative Definitionen: Bis zum Minimum/Maximum oder bis zu bestimmten Perzentilen.
+4. **Punkte außerhalb der Whiskers**: Werden als Ausreißer betrachtet.
+5. **Einkerbungen (Notches)**: Wenn vorhanden, geben sie ein ungefähres 95%-Konfidenzintervall für den Median an. Überlappen sich die Einkerbungen zweier Boxplots nicht, ist dies ein Hinweis auf einen signifikanten Unterschied der Mediane.
+
+Boxplots sind besonders nützlich für:
+- Den Vergleich mehrerer Gruppen
+- Die Identifikation von Ausreißern
+- Die Beurteilung der Symmetrie einer Verteilung
+- Die Erkennung von Unterschieden in der Streuung
+
+**R-Erklärung**:
+- Die Funktion `boxplot()` erstellt einen Boxplot.
+- Der Parameter `notch = TRUE` fügt Einkerbungen hinzu, die ein ungefähres 95%-Konfidenzintervall für den Median darstellen.
+- Der Parameter `horizontal = TRUE` erstellt einen horizontalen statt eines vertikalen Boxplots.
+- Die Funktion `boxplot()` gibt eine Liste mit Statistiken zurück, die für weitere Beschriftungen verwendet werden können.
+- Die Funktion `arrows()` fügt Pfeile zum Plot hinzu, die hier zur Beschriftung der Boxplot-Elemente verwendet werden.
+- Das Paket `vioplot` bietet eine Alternative zum Boxplot, die zusätzlich die Dichteverteilung der Daten zeigt.
 
 *Tipp*: Boxplots sind besonders nützlich zum Erkennen von Ausreissern und zum Vergleich von Gruppen. Die Box zeigt den Interquartilsabstand (IQR), der Strich in der Mitte ist der Median, und die "Whiskers" (Antennen) zeigen die Spannweite der Daten ohne Ausreißer.
