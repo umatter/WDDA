@@ -182,9 +182,6 @@ Beim Recoding werden Variablen umkodiert oder neu strukturiert.
 ```{r recoding, eval=TRUE}
 library(stringr)
 
-# Hinweis: Dieses Beispiel benötigt einen Datensatz 'Inventory', der in diesem Beispiel nicht verfügbar ist
-# Hier ist ein Beispiel, wie das Recoding funktionieren würde:
-
 # Aufteilen einer Variable
 shirt_split <- Inventory |>
   pull(shirt) |>
@@ -194,6 +191,12 @@ shirt_split <- Inventory |>
 Inventory2 <- shirt_split |>
   data.frame() |>
   setNames(c('style', 'colour', 'size'))
+
+# Hinzufügen der Preise als neue Spalte
+Inventory2$price <- Inventory |> pull(price)
+
+# Berechnen eines 30%-Rabattes auf den Preis und Hinzufügen als neue Spalte 'discount'
+Inventory2$discount <- Inventory2$price * (1 - 0.30)
 ```
 
 
@@ -202,9 +205,6 @@ Inventory2 <- shirt_split |>
 Streudiagramme visualisieren die Beziehung zwischen zwei quantitativen Variablen.
 
 ```{r streudiagramm, eval=TRUE}
-# Hinweis: Dieses Beispiel benötigt einen Datensatz 'Stereo', der in diesem Beispiel nicht verfügbar ist
-# Hier ist ein Beispiel, wie ein Streudiagramm erstellt werden würde:
-
 # Erstellen eines Streudiagramms
 plot(Sales ~ Commercials,
      data = Stereo,
