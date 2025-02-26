@@ -9,6 +9,24 @@ output: html_document
 
 Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 03 Folien zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf numerischen Massen wie Lage-, Streuungs- und Zusammenhangsmasse.
 
+# 0. Vorbereitung
+
+```{r vorbereitung, eval=TRUE}
+# Pakete laden
+library(readxl)
+
+# Daten importieren
+Graduates <- read_excel("../data/WDDA_03.xlsx", sheet = "Graduates")
+Brand <- read_excel("../data/WDDA_03.xlsx", sheet = "Auto")
+Advertising <- read_excel("../data/WDDA_03.xlsx", sheet = "Advertising")
+
+# Variablen extrahieren für spätere Verwendung
+Salary <- Graduates$Salary
+Major <- Graduates$Major
+sales <- Advertising$sales
+adverts <- Advertising$adverts
+```
+
 
 # 1. Lagemasse
 
@@ -16,7 +34,7 @@ Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 03 Folien zusammen.
 
 Der arithmetische Mittelwert ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen.
 
-```{r mittelwert, eval=FALSE}
+```{r mittelwert, eval=TRUE}
 # Manuelle Berechnung
 sum_Salary <- Salary |> sum()
 n_Salary <- Salary |> length()
@@ -24,28 +42,35 @@ mittelwert_manual <- sum_Salary / n_Salary
 
 # Eingebaute Funktion
 mittelwert_builtin <- Salary |> mean()
+
+# Ausgabe der Ergebnisse
+print(mittelwert_manual)
+print(mittelwert_builtin)
 ```
 
 ## 1.2 Median
 
 Der Median teilt die geordneten Daten in zwei Hälften. Er ist robust gegenüber Ausreissern.
 
-```{r median, eval=FALSE}
+```{r median, eval=TRUE}
 median_salary <- Salary |> median()
+print(median_salary)
 ```
 
 ## 1.3 Modus
 
 Der Modus ist der am häufigsten vorkommende Wert. Besonders nützlich für kategoriale Daten.
 
-```{r modus, eval=FALSE}
+```{r modus, eval=TRUE}
 # Häufigkeitstabelle erstellen
 brand_table <- Brand |> table()
+print(brand_table)
 
 # Modus ermitteln
 modus_brand <- brand_table |> 
   which.max() |> 
   names()
+print(paste("Modus:", modus_brand))
 ```
 
 
@@ -55,27 +80,47 @@ modus_brand <- brand_table |>
 
 Die Spannweite ist die Differenz zwischen Maximum und Minimum.
 
-```{r spannweite, eval=FALSE}
+```{r spannweite, eval=TRUE}
 max_salary <- Salary |> max()
 min_salary <- Salary |> min()
 spannweite <- max_salary - min_salary
+print(paste("Spannweite:", spannweite))
 ```
 
-## 2.2 Quartile und Interquartilsabstand (IQR)
+## 2.2 Gewichteter Mittelwert
+
+Beim gewichteten Mittelwert wird jedem Datenwert ein Gewicht zugeordnet.
+
+```{r gewichteter-mittelwert, eval=TRUE}
+# Beispiel: Berechnung des gewichteten Mittelwerts
+xvar <- c(3, 3.4, 2.8, 2.9, 3.25)
+weight <- c(1200, 500, 2750, 1000, 800)
+gewichteter_mittelwert <- sum(xvar * weight) / sum(weight)
+print(paste("Gewichteter Mittelwert:", gewichteter_mittelwert))
+```
+
+## 2.3 Quartile und Interquartilsabstand (IQR)
 
 Quartile teilen die geordneten Daten in vier gleiche Teile.
 
-```{r quartile, eval=FALSE}
+```{r quartile, eval=TRUE}
 Q1 <- Salary |> quantile(0.25)
 Q3 <- Salary |> quantile(0.75)
 IQR_salary <- Q3 - Q1
+print(paste("Q1:", Q1))
+print(paste("Q3:", Q3))
+print(paste("IQR:", IQR_salary))
+
+# Perzentile
+perzentil95 <- Salary |> quantile(0.95)
+print(paste("95. Perzentil:", perzentil95))
 ```
 
-## 2.3 Varianz und Standardabweichung
+## 2.4 Varianz und Standardabweichung
 
 Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert.
 
-```{r varianz, eval=FALSE}
+```{r varianz, eval=TRUE}
 # Varianz
 var_manual <- Salary |> 
   (\(x) sum((x - mean(x))^2))() / (length(Salary) - 1)
@@ -84,6 +129,11 @@ var_builtin <- Salary |> var()
 # Standardabweichung
 sd_manual <- Salary |> var() |> sqrt()
 sd_builtin <- Salary |> sd()
+
+print(paste("Varianz (manuell):", var_manual))
+print(paste("Varianz (eingebaut):", var_builtin))
+print(paste("Standardabweichung (manuell):", sd_manual))
+print(paste("Standardabweichung (eingebaut):", sd_builtin))
 ```
 
 *Tipp*: Die Standardabweichung hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
@@ -93,10 +143,15 @@ sd_builtin <- Salary |> sd()
 
 Die empirische Regel (68-95-99,7-Regel) beschreibt die Verteilung der Daten um den Mittelwert.
 
-```{r empirische-regel, eval=FALSE}
+```{r empirische-regel, eval=TRUE}
 # Intervall [mean - sd, mean + sd]
 untere_grenze <- Salary |> mean() - (Salary |> sd())
 obere_grenze <- Salary |> mean() + (Salary |> sd())
+print(paste("Intervall [mean - sd, mean + sd]:", untere_grenze, "bis", obere_grenze))
+
+# Berechnen des Anteils der Daten in diesem Intervall
+anteil_im_intervall <- mean(Salary >= untere_grenze & Salary <= obere_grenze)
+print(paste("Anteil der Daten im Intervall:", round(anteil_im_intervall * 100, 1), "%"))
 ```
 
 
@@ -104,8 +159,13 @@ obere_grenze <- Salary |> mean() + (Salary |> sd())
 
 Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichbar.
 
-```{r standardisierung, eval=FALSE}
+```{r standardisierung, eval=TRUE}
 Salary_z <- (Salary - (Salary |> mean())) / (Salary |> sd())
+head(Salary_z)  # Zeigt die ersten standardisierten Werte
+
+# Überprüfen der Eigenschaften der standardisierten Daten
+mean(Salary_z)  # Sollte nahe 0 sein
+sd(Salary_z)    # Sollte nahe 1 sein
 ```
 
 
@@ -113,9 +173,18 @@ Salary_z <- (Salary - (Salary |> mean())) / (Salary |> sd())
 
 Die Schiefe misst die Asymmetrie der Verteilung.
 
-```{r schiefe, eval=FALSE}
+```{r schiefe, eval=TRUE}
 n <- Salary_z |> length()
 schiefe <- n / ((n - 1) * (n - 2)) * (Salary_z^3 |> sum())
+print(paste("Schiefe:", schiefe))
+
+# Alternative mit dem Paket e1071
+if (!requireNamespace("e1071", quietly = TRUE)) {
+  install.packages("e1071")
+}
+library(e1071)
+schiefe_e1071 <- skewness(Salary)
+print(paste("Schiefe (mit e1071):", schiefe_e1071))
 ```
 
 
@@ -125,20 +194,39 @@ schiefe <- n / ((n - 1) * (n - 2)) * (Salary_z^3 |> sum())
 
 Die Kovarianz misst den linearen Zusammenhang zwischen zwei Variablen.
 
-```{r kovarianz, eval=FALSE}
+```{r kovarianz, eval=TRUE}
+# Überprüfen der ersten Werte der Variablen
+head(sales)
+head(adverts)
+
 n_sales <- sales |> length()
 cov_manual <- 1 / (n_sales - 1) * sum((sales - (sales |> mean())) * 
                                      (adverts - (adverts |> mean())))
 cov_builtin <- cov(sales, adverts)
+
+print(paste("Kovarianz (manuell):", cov_manual))
+print(paste("Kovarianz (eingebaut):", cov_builtin))
 ```
 
 ## 6.2 Korrelationskoeffizient
 
 Der Korrelationskoeffizient normiert die Kovarianz auf den Bereich [-1, 1].
 
-```{r korrelation, eval=FALSE}
+```{r korrelation, eval=TRUE}
 corr_manual <- cov(sales, adverts) / ((sales |> sd()) * (adverts |> sd()))
 corr_builtin <- cor(sales, adverts)
+
+print(paste("Korrelation (manuell):", corr_manual))
+print(paste("Korrelation (eingebaut):", corr_builtin))
+
+# Visualisierung des Zusammenhangs
+plot(adverts, sales, 
+     main = "Streudiagramm: Verkäufe vs. Werbung",
+     xlab = "Werbeausgaben", 
+     ylab = "Verkäufe",
+     pch = 19, 
+     col = "blue")
+abline(lm(sales ~ adverts), col = "red", lwd = 2)
 ```
 
 *Hinweis zur Interpretation*:
@@ -153,17 +241,25 @@ corr_builtin <- cor(sales, adverts)
 
 Boxplots zeigen die Verteilung der Daten über ihre Quartile.
 
-```{r boxplots, eval=FALSE}
+```{r boxplots, eval=TRUE}
 # Einfacher Boxplot
 boxplot(Salary, 
         main = "Boxplot von Salary",
-        ylab = "Salary")
+        ylab = "Salary",
+        col = "lightblue")
 
 # Gruppierter Boxplot
 boxplot(Salary ~ Major,
+        data = Graduates,
         main = "Boxplot von Salary nach Major",
         xlab = "Major",
-        ylab = "Salary")
+        ylab = "Salary",
+        col = c("lightblue", "lightgreen", "lightpink"))
+
+# Erklärung der Boxplot-Elemente
+text(1.5, max(Salary) * 0.9, "Oberes Quartil (Q3)", pos = 4)
+text(1.5, median(Salary), "Median", pos = 4)
+text(1.5, min(Salary) * 1.1, "Unteres Quartil (Q1)", pos = 4)
 ```
 
-*Tipp*: Boxplots sind besonders nützlich zum Erkennen von Ausreissern und zum Vergleich von Gruppen.
+*Tipp*: Boxplots sind besonders nützlich zum Erkennen von Ausreissern und zum Vergleich von Gruppen. Die Box zeigt den Interquartilsabstand (IQR), der Strich in der Mitte ist der Median, und die "Whiskers" (Antennen) zeigen die Spannweite der Daten ohne Ausreißer.
