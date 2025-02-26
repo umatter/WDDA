@@ -628,6 +628,9 @@ print(paste("Kovarianz (manuell):", round(cov_manual, 2)))
 print(paste("Kovarianz (eingebaut):", round(cov_builtin, 2)))
 
 # Visualisierung der Kovarianz
+# Größeres Plotfenster für bessere Lesbarkeit
+par(mar = c(5, 4, 4, 2) + 0.5)  # Erhöht die Ränder des Plots
+
 plot(adverts, sales, 
      main = "Streudiagramm: Verkäufe vs. Werbung",
      xlab = "Werbeausgaben", 
@@ -643,19 +646,22 @@ mean_adverts <- mean(adverts)
 abline(h = mean_sales, col = "red", lty = 2)
 abline(v = mean_adverts, col = "red", lty = 2)
 
-# Einteilung des Plots in Quadranten
-text(min(adverts), mean_sales + 0.1*(max(sales)-min(sales)), 
+# Einteilung des Plots in Quadranten mit besserer Positionierung und kleinerer Schrift
+text(min(adverts), mean_sales + 0.15*(max(sales)-min(sales)), 
      "Q2: (x_i < mean(x)) & (y_i > mean(y))\nNegative Kovarianz", 
-     pos = 4, col = "darkgreen")
-text(max(adverts), mean_sales + 0.1*(max(sales)-min(sales)), 
+     pos = 4, col = "darkgreen", cex = 0.8)
+text(max(adverts), mean_sales + 0.15*(max(sales)-min(sales)), 
      "Q1: (x_i > mean(x)) & (y_i > mean(y))\nPositive Kovarianz", 
-     pos = 2, col = "darkgreen")
-text(min(adverts), mean_sales - 0.1*(max(sales)-min(sales)), 
+     pos = 2, col = "darkgreen", cex = 0.8)
+text(min(adverts), mean_sales - 0.15*(max(sales)-min(sales)), 
      "Q3: (x_i < mean(x)) & (y_i < mean(y))\nPositive Kovarianz", 
-     pos = 4, col = "darkgreen")
-text(max(adverts), mean_sales - 0.1*(max(sales)-min(sales)), 
+     pos = 4, col = "darkgreen", cex = 0.8)
+text(max(adverts), mean_sales - 0.15*(max(sales)-min(sales)), 
      "Q4: (x_i > mean(x)) & (y_i < mean(y))\nNegative Kovarianz", 
-     pos = 2, col = "darkgreen")
+     pos = 2, col = "darkgreen", cex = 0.8)
+
+# Zurücksetzen der Plotparameter nach diesem Plot
+par(mar = c(5, 4, 4, 2))  # Standardwerte wiederherstellen
 
 # Hinzufügen einer Legende
 legend("topleft", 

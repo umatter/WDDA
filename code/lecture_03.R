@@ -186,6 +186,38 @@ cov_manual <- 1 / (n_sales - 1) * sum((sales - (sales |> mean())) *
                                      (adverts - (adverts |> mean())))
 cov_builtin <- cov(sales, adverts)
 
+# Visualisierung der Kovarianz
+par(mar = c(5, 4, 4, 2) + 0.5)  # Erhöht die Ränder des Plots
+plot(adverts, sales, 
+     main = "Streudiagramm: Verkäufe vs. Werbung",
+     xlab = "Werbeausgaben", 
+     ylab = "Verkäufe",
+     pch = 19, 
+     col = "blue")
+
+# Berechnung und Zeichnen der Mittelwertlinien
+mean_sales <- mean(sales)
+mean_adverts <- mean(adverts)
+abline(h = mean_sales, col = "red", lty = 2)
+abline(v = mean_adverts, col = "red", lty = 2)
+
+# Einteilung des Plots in Quadranten mit besserer Positionierung und kleinerer Schrift
+text(min(adverts), mean_sales + 0.15*(max(sales)-min(sales)), 
+     "Q2: (x_i < mean(x)) & (y_i > mean(y))\nNegative Kovarianz", 
+     pos = 4, col = "darkgreen", cex = 0.8)
+text(max(adverts), mean_sales + 0.15*(max(sales)-min(sales)), 
+     "Q1: (x_i > mean(x)) & (y_i > mean(y))\nPositive Kovarianz", 
+     pos = 2, col = "darkgreen", cex = 0.8)
+text(min(adverts), mean_sales - 0.15*(max(sales)-min(sales)), 
+     "Q3: (x_i < mean(x)) & (y_i < mean(y))\nPositive Kovarianz", 
+     pos = 4, col = "darkgreen", cex = 0.8)
+text(max(adverts), mean_sales - 0.15*(max(sales)-min(sales)), 
+     "Q4: (x_i > mean(x)) & (y_i < mean(y))\nNegative Kovarianz", 
+     pos = 2, col = "darkgreen", cex = 0.8)
+
+# Zurücksetzen der Plotparameter
+par(mar = c(5, 4, 4, 2))  # Standardwerte wiederherstellen
+
 
 # ---------------------------------------------------------------
 # 15. Korrelationskoeffizient
