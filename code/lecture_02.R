@@ -284,6 +284,18 @@ Price_ranges <- Price |> cut(bins)
 ct2 <- table(Quality, Price_ranges)
 print(ct2)
 
+
+
+
+
+
+
+
+
+
+
+
+
 # -----------------------------------------------------------------------------
 # 11. Recoding
 # Beim Recoding werden Variablen umkodiert. Hier wird im Datensatz 'Inventory'
@@ -296,10 +308,10 @@ library(stringr)
 # Annahme: Inventory Datensatz existiert nicht in diesem Beispiel
 # Kommentiere diesen Code-Block aus, da er nicht ausgeführt werden kann
 
-# # Aufteilen der 'shirt'-Variable in drei Teile
-# shirt_split <- Inventory |> 
-#   pull(shirt) |> 
-#   str_split_fixed(',', 3)
+# Aufteilen der 'shirt'-Variable in drei Teile
+shirt_split <- Inventory |>
+  pull(shirt) |>
+  str_split_fixed(',', 3)
 
 
 
