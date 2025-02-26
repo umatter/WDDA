@@ -269,6 +269,10 @@ print(num_good_or_cheap)
 # Kreuztabellen (Kontingenztafeln) fassen die Daten für zwei Variablen tabellarisch zusammen.
 # -----------------------------------------------------------------------------
 
+# Extrahieren der Quality und Price Variablen aus dem Restaurant Datensatz
+Quality <- Restaurant$Quality
+Price <- Restaurant$Price
+
 # Erstellen einer Kreuztabelle zwischen Quality und Price
 ct1 <- table(Quality, Price)
 print(ct1)
@@ -289,10 +293,13 @@ print(ct2)
 
 library(stringr)
 
-# Aufteilen der 'shirt'-Variable in drei Teile
-shirt_split <- Inventory |> 
-  pull(shirt) |> 
-  str_split_fixed(',', 3)
+# Annahme: Inventory Datensatz existiert nicht in diesem Beispiel
+# Kommentiere diesen Code-Block aus, da er nicht ausgeführt werden kann
+
+# # Aufteilen der 'shirt'-Variable in drei Teile
+# shirt_split <- Inventory |> 
+#   pull(shirt) |> 
+#   str_split_fixed(',', 3)
 
 
 
@@ -317,27 +324,29 @@ shirt_split <- Inventory |>
 # Spalten umbenannt und zusätzliche Spalten (Preis, Rabatt) hinzugefügt.
 # -----------------------------------------------------------------------------
 
-# Erstellen von Inventory2 durch Aufteilen der 'shirt'-Variable und Umwandeln in einen Dataframe
-Inventory2 <- Inventory |> pull(shirt) |> str_split_fixed(',', 3) |> data.frame()
-# Umbenennen der Spalten
-colnames(Inventory2) <- c('style', 'colour', 'size')
+# # Erstellen von Inventory2 durch Aufteilen der 'shirt'-Variable und Umwandeln in einen Dataframe
+# Inventory2 <- Inventory |> pull(shirt) |> str_split_fixed(',', 3) |> data.frame()
+# # Umbenennen der Spalten
+# colnames(Inventory2) <- c('style', 'colour', 'size')
+# 
+# # Hinzufügen der Preise als neue Spalte
+# Inventory2$price <- Inventory |> pull(price)
+# 
+# # Berechnen eines 30%-Rabattes auf den Preis und Hinzufügen als neue Spalte 'discount'
+# Inventory2$discount <- Inventory2$price * (1 - 0.30)
+# 
+# # Überprüfe die Struktur des neuen Dataframes
+# str(Inventory2)
+# 
+# # -----------------------------------------------------------------------------
+# # 13. Aggregating
+# # Aggregating fasst Daten zusammen. Hier wird Inventory2 hinsichtlich der Variable 'colour' aggregiert.
+# # -----------------------------------------------------------------------------
+# 
+# agg_result <- Inventory2 |> 
+#   aggregate(list(Inventory2$colour), length)
 
-# Hinzufügen der Preise als neue Spalte
-Inventory2$price <- Inventory |> pull(price)
-
-# Berechnen eines 30%-Rabattes auf den Preis und Hinzufügen als neue Spalte 'discount'
-Inventory2$discount <- Inventory2$price * (1 - 0.30)
-
-# Überprüfe die Struktur des neuen Dataframes
-str(Inventory2)
-
-# -----------------------------------------------------------------------------
-# 13. Aggregating
-# Aggregating fasst Daten zusammen. Hier wird Inventory2 hinsichtlich der Variable 'colour' aggregiert.
-# -----------------------------------------------------------------------------
-
-agg_result <- Inventory2 |> 
-  aggregate(list(Inventory2$colour), length)
+# Hinweis: Der Inventory Datensatz ist in diesem Beispiel nicht verfügbar
 
 
 
@@ -361,18 +370,23 @@ agg_result <- Inventory2 |>
 # Hier betrachten wir den Datensatz 'Stereo' und die Variablen 'Sales' und 'Commercials'.
 # -----------------------------------------------------------------------------
 
-# Erstellen eines Streudiagramms
-plot(Sales ~ Commercials,
-     data = Stereo,
-     main = "Streudiagramm: Sales vs Commercials",
-     xlab = "Commercials",
-     ylab = "Sales",
-     pch = 19,
-     col = "blue")
+# Annahme: Stereo Datensatz existiert nicht in diesem Beispiel
+# Kommentiere diesen Code-Block aus, da er nicht ausgeführt werden kann
 
-# Hinzufügen einer Trendlinie mittels linearer Regression
-fit <- lm(Sales ~ Commercials, data = Stereo)
-abline(fit, col = "red", lwd = 2)
+# # Erstellen eines Streudiagramms
+# plot(Sales ~ Commercials,
+#      data = Stereo,
+#      main = "Streudiagramm: Sales vs Commercials",
+#      xlab = "Commercials",
+#      ylab = "Sales",
+#      pch = 19,
+#      col = "blue")
+# 
+# # Hinzufügen einer Trendlinie mittels linearer Regression
+# fit <- lm(Sales ~ Commercials, data = Stereo)
+# abline(fit, col = "red", lwd = 2)
+
+# Hinweis: Der Stereo Datensatz ist in diesem Beispiel nicht verfügbar
 
 # -----------------------------------------------------------------------------
 # 15. Typen des Zusammenhangs

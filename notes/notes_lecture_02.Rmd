@@ -155,6 +155,10 @@ num_good_and_cheap <- Restaurant |>
 Kreuztabellen (Kontingenztafeln) fassen die Daten für zwei Variablen tabellarisch zusammen.
 
 ```{r kreuztabellen, eval=FALSE}
+# Extrahieren der Quality und Price Variablen aus dem Restaurant Datensatz
+Quality <- Restaurant$Quality
+Price <- Restaurant$Price
+
 # Einfache Kreuztabelle
 ct1 <- table(Quality, Price)
 
@@ -172,15 +176,18 @@ Beim Recoding werden Variablen umkodiert oder neu strukturiert.
 ```{r recoding, eval=FALSE}
 library(stringr)
 
-# Aufteilen einer Variable
-shirt_split <- Inventory |> 
-  pull(shirt) |> 
-  str_split_fixed(',', 3)
+# Hinweis: Dieses Beispiel benötigt einen Datensatz 'Inventory', der in diesem Beispiel nicht verfügbar ist
+# Hier ist ein Beispiel, wie das Recoding funktionieren würde:
 
-# Erstellen eines neuen Dataframes
-Inventory2 <- shirt_split |> 
-  data.frame() |>
-  setNames(c('style', 'colour', 'size'))
+# # Aufteilen einer Variable
+# shirt_split <- Inventory |> 
+#   pull(shirt) |> 
+#   str_split_fixed(',', 3)
+# 
+# # Erstellen eines neuen Dataframes
+# Inventory2 <- shirt_split |> 
+#   data.frame() |>
+#   setNames(c('style', 'colour', 'size'))
 ```
 
 
@@ -189,18 +196,21 @@ Inventory2 <- shirt_split |>
 Streudiagramme visualisieren die Beziehung zwischen zwei quantitativen Variablen.
 
 ```{r streudiagramm, eval=FALSE}
-# Erstellen eines Streudiagramms
-plot(Sales ~ Commercials,
-     data = Stereo,
-     main = "Streudiagramm: Sales vs Commercials",
-     xlab = "Commercials",
-     ylab = "Sales",
-     pch = 19,
-     col = "blue")
+# Hinweis: Dieses Beispiel benötigt einen Datensatz 'Stereo', der in diesem Beispiel nicht verfügbar ist
+# Hier ist ein Beispiel, wie ein Streudiagramm erstellt werden würde:
 
-# Hinzufügen einer Trendlinie
-fit <- lm(Sales ~ Commercials, data = Stereo)
-abline(fit, col = "red", lwd = 2)
+# # Erstellen eines Streudiagramms
+# plot(Sales ~ Commercials,
+#      data = Stereo,
+#      main = "Streudiagramm: Sales vs Commercials",
+#      xlab = "Commercials",
+#      ylab = "Sales",
+#      pch = 19,
+#      col = "blue")
+# 
+# # Hinzufügen einer Trendlinie
+# fit <- lm(Sales ~ Commercials, data = Stereo)
+# abline(fit, col = "red", lwd = 2)
 ```
 
 *Hinweis zur Interpretation*: Die Steigung der Trendlinie gibt Aufschluss über die Art des Zusammenhangs:
