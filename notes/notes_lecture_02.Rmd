@@ -472,8 +472,7 @@ agg_result <- Inventory2 |>
 print(agg_result)
 
 # Berechnung des durchschnittlichen Preises pro Farbe
-avg_price_by_color <- Inventory2 |>
-  aggregate(price ~ colour, data = ., mean)
+avg_price_by_color <- aggregate(price ~ colour, data = Inventory2, FUN = mean)
 print(avg_price_by_color)
 
 # Mehrere Aggregationen gleichzeitig mit dplyr
