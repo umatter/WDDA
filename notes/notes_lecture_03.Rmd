@@ -11,10 +11,10 @@ Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 03 Folien zusammen.
 
 Die deskriptive Statistik ist ein fundamentaler Bereich der Statistik, der sich mit der Zusammenfassung, Beschreibung und Darstellung von Daten befasst. Im Gegensatz zur inferentiellen Statistik, die Schlussfolgerungen über eine Grundgesamtheit auf Basis von Stichproben zieht, beschreibt die deskriptive Statistik die vorliegenden Daten ohne darüber hinausgehende Schlussfolgerungen.
 
-Numerische Maße in der deskriptiven Statistik können in drei Hauptkategorien eingeteilt werden:
-1. **Lagemaße**: Beschreiben das Zentrum oder die zentrale Tendenz der Daten (z.B. Mittelwert, Median)
-2. **Streuungsmaße**: Beschreiben die Variabilität oder Dispersion der Daten (z.B. Varianz, Standardabweichung)
-3. **Zusammenhangsmaße**: Beschreiben die Beziehung zwischen zwei oder mehr Variablen (z.B. Kovarianz, Korrelation)
+Numerische Masse in der deskriptiven Statistik können in drei Hauptkategorien eingeteilt werden:
+1. **Lagemasse**: Beschreiben das Zentrum oder die zentrale Tendenz der Daten (z.B. Mittelwert, Median)
+2. **Streuungsmasse**: Beschreiben die Variabilität oder Dispersion der Daten (z.B. Varianz, Standardabweichung)
+3. **Zusammenhangsmasse**: Beschreiben die Beziehung zwischen zwei oder mehr Variablen (z.B. Kovarianz, Korrelation)
 
 # 0. Vorbereitung
 
@@ -42,7 +42,7 @@ head(Salary)    # Zeigt die ersten Werte der Salary-Variable
 - Die Funktion `library()` lädt ein installiertes Paket in die aktuelle R-Sitzung.
 - Mit `read_excel()` aus dem Paket `readxl` können Excel-Dateien eingelesen werden. Der Parameter `sheet` gibt an, welches Tabellenblatt verwendet werden soll.
 - Der `$`-Operator wird verwendet, um auf eine Spalte eines Dataframes zuzugreifen.
-- Die Funktion `str()` zeigt die Struktur eines Objekts, einschließlich Datentypen und Dimensionen.
+- Die Funktion `str()` zeigt die Struktur eines Objekts, einschliesslich Datentypen und Dimensionen.
 - Die Funktion `head()` zeigt die ersten Zeilen eines Dataframes oder Vektors.
 
 **Hinweis zu Datenpfaden**: In R-Markdown-Dateien werden relative Pfade vom Speicherort der Datei aus interpretiert, daher der Pfad `"../data/WDDA_03.xlsx"`. In regulären R-Skripten würde der Pfad relativ zum Arbeitsverzeichnis angegeben werden.
@@ -50,11 +50,11 @@ head(Salary)    # Zeigt die ersten Werte der Salary-Variable
 
 # 1. Lagemasse
 
-Lagemaße beschreiben die zentrale Tendenz einer Verteilung und geben an, wo sich das Zentrum der Daten befindet. Sie sind wichtige Kennzahlen, um einen ersten Eindruck von der Lage der Daten zu bekommen.
+Lagemasse beschreiben die zentrale Tendenz einer Verteilung und geben an, wo sich das Zentrum der Daten befindet. Sie sind wichtige Kennzahlen, um einen ersten Eindruck von der Lage der Daten zu bekommen.
 
 ## 1.1 Arithmetischer Mittelwert
 
-Der arithmetische Mittelwert ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen. Er ist das am häufigsten verwendete Lagemaß, hat jedoch den Nachteil, dass er empfindlich gegenüber Ausreißern ist.
+Der arithmetische Mittelwert ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen. Er ist das am häufigsten verwendete Lagemass, hat jedoch den Nachteil, dass er empfindlich gegenüber Ausreissern ist.
 
 Mathematische Formel: $\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i$
 
@@ -71,13 +71,13 @@ mittelwert_builtin <- Salary |> mean()  # Verwendet die eingebaute mean()-Funkti
 print(paste("Mittelwert (manuell):", round(mittelwert_manual, 2)))
 print(paste("Mittelwert (eingebaut):", round(mittelwert_builtin, 2)))
 
-# Demonstration der Ausreißerempfindlichkeit
-salary_with_outlier <- c(Salary, 1000000)  # Fügt einen extremen Ausreißer hinzu
-print(paste("Mittelwert ohne Ausreißer:", round(mean(Salary), 2)))
-print(paste("Mittelwert mit Ausreißer:", round(mean(salary_with_outlier), 2)))
+# Demonstration der Ausreisserempfindlichkeit
+salary_with_outlier <- c(Salary, 1000000)  # Fügt einen extremen Ausreisser hinzu
+print(paste("Mittelwert ohne Ausreisser:", round(mean(Salary), 2)))
+print(paste("Mittelwert mit Ausreisser:", round(mean(salary_with_outlier), 2)))
 ```
 
-**Statistische Erklärung**: Der arithmetische Mittelwert ist ein Schwerpunkt der Daten. Er minimiert die Summe der quadrierten Abweichungen und ist daher optimal für symmetrische Verteilungen ohne Ausreißer. Bei schiefen Verteilungen oder bei Vorhandensein von Ausreißern kann der Mittelwert jedoch ein verzerrtes Bild der zentralen Tendenz geben.
+**Statistische Erklärung**: Der arithmetische Mittelwert ist ein Schwerpunkt der Daten. Er minimiert die Summe der quadrierten Abweichungen und ist daher optimal für symmetrische Verteilungen ohne Ausreisser. Bei schiefen Verteilungen oder bei Vorhandensein von Ausreissern kann der Mittelwert jedoch ein verzerrtes Bild der zentralen Tendenz geben.
 
 **R-Erklärung**:
 - Die Funktion `sum()` berechnet die Summe aller Werte in einem Vektor.
@@ -111,14 +111,14 @@ if (n %% 2 == 1) {  # Ungerade Anzahl
 }
 print(paste("Median (manuell):", median_manual))
 
-# Vergleich von Median und Mittelwert bei Ausreißern
-print(paste("Median mit Ausreißer:", median(salary_with_outlier)))
-print(paste("Mittelwert mit Ausreißer:", round(mean(salary_with_outlier), 2)))
+# Vergleich von Median und Mittelwert bei Ausreissern
+print(paste("Median mit Ausreisser:", median(salary_with_outlier)))
+print(paste("Mittelwert mit Ausreisser:", round(mean(salary_with_outlier), 2)))
 ```
 
-**Statistische Erklärung**: Der Median ist ein robustes Lagemaß, das die Daten in zwei gleich große Hälften teilt. Im Gegensatz zum Mittelwert wird er kaum von Ausreißern beeinflusst, da er nur von der Rangordnung der Daten abhängt, nicht von ihren exakten Werten. Der Median ist besonders geeignet für:
+**Statistische Erklärung**: Der Median ist ein robustes Lagemass, das die Daten in zwei gleich grosse Hälften teilt. Im Gegensatz zum Mittelwert wird er kaum von Ausreissern beeinflusst, da er nur von der Rangordnung der Daten abhängt, nicht von ihren exakten Werten. Der Median ist besonders geeignet für:
 - Schiefe Verteilungen (z.B. Einkommensverteilungen)
-- Daten mit Ausreißern
+- Daten mit Ausreissern
 - Ordinalskalierte Daten (bei denen nur die Rangordnung, nicht aber die genauen Abstände bekannt sind)
 
 **R-Erklärung**:
@@ -137,7 +137,7 @@ print(brand_table)
 
 # Modus ermitteln
 modus_brand <- brand_table |> 
-  which.max() |>  # Gibt die Position des größten Wertes zurück
+  which.max() |>  # Gibt die Position des grössten Wertes zurück
   names()         # Extrahiert den Namen (die Kategorie) an dieser Position
 print(paste("Modus:", modus_brand))
 
@@ -154,11 +154,11 @@ text(which(names(brand_table) == modus_brand),
      col = "red")
 ```
 
-**Statistische Erklärung**: Der Modus ist das einzige Lagemaß, das für alle Skalenniveaus (nominal, ordinal, intervall, ratio) anwendbar ist. Ein Datensatz kann unimodal (ein Modus), bimodal (zwei Modi) oder multimodal (mehrere Modi) sein. Bei kontinuierlichen Daten wird der Modus oft als der Wert definiert, bei dem die Wahrscheinlichkeitsdichtefunktion ihr Maximum erreicht.
+**Statistische Erklärung**: Der Modus ist das einzige Lagemass, das für alle Skalenniveaus (nominal, ordinal, intervall, ratio) anwendbar ist. Ein Datensatz kann unimodal (ein Modus), bimodal (zwei Modi) oder multimodal (mehrere Modi) sein. Bei kontinuierlichen Daten wird der Modus oft als der Wert definiert, bei dem die Wahrscheinlichkeitsdichtefunktion ihr Maximum erreicht.
 
 **R-Erklärung**:
 - Die Funktion `table()` erstellt eine Häufigkeitstabelle, die für jede eindeutige Kategorie die Anzahl der Vorkommen zählt.
-- Die Funktion `which.max()` gibt den Index (die Position) des größten Wertes in einem Vektor zurück.
+- Die Funktion `which.max()` gibt den Index (die Position) des grössten Wertes in einem Vektor zurück.
 - Die Funktion `names()` extrahiert die Namen eines benannten Vektors oder einer Tabelle.
 - R hat keine eingebaute Funktion für den Modus, daher wird er typischerweise mit einer Kombination aus `table()` und `which.max()` berechnet.
 
@@ -167,14 +167,14 @@ text(which(names(brand_table) == modus_brand),
 
 # 2. Streuungsmasse
 
-Streuungsmaße beschreiben, wie stark die Daten um das Zentrum (Lagemaß) verteilt sind. Sie geben Aufschluss über die Variabilität oder Dispersion der Daten und sind wichtig, um die Homogenität oder Heterogenität eines Datensatzes zu beurteilen.
+Streuungsmasse beschreiben, wie stark die Daten um das Zentrum (Lagemass) verteilt sind. Sie geben Aufschluss über die Variabilität oder Dispersion der Daten und sind wichtig, um die Homogenität oder Heterogenität eines Datensatzes zu beurteilen.
 
 ## 2.1 Spannweite
 
-Die Spannweite (Range) ist die Differenz zwischen dem größten und dem kleinsten Wert in einem Datensatz. Sie ist das einfachste Streuungsmaß, hat jedoch den Nachteil, dass sie nur von zwei extremen Werten abhängt und nichts über die Verteilung dazwischen aussagt.
+Die Spannweite (Range) ist die Differenz zwischen dem grössten und dem kleinsten Wert in einem Datensatz. Sie ist das einfachste Streuungsmass, hat jedoch den Nachteil, dass sie nur von zwei extremen Werten abhängt und nichts über die Verteilung dazwischen aussagt.
 
 ```{r spannweite, eval=TRUE}
-max_salary <- Salary |> max()  # Größter Wert
+max_salary <- Salary |> max()  # Grösster Wert
 min_salary <- Salary |> min()  # Kleinster Wert
 spannweite <- max_salary - min_salary  # Differenz
 print(paste("Maximum:", max_salary))
@@ -194,13 +194,13 @@ text(max_salary, max(hist(Salary, plot = FALSE)$counts) * 0.9,
      "Max", pos = 2, col = "red")
 ```
 
-**Statistische Erklärung**: Die Spannweite gibt einen ersten Eindruck von der Streuung der Daten, ist aber sehr empfindlich gegenüber Ausreißern. Sie wird oft als ergänzende Information zu robusteren Streuungsmaßen wie dem Interquartilsabstand angegeben. Die Spannweite ist besonders nützlich für:
+**Statistische Erklärung**: Die Spannweite gibt einen ersten Eindruck von der Streuung der Daten, ist aber sehr empfindlich gegenüber Ausreissern. Sie wird oft als ergänzende Information zu robusteren Streuungsmassen wie dem Interquartilsabstand angegeben. Die Spannweite ist besonders nützlich für:
 - Einen schnellen Überblick über die Gesamtstreuung
-- Die Identifikation möglicher Ausreißer
+- Die Identifikation möglicher Ausreisser
 - Die Festlegung von Achsenbereichen in Grafiken
 
 **R-Erklärung**:
-- Die Funktionen `max()` und `min()` geben den größten bzw. kleinsten Wert eines Vektors zurück.
+- Die Funktionen `max()` und `min()` geben den grössten bzw. kleinsten Wert eines Vektors zurück.
 - Die Funktion `abline()` mit dem Parameter `v` fügt vertikale Linien zu einem bestehenden Plot hinzu.
 - Die Funktion `hist()` mit dem Parameter `plot = FALSE` berechnet die Histogramm-Statistiken, ohne sie zu plotten.
 
@@ -239,7 +239,7 @@ text(1:length(xvar), xvar/2,
 **Statistische Erklärung**: Der gewichtete Mittelwert berücksichtigt die unterschiedliche Bedeutung oder Häufigkeit der einzelnen Beobachtungen. Typische Anwendungsfälle sind:
 
 1. **Aggregierte Daten**: Wenn Daten bereits in Gruppen zusammengefasst sind (z.B. Durchschnittsgehälter nach Abteilungen mit unterschiedlicher Mitarbeiterzahl)
-2. **Ungleiche Stichprobengrößen**: Wenn verschiedene Teilstichproben unterschiedlich groß sind
+2. **Ungleiche Stichprobengrössen**: Wenn verschiedene Teilstichproben unterschiedlich gross sind
 3. **Qualitätsunterschiede**: Wenn einige Messungen zuverlässiger sind als andere
 4. **Zeitreihen**: Bei der Berechnung gleitender Durchschnitte, bei denen neuere Daten oft stärker gewichtet werden
 
@@ -250,7 +250,7 @@ text(1:length(xvar), xvar/2,
 
 ## 2.3 Quartile und Interquartilsabstand (IQR)
 
-Quartile teilen die geordneten Daten in vier gleiche Teile. Der Interquartilsabstand (IQR) ist die Differenz zwischen dem dritten Quartil (Q3) und dem ersten Quartil (Q1) und umfasst die mittleren 50% der Daten. Er ist ein robustes Streuungsmaß, das nicht von Ausreißern beeinflusst wird.
+Quartile teilen die geordneten Daten in vier gleiche Teile. Der Interquartilsabstand (IQR) ist die Differenz zwischen dem dritten Quartil (Q3) und dem ersten Quartil (Q1) und umfasst die mittleren 50% der Daten. Er ist ein robustes Streuungsmass, das nicht von Ausreissern beeinflusst wird.
 
 ```{r quartile, eval=TRUE}
 # Berechnung der Quartile
@@ -272,15 +272,15 @@ perzentil95 <- Salary |> quantile(0.95)  # 95. Perzentil
 print(paste("10. Perzentil:", perzentil10))
 print(paste("95. Perzentil:", perzentil95))
 
-# Identifikation von Ausreißern mit der 1.5*IQR-Regel
+# Identifikation von Ausreissern mit der 1.5*IQR-Regel
 lower_fence <- Q1 - 1.5 * IQR_salary
 upper_fence <- Q3 + 1.5 * IQR_salary
-print(paste("Untere Grenze für Ausreißer:", lower_fence))
-print(paste("Obere Grenze für Ausreißer:", upper_fence))
+print(paste("Untere Grenze für Ausreisser:", lower_fence))
+print(paste("Obere Grenze für Ausreisser:", upper_fence))
 
-# Anzahl der Ausreißer
+# Anzahl der Ausreisser
 outliers <- Salary[Salary < lower_fence | Salary > upper_fence]
-print(paste("Anzahl der Ausreißer:", length(outliers)))
+print(paste("Anzahl der Ausreisser:", length(outliers)))
 
 # Visualisierung mit Boxplot
 boxplot(Salary, 
@@ -290,28 +290,28 @@ boxplot(Salary,
 text(1.3, Q1, "Q1", col = "red")
 text(1.3, Q2, "Median", col = "red")
 text(1.3, Q3, "Q3", col = "red")
-text(1.3, upper_fence, "Obere Ausreißergrenze", col = "darkred")
-text(1.3, lower_fence, "Untere Ausreißergrenze", col = "darkred")
+text(1.3, upper_fence, "Obere Ausreissergrenze", col = "darkred")
+text(1.3, lower_fence, "Untere Ausreissergrenze", col = "darkred")
 ```
 
 **Statistische Erklärung**: 
-- **Quartile** teilen die geordneten Daten in vier gleich große Gruppen:
+- **Quartile** teilen die geordneten Daten in vier gleich grosse Gruppen:
   - Q1 (25. Perzentil): 25% der Daten liegen darunter
   - Q2 (50. Perzentil = Median): 50% der Daten liegen darunter
   - Q3 (75. Perzentil): 75% der Daten liegen darunter
 - Der **Interquartilsabstand (IQR)** = Q3 - Q1 umfasst die mittleren 50% der Daten
-- Die **1.5*IQR-Regel** wird häufig verwendet, um Ausreißer zu identifizieren:
-  - Werte < Q1 - 1.5*IQR oder > Q3 + 1.5*IQR gelten als Ausreißer
+- Die **1.5*IQR-Regel** wird häufig verwendet, um Ausreisser zu identifizieren:
+  - Werte < Q1 - 1.5*IQR oder > Q3 + 1.5*IQR gelten als Ausreisser
   - Diese Grenzen werden in Boxplots als "Whiskers" (Antennen) dargestellt
 
 **R-Erklärung**:
 - Die Funktion `quantile()` berechnet Quantile (Perzentile) eines Vektors. Der zweite Parameter gibt den Prozentsatz als Dezimalzahl an.
 - Die Funktion `IQR()` ist eine eingebaute Alternative zur manuellen Berechnung des Interquartilsabstands.
-- In Boxplots werden Ausreißer typischerweise als einzelne Punkte dargestellt.
+- In Boxplots werden Ausreisser typischerweise als einzelne Punkte dargestellt.
 
 ## 2.4 Varianz und Standardabweichung
 
-Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert und ist ein zentrales Maß für die Streuung der Daten. Die Standardabweichung ist die Quadratwurzel der Varianz und hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
+Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert und ist ein zentrales Mass für die Streuung der Daten. Die Standardabweichung ist die Quadratwurzel der Varianz und hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
 
 Mathematische Formeln:
 - Varianz (Stichprobe): $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2$
@@ -438,11 +438,11 @@ legend("topright",
 
 **Statistische Erklärung**: Die empirische Regel ist eine Faustregel für die Verteilung von Daten in einer Normalverteilung. Sie ist nützlich für:
 - Die schnelle Abschätzung, welcher Anteil der Daten in bestimmten Bereichen liegt
-- Die Identifikation potenzieller Ausreißer (Werte außerhalb von 3 Standardabweichungen)
+- Die Identifikation potenzieller Ausreisser (Werte ausserhalb von 3 Standardabweichungen)
 - Die Beurteilung, ob Daten annähernd normalverteilt sind (durch Vergleich der tatsächlichen Anteile mit den erwarteten)
 
 Die Abweichungen der tatsächlichen Anteile von den erwarteten Werten (68%, 95%, 99,7%) können Hinweise auf die Form der Verteilung geben:
-- Größere Anteile in den Intervallen deuten auf eine spitzere Verteilung hin (höhere Kurtosis)
+- Grössere Anteile in den Intervallen deuten auf eine spitzere Verteilung hin (höhere Kurtosis)
 - Kleinere Anteile deuten auf schwerere Ränder hin (niedrigere Kurtosis)
 
 **R-Erklärung**:
@@ -454,7 +454,7 @@ Die Abweichungen der tatsächlichen Anteile von den erwarteten Werten (68%, 95%,
 
 # 4. Standardisierung
 
-Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichbar, indem sie sie auf eine gemeinsame Skala mit Mittelwert 0 und Standardabweichung 1 bringt. Dies ist besonders nützlich, wenn Variablen mit unterschiedlichen Einheiten oder Größenordnungen verglichen werden sollen.
+Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichbar, indem sie sie auf eine gemeinsame Skala mit Mittelwert 0 und Standardabweichung 1 bringt. Dies ist besonders nützlich, wenn Variablen mit unterschiedlichen Einheiten oder Grössenordnungen verglichen werden sollen.
 
 Mathematische Formel: $z = \frac{x - \mu}{\sigma}$, wobei $\mu$ der Mittelwert und $\sigma$ die Standardabweichung ist.
 
@@ -500,12 +500,12 @@ if (length(extreme_values) > 0) {
 
 **Statistische Erklärung**: Die Standardisierung (z-Transformation) hat mehrere wichtige Anwendungen:
 
-1. **Vergleichbarkeit**: Variablen mit unterschiedlichen Einheiten oder Größenordnungen können direkt verglichen werden.
+1. **Vergleichbarkeit**: Variablen mit unterschiedlichen Einheiten oder Grössenordnungen können direkt verglichen werden.
 2. **Interpretation**: z-Werte geben an, wie viele Standardabweichungen ein Wert vom Mittelwert entfernt ist.
    - z = 0: Der Wert entspricht genau dem Mittelwert
    - z = 1: Der Wert liegt eine Standardabweichung über dem Mittelwert
    - z = -1: Der Wert liegt eine Standardabweichung unter dem Mittelwert
-3. **Ausreißererkennung**: Werte mit |z| > 2 oder |z| > 3 werden oft als potenzielle Ausreißer betrachtet.
+3. **Ausreissererkennung**: Werte mit |z| > 2 oder |z| > 3 werden oft als potenzielle Ausreisser betrachtet.
 4. **Voraussetzung für viele statistische Verfahren**: Viele multivariate Verfahren setzen standardisierte Variablen voraus.
 
 **R-Erklärung**:
@@ -579,15 +579,15 @@ if (schiefe > 0.5) {
 }
 ```
 
-**Statistische Erklärung**: Die Schiefe ist ein Maß für die Asymmetrie einer Verteilung:
+**Statistische Erklärung**: Die Schiefe ist ein Mass für die Asymmetrie einer Verteilung:
 
-- **Positive Schiefe (> 0)**: Rechtsschiefe Verteilung mit einem längeren rechten Schwanz. Der Mittelwert ist größer als der Median, da er von den hohen Werten im rechten Schwanz nach oben gezogen wird.
+- **Positive Schiefe (> 0)**: Rechtsschiefe Verteilung mit einem längeren rechten Schwanz. Der Mittelwert ist grösser als der Median, da er von den hohen Werten im rechten Schwanz nach oben gezogen wird.
 - **Negative Schiefe (< 0)**: Linksschiefe Verteilung mit einem längeren linken Schwanz. Der Mittelwert ist kleiner als der Median, da er von den niedrigen Werten im linken Schwanz nach unten gezogen wird.
 - **Keine Schiefe (≈ 0)**: Symmetrische Verteilung, bei der Mittelwert und Median annähernd gleich sind.
 
 Richtwerte für die Interpretation der Schiefe:
 - |Schiefe| < 0.5: annähernd symmetrisch
-- 0.5 ≤ |Schiefe| < 1: mäßig schief
+- 0.5 ≤ |Schiefe| < 1: mässig schief
 - |Schiefe| ≥ 1: stark schief
 
 Die Schiefe ist wichtig für die Wahl geeigneter statistischer Methoden, da viele Verfahren eine symmetrische Verteilung voraussetzen.
@@ -601,7 +601,7 @@ Die Schiefe ist wichtig für die Wahl geeigneter statistischer Methoden, da viel
 
 # 6. Zusammenhangsmasse
 
-Zusammenhangsmaße quantifizieren die Stärke und Richtung der Beziehung zwischen zwei oder mehr Variablen. Sie sind grundlegend für die Analyse von Abhängigkeiten und Korrelationen in Daten.
+Zusammenhangsmasse quantifizieren die Stärke und Richtung der Beziehung zwischen zwei oder mehr Variablen. Sie sind grundlegend für die Analyse von Abhängigkeiten und Korrelationen in Daten.
 
 ## 6.1 Kovarianz
 
@@ -628,7 +628,7 @@ print(paste("Kovarianz (manuell):", round(cov_manual, 2)))
 print(paste("Kovarianz (eingebaut):", round(cov_builtin, 2)))
 
 # Visualisierung der Kovarianz
-# Größeres Plotfenster für bessere Lesbarkeit
+# Grösseres Plotfenster für bessere Lesbarkeit
 par(mar = c(5, 4, 4, 2) + 0.5)  # Erhöht die Ränder des Plots
 
 plot(adverts, sales, 
@@ -774,7 +774,7 @@ Richtwerte für die Interpretation der Korrelationsstärke:
 **Wichtige Hinweise zur Interpretation**:
 1. Korrelation impliziert nicht Kausalität. Ein starker Zusammenhang bedeutet nicht, dass eine Variable die andere verursacht.
 2. Der Korrelationskoeffizient misst nur lineare Zusammenhänge. Nichtlineare Beziehungen können trotz r ≈ 0 stark sein.
-3. Der Korrelationskoeffizient ist empfindlich gegenüber Ausreißern.
+3. Der Korrelationskoeffizient ist empfindlich gegenüber Ausreissern.
 4. Der Determinationskoeffizient r² gibt den Anteil der Varianz in einer Variable an, der durch die andere Variable erklärt wird.
 
 **R-Erklärung**:
@@ -787,11 +787,11 @@ Richtwerte für die Interpretation der Korrelationsstärke:
 
 # 7. Visualisierung
 
-Visualisierungen sind ein mächtiges Werkzeug in der deskriptiven Statistik, um Muster, Trends und Beziehungen in Daten zu erkennen und zu kommunizieren. Sie ergänzen numerische Maße und helfen, komplexe Zusammenhänge intuitiv zu erfassen.
+Visualisierungen sind ein mächtiges Werkzeug in der deskriptiven Statistik, um Muster, Trends und Beziehungen in Daten zu erkennen und zu kommunizieren. Sie ergänzen numerische Masse und helfen, komplexe Zusammenhänge intuitiv zu erfassen.
 
 ## 7.1 Boxplots
 
-Boxplots (auch Box-Whisker-Plots genannt) zeigen die Verteilung der Daten über ihre Quartile. Sie sind besonders nützlich zum Erkennen von Ausreißern und zum Vergleich von Gruppen.
+Boxplots (auch Box-Whisker-Plots genannt) zeigen die Verteilung der Daten über ihre Quartile. Sie sind besonders nützlich zum Erkennen von Ausreissern und zum Vergleich von Gruppen.
 
 ```{r boxplots, eval=TRUE}
 # Einfacher Boxplot
@@ -816,7 +816,7 @@ bp <- boxplot(Salary,
               main = "Anatomie eines Boxplots",
               ylab = "Salary",
               col = "lightblue",
-              outline = TRUE,  # Zeigt Ausreißer als Punkte
+              outline = TRUE,  # Zeigt Ausreisser als Punkte
               plot = TRUE)     # Erzeugt den Plot
 
 # Extrahieren der Boxplot-Statistiken
@@ -824,15 +824,15 @@ stats <- bp$stats
 outliers <- bp$out
 
 # Beschriftung der Boxplot-Elemente
-text(1.3, stats[5, 1], "Maximum (ohne Ausreißer)", pos = 4, col = "darkblue")
+text(1.3, stats[5, 1], "Maximum (ohne Ausreisser)", pos = 4, col = "darkblue")
 text(1.3, stats[4, 1], "Oberes Quartil (Q3, 75%)", pos = 4, col = "darkblue")
 text(1.3, stats[3, 1], "Median (Q2, 50%)", pos = 4, col = "darkblue")
 text(1.3, stats[2, 1], "Unteres Quartil (Q1, 25%)", pos = 4, col = "darkblue")
-text(1.3, stats[1, 1], "Minimum (ohne Ausreißer)", pos = 4, col = "darkblue")
+text(1.3, stats[1, 1], "Minimum (ohne Ausreisser)", pos = 4, col = "darkblue")
 
-# Beschriftung der Ausreißer, falls vorhanden
+# Beschriftung der Ausreisser, falls vorhanden
 if (length(outliers) > 0) {
-  text(rep(1.1, length(outliers)), outliers, "Ausreißer", pos = 4, col = "red")
+  text(rep(1.1, length(outliers)), outliers, "Ausreisser", pos = 4, col = "red")
 }
 
 # Hinzufügen von Linien für IQR und Whiskers
@@ -879,14 +879,14 @@ par(mfrow = c(1, 1))
 1. **Box**: Repräsentiert den Interquartilsabstand (IQR) von Q1 bis Q3, der die mittleren 50% der Daten enthält.
 2. **Linie in der Box**: Zeigt den Median (Q2).
 3. **Whiskers (Antennen)**:
-   - In der Standardimplementierung in R: Erstrecken sich bis zum äußersten Datenpunkt innerhalb von 1.5*IQR von Q1 bzw. Q3.
+   - In der Standardimplementierung in R: Erstrecken sich bis zum äussersten Datenpunkt innerhalb von 1.5*IQR von Q1 bzw. Q3.
    - Alternative Definitionen: Bis zum Minimum/Maximum oder bis zu bestimmten Perzentilen.
-4. **Punkte außerhalb der Whiskers**: Werden als Ausreißer betrachtet.
+4. **Punkte ausserhalb der Whiskers**: Werden als Ausreisser betrachtet.
 5. **Einkerbungen (Notches)**: Wenn vorhanden, geben sie ein ungefähres 95%-Konfidenzintervall für den Median an. Überlappen sich die Einkerbungen zweier Boxplots nicht, ist dies ein Hinweis auf einen signifikanten Unterschied der Mediane.
 
 Boxplots sind besonders nützlich für:
 - Den Vergleich mehrerer Gruppen
-- Die Identifikation von Ausreißern
+- Die Identifikation von Ausreissern
 - Die Beurteilung der Symmetrie einer Verteilung
 - Die Erkennung von Unterschieden in der Streuung
 
@@ -898,4 +898,4 @@ Boxplots sind besonders nützlich für:
 - Die Funktion `arrows()` fügt Pfeile zum Plot hinzu, die hier zur Beschriftung der Boxplot-Elemente verwendet werden.
 - Das Paket `vioplot` bietet eine Alternative zum Boxplot, die zusätzlich die Dichteverteilung der Daten zeigt.
 
-*Tipp*: Boxplots sind besonders nützlich zum Erkennen von Ausreissern und zum Vergleich von Gruppen. Die Box zeigt den Interquartilsabstand (IQR), der Strich in der Mitte ist der Median, und die "Whiskers" (Antennen) zeigen die Spannweite der Daten ohne Ausreißer.
+*Tipp*: Boxplots sind besonders nützlich zum Erkennen von Ausreissern und zum Vergleich von Gruppen. Die Box zeigt den Interquartilsabstand (IQR), der Strich in der Mitte ist der Median, und die "Whiskers" (Antennen) zeigen die Spannweite der Daten ohne Ausreisser.
