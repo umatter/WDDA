@@ -11,6 +11,26 @@
 # - Aggregation
 # - Streudiagrammen und Trendlinien
 
+# -----------------------------------------------------------------------------
+# 0. Laden von Paketen und Import von Daten
+# -----------------------------------------------------------------------------
+
+# Laden der benötigten Pakete
+library(readxl)
+
+# Laden der Datensätze
+# (Auto, Variable "Brand")
+Brand <- read_excel("data/WDDA_02.xlsx", sheet = "Auto")
+
+# (Audit, Variable "Time")
+Time <- read_excel("data/WDDA_02.xlsx", sheet = "Audit")
+
+# (Restaurant)
+Restaurant <- read_excel("data/WDDA_02.xlsx", sheet = "Restaurant")
+
+
+
+
 
 
 
@@ -23,7 +43,7 @@
 # -----------------------------------------------------------------------------
 
 # Eindeutige Werte der Variable 'Brand' ermitteln
-unique_brands <- Brand |> unique()
+unique_brands <- Brand |> unique() # unique_brands <- unique(Brand)
 
 # Häufigkeit der Werte in 'Brand' zählen
 freq <- Brand |> table()
@@ -200,7 +220,11 @@ hist(Time,
 library(dplyr)
 
 # Auswahl der 'Price'-Spalte für Restaurants mit guter Qualität
-good_price <- Restaurant |> filter(Quality == 'Good') |> select(Price)
+good_price <- 
+  Restaurant |> 
+  filter(Quality == 'Good') |>
+  select(Price)
+
 print(good_price)
 
 # Anzahl der Restaurants mit guter Qualität

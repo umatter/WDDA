@@ -8,7 +8,25 @@ output: html_document
 # Einleitung
 
 Dieses Dokument fasst alle R-Code-Beispiele der WDDA Folien aus Vorlesung 2 zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf tabellarischen und grafischen Darstellungen von Daten.
+Die hier verwendeten Daten finden Sie in `data/WDDA_02.xlsx`.
 
+# 0. Vorbereitung
+
+```{r vorbereitung, eval=FALSE}
+# Laden der benötigten Pakete
+library(readxl)
+
+# Laden der Datensätze
+# (Auto, Variable "Brand")
+Brand <- read_excel("../data/WDDA_02.xlsx", sheet = "Auto")
+
+# (Audit, Variable "Time")
+Time <- read_excel("../data/WDDA_02.xlsx", sheet = "Audit")
+
+# (Restaurant)
+Restaurant <- read_excel("../data/WDDA_02.xlsx", sheet = "Restaurant")
+
+```
 
 # 1. Häufigkeitsverteilungen
 
