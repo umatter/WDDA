@@ -78,7 +78,7 @@ relfreq_alt <- prop.table(freq)
 print(relfreq_alt)  # Gibt das gleiche Ergebnis wie oben
 ```
 
-**Statistische Erklärung**: Relative Häufigkeiten geben den Anteil jeder Kategorie an der Gesamtmenge an und werden als Dezimalzahlen oder Prozentsätze ausgedrückt. Sie sind besonders nützlich für Vergleiche zwischen Datensätzen unterschiedlicher Größe. Die Summe aller relativen Häufigkeiten ergibt immer 1 (oder 100%).
+**Statistische Erklärung**: Relative Häufigkeiten geben den Anteil jeder Kategorie an der Gesamtmenge an und werden als Dezimalzahlen oder Prozentsätze ausgedrückt. Sie sind besonders nützlich für Vergleiche zwischen Datensätzen unterschiedlicher Grösse. Die Summe aller relativen Häufigkeiten ergibt immer 1 (oder 100%).
 
 **R-Erklärung**:
 - Die Division einer Häufigkeitstabelle durch ihre Summe (`freq / sum(freq)`) berechnet die relativen Häufigkeiten.
@@ -138,13 +138,13 @@ pie(freq,
     col = heat.colors(length(freq)))
 ```
 
-**Statistische Erklärung**: Kreisdiagramme (auch Kuchendiagramme genannt) stellen die relativen Anteile verschiedener Kategorien als Sektoren eines Kreises dar. Die Größe jedes Sektors ist proportional zum relativen Anteil der entsprechenden Kategorie. Kreisdiagramme eignen sich am besten für nominale Daten mit wenigen Kategorien (idealerweise nicht mehr als 5-7), da zu viele Sektoren die Lesbarkeit beeinträchtigen können.
+**Statistische Erklärung**: Kreisdiagramme (auch Kuchendiagramme genannt) stellen die relativen Anteile verschiedener Kategorien als Sektoren eines Kreises dar. Die Grösse jedes Sektors ist proportional zum relativen Anteil der entsprechenden Kategorie. Kreisdiagramme eignen sich am besten für nominale Daten mit wenigen Kategorien (idealerweise nicht mehr als 5-7), da zu viele Sektoren die Lesbarkeit beeinträchtigen können.
 
 **R-Erklärung**:
 - Die Funktion `pie()` erstellt ein Kreisdiagramm aus einem numerischen Vektor.
 - Mit `rainbow()`, `heat.colors()` und ähnlichen Funktionen können automatisch Farbpaletten erstellt werden.
 - Der Parameter `labels` ermöglicht benutzerdefinierte Beschriftungen für die Sektoren.
-- Die Funktion `paste0()` verbindet Zeichenketten ohne Trennzeichen, während `paste()` standardmäßig Leerzeichen einfügt.
+- Die Funktion `paste0()` verbindet Zeichenketten ohne Trennzeichen, während `paste()` standardmässig Leerzeichen einfügt.
 
 **Hinweis zur Visualisierung**: Obwohl Kreisdiagramme weit verbreitet sind, werden sie in der professionellen Datenanalyse oft kritisch gesehen, da Menschen Winkel und Flächen schwerer vergleichen können als Längen. Balkendiagramme sind daher oft die bessere Wahl für präzise Vergleiche.
 
@@ -171,14 +171,14 @@ table(Time_binned)
 - Zu wenige Klassen können wichtige Muster verbergen
 - Zu viele Klassen können zu einer fragmentierten Darstellung führen, die schwer zu interpretieren ist
 
-Eine Faustregel ist die Sturges-Regel: k ≈ 1 + 3.322 × log10(n), wobei k die Anzahl der Klassen und n die Stichprobengröße ist.
+Eine Faustregel ist die Sturges-Regel: k ≈ 1 + 3.322 × log10(n), wobei k die Anzahl der Klassen und n die Stichprobengrösse ist.
 
 **R-Erklärung**:
 - Die Funktion `cut()` teilt numerische Daten in Intervalle (Bins) ein.
 - Der erste Parameter ist der zu gruppierende Vektor.
 - Der zweite Parameter gibt die Grenzen der Intervalle an.
 - Das Ergebnis ist ein Faktor, dessen Levels die Intervalle darstellen.
-- Die Notation `(a,b]` bedeutet, dass das Intervall a ausschließt und b einschließt.
+- Die Notation `(a,b]` bedeutet, dass das Intervall a ausschliesst und b einschliesst.
 
 
 # 5. Kumulierte Häufigkeiten
@@ -242,7 +242,7 @@ hist(Time,
 **Statistische Erklärung**: Histogramme sind eine grundlegende grafische Darstellung für kontinuierliche Daten. Sie teilen den Wertebereich in Intervalle (Bins) und zeigen die Häufigkeit oder Dichte der Beobachtungen in jedem Intervall. Histogramme helfen dabei:
 
 - Die Form der Verteilung zu erkennen (symmetrisch, rechtsschief, linksschief, bimodal, etc.)
-- Ausreißer zu identifizieren
+- Ausreisser zu identifizieren
 - Die Streuung und zentrale Tendenz der Daten visuell zu erfassen
 
 Die Wahl der Klassenanzahl ist entscheidend: Zu wenige Klassen können wichtige Muster verbergen, zu viele können zu einer verrauschten Darstellung führen.
@@ -286,7 +286,7 @@ hist(Time,
 lines(dens, col = "red", lwd = 2)
 ```
 
-**Statistische Erklärung**: Die Schiefe (Skewness) ist ein Maß für die Asymmetrie einer Verteilung. Sie beschreibt, ob die Verteilung symmetrisch ist oder ob sie einen längeren Schwanz auf einer Seite hat:
+**Statistische Erklärung**: Die Schiefe (Skewness) ist ein Mass für die Asymmetrie einer Verteilung. Sie beschreibt, ob die Verteilung symmetrisch ist oder ob sie einen längeren Schwanz auf einer Seite hat:
 
 - **Positive Schiefe (> 0)**: Der rechte Schwanz ist länger; die meisten Werte liegen links vom Mittelwert (rechtsschief)
 - **Negative Schiefe (< 0)**: Der linke Schwanz ist länger; die meisten Werte liegen rechts vom Mittelwert (linksschief)
@@ -502,8 +502,8 @@ print(summary_by_color)
 - **Summe**: Gesamtsumme der Werte in jeder Gruppe
 - **Mittelwert**: Durchschnittswert in jeder Gruppe
 - **Median**: Mittlerer Wert in jeder Gruppe
-- **Minimum/Maximum**: Kleinster/größter Wert in jeder Gruppe
-- **Standardabweichung**: Maß für die Streuung in jeder Gruppe
+- **Minimum/Maximum**: Kleinster/grösster Wert in jeder Gruppe
+- **Standardabweichung**: Mass für die Streuung in jeder Gruppe
 
 Aggregation ist ein zentraler Bestandteil der deskriptiven Statistik und der explorativen Datenanalyse, da sie komplexe Datensätze auf interpretierbare Kennzahlen reduziert.
 
@@ -553,7 +553,7 @@ ggplot(Stereo, aes(x = Commercials, y = Sales)) +
 Streudiagramme helfen dabei:
 - Die Art der Beziehung zu erkennen (linear, nicht-linear)
 - Die Stärke der Beziehung einzuschätzen
-- Muster, Cluster und Ausreißer zu identifizieren
+- Muster, Cluster und Ausreisser zu identifizieren
 
 Die lineare Regression ist eine statistische Methode, um den linearen Zusammenhang zwischen zwei Variablen zu modellieren. Die Regressionslinie minimiert die Summe der quadrierten vertikalen Abstände zwischen den Datenpunkten und der Linie.
 

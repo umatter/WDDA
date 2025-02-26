@@ -31,14 +31,14 @@ str(markets)  # Zeigt die Struktur des Dataframes 'markets'
 
 R bietet verschiedene Möglichkeiten, Code zu schreiben. Die zwei Hauptstile sind:
 
-1. **Klassische (verschachtelte) Syntax**: Funktionen werden von innen nach außen gelesen
+1. **Klassische (verschachtelte) Syntax**: Funktionen werden von innen nach aussen gelesen
 2. **Pipe-Syntax**: Funktionen werden von links nach rechts gelesen (wie in einer Pipeline)
 
 Hier ein Vergleich der beiden Stile:
 
 ```{r syntax-vergleich, eval=FALSE}
 # Klassische Syntax (verschachtelt)
-mean(sqrt(abs(x)))  # Lese von innen nach außen: erst abs(), dann sqrt(), dann mean()
+mean(sqrt(abs(x)))  # Lese von innen nach aussen: erst abs(), dann sqrt(), dann mean()
 
 # Pipe-Syntax mit |>
 x |> abs() |> sqrt() |> mean()  # Lese von links nach rechts: erst abs(), dann sqrt(), dann mean()
@@ -82,7 +82,7 @@ markets |> pull(trades)         # Extrahiere die Spalte 'trades' als Vektor
 markets |> slice(3)             # Greife auf die dritte Zeile zu
 markets |> select(2)            # Wähle die zweite Spalte anhand ihrer Position aus
 markets |> select(trades)       # Wähle die Spalte 'trades' anhand ihres Namens aus
-markets |> slice(2) |> select(trades)   # Wähle zuerst die zweite Zeile und anschließend die Spalte 'trades'
+markets |> slice(2) |> select(trades)   # Wähle zuerst die zweite Zeile und anschliessend die Spalte 'trades'
 ```
 
 *Zusätzliches Beispiel:* Zeige die ersten sechs Zeilen des Dataframes an:

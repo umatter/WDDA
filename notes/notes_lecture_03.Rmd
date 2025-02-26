@@ -7,9 +7,10 @@ output: html_document
 
 # Einleitung
 
-Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 03 Folien zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf numerischen Maßen wie Lage-, Streuungs- und Zusammenhangsmaße.
+Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 03 Folien zusammen. Der Fokus liegt auf der deskriptiven Statistik, insbesondere auf numerischen Massen wie Lage-, Streuungs- und Zusammenhangsmasse.
 
-# 1. Lagemaße
+
+# 1. Lagemasse
 
 ## 1.1 Arithmetischer Mittelwert
 
@@ -27,7 +28,7 @@ mittelwert_builtin <- Salary |> mean()
 
 ## 1.2 Median
 
-Der Median teilt die geordneten Daten in zwei Hälften. Er ist robust gegenüber Ausreißern.
+Der Median teilt die geordneten Daten in zwei Hälften. Er ist robust gegenüber Ausreissern.
 
 ```{r median, eval=FALSE}
 median_salary <- Salary |> median()
@@ -47,7 +48,8 @@ modus_brand <- brand_table |>
   names()
 ```
 
-# 2. Streuungsmaße
+
+# 2. Streuungsmasse
 
 ## 2.1 Spannweite
 
@@ -86,6 +88,7 @@ sd_builtin <- Salary |> sd()
 
 *Tipp*: Die Standardabweichung hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
 
+
 # 3. Empirische Regel
 
 Die empirische Regel (68-95-99,7-Regel) beschreibt die Verteilung der Daten um den Mittelwert.
@@ -96,6 +99,7 @@ untere_grenze <- Salary |> mean() - (Salary |> sd())
 obere_grenze <- Salary |> mean() + (Salary |> sd())
 ```
 
+
 # 4. Standardisierung
 
 Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichbar.
@@ -103,6 +107,7 @@ Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichba
 ```{r standardisierung, eval=FALSE}
 Salary_z <- (Salary - (Salary |> mean())) / (Salary |> sd())
 ```
+
 
 # 5. Schiefe
 
@@ -113,7 +118,8 @@ n <- Salary_z |> length()
 schiefe <- n / ((n - 1) * (n - 2)) * (Salary_z^3 |> sum())
 ```
 
-# 6. Zusammenhangsmaße
+
+# 6. Zusammenhangsmasse
 
 ## 6.1 Kovarianz
 
@@ -140,6 +146,7 @@ corr_builtin <- cor(sales, adverts)
 - r = 0: kein linearer Zusammenhang
 - r = -1: perfekter negativer linearer Zusammenhang
 
+
 # 7. Visualisierung
 
 ## 7.1 Boxplots
@@ -159,4 +166,4 @@ boxplot(Salary ~ Major,
         ylab = "Salary")
 ```
 
-*Tipp*: Boxplots sind besonders nützlich zum Erkennen von Ausreißern und zum Vergleich von Gruppen.
+*Tipp*: Boxplots sind besonders nützlich zum Erkennen von Ausreissern und zum Vergleich von Gruppen.

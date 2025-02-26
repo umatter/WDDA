@@ -8,7 +8,8 @@
 library(readxl)
 
 # Importiere die Daten aus dem Blatt "Exchanges"
-markets <- read_excel("WDDA_01.xlsx", sheet = "Exchanges")
+markets <- read_excel("data/WDDA_01.xlsx",
+                      sheet = "Exchanges")
 
 # Prüfe die Struktur des importierten Dataframes
 str(markets)
