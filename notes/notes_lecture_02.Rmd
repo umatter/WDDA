@@ -269,14 +269,21 @@ skewness_value <- skewness(Time)
 print(skewness_value)
 
 # Visualisierung der Schiefe mit einem Histogramm und einer Dichtefunktion
+# Berechne zuerst die Dichte, um die maximale Höhe zu bestimmen
+dens <- density(Time)
+y_max <- max(c(max(dens$y), max(hist(Time, freq = FALSE, plot = FALSE)$density)))
+
+# Erstelle das Histogramm mit angepasstem y-Limit
 hist(Time, 
      freq = FALSE, 
      main = "Histogramm mit Dichtefunktion",
      xlab = "Time", 
      col = "lightcyan",
-     border = "darkblue")
+     border = "darkblue",
+     ylim = c(0, y_max * 1.1))  # 10% Puffer über dem Maximum
+
 # Hinzufügen einer Dichtefunktion
-lines(density(Time), col = "red", lwd = 2)
+lines(dens, col = "red", lwd = 2)
 ```
 
 **Statistische Erklärung**: Die Schiefe (Skewness) ist ein Maß für die Asymmetrie einer Verteilung. Sie beschreibt, ob die Verteilung symmetrisch ist oder ob sie einen längeren Schwanz auf einer Seite hat:

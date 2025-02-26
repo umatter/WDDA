@@ -200,6 +200,23 @@ library(e1071)
 skewness_value <- skewness(Time)
 print(skewness_value)
 
+# Visualisierung der Schiefe mit einem Histogramm und einer Dichtefunktion
+# Berechne zuerst die Dichte, um die maximale Höhe zu bestimmen
+dens <- density(Time)
+y_max <- max(c(max(dens$y), max(hist(Time, freq = FALSE, plot = FALSE)$density)))
+
+# Erstelle das Histogramm mit angepasstem y-Limit
+hist(Time, 
+     freq = FALSE, 
+     main = "Histogramm mit Dichtefunktion",
+     xlab = "Time", 
+     col = "lightcyan",
+     border = "darkblue",
+     ylim = c(0, y_max * 1.1))  # 10% Puffer über dem Maximum
+
+# Hinzufügen einer Dichtefunktion
+lines(dens, col = "red", lwd = 2)
+
 
 
 
