@@ -403,12 +403,19 @@ print(paste("Anteil der Daten im 2sd-Intervall:", round(anteil_2sd * 100, 1), "%
 print(paste("Anteil der Daten im 3sd-Intervall:", round(anteil_3sd * 100, 1), "% (Erwartung: ~99.7%)"))
 
 # Visualisierung der empirischen Regel
-x <- seq(min(Salary), max(Salary), length.out = 100)
+# Erweitere den Bereich für x, um die vollständige Kurve zu zeigen
+x_range <- max(Salary) - min(Salary)
+x <- seq(min(Salary) - 0.2*x_range, max(Salary) + 0.2*x_range, length.out = 200)
 y <- dnorm(x, mean = mean_salary, sd = sd_salary)
+
+# Berechne das Maximum der Dichte für die y-Achsenskalierung
+y_max <- max(y) * 1.1  # 10% Puffer über dem Maximum
 
 plot(x, y, type = "l", lwd = 2, col = "blue",
      main = "Normalverteilung mit empirischer Regel",
-     xlab = "Gehalt", ylab = "Dichte")
+     xlab = "Gehalt", ylab = "Dichte",
+     xlim = c(min(x), max(x)),  # Explizite x-Grenzen setzen
+     ylim = c(0, y_max))        # Explizite y-Grenzen setzen
 
 # Füllen der Bereiche unter der Kurve
 polygon(c(untere_grenze_1sd, x[x >= untere_grenze_1sd & x <= obere_grenze_1sd], obere_grenze_1sd),
