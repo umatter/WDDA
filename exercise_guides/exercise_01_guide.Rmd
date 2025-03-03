@@ -341,7 +341,8 @@ For example, if someone is 175 cm tall, height/100 would give 1.75 m.
 
 ```{r, eval=FALSE}
 # This is conceptual - we don't have the actual BFH dataset loaded
-reaction1-reaction2  # Calculates the difference in reaction times between first and second attempts
+# Calculates the difference in reaction times between attempts
+reaction1-reaction2
 ```
 
 **Explanation**:
