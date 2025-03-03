@@ -3,9 +3,7 @@ title: "WDDA FS 2025: Exercise 1 Guide"
 author: "Course Instructor"
 date: "`r Sys.Date()`"
 output:
-  pdf_document:
-    toc: true
-    toc_depth: 3
+  pdf_document
 ---
 
 ```{r setup, include=FALSE}
