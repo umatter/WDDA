@@ -573,9 +573,9 @@ Looking at the diagonal: 1 + 6 + 11 + 16 = 34
 
 ### (d) $\sum_{n=1}^{4} (a(n, 1) \times a(n, 3))$
 
-This means: a(1,1)$\times$a(1,3) + a(2,1)$\times$a(2,3) + a(3,1)$\times$a(3,3) + a(4,1)$\times$a(4,3)
+This means: a(1,1) $\times$ a(1,3) + a(2,1) $\times$ a(2,3) + a(3,1) $\times$ a(3,3) + a(4,1) $\times$ a(4,3)
 
-Calculating: 1$\times$3 + 5$\times$7 + 9$\times$11 + 13$\times$15 = 3 + 35 + 99 + 195 = 332
+Calculating: 1 $\times$ 3 + 5 $\times$ 7 + 9 $\times$ 11 + 13 $\times$ 15 = 3 + 35 + 99 + 195 = 332
 
 ### (e) $\sum_{n=1}^{4} a(n, 1) \times \sum_{n=1}^{4} a(n, 3)$
 
