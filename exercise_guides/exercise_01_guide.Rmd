@@ -1,6 +1,6 @@
 ---
-title: "WDDA FS 2025: Exercise 1 Guide"
-author: "Course Instructor"
+title: "WDDA FS 2025: Leitfaden für Aufgabenserie 1"
+author: "Kursleiter"
 date: "`r Sys.Date()`"
 output:
   pdf_document
@@ -10,496 +10,496 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Introduction
+# Einleitung
 
-This guide provides detailed explanations for the exercises in WDDA FS 2025 Aufgabenserie 1. For each exercise, we'll walk through the reasoning process and explain how to arrive at the correct solution.
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie 1. Für jede Aufgabe werden wir den Denkprozess durchgehen und erklären, wie man zur richtigen Lösung gelangt.
 
-# Exercise 1: Variable Classification
+# Aufgabe 1: Variablenklassifikation
 
-In this exercise, we need to classify variables as nominal, ordinal, or metric (quantitative), and determine if they are discrete or continuous.
+In dieser Aufgabe müssen wir Variablen als nominal, ordinal oder metrisch (quantitativ) klassifizieren und bestimmen, ob sie diskret oder stetig sind.
 
-## Key Concepts
+## Grundlegende Konzepte
 
-Before we begin, let's review the key concepts:
+Bevor wir beginnen, wiederholen wir die wichtigsten Konzepte:
 
-- **Nominal variables**: Categories with no inherent order (e.g., colors, gender)
-- **Ordinal variables**: Categories with a meaningful order (e.g., rankings, grades)
-- **Metric/Quantitative variables**: Numerical measurements that can be:
-  - **Discrete**: Countable values (e.g., number of children)
-  - **Continuous**: Can take any value within a range (e.g., height, time)
+- **Nominale Variablen**: Kategorien ohne inhärente Reihenfolge (z.B. Farben, Geschlecht)
+- **Ordinale Variablen**: Kategorien mit einer sinnvollen Reihenfolge (z.B. Rangfolgen, Noten)
+- **Metrische/Quantitative Variablen**: Numerische Messungen, die sein können:
+  - **Diskret**: Zählbare Werte (z.B. Anzahl der Kinder)
+  - **Stetig**: Kann jeden Wert innerhalb eines Bereichs annehmen (z.B. Grösse, Zeit)
 
-## Solutions with Explanations
+## Lösungen mit Erklärungen
 
-Let's go through each variable:
+Gehen wir jede Variable durch:
 
-### (a) Number of goals scored weekly by a football team
+### (a) Anzahl der wöchentlich von einer Fussballmannschaft erzielten Tore
 
-**Classification**: Metric and discrete
+**Klassifikation**: Metrisch und diskret
 
-**Explanation**: This is a count variable that can only take whole number values (0, 1, 2, etc.). It's metric because we can perform meaningful arithmetic operations (average goals per game, total goals, etc.), and it's discrete because goals only occur in whole numbers.
+**Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann (0, 1, 2, usw.). Sie ist metrisch, weil wir sinnvolle arithmetische Operationen durchführen können (durchschnittliche Tore pro Spiel, Gesamttore, usw.), und sie ist diskret, weil Tore nur in ganzen Zahlen vorkommen.
 
-### (b) Heights of players in a football team
+### (b) Körpergrössen der Spieler eines Footballteams
 
-**Classification**: Metric and continuous
+**Klassifikation**: Metrisch und stetig
 
-**Explanation**: Height is measured on a continuous scale (e.g., 175.6 cm). It's metric because we can perform arithmetic operations, and it's continuous because height can theoretically take any value within a range, not just whole numbers.
+**Erklärung**: Die Körpergrösse wird auf einer kontinuierlichen Skala gemessen (z.B. 175,6 cm). Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil die Körpergrösse theoretisch jeden Wert innerhalb eines Bereichs annehmen kann, nicht nur ganze Zahlen.
 
-### (c) Most popular radio stations
+### (c) Die beliebtesten Radiosender
 
-**Classification**: Nominal and discrete
+**Klassifikation**: Nominal und diskret
 
-**Explanation**: Radio stations are categories with no inherent order. One station isn't "more" than another in any quantitative sense. It's discrete because we're categorizing distinct entities.
+**Erklärung**: Radiosender sind Kategorien ohne inhärente Reihenfolge. Ein Sender ist nicht "mehr" als ein anderer in irgendeinem quantitativen Sinne. Die Variable ist diskret, weil wir verschiedene Einheiten kategorisieren.
 
-### (d) Number of children in a Japanese family
+### (d) Die Anzahl der Kinder in einer japanischen Familie
 
-**Classification**: Metric and discrete
+**Klassifikation**: Metrisch und diskret
 
-**Explanation**: This is a count variable that can only take whole number values. It's metric because we can calculate meaningful statistics like averages, and it's discrete because people only come in whole numbers.
+**Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir aussagekräftige Statistiken wie Durchschnittswerte berechnen können, und sie ist diskret, weil Menschen nur in ganzen Zahlen vorkommen.
 
-### (e) Military rank of a soldier
+### (e) Der Dienstgrad eines Soldaten
 
-**Classification**: Ordinal and discrete
+**Klassifikation**: Ordinal und diskret
 
-**Explanation**: Military ranks have a clear hierarchical order (e.g., private, corporal, sergeant). It's ordinal because the ranks have a meaningful sequence, and it's discrete because there are distinct categories.
+**Erklärung**: Militärische Ränge haben eine klare hierarchische Ordnung (z.B. Gefreiter, Korporal, Feldwebel). Die Variable ist ordinal, weil die Ränge eine sinnvolle Reihenfolge haben, und sie ist diskret, weil es sich um verschiedene Kategorien handelt.
 
-### (f) Number of loaves of bread a family buys per week
+### (f) Die Anzahl der Brote, die eine Familie pro Woche kauft
 
-**Classification**: Metric and discrete
+**Klassifikation**: Metrisch und diskret
 
-**Explanation**: This is a count variable that can only take whole number values. It's metric because we can perform arithmetic operations, and it's discrete because bread loaves are purchased as whole units.
+**Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil Brote als ganze Einheiten gekauft werden.
 
-### (g) Types of pets owned by 8th grade students
+### (g) Die Art der Haustiere, welche die Schüler einer 8. Klasse besitzen
 
-**Classification**: Nominal and discrete
+**Klassifikation**: Nominal und diskret
 
-**Explanation**: Pet types (dog, cat, fish, etc.) are categories with no inherent order. It's nominal because these categories don't have a natural ranking, and it's discrete because we're dealing with distinct categories.
+**Erklärung**: Haustierarten (Hund, Katze, Fisch, usw.) sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil diese Kategorien keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
-### (h) Number of leaves on trees
+### (h) Die Anzahl der Blätter an Bäumen
 
-**Classification**: Metric and discrete
+**Klassifikation**: Metrisch und diskret
 
-**Explanation**: This is a count variable that can only take whole number values. It's metric because we can perform arithmetic operations, and it's discrete because leaves are counted as whole units.
+**Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil Blätter als ganze Einheiten gezählt werden.
 
-### (i) Number of sunshine hours in a day
+### (i) Die Anzahl der Sonnenstunden an einem Tag
 
-**Classification**: Metric and continuous
+**Klassifikation**: Metrisch und stetig
 
-**Explanation**: Sunshine hours can be measured with precision beyond whole numbers (e.g., 5.7 hours). It's metric because we can perform arithmetic operations, and it's continuous because time can be measured on a continuous scale.
+**Erklärung**: Sonnenstunden können mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. 5,7 Stunden). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Zeit auf einer kontinuierlichen Skala gemessen werden kann.
 
-### (j) Number of people who die from cancer each year in the USA
+### (j) Die Anzahl der Menschen, die jedes Jahr in den USA an Krebs sterben
 
-**Classification**: Metric and discrete
+**Klassifikation**: Metrisch und diskret
 
-**Explanation**: This is a count variable that can only take whole number values. It's metric because we can perform arithmetic operations, and it's discrete because we're counting individual people.
+**Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil wir einzelne Menschen zählen.
 
-### (k) Countries of origin of immigrants
+### (k) Die Herkunftsländer der Einwanderer
 
-**Classification**: Nominal and discrete
+**Klassifikation**: Nominal und diskret
 
-**Explanation**: Countries are categories with no inherent numerical order. It's nominal because countries don't have a natural ranking, and it's discrete because we're dealing with distinct categories.
+**Erklärung**: Länder sind Kategorien ohne inhärente numerische Reihenfolge. Die Variable ist nominal, weil Länder keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
-### (l) Colors of cars
+### (l) Die Farben der Autos
 
-**Classification**: Nominal and discrete
+**Klassifikation**: Nominal und diskret
 
-**Explanation**: Colors are categories with no inherent order. It's nominal because colors don't have a natural ranking, and it's discrete because we're dealing with distinct categories.
+**Erklärung**: Farben sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil Farben keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
-### (m) Gender of school principals
+### (m) Das Geschlecht von Schulleitern
 
-**Classification**: Nominal and discrete
+**Klassifikation**: Nominal und diskret
 
-**Explanation**: Gender categories have no inherent order. It's nominal because gender doesn't have a natural ranking, and it's discrete because we're dealing with distinct categories.
+**Erklärung**: Geschlechtskategorien haben keine inhärente Reihenfolge. Die Variable ist nominal, weil Geschlecht keine natürliche Rangfolge hat, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
-### (n) Time spent on homework
+### (n) Die Zeit, die mit Hausaufgaben verbracht wird
 
-**Classification**: Metric and continuous
+**Klassifikation**: Metrisch und stetig
 
-**Explanation**: Time can be measured with precision beyond whole numbers (e.g., 2.5 hours). It's metric because we can perform arithmetic operations, and it's continuous because time can be measured on a continuous scale.
+**Erklärung**: Zeit kann mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. 2,5 Stunden). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Zeit auf einer kontinuierlichen Skala gemessen werden kann.
 
-### (o) Categories of poker hands
+### (o) Die Kategorien von Pokerhänden
 
-**Classification**: Ordinal and discrete
+**Klassifikation**: Ordinal und diskret
 
-**Explanation**: Poker hands have a clear ranking (high card, pair, two pair, etc.). It's ordinal because there's a meaningful order to the categories, and it's discrete because there are distinct categories.
+**Erklärung**: Pokerhände haben eine klare Rangfolge (High Card, Paar, zwei Paare, usw.). Die Variable ist ordinal, weil es eine sinnvolle Reihenfolge der Kategorien gibt, und sie ist diskret, weil es verschiedene Kategorien gibt.
 
-### (p) Amount spent on groceries in dollars per week
+### (p) Der Betrag, der in Dollar pro Woche für Lebensmittel ausgegeben wird
 
-**Classification**: Metric and continuous
+**Klassifikation**: Metrisch und stetig
 
-**Explanation**: Money can be measured with precision beyond whole numbers (e.g., $45.67). It's metric because we can perform arithmetic operations, and it's continuous because money can be measured on a continuous scale.
+**Erklärung**: Geld kann mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. $45,67). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Geld auf einer kontinuierlichen Skala gemessen werden kann.
 
-### (q) Grades achieved in a class test
+### (q) Die in einer Klassenarbeit erzielten Noten
 
-**Classification**: Ordinal and discrete
+**Klassifikation**: Ordinal und diskret
 
-**Explanation**: Grades (A, B, C, etc. or numerical grades) have a clear ranking. It's ordinal because there's a meaningful order to the categories, and it's discrete because there are distinct grade levels.
+**Erklärung**: Noten (A, B, C, usw. oder numerische Noten) haben eine klare Rangfolge. Die Variable ist ordinal, weil es eine sinnvolle Reihenfolge der Kategorien gibt, und sie ist diskret, weil es verschiedene Notenstufen gibt.
 
-### (r) Number of items sold in the school bistro
+### (r) Die Anzahl der im Schulbistro verkauften Artikel
 
-**Classification**: Metric and discrete
+**Klassifikation**: Metrisch und diskret
 
-**Explanation**: This is a count variable that can only take whole number values. It's metric because we can perform arithmetic operations, and it's discrete because items are sold as whole units.
+**Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil Artikel als ganze Einheiten verkauft werden.
 
-### (s) Number of matches in a box
+### (s) Die Anzahl der Streichhölzer in einer Schachtel
 
-**Classification**: Metric and discrete
+**Klassifikation**: Metrisch und diskret
 
-**Explanation**: This is a count variable that can only take whole number values. It's metric because we can perform arithmetic operations, and it's discrete because matches are counted as whole units.
+**Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil Streichhölzer als ganze Einheiten gezählt werden.
 
-### (t) Final positions of athletes in a race
+### (t) Die Endpositionen der Athleten in einem Rennen
 
-**Classification**: Ordinal and discrete
+**Klassifikation**: Ordinal und diskret
 
-**Explanation**: Race positions (1st, 2nd, 3rd, etc.) have a clear ranking. It's ordinal because there's a meaningful order to the positions, and it's discrete because there are distinct positions.
+**Erklärung**: Rennpositionen (1., 2., 3., usw.) haben eine klare Rangfolge. Die Variable ist ordinal, weil es eine sinnvolle Reihenfolge der Positionen gibt, und sie ist diskret, weil es verschiedene Positionen gibt.
 
-### (u) Final times of athletes in a race
+### (u) Die Endzeiten der Athleten eines Rennens
 
-**Classification**: Metric and continuous
+**Klassifikation**: Metrisch und stetig
 
-**Explanation**: Race times can be measured with precision beyond whole numbers (e.g., 10.45 seconds). It's metric because we can perform arithmetic operations, and it's continuous because time can be measured on a continuous scale.
+**Erklärung**: Rennzeiten können mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. 10,45 Sekunden). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Zeit auf einer kontinuierlichen Skala gemessen werden kann.
 
-### (v) Reasons why people use taxis
+### (v) Die Gründe, warum Menschen Taxis benutzen
 
-**Classification**: Nominal and discrete
+**Klassifikation**: Nominal und diskret
 
-**Explanation**: Reasons (convenience, no car, etc.) are categories with no inherent order. It's nominal because these reasons don't have a natural ranking, and it's discrete because we're dealing with distinct categories.
+**Erklärung**: Gründe (Bequemlichkeit, kein Auto, usw.) sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil diese Gründe keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
-### (w) Sports played by students at high schools
+### (w) Die Sportarten, die von Schülern an Gymnasien gespielt werden
 
-**Classification**: Nominal and discrete
+**Klassifikation**: Nominal und diskret
 
-**Explanation**: Sports (basketball, soccer, etc.) are categories with no inherent order. It's nominal because sports don't have a natural ranking, and it's discrete because we're dealing with distinct categories.
+**Erklärung**: Sportarten (Basketball, Fussball, usw.) sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil Sportarten keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
-### (x) Consumer preference between three different products
+### (x) Die Verbraucherpräferenz zwischen drei verschiedenen Produkten
 
-**Classification**: Nominal and discrete
+**Klassifikation**: Nominal und diskret
 
-**Explanation**: Product preferences are categories with no inherent order. It's nominal because preferences don't necessarily have a natural ranking, and it's discrete because we're dealing with distinct categories.
+**Erklärung**: Produktpräferenzen sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil Präferenzen nicht unbedingt eine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
-### (y) Pulse rates of a group of athletes at rest
+### (y) Die Pulsraten einer Gruppe von Sportlern in Ruhe
 
-**Classification**: Metric and continuous
+**Klassifikation**: Metrisch und stetig
 
-**Explanation**: Pulse rates can be measured with precision beyond whole numbers (e.g., 72.5 beats per minute). It's metric because we can perform arithmetic operations, and it's continuous because heart rates can vary continuously.
+**Erklärung**: Pulsraten können mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. 72,5 Schläge pro Minute). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Herzfrequenzen kontinuierlich variieren können.
 
-# Exercise 2: Determining Variable Values
+# Aufgabe 2: Bestimmung von Variablenwerten
 
-This exercise asks us to discuss how we might determine values for various variables.
+In dieser Aufgabe sollen wir diskutieren, wie wir Werte für verschiedene Variablen ermitteln könnten.
 
-## (a) Where a person stands on the political spectrum
+## (a) Wo auf dem politischen Spektrum eine Person steht
 
-To determine where a person stands on the political spectrum, we could:
+Um zu bestimmen, wo eine Person auf dem politischen Spektrum steht, könnten wir:
 
-1. **Use a survey instrument**: Create a questionnaire with statements about political issues, asking respondents to indicate their level of agreement on a scale (e.g., 1-7 Likert scale).
+1. **Ein Umfrageinstrument verwenden**: Einen Fragebogen mit Aussagen zu politischen Themen erstellen und die Befragten bitten, ihren Grad der Zustimmung auf einer Skala anzugeben (z.B. 1-7 Likert-Skala).
 
-2. **Analyze voting history**: Look at past voting patterns to place individuals on a spectrum.
+2. **Wahlverhalten analysieren**: Vergangene Wahlmuster betrachten, um Personen auf einem Spektrum zu platzieren.
 
-3. **Self-identification**: Simply ask people to place themselves on a political spectrum (e.g., "On a scale from 1 (very liberal) to 10 (very conservative), where would you place yourself?").
+3. **Selbstidentifikation**: Einfach Menschen bitten, sich selbst auf einem politischen Spektrum zu platzieren (z.B. "Auf einer Skala von 1 (sehr liberal) bis 10 (sehr konservativ), wo würden Sie sich einordnen?").
 
-4. **Issue-based mapping**: Ask about positions on specific issues and map responses to a political spectrum.
+4. **Themenbasierte Zuordnung**: Nach Positionen zu bestimmten Themen fragen und Antworten auf ein politisches Spektrum abbilden.
 
-The resulting variable would likely be ordinal (if using categories like "very liberal," "somewhat liberal," etc.) or potentially metric if using a numerical scale.
+Die resultierende Variable wäre wahrscheinlich ordinal (wenn Kategorien wie "sehr liberal", "etwas liberal" usw. verwendet werden) oder potenziell metrisch, wenn eine numerische Skala verwendet wird.
 
-## (b) A patient's blood pressure
+## (b) Der Blutdruck eines Patienten
 
-Blood pressure is typically determined by:
+Der Blutdruck wird typischerweise bestimmt durch:
 
-1. **Direct measurement**: Using a sphygmomanometer (blood pressure cuff) and stethoscope or an automated blood pressure monitor.
+1. **Direkte Messung**: Verwendung eines Sphygmomanometers (Blutdruckmanschette) und Stethoskops oder eines automatischen Blutdruckmessgeräts.
 
-2. **Multiple readings**: Taking several measurements at different times to account for variation.
+2. **Mehrfache Messungen**: Durchführung mehrerer Messungen zu verschiedenen Zeiten, um Schwankungen zu berücksichtigen.
 
-3. **Standardized conditions**: Ensuring the patient is seated, relaxed, arm at heart level, etc.
+3. **Standardisierte Bedingungen**: Sicherstellen, dass der Patient sitzt, entspannt ist, der Arm auf Herzhöhe ist, usw.
 
-Blood pressure is recorded as two numbers: systolic (pressure when heart beats) and diastolic (pressure when heart rests). For example, 120/80 mmHg.
+Der Blutdruck wird als zwei Zahlen aufgezeichnet: systolisch (Druck beim Herzschlag) und diastolisch (Druck bei Herzruhe). Zum Beispiel 120/80 mmHg.
 
-This is a metric, continuous variable as it can take any value within a range and can be measured with high precision.
+Dies ist eine metrische, stetige Variable, da sie jeden Wert innerhalb eines Bereichs annehmen kann und mit hoher Präzision gemessen werden kann.
 
-## (c) A country's poverty line
+## (c) Die Armutsgrenze eines Landes
 
-A country's poverty line can be determined through:
+Die Armutsgrenze eines Landes kann bestimmt werden durch:
 
-1. **Absolute approach**: Setting a minimum income needed for basic necessities (food, shelter, clothing).
+1. **Absoluter Ansatz**: Festlegung eines Mindesteinkommens, das für grundlegende Bedürfnisse benötigt wird (Nahrung, Unterkunft, Kleidung).
 
-2. **Relative approach**: Defining poverty as a percentage of median income (e.g., 60% of median income).
+2. **Relativer Ansatz**: Definition von Armut als Prozentsatz des Medianeinkommens (z.B. 60% des Medianeinkommens).
 
-3. **Multidimensional approach**: Considering factors beyond income, such as access to education, healthcare, and basic services.
+3. **Multidimensionaler Ansatz**: Berücksichtigung von Faktoren jenseits des Einkommens, wie Zugang zu Bildung, Gesundheitsversorgung und grundlegenden Dienstleistungen.
 
-4. **Consumption-based measures**: Looking at what households consume rather than their income.
+4. **Konsumbasierte Messungen**: Betrachtung dessen, was Haushalte konsumieren, anstatt ihres Einkommens.
 
-The resulting variable is metric and continuous, typically expressed as a monetary value per person or household per time period.
+Die resultierende Variable ist metrisch und stetig, typischerweise ausgedrückt als Geldwert pro Person oder Haushalt pro Zeitraum.
 
-## (d) An athlete's endurance performance
+## (d) Die Ausdauerleistung eines Sportlers
 
-An athlete's endurance performance can be measured through:
+Die Ausdauerleistung eines Sportlers kann gemessen werden durch:
 
-1. **Time-to-exhaustion tests**: How long an athlete can maintain a specific intensity of exercise.
+1. **Zeit-bis-zur-Erschöpfung-Tests**: Wie lange ein Sportler eine bestimmte Intensität der Übung aufrechterhalten kann.
 
-2. **Distance tests**: How far an athlete can go in a set time (e.g., 12-minute run test).
+2. **Distanztests**: Wie weit ein Sportler in einer festgelegten Zeit gehen kann (z.B. 12-Minuten-Lauftest).
 
-3. **VO2 max testing**: Measuring maximum oxygen consumption during incremental exercise.
+3. **VO2-max-Tests**: Messung des maximalen Sauerstoffverbrauchs während inkrementeller Übung.
 
-4. **Heart rate recovery**: How quickly heart rate returns to normal after exertion.
+4. **Herzfrequenzerholung**: Wie schnell die Herzfrequenz nach Anstrengung zum Normalzustand zurückkehrt.
 
-5. **Lactate threshold testing**: Determining the exercise intensity at which lactate begins to accumulate in the blood.
+5. **Laktat-Schwellen-Tests**: Bestimmung der Übungsintensität, bei der Laktat beginnt, sich im Blut anzusammeln.
 
-This is a metric variable that could be continuous (if measuring time or physiological parameters) or discrete (if using standardized performance categories).
+Dies ist eine metrische Variable, die stetig sein könnte (wenn Zeit oder physiologische Parameter gemessen werden) oder diskret (wenn standardisierte Leistungskategorien verwendet werden).
 
-## (e) The number of times a person lies in a day
+## (e) Die Anzahl, wie oft eine Person an einem Tag lügt
 
-This is challenging to measure accurately, but approaches might include:
+Dies ist schwierig genau zu messen, aber Ansätze könnten umfassen:
 
-1. **Self-reporting**: Asking people to keep a diary of when they lie, though this is subject to honesty and awareness issues.
+1. **Selbstberichterstattung**: Menschen bitten, ein Tagebuch zu führen, wann sie lügen, obwohl dies Ehrlichkeits- und Bewusstseinsproblemen unterliegt.
 
-2. **Observation**: Having trained observers monitor interactions, though this is resource-intensive and may miss subtle lies.
+2. **Beobachtung**: Geschulte Beobachter überwachen Interaktionen, obwohl dies ressourcenintensiv ist und subtile Lügen übersehen könnte.
 
-3. **Experimental settings**: Creating situations where lying might occur and monitoring behavior.
+3. **Experimentelle Einstellungen**: Situationen schaffen, in denen Lügen auftreten könnten, und das Verhalten überwachen.
 
-4. **Physiological measures**: Using polygraph-type measurements in controlled settings.
+4. **Physiologische Messungen**: Verwendung von polygraphartigen Messungen in kontrollierten Umgebungen.
 
-This would be a metric, discrete variable as lies would be counted as whole numbers.
+Dies wäre eine metrische, diskrete Variable, da Lügen als ganze Zahlen gezählt würden.
 
-# Exercise 3: Graph Analysis
+# Aufgabe 3: Grafikanalyse
 
-In this exercise, we analyze a graph comparing MSNBC and Fox News.
+In dieser Aufgabe analysieren wir eine Grafik, die MSNBC und Fox News vergleicht.
 
-## (a) Identify the two variables
+## (a) Identifizieren Sie die beiden Variablen
 
-The two variables shown in the graph are:
+Die beiden in der Grafik gezeigten Variablen sind:
 
-1. **Factual Reporting**: Represented by the top bar, ranging from "Very Low" to "Very High"
-2. **Political Bias**: Represented by the bottom arrow, ranging from "Extreme Left" to "Extreme Right"
+1. **Faktische Berichterstattung**: Dargestellt durch den oberen Balken, der von "Sehr niedrig" bis "Sehr hoch" reicht
+2. **Politische Voreingenommenheit**: Dargestellt durch den unteren Pfeil, der von "Extrem links" bis "Extrem rechts" reicht
 
-## (b) Explain how values for these variables could be determined
+## (b) Erklären Sie, wie die Werte für diese Variablen ermittelt werden könnten
 
-### Factual Reporting
+### Faktische Berichterstattung
 
-Values for factual reporting could be determined by:
+Werte für faktische Berichterstattung könnten ermittelt werden durch:
 
-1. **Content analysis**: Examining a sample of news stories and fact-checking claims against primary sources or established facts.
+1. **Inhaltsanalyse**: Untersuchung einer Stichprobe von Nachrichtenberichten und Überprüfung von Behauptungen anhand primärer Quellen oder etablierter Fakten.
 
-2. **Error rate tracking**: Counting corrections, retractions, and identified false claims over time.
+2. **Fehlerratenverfolgung**: Zählung von Korrekturen, Rücknahmen und identifizierten falschen Behauptungen im Laufe der Zeit.
 
-3. **Expert panel evaluation**: Having media experts or fact-checkers rate content based on established criteria.
+3. **Expertenpanel-Bewertung**: Medienexperten oder Faktenprüfer bewerten Inhalte basierend auf etablierten Kriterien.
 
-4. **Source transparency**: Evaluating whether claims are properly attributed to verifiable sources.
+4. **Quellentransparenz**: Bewertung, ob Behauptungen ordnungsgemäss überprüfbaren Quellen zugeschrieben werden.
 
-5. **Methodology disclosure**: Assessing whether the news outlet explains how information was gathered.
+5. **Methodologische Offenlegung**: Bewertung, ob das Nachrichtenmedium erklärt, wie Informationen gesammelt wurden.
 
-### Political Bias
+### Politische Voreingenommenheit
 
-Values for political bias could be determined by:
+Werte für politische Voreingenommenheit könnten ermittelt werden durch:
 
-1. **Content analysis**: Examining language, framing, and topic selection for partisan leanings.
+1. **Inhaltsanalyse**: Untersuchung von Sprache, Framing und Themenauswahl auf parteiische Neigungen.
 
-2. **Source selection**: Analyzing which experts, politicians, or organizations are quoted or featured.
+2. **Quellenauswahl**: Analyse, welche Experten, Politiker oder Organisationen zitiert oder vorgestellt werden.
 
-3. **Issue coverage**: Measuring time/space devoted to different political issues.
+3. **Themenabdeckung**: Messung der Zeit/des Raums, die/der verschiedenen politischen Themen gewidmet wird.
 
-4. **Audience surveys**: Asking viewers/readers about their own political leanings to identify patterns.
+4. **Publikumsbefragungen**: Befragung von Zuschauern/Lesern zu ihren eigenen politischen Neigungen, um Muster zu identifizieren.
 
-5. **Comparative analysis**: Comparing coverage of the same events across different outlets.
+5. **Vergleichende Analyse**: Vergleich der Berichterstattung über dieselben Ereignisse in verschiedenen Medien.
 
-## (c) What type are the variables?
+## (c) Von welchem Typ sind die Variablen?
 
-Both variables are presented as **ordinal** and **discrete** variables in the graph.
+Beide Variablen werden in der Grafik als **ordinal** und **diskret** dargestellt.
 
-**Explanation**:
-- They are ordinal because the categories have a meaningful order (from "Very Low" to "Very High" for factual reporting, and from "Extreme Left" to "Extreme Right" for political bias).
-- They are presented as discrete because they use distinct categories rather than a continuous scale.
+**Erklärung**:
+- Sie sind ordinal, weil die Kategorien eine sinnvolle Reihenfolge haben (von "Sehr niedrig" bis "Sehr hoch" für faktische Berichterstattung und von "Extrem links" bis "Extrem rechts" für politische Voreingenommenheit).
+- Sie werden als diskret dargestellt, weil sie verschiedene Kategorien anstelle einer kontinuierlichen Skala verwenden.
 
-However, it's worth noting that the underlying data collection might have used more continuous measurements that were then converted to these ordinal categories for presentation purposes.
+Es ist jedoch erwähnenswert, dass die zugrunde liegende Datenerhebung möglicherweise kontinuierlichere Messungen verwendet hat, die dann für die Präsentation in diese ordinalen Kategorien umgewandelt wurden.
 
-# Exercises 4-7: Working with the BFH Dataset
+# Aufgaben 4-7: Arbeiten mit dem BFH-Datensatz
 
-These exercises involve working with variables from the BFH dataset and performing operations on them.
+Diese Aufgaben beinhalten das Arbeiten mit Variablen aus dem BFH-Datensatz und das Durchführen von Operationen mit ihnen.
 
-## Exercise 4: sum(cash) vs sum(gender)
+## Aufgabe 4: sum(cash) vs sum(gender)
 
 ```{r, eval=FALSE}
-# This is conceptual - we don't have the actual BFH dataset loaded
-# Total amount of cash carried by all individuals
+# Dies ist konzeptionell - wir haben den tatsächlichen BFH-Datensatz nicht geladen
+# Gesamtbetrag des von allen Personen mitgeführten Bargelds
 sum(cash)   
-# Would return an error because gender is a nominal variable
+# Würde einen Fehler zurückgeben, weil gender eine nominale Variable ist
 sum(gender) 
 ```
 
-**Explanation**:
-- `sum(cash)` works because `cash` is a metric variable (amount of CHF carried). Adding these values gives us the total amount of cash carried by all individuals in the dataset.
-- `sum(gender)` produces an error because `gender` is a nominal variable (categories with no inherent numerical value). R cannot perform arithmetic operations on non-numeric data.
+**Erklärung**:
+- `sum(cash)` funktioniert, weil `cash` eine metrische Variable ist (Betrag an CHF, der mitgeführt wird). Die Addition dieser Werte ergibt den Gesamtbetrag des von allen Personen im Datensatz mitgeführten Bargelds.
+- `sum(gender)` erzeugt einen Fehler, weil `gender` eine nominale Variable ist (Kategorien ohne inhärenten numerischen Wert). R kann keine arithmetischen Operationen mit nicht-numerischen Daten durchführen.
 
-## Exercise 5: height/100
+## Aufgabe 5: height/100
 
 ```{r, eval=FALSE}
-# This is conceptual - we don't have the actual BFH dataset loaded
-height/100  # Converts height from centimeters to meters
+# Dies ist konzeptionell - wir haben den tatsächlichen BFH-Datensatz nicht geladen
+height/100  # Konvertiert Körpergrösse von Zentimetern in Meter
 ```
 
-**Explanation**:
-This operation converts the height measurements from centimeters to meters. Since the original `height` variable is in centimeters, dividing by 100 gives us the equivalent height in meters.
+**Erklärung**:
+Diese Operation konvertiert die Körpergrössenmessungen von Zentimetern in Meter. Da die ursprüngliche Variable `height` in Zentimetern ist, ergibt die Division durch 100 die entsprechende Körpergrösse in Metern.
 
-For example, if someone is 175 cm tall, height/100 would give 1.75 m.
+Zum Beispiel, wenn jemand 175 cm gross ist, würde height/100 1,75 m ergeben.
 
-## Exercise 6: reaction1-reaction2
+## Aufgabe 6: reaction1-reaction2
 
 ```{r, eval=FALSE}
-# This is conceptual - we don't have the actual BFH dataset loaded
-# Calculates the difference in reaction times between attempts
+# Dies ist konzeptionell - wir haben den tatsächlichen BFH-Datensatz nicht geladen
+# Berechnet die Differenz der Reaktionszeiten zwischen den Versuchen
 reaction1-reaction2
 ```
 
-**Explanation**:
-This operation calculates the difference between the first and second reaction time measurements. 
+**Erklärung**:
+Diese Operation berechnet die Differenz zwischen der ersten und zweiten Reaktionszeitmessung.
 
-- If the result is positive (reaction1 > reaction2), it indicates an improvement in reaction time from the first to the second attempt.
-- If the result is negative (reaction1 < reaction2), it indicates a slower reaction time in the second attempt.
-- If the result is zero, it indicates no change in reaction time.
+- Wenn das Ergebnis positiv ist (reaction1 > reaction2), deutet dies auf eine Verbesserung der Reaktionszeit vom ersten zum zweiten Versuch hin.
+- Wenn das Ergebnis negativ ist (reaction1 < reaction2), deutet dies auf eine langsamere Reaktionszeit im zweiten Versuch hin.
+- Wenn das Ergebnis null ist, deutet dies auf keine Veränderung der Reaktionszeit hin.
 
-This new variable represents the change or improvement in reaction time between attempts.
+Diese neue Variable repräsentiert die Veränderung oder Verbesserung der Reaktionszeit zwischen den Versuchen.
 
-## Exercise 7: siblings*present
+## Aufgabe 7: siblings*present
 
 ```{r, eval=FALSE}
-# This is conceptual - we don't have the actual BFH dataset loaded
-# Calculates total gift expenditure per person
+# Dies ist konzeptionell - wir haben den tatsächlichen BFH-Datensatz nicht geladen
+# Berechnet die Gesamtausgaben für Geschenke pro Person
 siblings*present  
-# Would calculate total gift expenditure across all people
+# Würde die Gesamtausgaben für Geschenke über alle Personen berechnen
 sum(siblings*present)  
 ```
 
-**Explanation**:
-The operation `siblings*present` multiplies the number of siblings a person has by the amount spent on gifts per sibling. This gives us the total amount each person spends on gifts for all their siblings.
+**Erklärung**:
+Die Operation `siblings*present` multipliziert die Anzahl der Geschwister, die eine Person hat, mit dem Betrag, der für Geschenke pro Geschwister ausgegeben wird. Dies ergibt den Gesamtbetrag, den jede Person für Geschenke für alle ihre Geschwister ausgibt.
 
-The sum of this variable across all individuals (`sum(siblings*present)`) would represent the total amount spent on sibling gifts by everyone in the dataset.
+Die Summe dieser Variable über alle Personen (`sum(siblings*present)`) würde den Gesamtbetrag darstellen, der von allen im Datensatz für Geschwistergeschenke ausgegeben wird.
 
-# Exercises 8-16: Working with Summation Notation
+# Aufgaben 8-16: Arbeiten mit Summationsnotation
 
-These exercises focus on understanding and manipulating summation notation.
+Diese Aufgaben konzentrieren sich auf das Verständnis und die Manipulation der Summationsnotation.
 
-## Exercise 8: Writing out sums
+## Aufgabe 8: Ausschreiben von Summen
 
 ### (a) $\sum_{r=1}^{4} r^3$
 
-This means: $1^3 + 2^3 + 3^3 + 4^3$
+Dies bedeutet: $1^3 + 2^3 + 3^3 + 4^3$
 
-Calculating: $1 + 8 + 27 + 64 = 100$
+Berechnung: $1 + 8 + 27 + 64 = 100$
 
 ### (b) $\sum_{r=1}^{6} (2r + 1)$
 
-This means: $(2 \times 1+1) + (2 \times 2+1) + (2 \times 3+1) + (2 \times 4+1) + (2 \times 5+1) + (2 \times 6+1)$
+Dies bedeutet: $(2 \times 1+1) + (2 \times 2+1) + (2 \times 3+1) + (2 \times 4+1) + (2 \times 5+1) + (2 \times 6+1)$
 
-Calculating: $3 + 5 + 7 + 9 + 11 + 13 = 48$
+Berechnung: $3 + 5 + 7 + 9 + 11 + 13 = 48$
 
 ### (c) $\sum_{n=1}^{5} 3^{2n}$
 
-This means: $3^{2 \times 1} + 3^{2 \times 2} + 3^{2 \times 3} + 3^{2 \times 4} + 3^{2 \times 5}$
+Dies bedeutet: $3^{2 \times 1} + 3^{2 \times 2} + 3^{2 \times 3} + 3^{2 \times 4} + 3^{2 \times 5}$
 
-Calculating: $3^2 + 3^4 + 3^6 + 3^8 + 3^{10}$
+Berechnung: $3^2 + 3^4 + 3^6 + 3^8 + 3^{10}$
 
-Calculating: $9 + 81 + 729 + 6,561 + 59,049 = 66,429$
+Berechnung: $9 + 81 + 729 + 6'561 + 59'049 = 66'429$
 
 ### (d) $\sum_{n=1}^{7} 4$
 
-This means: $4 + 4 + 4 + 4 + 4 + 4 + 4$
+Dies bedeutet: $4 + 4 + 4 + 4 + 4 + 4 + 4$
 
-Calculating: $7 \times 4 = 28$
+Berechnung: $7 \times 4 = 28$
 
-## Exercise 9: Using sigma notation for sums
+## Aufgabe 9: Verwendung der Sigma-Notation für Summen
 
 ### (a) $1^2 + 2^2 + 3^2 + ... + 7^2$
 
-This can be written as: $\sum_{n=1}^{7} n^2$
+Dies kann geschrieben werden als: $\sum_{n=1}^{7} n^2$
 
 ### (b) $2^1 + 2^2 + 2^3 + ... + 2^{10}$
 
-This can be written as: $\sum_{n=1}^{10} 2^n$
+Dies kann geschrieben werden als: $\sum_{n=1}^{10} 2^n$
 
 ### (c) $\frac{1}{1} + \frac{1}{2} + \frac{1}{3} + ... + \frac{1}{77}$
 
-This can be written as: $\sum_{n=1}^{77} \frac{1}{n}$
+Dies kann geschrieben werden als: $\sum_{n=1}^{77} \frac{1}{n}$
 
 ### (d) $\frac{1 \times 3}{2 \times 4} + \frac{2 \times 4}{3 \times 5} + ... + \frac{19 \times 21}{20 \times 22}$
 
-This can be written as: $\sum_{n=1}^{19} \frac{n \times (n+2)}{(n+1) \times (n+3)}$
+Dies kann geschrieben werden als: $\sum_{n=1}^{19} \frac{n \times (n+2)}{(n+1) \times (n+3)}$
 
-## Exercise 10: Evaluating sums
+## Aufgabe 10: Auswerten von Summen
 
 ### (a) $\sum_{r=1}^{6} r$
 
-This means: $1 + 2 + 3 + 4 + 5 + 6 = 21$
+Dies bedeutet: $1 + 2 + 3 + 4 + 5 + 6 = 21$
 
 ### (b) $\sum_{r=1}^{6} 3r$
 
-This means: $3 \times 1 + 3 \times 2 + 3 \times 3 + 3 \times 4 + 3 \times 5 + 3 \times 6$
+Dies bedeutet: $3 \times 1 + 3 \times 2 + 3 \times 3 + 3 \times 4 + 3 \times 5 + 3 \times 6$
 
-Calculating: $3 + 6 + 9 + 12 + 15 + 18 = 63$
+Berechnung: $3 + 6 + 9 + 12 + 15 + 18 = 63$
 
 ### (c) $3 \times \sum_{r=1}^{6} r$
 
-This means: $3 \times (1 + 2 + 3 + 4 + 5 + 6) = 3 \times 21 = 63$
+Dies bedeutet: $3 \times (1 + 2 + 3 + 4 + 5 + 6) = 3 \times 21 = 63$
 
-Note that (b) and (c) give the same result, demonstrating the property that a constant can be factored out of a sum.
+Beachten Sie, dass (b) und (c) das gleiche Ergebnis liefern, was die Eigenschaft demonstriert, dass eine Konstante aus einer Summe herausgezogen werden kann.
 
-## Exercise 11: Writing out general sums
+## Aufgabe 11: Ausschreiben allgemeiner Summen
 
 ### (a) $\sum_{r=1}^{n} x_r$
 
-This means: $x_1 + x_2 + x_3 + ... + x_n$
+Dies bedeutet: $x_1 + x_2 + x_3 + ... + x_n$
 
 ### (b) $\sum_{r=1}^{n} x_r^2$
 
-This means: $x_1^2 + x_2^2 + x_3^2 + ... + x_n^2$
+Dies bedeutet: $x_1^2 + x_2^2 + x_3^2 + ... + x_n^2$
 
 ### (c) $\sum_{r=1}^{n} x_r^r$
 
-This means: $x_1^1 + x_2^2 + x_3^3 + ... + x_n^n$
+Dies bedeutet: $x_1^1 + x_2^2 + x_3^3 + ... + x_n^n$
 
-## Exercise 12: True or false statements
+## Aufgabe 12: Richtig oder falsch Aussagen
 
 ### (a) $\sum_{r=1}^{n} x_r + \sum_{r=1}^{n} y_r = \sum_{r=1}^{n} (x_r + y_r)$
 
-**True**
+**Richtig**
 
-Explanation: This property states that the sum of two separate summations equals the summation of the sum of corresponding terms. This is true because addition is commutative and associative.
+Erklärung: Diese Eigenschaft besagt, dass die Summe zweier separater Summationen gleich der Summation der Summe entsprechender Terme ist. Dies ist wahr, weil Addition kommutativ und assoziativ ist.
 
-For example, with n=3:
+Zum Beispiel, mit n=3:
 $(x_1 + x_2 + x_3) + (y_1 + y_2 + y_3) = (x_1 + y_1) + (x_2 + y_2) + (x_3 + y_3)$
 
 ### (b) $\sum_{r=1}^{n} x_r \cdot \sum_{r=1}^{n} y_r = \sum_{r=1}^{n} (x_r \cdot y_r)$
 
-**False**
+**Falsch**
 
-Explanation: The left side multiplies every term in the first sum by every term in the second sum, while the right side only multiplies corresponding terms.
+Erklärung: Die linke Seite multipliziert jeden Term in der ersten Summe mit jedem Term in der zweiten Summe, während die rechte Seite nur entsprechende Terme multipliziert.
 
-For example, with n=2:
+Zum Beispiel, mit n=2:
 $(x_1 + x_2) \cdot (y_1 + y_2) = x_1y_1 + x_1y_2 + x_2y_1 + x_2y_2$
-But $\sum_{r=1}^{2} (x_r \cdot y_r) = x_1y_1 + x_2y_2$
+Aber $\sum_{r=1}^{2} (x_r \cdot y_r) = x_1y_1 + x_2y_2$
 
-These are clearly not equal.
+Diese sind eindeutig nicht gleich.
 
 ### (c) $\sum_{r=1}^{n} (c \cdot x_r) = c \cdot \sum_{r=1}^{n} x_r$
 
-**True**
+**Richtig**
 
-Explanation: This property states that a constant can be factored out of a summation. This is true because multiplication distributes over addition.
+Erklärung: Diese Eigenschaft besagt, dass eine Konstante aus einer Summation herausgezogen werden kann. Dies ist wahr, weil Multiplikation über Addition verteilt.
 
-For example, with n=3:
+Zum Beispiel, mit n=3:
 $c \cdot x_1 + c \cdot x_2 + c \cdot x_3 = c \cdot (x_1 + x_2 + x_3)$
 
-## Exercise 13: Writing out $\sum_{m=1}^{4} (-1)^m x$
+## Aufgabe 13: Ausschreiben von $\sum_{m=1}^{4} (-1)^m x$
 
-This means: $(-1)^1 \cdot x + (-1)^2 \cdot x + (-1)^3 \cdot x + (-1)^4 \cdot x$
+Dies bedeutet: $(-1)^1 \cdot x + (-1)^2 \cdot x + (-1)^3 \cdot x + (-1)^4 \cdot x$
 
-Calculating: $-x + x - x + x = 0$
+Berechnung: $-x + x - x + x = 0$
 
-## Exercise 14: Finding $\sum_{r=1}^{7} (x_r - 2)^2$ given other sums
+## Aufgabe 14: Finden von $\sum_{r=1}^{7} (x_r - 2)^2$ bei gegebenen anderen Summen
 
-Given:
+Gegeben:
 - $\sum_{r=1}^{7} x_r^2 = 100$
 - $\sum_{r=1}^{7} x_r = 10$
 
-We need to find: $\sum_{r=1}^{7} (x_r - 2)^2$
+Wir müssen finden: $\sum_{r=1}^{7} (x_r - 2)^2$
 
-Let's expand:
+Erweitern wir:
 $\sum_{r=1}^{7} (x_r - 2)^2 = \sum_{r=1}^{7} (x_r^2 - 4x_r + 4)$
 
 $= \sum_{r=1}^{7} x_r^2 - 4\sum_{r=1}^{7} x_r + \sum_{r=1}^{7} 4$
@@ -512,41 +512,41 @@ $= 100 - 40 + 28$
 
 $= 88$
 
-## Exercise 15: Writing out various statistical notations
+## Aufgabe 15: Ausschreiben verschiedener statistischer Notationen
 
 ### (a) $\frac{1}{N} \cdot \sum_{i=1}^{N} x_i$
 
-This is the formula for the arithmetic mean (average) of a set of values:
+Dies ist die Formel für das arithmetische Mittel (Durchschnitt) einer Menge von Werten:
 $\frac{x_1 + x_2 + x_3 + ... + x_N}{N}$
 
 ### (b) $\sum_{r=1}^{n} (x_r - \bar{x})^2$
 
-This is the sum of squared deviations from the mean, used in calculating variance:
+Dies ist die Summe der quadrierten Abweichungen vom Mittelwert, verwendet bei der Berechnung der Varianz:
 $(x_1 - \bar{x})^2 + (x_2 - \bar{x})^2 + (x_3 - \bar{x})^2 + ... + (x_n - \bar{x})^2$
 
 ### (c) $\sum_{i=1}^{n} w_i x_i$
 
-This is a weighted sum, where each value $x_i$ is multiplied by a weight $w_i$:
+Dies ist eine gewichtete Summe, bei der jeder Wert $x_i$ mit einem Gewicht $w_i$ multipliziert wird:
 $w_1 x_1 + w_2 x_2 + w_3 x_3 + ... + w_n x_n$
 
 ### (d) $\sum_{i=1}^{n} P(E_i)$
 
-This is the sum of probabilities for events $E_1$ through $E_n$:
+Dies ist die Summe der Wahrscheinlichkeiten für Ereignisse $E_1$ bis $E_n$:
 $P(E_1) + P(E_2) + P(E_3) + ... + P(E_n)$
 
 ### (e) $\sum_{i=1}^{3} \sum_{j=1}^{2} P_{ij}$
 
-This is a double summation, summing values in a 3×2 matrix:
+Dies ist eine Doppelsummation, die Werte in einer 3×2-Matrix summiert:
 $P_{11} + P_{12} + P_{21} + P_{22} + P_{31} + P_{32}$
 
 ### (f) $\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})$
 
-This is the sum of products of deviations, used in calculating covariance:
+Dies ist die Summe der Produkte von Abweichungen, verwendet bei der Berechnung der Kovarianz:
 $(x_1 - \bar{x})(y_1 - \bar{y}) + (x_2 - \bar{x})(y_2 - \bar{y}) + ... + (x_n - \bar{x})(y_n - \bar{y})$
 
-## Exercise 16: Evaluating table-based summations
+## Aufgabe 16: Auswerten tabellenbasierter Summationen
 
-Given the table:
+Gegeben die Tabelle:
 ```
   1  2  3  4
   5  6  7  8
@@ -554,68 +554,68 @@ Given the table:
  13 14 15 16
 ```
 
-Where a(r,c) is the value in row r, column c.
+Wobei a(r,c) der Wert in Zeile r, Spalte c ist.
 
 ### (a) $\sum_{n=1}^{4} a(n, 2)$
 
-This means: a(1,2) + a(2,2) + a(3,2) + a(4,2)
+Dies bedeutet: a(1,2) + a(2,2) + a(3,2) + a(4,2)
 
-Looking at column 2: 2 + 6 + 10 + 14 = 32
+Betrachten wir Spalte 2: 2 + 6 + 10 + 14 = 32
 
 ### (b) $\sum_{n=1}^{4} a(1, n)$
 
-This means: a(1,1) + a(1,2) + a(1,3) + a(1,4)
+Dies bedeutet: a(1,1) + a(1,2) + a(1,3) + a(1,4)
 
-Looking at row 1: 1 + 2 + 3 + 4 = 10
+Betrachten wir Zeile 1: 1 + 2 + 3 + 4 = 10
 
 ### (c) $\sum_{n=1}^{4} a(n, n)$
 
-This means: a(1,1) + a(2,2) + a(3,3) + a(4,4)
+Dies bedeutet: a(1,1) + a(2,2) + a(3,3) + a(4,4)
 
-Looking at the diagonal: 1 + 6 + 11 + 16 = 34
+Betrachten wir die Diagonale: 1 + 6 + 11 + 16 = 34
 
 ### (d) $\sum_{n=1}^{4} (a(n, 1) \times a(n, 3))$
 
-This means: a(1,1) $\times$ a(1,3) + a(2,1) $\times$ a(2,3) + a(3,1) $\times$ a(3,3) + a(4,1) $\times$ a(4,3)
+Dies bedeutet: a(1,1) $\times$ a(1,3) + a(2,1) $\times$ a(2,3) + a(3,1) $\times$ a(3,3) + a(4,1) $\times$ a(4,3)
 
-Calculating: 1 $\times$ 3 + 5 $\times$ 7 + 9 $\times$ 11 + 13 $\times$ 15 = 3 + 35 + 99 + 195 = 332
+Berechnung: 1 $\times$ 3 + 5 $\times$ 7 + 9 $\times$ 11 + 13 $\times$ 15 = 3 + 35 + 99 + 195 = 332
 
 ### (e) $\sum_{n=1}^{4} a(n, 1) \times \sum_{n=1}^{4} a(n, 3)$
 
-This means: (a(1,1) + a(2,1) + a(3,1) + a(4,1)) $\times$ (a(1,3) + a(2,3) + a(3,3) + a(4,3))
+Dies bedeutet: (a(1,1) + a(2,1) + a(3,1) + a(4,1)) $\times$ (a(1,3) + a(2,3) + a(3,3) + a(4,3))
 
-Calculating: (1 + 5 + 9 + 13) $\times$ (3 + 7 + 11 + 15) = 28 $\times$ 36 = 1008
+Berechnung: (1 + 5 + 9 + 13) $\times$ (3 + 7 + 11 + 15) = 28 $\times$ 36 = 1008
 
 ### (f) $\sum_{n=1}^{4} a(n, 3) + \sum_{m=1}^{4} a(4, m)$
 
-This means: (a(1,3) + a(2,3) + a(3,3) + a(4,3)) + (a(4,1) + a(4,2) + a(4,3) + a(4,4))
+Dies bedeutet: (a(1,3) + a(2,3) + a(3,3) + a(4,3)) + (a(4,1) + a(4,2) + a(4,3) + a(4,4))
 
-Calculating: (3 + 7 + 11 + 15) + (13 + 14 + 15 + 16) = 36 + 58 = 94
+Berechnung: (3 + 7 + 11 + 15) + (13 + 14 + 15 + 16) = 36 + 58 = 94
 
 ### (g) $\sum_{n=1}^{4} \sum_{m=1}^{4} a(n, m)$
 
-This means the sum of all values in the table:
+Dies bedeutet die Summe aller Werte in der Tabelle:
 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 = 136
 
 ### (h) $\sum_{n=2}^{4} \sum_{m=1}^{n-1} a(n, m)$
 
-This is a bit more complex:
+Dies ist etwas komplexer:
 
-For n=2: m goes from 1 to 1, so we have a(2,1) = 5
-For n=3: m goes from 1 to 2, so we have a(3,1) + a(3,2) = 9 + 10 = 19
-For n=4: m goes from 1 to 3, so we have a(4,1) + a(4,2) + a(4,3) = 13 + 14 + 15 = 42
+Für n=2: m geht von 1 bis 1, also haben wir a(2,1) = 5
+Für n=3: m geht von 1 bis 2, also haben wir a(3,1) + a(3,2) = 9 + 10 = 19
+Für n=4: m geht von 1 bis 3, also haben wir a(4,1) + a(4,2) + a(4,3) = 13 + 14 + 15 = 42
 
-Total: 5 + 19 + 42 = 66
+Gesamt: 5 + 19 + 42 = 66
 
-# Conclusion
+# Fazit
 
-This guide has provided detailed explanations for all the exercises in WDDA FS 2025 Aufgabenserie 1. By working through these exercises, you should have developed a better understanding of:
+Dieser Leitfaden hat detaillierte Erklärungen für alle Übungen in WDDA FS 2025 Aufgabenserie 1 geliefert. Durch die Bearbeitung dieser Übungen sollten Sie ein besseres Verständnis entwickelt haben für:
 
-1. How to classify variables by type (nominal, ordinal, metric) and nature (discrete, continuous)
-2. Methods for determining values for different types of variables
-3. How to analyze graphical representations of data
-4. Working with dataset variables and creating derived variables
-5. Understanding and manipulating summation notation
-6. Applying summation properties to solve problems
+1. Wie man Variablen nach Typ (nominal, ordinal, metrisch) und Art (diskret, stetig) klassifiziert
+2. Methoden zur Bestimmung von Werten für verschiedene Arten von Variablen
+3. Wie man grafische Darstellungen von Daten analysiert
+4. Arbeiten mit Datensatzvariablen und Erstellen abgeleiteter Variablen
+5. Verständnis und Manipulation der Summationsnotation
+6. Anwendung von Summationseigenschaften zur Lösung von Problemen
 
-These foundational concepts are essential for more advanced data analysis techniques that will be covered in future exercises.
+Diese grundlegenden Konzepte sind wesentlich für fortgeschrittenere Datenanalysetechniken, die in zukünftigen Übungen behandelt werden.
