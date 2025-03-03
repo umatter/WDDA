@@ -317,8 +317,10 @@ These exercises involve working with variables from the BFH dataset and performi
 
 ```{r, eval=FALSE}
 # This is conceptual - we don't have the actual BFH dataset loaded
-sum(cash)   # Would return the total amount of cash carried by all individuals
-sum(gender) # Would return an error because gender is a nominal variable
+# Total amount of cash carried by all individuals
+sum(cash)   
+# Would return an error because gender is a nominal variable
+sum(gender) 
 ```
 
 **Explanation**:
@@ -358,8 +360,10 @@ This new variable represents the change or improvement in reaction time between 
 
 ```{r, eval=FALSE}
 # This is conceptual - we don't have the actual BFH dataset loaded
-siblings*present  # Calculates total gift expenditure per person
-sum(siblings*present)  # Would calculate total gift expenditure across all people
+# Calculates total gift expenditure per person
+siblings*present  
+# Would calculate total gift expenditure across all people
+sum(siblings*present)  
 ```
 
 **Explanation**:
