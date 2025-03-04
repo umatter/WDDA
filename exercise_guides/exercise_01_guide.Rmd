@@ -175,6 +175,8 @@ Gehen wir jede Variable durch:
 
 **Erklärung**: Produktpräferenzen sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil Präferenzen nicht unbedingt eine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
+**Nebenbemerkung**: Aus mikroökonomischer Sicht nehmen wir an, dass Konsumenten nicht nur zwischen verschiedenen Produktkategorien unterscheiden, sondern diese auch in einer bestimmten Rangfolge ordnen können. Während in der reinen Datenskala die Produktpräferenzen als nominale und diskrete Kategorien betrachtet werden--also als unterschiedliche Gruppen ohne inhärente quantitative Ordnung--, impliziert die Theorie der Verbraucherwahl, dass diese Kategorien tatsächlich in eine ordinale Reihenfolge gebracht werden können.
+
 ### (y) Die Pulsraten einer Gruppe von Sportlern in Ruhe
 
 **Einteilung**: Metrisch und stetig
