@@ -1,6 +1,5 @@
 ---
 title: "WDDA FS 2025: Leitfaden für Aufgabenserie 1"
-author: "Kursleiter"
 date: "`r Sys.Date()`"
 output:
   pdf_document
@@ -25,7 +24,7 @@ Bevor wir beginnen, wiederholen wir die wichtigsten Konzepte:
 - **Nominale Variablen**: Kategorien ohne inhärente Reihenfolge (z.B. Farben, Geschlecht)
 - **Ordinale Variablen**: Kategorien mit einer sinnvollen Reihenfolge (z.B. Rangfolgen, Noten)
 - **Metrische/Quantitative Variablen**: Numerische Messungen, die sein können:
-  - **Diskret**: Zählbare Werte (z.B. Anzahl der Kinder)
+  - **Diskret**: Zählbare Werte (z.B. Anzahl der Kinder), d.h. ganze Zahlen (keine Brüche)
   - **Stetig**: Kann jeden Wert innerhalb eines Bereichs annehmen (z.B. Grösse, Zeit)
 
 ## Lösungen mit Erklärungen
@@ -34,151 +33,151 @@ Gehen wir jede Variable durch:
 
 ### (a) Anzahl der wöchentlich von einer Fussballmannschaft erzielten Tore
 
-**Klassifikation**: Metrisch und diskret
+**Einteilung**: Metrisch und diskret
 
 **Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann (0, 1, 2, usw.). Sie ist metrisch, weil wir sinnvolle arithmetische Operationen durchführen können (durchschnittliche Tore pro Spiel, Gesamttore, usw.), und sie ist diskret, weil Tore nur in ganzen Zahlen vorkommen.
 
 ### (b) Körpergrössen der Spieler eines Footballteams
 
-**Klassifikation**: Metrisch und stetig
+**Einteilung**: Metrisch und stetig
 
 **Erklärung**: Die Körpergrösse wird auf einer kontinuierlichen Skala gemessen (z.B. 175,6 cm). Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil die Körpergrösse theoretisch jeden Wert innerhalb eines Bereichs annehmen kann, nicht nur ganze Zahlen.
 
 ### (c) Die beliebtesten Radiosender
 
-**Klassifikation**: Nominal und diskret
+**Einteilung**: Nominal und diskret
 
 **Erklärung**: Radiosender sind Kategorien ohne inhärente Reihenfolge. Ein Sender ist nicht "mehr" als ein anderer in irgendeinem quantitativen Sinne. Die Variable ist diskret, weil wir verschiedene Einheiten kategorisieren.
 
 ### (d) Die Anzahl der Kinder in einer japanischen Familie
 
-**Klassifikation**: Metrisch und diskret
+**Einteilung**: Metrisch und diskret
 
 **Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir aussagekräftige Statistiken wie Durchschnittswerte berechnen können, und sie ist diskret, weil Menschen nur in ganzen Zahlen vorkommen.
 
 ### (e) Der Dienstgrad eines Soldaten
 
-**Klassifikation**: Ordinal und diskret
+**Einteilung**: Ordinal und diskret
 
 **Erklärung**: Militärische Ränge haben eine klare hierarchische Ordnung (z.B. Gefreiter, Korporal, Feldwebel). Die Variable ist ordinal, weil die Ränge eine sinnvolle Reihenfolge haben, und sie ist diskret, weil es sich um verschiedene Kategorien handelt.
 
 ### (f) Die Anzahl der Brote, die eine Familie pro Woche kauft
 
-**Klassifikation**: Metrisch und diskret
+**Einteilung**: Metrisch und diskret
 
 **Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil Brote als ganze Einheiten gekauft werden.
 
 ### (g) Die Art der Haustiere, welche die Schüler einer 8. Klasse besitzen
 
-**Klassifikation**: Nominal und diskret
+**Einteilung**: Nominal und diskret
 
 **Erklärung**: Haustierarten (Hund, Katze, Fisch, usw.) sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil diese Kategorien keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
 ### (h) Die Anzahl der Blätter an Bäumen
 
-**Klassifikation**: Metrisch und diskret
+**Einteilung**: Metrisch und diskret
 
 **Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil Blätter als ganze Einheiten gezählt werden.
 
 ### (i) Die Anzahl der Sonnenstunden an einem Tag
 
-**Klassifikation**: Metrisch und stetig
+**Einteilung**: Metrisch und stetig
 
 **Erklärung**: Sonnenstunden können mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. 5,7 Stunden). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Zeit auf einer kontinuierlichen Skala gemessen werden kann.
 
 ### (j) Die Anzahl der Menschen, die jedes Jahr in den USA an Krebs sterben
 
-**Klassifikation**: Metrisch und diskret
+**Einteilung**: Metrisch und diskret
 
 **Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil wir einzelne Menschen zählen.
 
 ### (k) Die Herkunftsländer der Einwanderer
 
-**Klassifikation**: Nominal und diskret
+**Einteilung**: Nominal und diskret
 
 **Erklärung**: Länder sind Kategorien ohne inhärente numerische Reihenfolge. Die Variable ist nominal, weil Länder keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
 ### (l) Die Farben der Autos
 
-**Klassifikation**: Nominal und diskret
+**Einteilung**: Nominal und diskret
 
 **Erklärung**: Farben sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil Farben keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
 ### (m) Das Geschlecht von Schulleitern
 
-**Klassifikation**: Nominal und diskret
+**Einteilung**: Nominal und diskret
 
 **Erklärung**: Geschlechtskategorien haben keine inhärente Reihenfolge. Die Variable ist nominal, weil Geschlecht keine natürliche Rangfolge hat, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
 ### (n) Die Zeit, die mit Hausaufgaben verbracht wird
 
-**Klassifikation**: Metrisch und stetig
+**Einteilung**: Metrisch und stetig
 
 **Erklärung**: Zeit kann mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. 2,5 Stunden). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Zeit auf einer kontinuierlichen Skala gemessen werden kann.
 
 ### (o) Die Kategorien von Pokerhänden
 
-**Klassifikation**: Ordinal und diskret
+**Einteilung**: Ordinal und diskret
 
 **Erklärung**: Pokerhände haben eine klare Rangfolge (High Card, Paar, zwei Paare, usw.). Die Variable ist ordinal, weil es eine sinnvolle Reihenfolge der Kategorien gibt, und sie ist diskret, weil es verschiedene Kategorien gibt.
 
 ### (p) Der Betrag, der in Dollar pro Woche für Lebensmittel ausgegeben wird
 
-**Klassifikation**: Metrisch und stetig
+**Einteilung**: Metrisch und stetig
 
 **Erklärung**: Geld kann mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. $45,67). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Geld auf einer kontinuierlichen Skala gemessen werden kann.
 
 ### (q) Die in einer Klassenarbeit erzielten Noten
 
-**Klassifikation**: Ordinal und diskret
+**Einteilung**: Ordinal und diskret
 
 **Erklärung**: Noten (A, B, C, usw. oder numerische Noten) haben eine klare Rangfolge. Die Variable ist ordinal, weil es eine sinnvolle Reihenfolge der Kategorien gibt, und sie ist diskret, weil es verschiedene Notenstufen gibt.
 
 ### (r) Die Anzahl der im Schulbistro verkauften Artikel
 
-**Klassifikation**: Metrisch und diskret
+**Einteilung**: Metrisch und diskret
 
 **Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil Artikel als ganze Einheiten verkauft werden.
 
 ### (s) Die Anzahl der Streichhölzer in einer Schachtel
 
-**Klassifikation**: Metrisch und diskret
+**Einteilung**: Metrisch und diskret
 
 **Erklärung**: Dies ist eine Zählvariable, die nur ganzzahlige Werte annehmen kann. Sie ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist diskret, weil Streichhölzer als ganze Einheiten gezählt werden.
 
 ### (t) Die Endpositionen der Athleten in einem Rennen
 
-**Klassifikation**: Ordinal und diskret
+**Einteilung**: Ordinal und diskret
 
 **Erklärung**: Rennpositionen (1., 2., 3., usw.) haben eine klare Rangfolge. Die Variable ist ordinal, weil es eine sinnvolle Reihenfolge der Positionen gibt, und sie ist diskret, weil es verschiedene Positionen gibt.
 
 ### (u) Die Endzeiten der Athleten eines Rennens
 
-**Klassifikation**: Metrisch und stetig
+**Einteilung**: Metrisch und stetig
 
 **Erklärung**: Rennzeiten können mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. 10,45 Sekunden). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Zeit auf einer kontinuierlichen Skala gemessen werden kann.
 
 ### (v) Die Gründe, warum Menschen Taxis benutzen
 
-**Klassifikation**: Nominal und diskret
+**Einteilung**: Nominal und diskret
 
 **Erklärung**: Gründe (Bequemlichkeit, kein Auto, usw.) sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil diese Gründe keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
 ### (w) Die Sportarten, die von Schülern an Gymnasien gespielt werden
 
-**Klassifikation**: Nominal und diskret
+**Einteilung**: Nominal und diskret
 
 **Erklärung**: Sportarten (Basketball, Fussball, usw.) sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil Sportarten keine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
 ### (x) Die Verbraucherpräferenz zwischen drei verschiedenen Produkten
 
-**Klassifikation**: Nominal und diskret
+**Einteilung**: Nominal und diskret
 
 **Erklärung**: Produktpräferenzen sind Kategorien ohne inhärente Reihenfolge. Die Variable ist nominal, weil Präferenzen nicht unbedingt eine natürliche Rangfolge haben, und sie ist diskret, weil wir mit verschiedenen Kategorien arbeiten.
 
 ### (y) Die Pulsraten einer Gruppe von Sportlern in Ruhe
 
-**Klassifikation**: Metrisch und stetig
+**Einteilung**: Metrisch und stetig
 
 **Erklärung**: Pulsraten können mit einer Präzision jenseits ganzer Zahlen gemessen werden (z.B. 72,5 Schläge pro Minute). Die Variable ist metrisch, weil wir arithmetische Operationen durchführen können, und sie ist stetig, weil Herzfrequenzen kontinuierlich variieren können.
 
