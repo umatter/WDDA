@@ -25,10 +25,10 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
 1. **Daten laden:**  
    Laden Sie den Datensatz aus der Excel-Datei in R mit der `readxl`-Bibliothek.
 
-   ```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
    library(readxl)
    data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
-   ```
+```
 
 2. **Variable extrahieren:**  
    Wählen Sie die Variable `transport` aus dem Datensatz aus.
@@ -36,9 +36,9 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
 3. **Häufigkeitsverteilung berechnen:**  
    Verwenden Sie die Funktion `table()`, um die Häufigkeiten der einzelnen Kategorien zu ermitteln.
    
-   ```{r}
+```{r}
    data$transport |> table() |> print()
-   ```
+```
    
 4. **Ergebnisvergleich:**  
    Vergleichen Sie Ihre Resultate mit den Lösungsvorgaben:
@@ -61,34 +61,42 @@ Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `g
 1. **Daten vorbereiten:**  
    Laden Sie den Datensatz aus der Excel-Datei und extrahieren Sie die Variablen `gender`, `transport` und `maths`.
 
-   ```r
+```{r}
    library(readxl)
    data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
-   ```
+```
 
 2. **Häufigkeiten berechnen:**  
    Nutzen Sie `table()` für jede Variable.
    
-   ```{r}
-   gender_freq <- data$gender |> table()
-   transport_freq <- data$transport |> table()
-   maths_freq <- data$maths |> table()
-   ```
+```{r}
+gender_freq <- data$gender |> table()
+transport_freq <- data$transport |> table()
+maths_freq <- data$maths |> table()
+```
    
 3. **Balkendiagramme erstellen:**  
    Nutzen Sie `barplot()`, um die Häufigkeiten grafisch darzustellen.
    
-   ```{r, fig.height=8, fig.width=7}
-   # Balkendiagramm für gender
-   barplot(gender_freq,
-   main = "Verteilung von Gender", col = "lightblue", ylab = "Häufigkeit")
-   
-   # Balkendiagramm für transport
-   barplot(transport_freq, main = "Verteilung von Transport", col = "lightgreen", ylab = "Häufigkeit")
-   
-   # Balkendiagramm für maths
-   barplot(maths_freq, main = "Verteilung von Maths", col = "lightcoral", ylab = "Häufigkeit")
-   ```
+```{r, fig.height=8, fig.width=7}
+# Balkendiagramm für gender
+barplot(gender_freq,
+        main = "Verteilung von Gender",
+        col = "lightblue",
+        ylab = "Häufigkeit")
+
+# Balkendiagramm für transport
+barplot(transport_freq,
+        main = "Verteilung von Transport",
+        col = "lightgreen",
+        ylab = "Häufigkeit")
+
+# Balkendiagramm für maths
+barplot(maths_freq,
+        main = "Verteilung von Maths",
+        col = "lightcoral",
+        ylab = "Häufigkeit")
+```
    
 4. **Interpretation:**  
    Erläutern Sie, was die Diagramme aussagen und ob die Verteilungen erwartungsgemäss erscheinen.
@@ -127,19 +135,19 @@ Erstellen Sie geeignete Kreisdiagramme, um die relative Verteilung der Daten von
 1. **Daten laden und relative Häufigkeiten berechnen:**  
    Laden Sie die Daten und erstellen Sie eine Häufigkeitstabelle, die Sie in relative Häufigkeiten umwandeln.
    
-   ```{r, message=FALSE, warning=FALSE}
-   library(readxl)
-   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
-   
-   eye_rel <- data$eye |> table() |> prop.table()
-   ```
+```{r, message=FALSE, warning=FALSE}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+eye_rel <- data$eye |> table() |> prop.table()
+```
    
 2. **Kreisdiagramm erstellen:**  
    Nutzen Sie `pie()`, um die relativen Anteile darzustellen.
    
-   ```{r}
-   pie(eye_rel, main = "Relative Verteilung von Eye")
-   ```
+```{r}
+pie(eye_rel, main = "Relative Verteilung von Eye")
+```
    
 3. **Wiederholung für `eyetext`:**  
    Berechnen Sie die Häufigkeiten für `eyetext` und erstellen Sie ein entsprechendes Kreisdiagramm.
@@ -172,24 +180,24 @@ Finden Sie die Häufigkeitsverteilung für die Daten `height` mit Bins der Breit
 1. **Bins erstellen:**  
    Erzeugen Sie mit `seq()` eine Sequenz von Grenzwerten.
    
-   ```{r}
-   bins <- seq(155, 185, by = 5)
-   ```
+```{r}
+bins <- seq(155, 185, by = 5)
+```
    
 2. **Daten in Intervalle einteilen:**  
    Nutzen Sie `cut()` zur Unterteilung der `height`-Daten.
    
-   ```{r}
-   height_bins <- data$height |> cut(breaks = bins, right = TRUE)
-   ```
+```{r}
+height_bins <- data$height |> cut(breaks = bins, right = TRUE)
+```
    
 3. **Häufigkeiten berechnen:**  
    Wenden Sie `table()` auf die in Intervalle eingeteilten Daten an.
    
-   ```{r}
-   height_freq <- table(height_bins)
-   print(height_freq)
-   ```
+```{r}
+height_freq <- table(height_bins)
+print(height_freq)
+```
    
 4. **Ergebnisvergleich:**  
    Vergleichen Sie Ihre Häufigkeiten mit den vorgegebenen Werten.
@@ -204,43 +212,43 @@ Ermitteln Sie die kumulative Häufigkeit für `height` mit denselben Bins wie in
 1. **Kumulative Häufigkeiten berechnen:**  
    Verwenden Sie `cumsum()` auf der Häufigkeitstabelle.
    
-   ```{r}
-   height_cum <- height_freq |> cumsum()
-   print(height_cum)
-   ```
+```{r}
+height_cum <- height_freq |> cumsum()
+print(height_cum)
+```
    
 2. **Interpretation:**  
    Erläutern Sie, wie die kumulative Häufigkeit angibt, wie viele Werte bis zu einem bestimmten Intervall erreicht werden.
 
-# Aufgabe 8: Histogramme für `fruit` und `reaction1`
+# Aufgabe 8: Histogramme für `foot` und `reaction1`
 
-Die Variablen `fruit` und `reaction1` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+Die Variablen `foot` und `reaction1` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
 
 **Aufgabenstellung:**  
-Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
+Erstellen Sie geeignete Histogramme für die Variablen `foot` und `reaction1`.
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Daten laden und Histogramm für `fruit` erstellen:**  
+1. **Daten laden und Histogramm für `foot` erstellen:**  
    Laden Sie die Daten und nutzen Sie die Funktion `hist()`, um die Verteilung darzustellen.
    
-   ```{r, message=FALSE, warning=FALSE}
-   library(readxl)
-   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
-   
-   # Convert fruit to numeric if it's not already
-   fruit_numeric <- as.numeric(data$fruit)
-   hist(fruit_numeric, main = "Histogramm von Fruit", xlab = "Fruit", col = "lightblue")
-   ```
+```{r, message=FALSE, warning=FALSE}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+# Convert foot to numeric if it's not already
+foot_numeric <- as.numeric(data$foot)
+hist(foot_numeric, main = "Histogramm von foot", xlab = "foot", col = "lightblue")
+```
    
 2. **Histogramm für `reaction1`:**  
    Erstellen Sie analog ein Histogramm für `reaction1`.
    
-   ```{r}
-   # Convert reaction1 to numeric if it's not already
-   reaction1_numeric <- as.numeric(data$reaction1)
-   hist(reaction1_numeric, main = "Histogramm von Reaction1", xlab = "Reaction1", col = "lightgreen")
-   ```
+```{r}
+# Convert reaction1 to numeric if it's not already
+reaction1_numeric <- as.numeric(data$reaction1)
+hist(reaction1_numeric, main = "Histogramm von Reaction1", xlab = "Reaction1", col = "lightgreen")
+```
    
 3. **Analyse:**  
    Kommentieren Sie, ob die Verteilungen symmetrisch oder schief sind.
@@ -257,36 +265,36 @@ Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblat
 
 1. **Daten laden und Gesamthistogramm für `height` erstellen:**  
    
-   ```{r, message=FALSE, warning=FALSE}
-   library(readxl)
-   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
-   
-   hist(data$height, main = "Histogramm von Height", xlab = "Height", col = "lightgrey")
-   ```
+```{r, message=FALSE, warning=FALSE}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+hist(data$height, main = "Histogramm von Height", xlab = "Height", col = "lightgrey")
+```
    
 2. **Daten nach Geschlecht aufteilen:**  
    Erzeugen Sie zwei Subsets für Männer und Frauen.
    
-   ```{r}
-   height_m <- data$height[data$gender == "Male"]
-   height_f <- data$height[data$gender == "Female"]
-   ```
+```{r}
+height_m <- data$height[data$gender == "Male"]
+height_f <- data$height[data$gender == "Female"]
+```
    
 3. **Histogramme mit einheitlicher Skala:**  
    Bestimmen Sie gemeinsame x- und y-Achsenlimits und plotten Sie beide Histogramme übereinander.
    
-   ```{r, fig.height=8}
-   x_range <- range(data$height)
-   y_max <- max(hist(height_m, plot = FALSE)$counts, hist(height_f, plot = FALSE)$counts)
-   
-   par(mfrow = c(2, 1))
-   hist(height_m, main = "Histogramm von Height (Männer)", xlab = "Height", 
-        xlim = x_range, ylim = c(0, y_max), col = "lightblue")
-   hist(height_f, main = "Histogramm von Height (Frauen)", xlab = "Height", 
-        xlim = x_range, ylim = c(0, y_max), col = "lightpink")
-   par(mfrow = c(1, 1))
-   ```
-   
+```{r, fig.height=8}
+x_range <- range(data$height)
+y_max <- max(hist(height_m, plot = FALSE)$counts, hist(height_f, plot = FALSE)$counts)
+
+par(mfrow = c(2, 1))
+hist(height_m, main = "Histogramm von Height (Männer)", xlab = "Height", 
+     xlim = x_range, ylim = c(0, y_max), col = "lightblue")
+hist(height_f, main = "Histogramm von Height (Frauen)", xlab = "Height", 
+     xlim = x_range, ylim = c(0, y_max), col = "lightpink")
+par(mfrow = c(1, 1))
+```
+
 4. **Diskussion:**  
    Vergleichen Sie die Verteilungen und diskutieren Sie, ob Unterschiede (z.B. Bimodalität) zwischen den Geschlechtern erkennbar sind.
 
@@ -302,42 +310,42 @@ Die Variablen `hair` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblatt 
 
 1. **Daten laden und Histogramm für `hair` erstellen:**  
    
-   ```{r, message=FALSE, warning=FALSE}
-   library(readxl)
-   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
-   
-   # Convert hair to numeric if needed
-   hair_numeric <- as.numeric(data$hair)
-   hist(hair_numeric, main = "Histogramm von Hair", xlab = "Hair", col = "lightgrey")
-   ```
+```{r, message=FALSE, warning=FALSE}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+# Convert hair to numeric if needed
+hair_numeric <- as.numeric(data$hair)
+hist(hair_numeric, main = "Histogramm von Hair", xlab = "Hair", col = "lightgrey")
+```
    
 2. **Aufteilung nach Geschlecht:**  
    Erzeugen Sie Subsets für Männer und Frauen.
    
-   ```{r}
-   # Convert hair values by gender to numeric
-   hair_m <- as.numeric(data$hair[data$gender == "Male"])
-   hair_f <- as.numeric(data$hair[data$gender == "Female"])
-   ```
+```{r}
+# Convert hair values by gender to numeric
+hair_m <- as.numeric(data$hair[data$gender == "Male"])
+hair_f <- as.numeric(data$hair[data$gender == "Female"])
+```
    
 3. **Histogramme mit einheitlicher Skala:**  
    Bestimmen Sie gemeinsame Achsenlimits und plotten Sie die Histogramme.
    
-   ```{r, fig.height=8}
-   x_range_hair <- range(c(hair_m, hair_f), na.rm = TRUE)
-   
-   # Create histograms with appropriate breaks
-   hist_m <- hist(hair_m, plot = FALSE)
-   hist_f <- hist(hair_f, plot = FALSE)
-   y_max_hair <- max(hist_m$counts, hist_f$counts)
-   
-   par(mfrow = c(2, 1))
-   hist(hair_m, main = "Histogramm von Hair (Männer)", xlab = "Hair", 
-        ylim = c(0, y_max_hair), col = "lightblue")
-   hist(hair_f, main = "Histogramm von Hair (Frauen)", xlab = "Hair", 
-        ylim = c(0, y_max_hair), col = "lightpink")
-   par(mfrow = c(1, 1))
-   ```
+```{r, fig.height=8}
+x_range_hair <- range(c(hair_m, hair_f), na.rm = TRUE)
+
+# Create histograms with appropriate breaks
+hist_m <- hist(hair_m, plot = FALSE)
+hist_f <- hist(hair_f, plot = FALSE)
+y_max_hair <- max(hist_m$counts, hist_f$counts)
+
+par(mfrow = c(2, 1))
+hist(hair_m, main = "Histogramm von Hair (Männer)", xlab = "Hair", 
+     ylim = c(0, y_max_hair), col = "lightblue")
+hist(hair_f, main = "Histogramm von Hair (Frauen)", xlab = "Hair", 
+     ylim = c(0, y_max_hair), col = "lightpink")
+par(mfrow = c(1, 1))
+```
    
 4. **Interpretation:**  
    Diskutieren Sie, ob und welche Unterschiede in der Verteilung zwischen den Geschlechtern ersichtlich sind.
@@ -353,22 +361,22 @@ Erstellen Sie ein passendes Histogramm für `cash` und geben Sie an, ob die Date
 
 1. **Daten laden und Histogramm erstellen:**  
    
-   ```{r, message=FALSE, warning=FALSE}
-   library(readxl)
-   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
-   
-   # Convert cash to numeric if needed and handle NA values
-   cash_numeric <- as.numeric(data$cash)
-   cash_numeric <- cash_numeric[!is.na(cash_numeric)]
-   
-   # Use breaks that work with the data range
-   hist(cash_numeric, 
-        main = "Histogramm von Cash", 
-        xlab = "Cash", 
-        col = "lightgrey",
-        breaks = "Sturges")  # Using Sturges algorithm for breaks
-   ```
-   
+```{r, message=FALSE, warning=FALSE}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+# Convert cash to numeric if needed and handle NA values
+cash_numeric <- as.numeric(data$cash)
+cash_numeric <- cash_numeric[!is.na(cash_numeric)]
+
+# Use breaks that work with the data range
+hist(cash_numeric, 
+     main = "Histogramm von Cash", 
+     xlab = "Cash", 
+     col = "lightgrey",
+     breaks = "Sturges")  # Using Sturges algorithm for breaks
+```
+
 2. **Analyse der Schiefe:**  
    Beobachten Sie, ob die Verteilung einen langen rechten Schwanz (rechtsschief) aufweist.  
    Die Lösung weist darauf hin, dass extreme Werte vorhanden sind, welche die Verteilung asymmetrisch machen.
@@ -387,28 +395,28 @@ Erstellen Sie `Hoehe.m` und `Hoehe.f` für die Grösse der Männer und Frauen. W
 
 1. **Daten laden und nach Geschlecht aufteilen:**  
    
-   ```r
-   library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
-   
-   Hoehe.m <- data$height[data$gender == "Male"]
-   Hoehe.f <- data$height[data$gender == "Female"]
-   ```
+```{r}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+Hoehe.m <- data$height[data$gender == "Male"]
+Hoehe.f <- data$height[data$gender == "Female"]
+```
    
 2. **Ermittlung des kleinsten Mannes:**  
    
-   ```r
-   min_m <- Hoehe.m |> min()
-   ```
+```{r}
+min_m <- Hoehe.m |> min()
+```
    
 3. **Zählen der Frauen, die grösser sind als der kleinste Mann:**  
    
-   ```r
-   count_f <- (Hoehe.f > min_m) |> sum()
-   print(count_f)
-   ```
+```{r}
+count_f <- (Hoehe.f > min_m) |> sum()
+print(count_f)
+```
    
-   Laut Lösung sollten 61 Frauen grösser sein als der kleinste Mann.
+   Es sollten 61 Frauen grösser sein als der kleinste Mann.
 
 # Aufgabe 13: Fusslängenanalyse
 
@@ -422,13 +430,13 @@ Hat der grösste Mann auch die grössten Fusslaengen? Wie sieht es bei den Fraue
 
 1. **Daten laden und Fusslängen nach Geschlecht aufteilen:**  
    
-   ```r
-   library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
-   
-   foot.m <- data$foot[data$gender == "Male"]
-   foot.f <- data$foot[data$gender == "Female"]
-   ```
+```{r}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+foot.m <- data$foot[data$gender == "Male"]
+foot.f <- data$foot[data$gender == "Female"]
+```
    
 2. **Vergleich:**  
    - Ermitteln Sie die maximale Fusslänge bei Männern mit `max(foot.m)`.  
@@ -448,14 +456,14 @@ Wie viele Personen in den Daten erfüllen die Mindestgrösse (Männer $\geq$ 173
 1. **Filterung der Daten:**  
    Selektieren Sie Personen, die die entsprechenden Mindestgrösse erfüllen.
    
-   ```r
-   suitable <- data |> 
-     subset((gender == "Male" & height >= 173) | (gender == "Female" & height >= 163)) |>
-     {\(df) df$height}()
-   
-   count_suitable <- suitable |> length()
-   print(count_suitable)
-   ```
+```{r}
+suitable <- data |> 
+  subset((gender == "Male" & height >= 173) | (gender == "Female" & height >= 163)) |>
+  {\(df) df$height}()
+
+count_suitable <- suitable |> length()
+print(count_suitable)
+```
    
 2. **Ergebnis:**  
    Die Lösung nennt 185 Personen.
@@ -471,27 +479,27 @@ Erstellen Sie die Liste `month` (mit der library lubridate), welche die Geburtsm
 
 1. **Daten laden und Bibliotheken einbinden:**  
    
-   ```r
-   library(readxl)
-   library(lubridate)
-   
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
-   ```
+```{r}
+library(readxl)
+library(lubridate)
+
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+```
    
 2. **Extraktion der Monate:**  
    Extrahieren Sie die Monate aus dem Geburtsdatum mit der `month()`-Funktion.
    
-   ```r
-   months <- data$dob |> month()
-   ```
+```{r}
+months <- data$dob |> month()
+```
    
 3. **Zählen der im April Geborenen:**  
    Da `month()` für April den Wert 4 zurückgibt:
    
-   ```r
-   count_april <- (months == 4) |> sum()
-   print(count_april)
-   ```
+```{r}
+count_april <- (months == 4) |> sum()
+print(count_april)
+```
    
    Die Lösung gibt 24 Personen an.
 
@@ -507,14 +515,14 @@ Erstellen Sie eine Kontingenztabelle mit den Variablen `gender` und `eye`.
 1. **Daten laden und Tabelle erstellen:**  
    Laden Sie die Daten und verwenden Sie `table()` zur Erstellung der Kontingenztabelle.
    
-   ```r
-   library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
-   
-   kontingenz <- data |> with(table(gender, eye))
-   print(kontingenz)
-   ```
-   
+```{r}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+kontingenz <- data |> with(table(gender, eye))
+print(kontingenz)
+```
+
 2. **Interpretation:**  
    Vergleichen Sie Ihre Ergebnisse mit den Lösungsvorgaben und diskutieren Sie mögliche Zusammenhänge.
 
@@ -532,31 +540,31 @@ Erstellen Sie ein Streudiagramm und kommentieren Sie die Art der Beziehung zwisc
 
 1. **Daten laden und Streudiagramm für `height` und `hair` erstellen:**  
    
-   ```r
-   library(readxl)
-   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
-   
-   plot(data$height, data$hair, main = "Scatterplot: Height vs. Hair", 
-        xlab = "Height", ylab = "Hair")
-   ```
+```{r}
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+
+plot(data$height, data$hair, main = "Scatterplot: Height vs. Hair", 
+     xlab = "Height", ylab = "Hair")
+```
    
    - Interpretieren Sie, ob ein negativer oder positiver Zusammenhang besteht.
 
 2. **Streudiagramm für `height` und `foot`:**  
    
-   ```r
-   plot(data$height, data$foot, main = "Scatterplot: Height vs. Foot", 
-        xlab = "Height", ylab = "Foot")
-   ```
+```{r}
+plot(data$height, data$foot, main = "Scatterplot: Height vs. Foot", 
+     xlab = "Height", ylab = "Foot")
+```
    
    - Es wird ein positiver linearer Zusammenhang erwartet.
 
 3. **Streudiagramm für `height` und `reaction1`:**  
-   
-   ```r
-   plot(data$height, data$reaction1, main = "Scatterplot: Height vs. Reaction1", 
-        xlab = "Height", ylab = "Reaction1")
-   ```
+
+```{r}
+plot(data$height, data$reaction1, main = "Scatterplot: Height vs. Reaction1", 
+     xlab = "Height", ylab = "Reaction1")
+```
    
    - Diskutieren Sie, dass hier der Zusammenhang weniger eindeutig ist.
 
@@ -577,19 +585,19 @@ Analysieren Sie die Umfragedaten von Golfspielern und -spielerinnen hinsichtlich
 1. **Erstellung der Ausgangsdaten:**  
    Erstellen Sie separate Matrizen für Männer und Frauen anhand der vorliegenden Umfragedaten.
    
-   ```r
-   # Daten für Männer:
-   # Zeilen: Handicap unter 15 und Handicap 15 und mehr
-   # Spalten: "Zu schnell" und "Ok"
-   golfer_maennlich <- matrix(c(10, 40, 25, 25), nrow = 2, byrow = TRUE)
-   colnames(golfer_maennlich) <- c("Zu schnell", "Ok")
-   rownames(golfer_maennlich) <- c("Handicap < 15", "Handicap $\\geq$ 15")
-   
-   # Daten für Frauen:
-   golfer_weiblich <- matrix(c(1, 9, 39, 51), nrow = 2, byrow = TRUE)
-   colnames(golfer_weiblich) <- c("Zu schnell", "Ok")
-   rownames(golfer_weiblich) <- c("Handicap < 15", "Handicap $\\geq$ 15")
-   ```
+```{r}
+# Daten für Männer:
+# Zeilen: Handicap unter 15 und Handicap 15 und mehr
+# Spalten: "Zu schnell" und "Ok"
+golfer_maennlich <- matrix(c(10, 40, 25, 25), nrow = 2, byrow = TRUE)
+colnames(golfer_maennlich) <- c("Zu schnell", "Ok")
+rownames(golfer_maennlich) <- c("Handicap < 15", "Handicap $\\geq$ 15")
+
+# Daten für Frauen:
+golfer_weiblich <- matrix(c(1, 9, 39, 51), nrow = 2, byrow = TRUE)
+colnames(golfer_weiblich) <- c("Zu schnell", "Ok")
+rownames(golfer_weiblich) <- c("Handicap < 15", "Handicap $\\geq$ 15")
+```
    
 2. **Kombinierte Kontingenztabelle:**  
    Fassen Sie die Daten in einer Gesamtübersicht zusammen, in der die Zeilen die Geschlechter und die Spalten die Bewertungen darstellen.
@@ -597,14 +605,14 @@ Analysieren Sie die Umfragedaten von Golfspielern und -spielerinnen hinsichtlich
 3. **Berechnung der Prozentsätze:**  
    Ermitteln Sie die Prozentsätze innerhalb der jeweiligen Gruppen.
    
-   ```r
-   total_maennlich <- sum(golfer_maennlich)
-   total_weiblich <- sum(golfer_weiblich)
-   perc_maennlich <- round(golfer_maennlich / total_maennlich * 100, 1)
-   perc_weiblich <- round(golfer_weiblich / total_weiblich * 100, 1)
-   print(perc_maennlich)
-   print(perc_weiblich)
-   ```
+```{r}
+total_maennlich <- sum(golfer_maennlich)
+total_weiblich <- sum(golfer_weiblich)
+perc_maennlich <- round(golfer_maennlich / total_maennlich * 100, 1)
+perc_weiblich <- round(golfer_weiblich / total_weiblich * 100, 1)
+print(perc_maennlich)
+print(perc_weiblich)
+```
    
    - Die Lösung zeigt, dass insgesamt Frauen mit ca. 40% einen höheren Anteil an der Aussage „zu schnell“ aufweisen als Männer (35%).
    - Bei Spielern mit niedrigem Handicap liegt der höhere Beschwerdeanteil bei den Männern (20%), während bei den Spielern mit höherem Handicap ebenfalls die Männer (50%) den höheren Anteil haben.
@@ -613,7 +621,5 @@ Analysieren Sie die Umfragedaten von Golfspielern und -spielerinnen hinsichtlich
    - Diskutieren Sie, dass aggregierte Daten (aus Teil a) einen anderen Eindruck vermitteln können als die getrennte Betrachtung (Teile b und c).  
    - Erklären Sie, dass Unterschiede in der Handicapverteilung Einfluss auf die aggregierten Ergebnisse haben und warum dies zu scheinbaren Widersprüchen führen kann.
 
-# Schlussfolgerung
 
-Fassen Sie abschliessend die wichtigsten Erkenntnisse zusammen und betonen Sie, wie wichtig eine differenzierte Betrachtung (z.B. getrennt nach Geschlecht oder Handicap) für eine aussagekräftige Datenanalyse ist. Nutzen Sie diesen Übungsleitfaden, um die einzelnen Schritte nachzuvollziehen und ähnliche Aufgaben eigenständig zu bearbeiten.
 
