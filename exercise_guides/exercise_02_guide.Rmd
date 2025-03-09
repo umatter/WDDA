@@ -228,14 +228,18 @@ Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
    library(readxl)
    data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    
-   hist(data$fruit, main = "Histogramm von Fruit", xlab = "Fruit", col = "lightblue")
+   # Convert fruit to numeric if it's not already
+   fruit_numeric <- as.numeric(data$fruit)
+   hist(fruit_numeric, main = "Histogramm von Fruit", xlab = "Fruit", col = "lightblue")
    ```
    
 2. **Histogramm für `reaction1`:**  
    Erstellen Sie analog ein Histogramm für `reaction1`.
    
    ```{r}
-   hist(data$reaction1, main = "Histogramm von Reaction1", xlab = "Reaction1", col = "lightgreen")
+   # Convert reaction1 to numeric if it's not already
+   reaction1_numeric <- as.numeric(data$reaction1)
+   hist(reaction1_numeric, main = "Histogramm von Reaction1", xlab = "Reaction1", col = "lightgreen")
    ```
    
 3. **Analyse:**  
