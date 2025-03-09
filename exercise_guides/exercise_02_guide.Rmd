@@ -546,7 +546,7 @@ Erstellen Sie ein Streudiagramm und kommentieren Sie die Art der Beziehung zwisc
 
 1. **Daten laden und Streudiagramm für `height` und `hair` erstellen:**  
    
-```{r}
+```{r, fig.height=4}
 library(readxl)
 data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
 
