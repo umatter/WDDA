@@ -1,0 +1,541 @@
+---
+title: "Übungsleitfaden zu WDDA FS 2024: Aufgabe 2"
+author: "Ihr Name"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+lang: de
+---
+
+# Einleitung
+
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie 2. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
+
+
+# Aufgabe 1: Häufigkeitsverteilung von `transport`
+
+Die variable `transport` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
+**Aufgabenstellung:**  
+Ermitteln Sie die Häufigkeitsverteilung von `transport`.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Daten laden:**  
+   Laden Sie den Datensatz in R, beispielsweise mit `read.csv()`.
+
+2. **Variable extrahieren:**  
+   Wählen Sie die Variable `transport` aus dem Datensatz aus.
+
+3. **Häufigkeitsverteilung berechnen:**  
+   Verwenden Sie die Funktion `table()`, um die Häufigkeiten der einzelnen Kategorien zu ermitteln.
+   
+   ```r
+   # Beispielcode: Passen Sie den Dateinamen an
+   data <- read.csv("daten.csv", header = TRUE, stringsAsFactors = FALSE)
+   transport_freq <- table(data$transport)
+   print(transport_freq)
+   ```
+   
+4. **Ergebnisvergleich:**  
+   Vergleichen Sie Ihre Resultate mit den Lösungsvorgaben:
+   - Bicycle: 7  
+   - Bus: 35  
+   - Car: 22  
+   - Other: 2  
+   - Train: 149  
+   - Walk: 2
+
+# Aufgabe 2: Balkendiagramme für `gender`, `transport` und `maths`
+
+Die Variablen `gender`, `transport` und `maths` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
+**Aufgabenstellung:**  
+Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `gender`, (b) `transport` und (c) `maths` darzustellen.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Daten vorbereiten:**  
+   Laden Sie den Datensatz und extrahieren Sie die Variablen `gender`, `transport` und `maths`.
+
+2. **Häufigkeiten berechnen:**  
+   Nutzen Sie `table()` für jede Variable.
+   
+   ```r
+   gender_freq <- table(data$gender)
+   transport_freq <- table(data$transport)
+   maths_freq <- table(data$maths)
+   ```
+   
+3. **Balkendiagramme erstellen:**  
+   Nutzen Sie `barplot()`, um die Häufigkeiten grafisch darzustellen.
+   
+   ```r
+   # Balkendiagramm für gender
+   barplot(gender_freq, main = "Verteilung von Gender", col = "lightblue", ylab = "Häufigkeit")
+   
+   # Balkendiagramm für transport
+   barplot(transport_freq, main = "Verteilung von Transport", col = "lightgreen", ylab = "Häufigkeit")
+   
+   # Balkendiagramm für maths
+   barplot(maths_freq, main = "Verteilung von Maths", col = "lightcoral", ylab = "Häufigkeit")
+   ```
+   
+4. **Interpretation:**  
+   Erläutern Sie, was die Diagramme aussagen und ob die Verteilungen erwartungsgemäss erscheinen.
+
+# Aufgabe 3: Analyse der Diagrammdarstellung der Semester-Noten
+
+**Aufgabenstellung:**  
+(a) Erklären Sie, warum das gezeigte Diagramm (Screenshot) eine schlechte Grafik ist.  
+(b) Skizzieren Sie, wie das Diagramm stattdessen aussehen soll.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Problemerkennung:**  
+   - Das Diagramm verwendet eine Darstellungsform (z. B. Linien- oder Punktdiagramm), die für ordinale Daten wie Noten ungeeignet ist.  
+   - Die Ordinalskala der Noten wird nicht adäquat berücksichtigt, was zu Missverständnissen führen kann.
+
+2. **Verbesserungsvorschlag:**  
+   - Verwenden Sie ein Balkendiagramm, das die Häufigkeiten der einzelnen Noten klar darstellt.  
+   - Alternativ kann ein Boxplot zur Veranschaulichung der Verteilung genutzt werden, wobei bei ordinalen Daten ein Balkendiagramm meist besser geeignet ist.
+
+3. **Skizze:**  
+   Skizzieren Sie ein Diagramm, in dem:
+   - Die x-Achse die Noten (ordinal) anzeigt.
+   - Die y-Achse die Anzahl der Schüler pro Note darstellt.
+   - Klare und nicht verzerrte Balken verwendet werden.
+
+# Aufgabe 4: Kreisdiagramme für `eye` und `eyetext`
+
+**Aufgabenstellung:**  
+Erstellen Sie geeignete Kreisdiagramme, um die relative Verteilung der Daten von `eye` und `eyetext` darzustellen.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Relative Häufigkeiten berechnen:**  
+   Erstellen Sie zunächst eine Häufigkeitstabelle und wandeln Sie diese in relative Häufigkeiten um.
+   
+   ```r
+   eye_freq <- table(data$eye)
+   eye_rel <- prop.table(eye_freq)
+   ```
+   
+2. **Kreisdiagramm erstellen:**  
+   Nutzen Sie `pie()`, um die relativen Anteile darzustellen.
+   
+   ```r
+   pie(eye_rel, main = "Relative Verteilung von Eye")
+   ```
+   
+3. **Wiederholung für `eyetext`:**  
+   Berechnen Sie die Häufigkeiten für `eyetext` und erstellen Sie ein entsprechendes Kreisdiagramm.
+
+# Aufgabe 5: Problematische Darstellung des Marktanteils bei Steve Jobs
+
+**Aufgabenstellung:**  
+Das Bild zeigt Steve Jobs, der in einer Keynote den Marktanteil seiner Firma Apple präsentiert. Erklären Sie, was das Problem mit der Darstellung ist, und geben Sie eine korrigierte Version an.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Problemerkennung:**  
+   - Die Darstellung leidet unter perspektivischen Verzerrungen: Einige Segmente (z. B. die grüne Scheibe) wirken optisch grösser oder kleiner als ihre tatsächlichen Prozentwerte.  
+   - Dies führt zu Fehlinterpretationen der realen Anteile.
+
+2. **Korrigierte Darstellung:**  
+   - Nutzen Sie ein einfaches Kreisdiagramm ohne perspektivische Effekte, das die genauen Prozentwerte wiedergibt.  
+   - Alternativ ist ein Balkendiagramm vorzuziehen, bei dem die Längen der Balken direkt die Prozentzahlen widerspiegeln.
+
+3. **Zusammenfassung:**  
+   Die korrigierte Darstellung muss die tatsächlichen Verhältnisse (z. B. 19.5% versus 21.2%) ohne optische Täuschung klar erkennbar machen.
+
+# Aufgabe 6: Häufigkeitsverteilung von `height` in Bins
+
+**Aufgabenstellung:**  
+Finden Sie die Häufigkeitsverteilung für die Daten `height` mit Bins der Breite 5 cm, von 155 cm bis 185 cm.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Bins erstellen:**  
+   Erzeugen Sie mit `seq()` eine Sequenz von Grenzwerten.
+   
+   ```r
+   bins <- seq(155, 185, by = 5)
+   ```
+   
+2. **Daten in Intervalle einteilen:**  
+   Nutzen Sie `cut()` zur Unterteilung der `height`-Daten.
+   
+   ```r
+   height_bins <- cut(data$height, breaks = bins, right = TRUE)
+   ```
+   
+3. **Häufigkeiten berechnen:**  
+   Wenden Sie `table()` auf die in Intervalle eingeteilten Daten an.
+   
+   ```r
+   height_freq <- table(height_bins)
+   print(height_freq)
+   ```
+   
+4. **Ergebnisvergleich:**  
+   Vergleichen Sie Ihre Häufigkeiten mit den vorgegebenen Werten.
+
+# Aufgabe 7: Kumulative Häufigkeit für `height`
+
+**Aufgabenstellung:**  
+Ermitteln Sie die kumulative Häufigkeit für `height` mit denselben Bins wie in Aufgabe 6.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Kumulative Häufigkeiten berechnen:**  
+   Verwenden Sie `cumsum()` auf der Häufigkeitstabelle.
+   
+   ```r
+   height_cum <- cumsum(height_freq)
+   print(height_cum)
+   ```
+   
+2. **Interpretation:**  
+   Erläutern Sie, wie die kumulative Häufigkeit angibt, wie viele Werte bis zu einem bestimmten Intervall erreicht werden.
+
+# Aufgabe 8: Histogramme für `fruit` und `reaction1`
+
+**Aufgabenstellung:**  
+Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Histogramm für `fruit`:**  
+   Nutzen Sie die Funktion `hist()`, um die Verteilung darzustellen.
+   
+   ```r
+   hist(data$fruit, main = "Histogramm von Fruit", xlab = "Fruit", col = "lightblue")
+   ```
+   
+2. **Histogramm für `reaction1`:**  
+   Erstellen Sie analog ein Histogramm für `reaction1`.
+   
+   ```r
+   hist(data$reaction1, main = "Histogramm von Reaction1", xlab = "Reaction1", col = "lightgreen")
+   ```
+   
+3. **Analyse:**  
+   Kommentieren Sie, ob die Verteilungen symmetrisch oder schief sind.
+
+# Aufgabe 9: Histogramm für `height` und Geschlechtervergleich
+
+**Aufgabenstellung:**  
+(a) Zeichnen Sie ein Histogramm der Variable `height`.  
+(b) Erstellen Sie zwei Unterlisten von `height` für Männer und Frauen und stellen Sie beide Histogramme auf der gleichen Skala dar.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Gesamthistogramm für `height`:**  
+   
+   ```r
+   hist(data$height, main = "Histogramm von Height", xlab = "Height", col = "lightgrey")
+   ```
+   
+2. **Daten nach Geschlecht aufteilen:**  
+   Erzeugen Sie zwei Subsets für Männer und Frauen.
+   
+   ```r
+   height_m <- data$height[data$gender == "Male"]
+   height_f <- data$height[data$gender == "Female"]
+   ```
+   
+3. **Histogramme mit einheitlicher Skala:**  
+   Bestimmen Sie gemeinsame x- und y-Achsenlimits und plotten Sie beide Histogramme übereinander.
+   
+   ```r
+   x_range <- range(data$height)
+   y_max <- max(hist(height_m, plot = FALSE)$counts, hist(height_f, plot = FALSE)$counts)
+   
+   par(mfrow = c(2, 1))
+   hist(height_m, main = "Histogramm von Height (Männer)", xlab = "Height", 
+        xlim = x_range, ylim = c(0, y_max), col = "lightblue")
+   hist(height_f, main = "Histogramm von Height (Frauen)", xlab = "Height", 
+        xlim = x_range, ylim = c(0, y_max), col = "lightpink")
+   par(mfrow = c(1, 1))
+   ```
+   
+4. **Diskussion:**  
+   Vergleichen Sie die Verteilungen und diskutieren Sie, ob Unterschiede (z. B. Bimodalität) zwischen den Geschlechtern erkennbar sind.
+
+# Aufgabe 10: Histogramme für `hair` und Geschlechtervergleich
+
+**Aufgabenstellung:**  
+(a) Zeichnen Sie ein passendes Histogramm für `hair`.  
+(b) Erstellen Sie zwei Unterlisten von `hair` in Bezug auf das Geschlecht und stellen Sie die beiden Histogramme mit der gleichen Skala dar.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Histogramm für `hair`:**  
+   
+   ```r
+   hist(data$hair, main = "Histogramm von Hair", xlab = "Hair", col = "lightgrey")
+   ```
+   
+2. **Aufteilung nach Geschlecht:**  
+   Erzeugen Sie Subsets für Männer und Frauen.
+   
+   ```r
+   hair_m <- data$hair[data$gender == "Male"]
+   hair_f <- data$hair[data$gender == "Female"]
+   ```
+   
+3. **Histogramme mit einheitlicher Skala:**  
+   Bestimmen Sie gemeinsame Achsenlimits und plotten Sie die Histogramme.
+   
+   ```r
+   x_range_hair <- range(data$hair)
+   y_max_hair <- max(hist(hair_m, plot = FALSE)$counts, hist(hair_f, plot = FALSE)$counts)
+   
+   par(mfrow = c(2, 1))
+   hist(hair_m, main = "Histogramm von Hair (Männer)", xlab = "Hair", 
+        xlim = x_range_hair, ylim = c(0, y_max_hair), col = "lightblue")
+   hist(hair_f, main = "Histogramm von Hair (Frauen)", xlab = "Hair", 
+        xlim = x_range_hair, ylim = c(0, y_max_hair), col = "lightpink")
+   par(mfrow = c(1, 1))
+   ```
+   
+4. **Interpretation:**  
+   Diskutieren Sie, ob und welche Unterschiede in der Verteilung zwischen den Geschlechtern ersichtlich sind.
+
+# Aufgabe 11: Histogramm für `cash` und Beurteilung der Schiefe
+
+**Aufgabenstellung:**  
+Erstellen Sie ein passendes Histogramm für `cash` und geben Sie an, ob die Daten schief sind.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Histogramm erstellen:**  
+   
+   ```r
+   hist(data$cash, main = "Histogramm von Cash", xlab = "Cash", col = "lightgrey")
+   ```
+   
+2. **Analyse der Schiefe:**  
+   Beobachten Sie, ob die Verteilung einen langen rechten Schwanz (rechtsschief) aufweist.  
+   Die Lösung weist darauf hin, dass extreme Werte vorhanden sind, welche die Verteilung asymmetrisch machen.
+
+3. **Zusammenfassung:**  
+   Erklären Sie, dass eine rechtsschiefe Verteilung charakterisiert ist durch wenige, aber sehr hohe Ausreisser.
+
+# Aufgabe 12: Analyse der Körpergrösse: `Hoehe.m` und `Hoehe.f`
+
+**Aufgabenstellung:**  
+Erstellen Sie `Hoehe.m` und `Hoehe.f` für die Grösse der Männer und Frauen. Wie viele Frauen sind grösser als der kleinste Mann?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Daten nach Geschlecht aufteilen:**  
+   
+   ```r
+   Hoehe.m <- data$height[data$gender == "Male"]
+   Hoehe.f <- data$height[data$gender == "Female"]
+   ```
+   
+2. **Ermittlung des kleinsten Mannes:**  
+   
+   ```r
+   min_m <- min(Hoehe.m)
+   ```
+   
+3. **Zählen der Frauen, die grösser sind als der kleinste Mann:**  
+   
+   ```r
+   count_f <- sum(Hoehe.f > min_m)
+   print(count_f)
+   ```
+   
+   Laut Lösung sollten 61 Frauen grösser sein als der kleinste Mann.
+
+# Aufgabe 13: Fusslängenanalyse
+
+**Aufgabenstellung:**  
+Erstellen Sie `foot.m` und `foot.f` für die Fusslängen der Männer und Frauen.  
+Hat der grösste Mann auch die grössten Fusslaengen? Wie sieht es bei den Frauen aus?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Aufteilung der Fusslängen nach Geschlecht:**  
+   
+   ```r
+   foot.m <- data$foot[data$gender == "Male"]
+   foot.f <- data$foot[data$gender == "Female"]
+   ```
+   
+2. **Vergleich:**  
+   - Ermitteln Sie die maximale Fusslänge bei Männern mit `max(foot.m)`.  
+   - Bestimmen Sie anhand der Körpergrösse, ob der grösste Mann (mittels `max(Hoehe.m)`) auch die grösste Fusslänge aufweist.  
+   - Wiederholen Sie den Vergleich für Frauen.
+   
+3. **Interpretation:**  
+   Die Lösung zeigt, dass beim grössten Mann die Fusslänge nicht maximal ist, während bei den Frauen der Zusammenhang anders sein kann.
+
+# Aufgabe 14: Mindestgrösse für den Beitritt zur britischen Polizei
+
+**Aufgabenstellung:**  
+Wie viele Personen in den Daten erfüllen die Mindestgrösse (Männer ≥ 173 cm, Frauen ≥ 163 cm) für die britische Polizei?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Filterung der Daten:**  
+   Selektieren Sie Personen, die die entsprechenden Mindestgrösse erfüllen.
+   
+   ```r
+   suitable <- data$height[(data$gender == "Male" & data$height >= 173) | 
+                           (data$gender == "Female" & data$height >= 163)]
+   count_suitable <- length(suitable)
+   print(count_suitable)
+   ```
+   
+2. **Ergebnis:**  
+   Die Lösung nennt 185 Personen.
+
+# Aufgabe 15: Geburtsmonate mit lubridate
+
+**Aufgabenstellung:**  
+Erstellen Sie die Liste `month` (mit der library lubridate), welche die Geburtsmonate der Personen enthält. Wie viele Personen wurden im April geboren?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Laden der Bibliothek:**  
+   
+   ```r
+   library(lubridate)
+   ```
+   
+2. **Extraktion der Monate:**  
+   Nehmen wir an, das Geburtsdatum steht in der Variable `dob`.
+   
+   ```r
+   months <- month(data$dob)
+   ```
+   
+3. **Zählen der im April Geborenen:**  
+   Da `month()` für April den Wert 4 zurückgibt:
+   
+   ```r
+   count_april <- sum(months == 4)
+   print(count_april)
+   ```
+   
+   Die Lösung gibt 24 Personen an.
+
+# Aufgabe 16: Kontingenztabelle für `gender` und `eye`
+
+**Aufgabenstellung:**  
+Erstellen Sie eine Kontingenztabelle mit den Variablen `gender` und `eye`.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Tabelle erstellen:**  
+   Verwenden Sie `table()` zur Erstellung der Kontingenztabelle.
+   
+   ```r
+   kontingenz <- table(data$gender, data$eye)
+   print(kontingenz)
+   ```
+   
+2. **Interpretation:**  
+   Vergleichen Sie Ihre Ergebnisse mit den Lösungsvorgaben und diskutieren Sie mögliche Zusammenhänge.
+
+# Aufgabe 17: Streudiagramme und Analyse der Zusammenhänge
+
+**Aufgabenstellung:**  
+Erstellen Sie ein Streudiagramm und kommentieren Sie die Art der Beziehung zwischen den folgenden Variablen:  
+(a) `height` und `hair`  
+(b) `height` und `foot`  
+(c) `height` und `reaction1`
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Streudiagramm für `height` und `hair`:**  
+   
+   ```r
+   plot(data$height, data$hair, main = "Scatterplot: Height vs. Hair", 
+        xlab = "Height", ylab = "Hair")
+   ```
+   
+   - Interpretieren Sie, ob ein negativer oder positiver Zusammenhang besteht.
+
+2. **Streudiagramm für `height` und `foot`:**  
+   
+   ```r
+   plot(data$height, data$foot, main = "Scatterplot: Height vs. Foot", 
+        xlab = "Height", ylab = "Foot")
+   ```
+   
+   - Es wird ein positiver linearer Zusammenhang erwartet.
+
+3. **Streudiagramm für `height` und `reaction1`:**  
+   
+   ```r
+   plot(data$height, data$reaction1, main = "Scatterplot: Height vs. Reaction1", 
+        xlab = "Height", ylab = "Reaction1")
+   ```
+   
+   - Diskutieren Sie, dass hier der Zusammenhang weniger eindeutig ist.
+
+4. **Kommentar:**  
+   Fassen Sie zusammen, welche Zusammenhänge bestehen und welche Interpretationen sich daraus ableiten lassen.
+
+# Aufgabe 18: Analyse der Golfspieler-Umfrage
+
+**Aufgabenstellung:**  
+Analysieren Sie die Umfragedaten von Golfspielern und -spielerinnen hinsichtlich der Wahrnehmung, ob die Grün zu schnell sind.  
+(a) Kombinieren Sie die beiden Kontingenztabellen zu einer Gesamtübersicht (Zeilen: "männlich" und "weiblich"; Spalten: "zu schnell" und "ok").  
+(b) Untersuchen Sie bei Spielern mit niedrigem Handicap, welche Gruppe den höheren Prozentsatz an Beschwerden aufweist.  
+(c) Untersuchen Sie bei Spielern mit höherem Handicap, welche Gruppe den höheren Prozentsatz an Beschwerden aufweist.  
+(d) Diskutieren Sie abschliessend, welche Rückschlüsse auf die Präferenzen in Bezug auf die Geschwindigkeit der Grün gezogen werden können und ob die aggregierten Ergebnisse konsistent mit den gruppenspezifischen Ergebnissen sind.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Erstellung der Ausgangsdaten:**  
+   Erstellen Sie separate Matrizen für Männer und Frauen anhand der vorliegenden Umfragedaten.
+   
+   ```r
+   # Daten für Männer:
+   # Zeilen: Handicap unter 15 und Handicap 15 und mehr
+   # Spalten: "Zu schnell" und "Ok"
+   golfer_maennlich <- matrix(c(10, 40, 25, 25), nrow = 2, byrow = TRUE)
+   colnames(golfer_maennlich) <- c("Zu schnell", "Ok")
+   rownames(golfer_maennlich) <- c("Handicap < 15", "Handicap >= 15")
+   
+   # Daten für Frauen:
+   golfer_weiblich <- matrix(c(1, 9, 39, 51), nrow = 2, byrow = TRUE)
+   colnames(golfer_weiblich) <- c("Zu schnell", "Ok")
+   rownames(golfer_weiblich) <- c("Handicap < 15", "Handicap >= 15")
+   ```
+   
+2. **Kombinierte Kontingenztabelle:**  
+   Fassen Sie die Daten in einer Gesamtübersicht zusammen, in der die Zeilen die Geschlechter und die Spalten die Bewertungen darstellen.
+   
+3. **Berechnung der Prozentsätze:**  
+   Ermitteln Sie die Prozentsätze innerhalb der jeweiligen Gruppen.
+   
+   ```r
+   total_maennlich <- sum(golfer_maennlich)
+   total_weiblich <- sum(golfer_weiblich)
+   perc_maennlich <- round(golfer_maennlich / total_maennlich * 100, 1)
+   perc_weiblich <- round(golfer_weiblich / total_weiblich * 100, 1)
+   print(perc_maennlich)
+   print(perc_weiblich)
+   ```
+   
+   - Die Lösung zeigt, dass insgesamt Frauen mit ca. 40 % einen höheren Anteil an der Aussage „zu schnell“ aufweisen als Männer (35 %).
+   - Bei Spielern mit niedrigem Handicap liegt der höhere Beschwerdeanteil bei den Männern (20 %), während bei den Spielern mit höherem Handicap ebenfalls die Männer (50 %) den höheren Anteil haben.
+
+4. **Diskussion der Inkonsistenzen:**  
+   - Diskutieren Sie, dass aggregierte Daten (aus Teil a) einen anderen Eindruck vermitteln können als die getrennte Betrachtung (Teile b und c).  
+   - Erklären Sie, dass Unterschiede in der Handicapverteilung Einfluss auf die aggregierten Ergebnisse haben und warum dies zu scheinbaren Widersprüchen führen kann.
+
+# Schlussfolgerung
+
+Fassen Sie abschliessend die wichtigsten Erkenntnisse zusammen und betonen Sie, wie wichtig eine differenzierte Betrachtung (z. B. getrennt nach Geschlecht oder Handicap) für eine aussagekräftige Datenanalyse ist. Nutzen Sie diesen Übungsleitfaden, um die einzelnen Schritte nachzuvollziehen und ähnliche Aufgaben eigenständig zu bearbeiten.
+
