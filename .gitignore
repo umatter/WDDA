@@ -31,7 +31,6 @@ _*
 
 # Output files
 *.html
-*.pdf
 *.log
 /doc/
 /Meta/
