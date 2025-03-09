@@ -1,12 +1,10 @@
 ---
-title: "Übungsleitfaden zu WDDA FS 2024: Aufgabe 2"
-author: "Ihr Name"
-date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+title: "WDDA FS 2025: Leitfaden für Aufgabenserie 2"
+date: "`r Sys.Date()`"
 output:
-  pdf_document:
-    number_sections: true
-lang: de
+  pdf_document
 ---
+
 
 # Einleitung
 
@@ -80,7 +78,8 @@ Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `g
    
    ```r
    # Balkendiagramm für gender
-   barplot(gender_freq, main = "Verteilung von Gender", col = "lightblue", ylab = "Häufigkeit")
+   barplot(gender_freq,
+   main = "Verteilung von Gender", col = "lightblue", ylab = "Häufigkeit")
    
    # Balkendiagramm für transport
    barplot(transport_freq, main = "Verteilung von Transport", col = "lightgreen", ylab = "Häufigkeit")
