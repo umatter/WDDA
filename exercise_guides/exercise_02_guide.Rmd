@@ -16,7 +16,7 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 
 # Aufgabe 1: Häufigkeitsverteilung von `transport`
 
-Die variable `transport` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+Die Variable `transport` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
 
 **Aufgabenstellung:**  
 Ermitteln Sie die Häufigkeitsverteilung von `transport`.
@@ -24,7 +24,12 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
 **Schritt-für-Schritt-Erklärung:**
 
 1. **Daten laden:**  
-   Laden Sie den Datensatz in R, beispielsweise mit `read.csv()`.
+   Laden Sie den Datensatz aus der Excel-Datei in R mit der `readxl`-Bibliothek.
+
+   ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   ```
 
 2. **Variable extrahieren:**  
    Wählen Sie die Variable `transport` aus dem Datensatz aus.
@@ -33,8 +38,6 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
    Verwenden Sie die Funktion `table()`, um die Häufigkeiten der einzelnen Kategorien zu ermitteln.
    
    ```r
-   # Beispielcode: Passen Sie den Dateinamen an
-   data <- read.csv("daten.csv", header = TRUE, stringsAsFactors = FALSE)
    transport_freq <- table(data$transport)
    print(transport_freq)
    ```
@@ -58,7 +61,12 @@ Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `g
 **Schritt-für-Schritt-Erklärung:**
 
 1. **Daten vorbereiten:**  
-   Laden Sie den Datensatz und extrahieren Sie die Variablen `gender`, `transport` und `maths`.
+   Laden Sie den Datensatz aus der Excel-Datei und extrahieren Sie die Variablen `gender`, `transport` und `maths`.
+
+   ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   ```
 
 2. **Häufigkeiten berechnen:**  
    Nutzen Sie `table()` für jede Variable.
@@ -110,15 +118,20 @@ Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `g
 
 # Aufgabe 4: Kreisdiagramme für `eye` und `eyetext`
 
+Die Variablen `eye` und `eyetext` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 Erstellen Sie geeignete Kreisdiagramme, um die relative Verteilung der Daten von `eye` und `eyetext` darzustellen.
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Relative Häufigkeiten berechnen:**  
-   Erstellen Sie zunächst eine Häufigkeitstabelle und wandeln Sie diese in relative Häufigkeiten um.
+1. **Daten laden und relative Häufigkeiten berechnen:**  
+   Laden Sie die Daten und erstellen Sie eine Häufigkeitstabelle, die Sie in relative Häufigkeiten umwandeln.
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    eye_freq <- table(data$eye)
    eye_rel <- prop.table(eye_freq)
    ```
@@ -203,15 +216,20 @@ Ermitteln Sie die kumulative Häufigkeit für `height` mit denselben Bins wie in
 
 # Aufgabe 8: Histogramme für `fruit` und `reaction1`
 
+Die Variablen `fruit` und `reaction1` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Histogramm für `fruit`:**  
-   Nutzen Sie die Funktion `hist()`, um die Verteilung darzustellen.
+1. **Daten laden und Histogramm für `fruit` erstellen:**  
+   Laden Sie die Daten und nutzen Sie die Funktion `hist()`, um die Verteilung darzustellen.
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    hist(data$fruit, main = "Histogramm von Fruit", xlab = "Fruit", col = "lightblue")
    ```
    
@@ -227,15 +245,20 @@ Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
 
 # Aufgabe 9: Histogramm für `height` und Geschlechtervergleich
 
+Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 (a) Zeichnen Sie ein Histogramm der Variable `height`.  
 (b) Erstellen Sie zwei Unterlisten von `height` für Männer und Frauen und stellen Sie beide Histogramme auf der gleichen Skala dar.
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Gesamthistogramm für `height`:**  
+1. **Daten laden und Gesamthistogramm für `height` erstellen:**  
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    hist(data$height, main = "Histogramm von Height", xlab = "Height", col = "lightgrey")
    ```
    
@@ -267,15 +290,20 @@ Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
 
 # Aufgabe 10: Histogramme für `hair` und Geschlechtervergleich
 
+Die Variablen `hair` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 (a) Zeichnen Sie ein passendes Histogramm für `hair`.  
 (b) Erstellen Sie zwei Unterlisten von `hair` in Bezug auf das Geschlecht und stellen Sie die beiden Histogramme mit der gleichen Skala dar.
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Histogramm für `hair`:**  
+1. **Daten laden und Histogramm für `hair` erstellen:**  
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    hist(data$hair, main = "Histogramm von Hair", xlab = "Hair", col = "lightgrey")
    ```
    
@@ -307,14 +335,19 @@ Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
 
 # Aufgabe 11: Histogramm für `cash` und Beurteilung der Schiefe
 
+Die Variable `cash` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 Erstellen Sie ein passendes Histogramm für `cash` und geben Sie an, ob die Daten schief sind.
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Histogramm erstellen:**  
+1. **Daten laden und Histogramm erstellen:**  
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    hist(data$cash, main = "Histogramm von Cash", xlab = "Cash", col = "lightgrey")
    ```
    
@@ -327,14 +360,19 @@ Erstellen Sie ein passendes Histogramm für `cash` und geben Sie an, ob die Date
 
 # Aufgabe 12: Analyse der Körpergrösse: `Hoehe.m` und `Hoehe.f`
 
+Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 Erstellen Sie `Hoehe.m` und `Hoehe.f` für die Grösse der Männer und Frauen. Wie viele Frauen sind grösser als der kleinste Mann?
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Daten nach Geschlecht aufteilen:**  
+1. **Daten laden und nach Geschlecht aufteilen:**  
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    Hoehe.m <- data$height[data$gender == "Male"]
    Hoehe.f <- data$height[data$gender == "Female"]
    ```
@@ -356,15 +394,20 @@ Erstellen Sie `Hoehe.m` und `Hoehe.f` für die Grösse der Männer und Frauen. W
 
 # Aufgabe 13: Fusslängenanalyse
 
+Die Variablen `foot`, `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 Erstellen Sie `foot.m` und `foot.f` für die Fusslängen der Männer und Frauen.  
 Hat der grösste Mann auch die grössten Fusslaengen? Wie sieht es bei den Frauen aus?
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Aufteilung der Fusslängen nach Geschlecht:**  
+1. **Daten laden und Fusslängen nach Geschlecht aufteilen:**  
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    foot.m <- data$foot[data$gender == "Male"]
    foot.f <- data$foot[data$gender == "Female"]
    ```
@@ -399,19 +442,24 @@ Wie viele Personen in den Daten erfüllen die Mindestgrösse (Männer ≥ 173 
 
 # Aufgabe 15: Geburtsmonate mit lubridate
 
+Die Variable `dob` (Geburtsdatum) finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 Erstellen Sie die Liste `month` (mit der library lubridate), welche die Geburtsmonate der Personen enthält. Wie viele Personen wurden im April geboren?
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Laden der Bibliothek:**  
+1. **Daten laden und Bibliotheken einbinden:**  
    
    ```r
+   library(readxl)
    library(lubridate)
+   
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
    ```
    
 2. **Extraktion der Monate:**  
-   Nehmen wir an, das Geburtsdatum steht in der Variable `dob`.
+   Extrahieren Sie die Monate aus dem Geburtsdatum mit der `month()`-Funktion.
    
    ```r
    months <- month(data$dob)
@@ -429,15 +477,20 @@ Erstellen Sie die Liste `month` (mit der library lubridate), welche die Geburtsm
 
 # Aufgabe 16: Kontingenztabelle für `gender` und `eye`
 
+Die Variablen `gender` und `eye` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 Erstellen Sie eine Kontingenztabelle mit den Variablen `gender` und `eye`.
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Tabelle erstellen:**  
-   Verwenden Sie `table()` zur Erstellung der Kontingenztabelle.
+1. **Daten laden und Tabelle erstellen:**  
+   Laden Sie die Daten und verwenden Sie `table()` zur Erstellung der Kontingenztabelle.
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    kontingenz <- table(data$gender, data$eye)
    print(kontingenz)
    ```
@@ -447,6 +500,8 @@ Erstellen Sie eine Kontingenztabelle mit den Variablen `gender` und `eye`.
 
 # Aufgabe 17: Streudiagramme und Analyse der Zusammenhänge
 
+Die Variablen `height`, `hair`, `foot` und `reaction1` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
+
 **Aufgabenstellung:**  
 Erstellen Sie ein Streudiagramm und kommentieren Sie die Art der Beziehung zwischen den folgenden Variablen:  
 (a) `height` und `hair`  
@@ -455,9 +510,12 @@ Erstellen Sie ein Streudiagramm und kommentieren Sie die Art der Beziehung zwisc
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Streudiagramm für `height` und `hair`:**  
+1. **Daten laden und Streudiagramm für `height` und `hair` erstellen:**  
    
    ```r
+   library(readxl)
+   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   
    plot(data$height, data$hair, main = "Scatterplot: Height vs. Hair", 
         xlab = "Height", ylab = "Hair")
    ```
