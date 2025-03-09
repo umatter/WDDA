@@ -302,33 +302,40 @@ Die Variablen `hair` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblatt 
 
 1. **Daten laden und Histogramm für `hair` erstellen:**  
    
-   ```r
+   ```{r, message=FALSE, warning=FALSE}
    library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    
-   hist(data$hair, main = "Histogramm von Hair", xlab = "Hair", col = "lightgrey")
+   # Convert hair to numeric if needed
+   hair_numeric <- as.numeric(data$hair)
+   hist(hair_numeric, main = "Histogramm von Hair", xlab = "Hair", col = "lightgrey")
    ```
    
 2. **Aufteilung nach Geschlecht:**  
    Erzeugen Sie Subsets für Männer und Frauen.
    
-   ```r
-   hair_m <- data$hair[data$gender == "Male"]
-   hair_f <- data$hair[data$gender == "Female"]
+   ```{r}
+   # Convert hair values by gender to numeric
+   hair_m <- as.numeric(data$hair[data$gender == "Male"])
+   hair_f <- as.numeric(data$hair[data$gender == "Female"])
    ```
    
 3. **Histogramme mit einheitlicher Skala:**  
    Bestimmen Sie gemeinsame Achsenlimits und plotten Sie die Histogramme.
    
-   ```r
-   x_range_hair <- range(data$hair)
-   y_max_hair <- max(hist(hair_m, plot = FALSE)$counts, hist(hair_f, plot = FALSE)$counts)
+   ```{r, fig.height=8}
+   x_range_hair <- range(c(hair_m, hair_f), na.rm = TRUE)
+   
+   # Create histograms with appropriate breaks
+   hist_m <- hist(hair_m, plot = FALSE)
+   hist_f <- hist(hair_f, plot = FALSE)
+   y_max_hair <- max(hist_m$counts, hist_f$counts)
    
    par(mfrow = c(2, 1))
    hist(hair_m, main = "Histogramm von Hair (Männer)", xlab = "Hair", 
-        xlim = x_range_hair, ylim = c(0, y_max_hair), col = "lightblue")
+        ylim = c(0, y_max_hair), col = "lightblue")
    hist(hair_f, main = "Histogramm von Hair (Frauen)", xlab = "Hair", 
-        xlim = x_range_hair, ylim = c(0, y_max_hair), col = "lightpink")
+        ylim = c(0, y_max_hair), col = "lightpink")
    par(mfrow = c(1, 1))
    ```
    
@@ -346,11 +353,13 @@ Erstellen Sie ein passendes Histogramm für `cash` und geben Sie an, ob die Date
 
 1. **Daten laden und Histogramm erstellen:**  
    
-   ```r
+   ```{r, message=FALSE, warning=FALSE}
    library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    
-   hist(data$cash, main = "Histogramm von Cash", xlab = "Cash", col = "lightgrey")
+   # Convert cash to numeric if needed
+   cash_numeric <- as.numeric(data$cash)
+   hist(cash_numeric, main = "Histogramm von Cash", xlab = "Cash", col = "lightgrey")
    ```
    
 2. **Analyse der Schiefe:**  
