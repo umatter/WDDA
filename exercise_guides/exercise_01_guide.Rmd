@@ -219,7 +219,7 @@ Dies ist eine metrische, stetige Variable, da sie jeden Wert innerhalb eines Ber
 
 Die Armutsgrenze eines Landes kann bestimmt werden durch:
 
-1. **Absoluter Ansatz**: Festlegung eines Mindesteinkommens, das für grundlegende Bedürfnisse benötigt wird (Nahrung, Unterkunft, Kleidung).
+1. **Absoluter Ansatz**: Schätzung des Einkommens, das für grundlegende Bedürfnisse benötigt wird (Nahrung, Unterkunft, Kleidung).
 
 2. **Relativer Ansatz**: Definition von Armut als Prozentsatz des Medianeinkommens (z.B. 60% des Medianeinkommens).
 
@@ -239,9 +239,6 @@ Die Ausdauerleistung eines Sportlers kann gemessen werden durch:
 
 3. **VO2-max-Tests**: Messung des maximalen Sauerstoffverbrauchs während inkrementeller Übung.
 
-4. **Herzfrequenzerholung**: Wie schnell die Herzfrequenz nach Anstrengung zum Normalzustand zurückkehrt.
-
-5. **Laktat-Schwellen-Tests**: Bestimmung der Übungsintensität, bei der Laktat beginnt, sich im Blut anzusammeln.
 
 Dies ist eine metrische Variable, die stetig sein könnte (wenn Zeit oder physiologische Parameter gemessen werden) oder diskret (wenn standardisierte Leistungskategorien verwendet werden).
 
@@ -255,9 +252,9 @@ Dies ist schwierig genau zu messen, aber Ansätze könnten umfassen:
 
 3. **Experimentelle Einstellungen**: Situationen schaffen, in denen Lügen auftreten könnten, und das Verhalten überwachen.
 
-4. **Physiologische Messungen**: Verwendung von polygraphartigen Messungen in kontrollierten Umgebungen.
 
 Dies wäre eine metrische, diskrete Variable, da Lügen als ganze Zahlen gezählt würden.
+
 
 # Aufgabe 3: Grafikanalyse
 
@@ -608,15 +605,3 @@ Für n=4: m geht von 1 bis 3, also haben wir a(4,1) + a(4,2) + a(4,3) = 13 + 14 
 
 Gesamt: 5 + 19 + 42 = 66
 
-# Fazit
-
-Dieser Leitfaden hat detaillierte Erklärungen für alle Übungen in WDDA FS 2025 Aufgabenserie 1 geliefert. Durch die Bearbeitung dieser Übungen sollten Sie ein besseres Verständnis entwickelt haben für:
-
-1. Wie man Variablen nach Typ (nominal, ordinal, metrisch) und Art (diskret, stetig) klassifiziert
-2. Methoden zur Bestimmung von Werten für verschiedene Arten von Variablen
-3. Wie man grafische Darstellungen von Daten analysiert
-4. Arbeiten mit Datensatzvariablen und Erstellen abgeleiteter Variablen
-5. Verständnis und Manipulation der Summationsnotation
-6. Anwendung von Summationseigenschaften zur Lösung von Problemen
-
-Diese grundlegenden Konzepte sind wesentlich für fortgeschrittenere Datenanalysetechniken, die in zukünftigen Übungen behandelt werden.
