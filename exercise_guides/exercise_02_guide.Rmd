@@ -78,19 +78,23 @@ maths_freq <- data$maths |> table()
 3. **Balkendiagramme erstellen:**  
    Nutzen Sie `barplot()`, um die Häufigkeiten grafisch darzustellen.
    
-```{r, fig.height=8, fig.width=7}
+```{r, fig.height=4, fig.width=7}
 # Balkendiagramm für gender
 barplot(gender_freq,
         main = "Verteilung von Gender",
         col = "lightblue",
         ylab = "Häufigkeit")
+```
 
+```{r, fig.height=4, fig.width=7}
 # Balkendiagramm für transport
 barplot(transport_freq,
         main = "Verteilung von Transport",
         col = "lightgreen",
         ylab = "Häufigkeit")
+```
 
+```{r, fig.height=4, fig.width=7}
 # Balkendiagramm für maths
 barplot(maths_freq,
         main = "Verteilung von Maths",
@@ -232,7 +236,7 @@ Erstellen Sie geeignete Histogramme für die Variablen `foot` und `reaction1`.
 1. **Daten laden und Histogramm für `foot` erstellen:**  
    Laden Sie die Daten und nutzen Sie die Funktion `hist()`, um die Verteilung darzustellen.
    
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.height=4}
 library(readxl)
 data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
 
@@ -244,7 +248,7 @@ hist(foot_numeric, main = "Histogramm von foot", xlab = "foot", col = "lightblue
 2. **Histogramm für `reaction1`:**  
    Erstellen Sie analog ein Histogramm für `reaction1`.
    
-```{r}
+```{r, fig.height=4}
 # Convert reaction1 to numeric if it's not already
 reaction1_numeric <- as.numeric(data$reaction1)
 hist(reaction1_numeric, main = "Histogramm von Reaction1", xlab = "Reaction1", col = "lightgreen")
@@ -265,7 +269,7 @@ Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblat
 
 1. **Daten laden und Gesamthistogramm für `height` erstellen:**  
    
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.height=4}
 library(readxl)
 data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
 
@@ -283,16 +287,17 @@ height_f <- data$height[data$gender == "Female"]
 3. **Histogramme mit einheitlicher Skala:**  
    Bestimmen Sie gemeinsame x- und y-Achsenlimits und plotten Sie beide Histogramme übereinander.
    
-```{r, fig.height=8}
+```{r, fig.height=4}
 x_range <- range(data$height)
 y_max <- max(hist(height_m, plot = FALSE)$counts, hist(height_f, plot = FALSE)$counts)
 
-par(mfrow = c(2, 1))
 hist(height_m, main = "Histogramm von Height (Männer)", xlab = "Height", 
      xlim = x_range, ylim = c(0, y_max), col = "lightblue")
+```
+
+```{r, fig.height=4}
 hist(height_f, main = "Histogramm von Height (Frauen)", xlab = "Height", 
      xlim = x_range, ylim = c(0, y_max), col = "lightpink")
-par(mfrow = c(1, 1))
 ```
 
 4. **Diskussion:**  
@@ -331,7 +336,7 @@ hair_f <- as.numeric(data$hair[data$gender == "Female"])
 3. **Histogramme mit einheitlicher Skala:**  
    Bestimmen Sie gemeinsame Achsenlimits und plotten Sie die Histogramme.
    
-```{r, fig.height=8}
+```{r, fig.height=4}
 x_range_hair <- range(c(hair_m, hair_f), na.rm = TRUE)
 
 # Create histograms with appropriate breaks
@@ -339,12 +344,13 @@ hist_m <- hist(hair_m, plot = FALSE)
 hist_f <- hist(hair_f, plot = FALSE)
 y_max_hair <- max(hist_m$counts, hist_f$counts)
 
-par(mfrow = c(2, 1))
 hist(hair_m, main = "Histogramm von Hair (Männer)", xlab = "Hair", 
      ylim = c(0, y_max_hair), col = "lightblue")
+```
+
+```{r, fig.height=4}
 hist(hair_f, main = "Histogramm von Hair (Frauen)", xlab = "Hair", 
      ylim = c(0, y_max_hair), col = "lightpink")
-par(mfrow = c(1, 1))
 ```
    
 4. **Interpretation:**  
@@ -361,7 +367,7 @@ Erstellen Sie ein passendes Histogramm für `cash` und geben Sie an, ob die Date
 
 1. **Daten laden und Histogramm erstellen:**  
    
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.height=4}
 library(readxl)
 data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
 
@@ -552,7 +558,7 @@ plot(data$height, data$hair, main = "Scatterplot: Height vs. Hair",
 
 2. **Streudiagramm für `height` und `foot`:**  
    
-```{r}
+```{r, fig.height=4}
 plot(data$height, data$foot, main = "Scatterplot: Height vs. Foot", 
      xlab = "Height", ylab = "Foot")
 ```
@@ -561,7 +567,7 @@ plot(data$height, data$foot, main = "Scatterplot: Height vs. Foot",
 
 3. **Streudiagramm für `height` und `reaction1`:**  
 
-```{r}
+```{r, fig.height=4}
 plot(data$height, data$reaction1, main = "Scatterplot: Height vs. Reaction1", 
      xlab = "Height", ylab = "Reaction1")
 ```
