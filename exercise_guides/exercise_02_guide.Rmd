@@ -4,7 +4,6 @@ author: "Ihr Name"
 date: "`r format(Sys.Date(), '%d.%m.%Y')`"
 output:
   pdf_document:
-    toc: true
     number_sections: true
 lang: de
 ---
