@@ -2,7 +2,9 @@
 title: "WDDA FS 2025: Leitfaden für Aufgabenserie 2"
 date: "`r Sys.Date()`"
 output:
-  pdf_document
+  pdf_document:
+    fig_width: 7
+    fig_height: 5
 ---
 
 
@@ -23,7 +25,7 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
 1. **Daten laden:**  
    Laden Sie den Datensatz aus der Excel-Datei in R mit der `readxl`-Bibliothek.
 
-   ```r
+   ```{r, message=FALSE, warning=FALSE}
    library(readxl)
    data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
    ```
@@ -34,7 +36,7 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
 3. **Häufigkeitsverteilung berechnen:**  
    Verwenden Sie die Funktion `table()`, um die Häufigkeiten der einzelnen Kategorien zu ermitteln.
    
-   ```r
+   ```{r}
    data$transport |> table() |> print()
    ```
    
@@ -67,7 +69,7 @@ Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `g
 2. **Häufigkeiten berechnen:**  
    Nutzen Sie `table()` für jede Variable.
    
-   ```r
+   ```{r}
    gender_freq <- data$gender |> table()
    transport_freq <- data$transport |> table()
    maths_freq <- data$maths |> table()
@@ -76,7 +78,7 @@ Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `g
 3. **Balkendiagramme erstellen:**  
    Nutzen Sie `barplot()`, um die Häufigkeiten grafisch darzustellen.
    
-   ```r
+   ```{r, fig.height=8, fig.width=7}
    # Balkendiagramm für gender
    barplot(gender_freq,
    main = "Verteilung von Gender", col = "lightblue", ylab = "Häufigkeit")
@@ -125,7 +127,7 @@ Erstellen Sie geeignete Kreisdiagramme, um die relative Verteilung der Daten von
 1. **Daten laden und relative Häufigkeiten berechnen:**  
    Laden Sie die Daten und erstellen Sie eine Häufigkeitstabelle, die Sie in relative Häufigkeiten umwandeln.
    
-   ```r
+   ```{r, message=FALSE, warning=FALSE}
    library(readxl)
    data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
    
@@ -135,7 +137,7 @@ Erstellen Sie geeignete Kreisdiagramme, um die relative Verteilung der Daten von
 2. **Kreisdiagramm erstellen:**  
    Nutzen Sie `pie()`, um die relativen Anteile darzustellen.
    
-   ```r
+   ```{r}
    pie(eye_rel, main = "Relative Verteilung von Eye")
    ```
    
@@ -170,21 +172,21 @@ Finden Sie die Häufigkeitsverteilung für die Daten `height` mit Bins der Breit
 1. **Bins erstellen:**  
    Erzeugen Sie mit `seq()` eine Sequenz von Grenzwerten.
    
-   ```r
+   ```{r}
    bins <- seq(155, 185, by = 5)
    ```
    
 2. **Daten in Intervalle einteilen:**  
    Nutzen Sie `cut()` zur Unterteilung der `height`-Daten.
    
-   ```r
+   ```{r}
    height_bins <- data$height |> cut(breaks = bins, right = TRUE)
    ```
    
 3. **Häufigkeiten berechnen:**  
    Wenden Sie `table()` auf die in Intervalle eingeteilten Daten an.
    
-   ```r
+   ```{r}
    height_freq <- table(height_bins)
    print(height_freq)
    ```
@@ -202,7 +204,7 @@ Ermitteln Sie die kumulative Häufigkeit für `height` mit denselben Bins wie in
 1. **Kumulative Häufigkeiten berechnen:**  
    Verwenden Sie `cumsum()` auf der Häufigkeitstabelle.
    
-   ```r
+   ```{r}
    height_cum <- height_freq |> cumsum()
    print(height_cum)
    ```
@@ -222,7 +224,7 @@ Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
 1. **Daten laden und Histogramm für `fruit` erstellen:**  
    Laden Sie die Daten und nutzen Sie die Funktion `hist()`, um die Verteilung darzustellen.
    
-   ```r
+   ```{r, message=FALSE, warning=FALSE}
    library(readxl)
    data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
    
@@ -232,7 +234,7 @@ Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
 2. **Histogramm für `reaction1`:**  
    Erstellen Sie analog ein Histogramm für `reaction1`.
    
-   ```r
+   ```{r}
    hist(data$reaction1, main = "Histogramm von Reaction1", xlab = "Reaction1", col = "lightgreen")
    ```
    
@@ -251,7 +253,7 @@ Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblat
 
 1. **Daten laden und Gesamthistogramm für `height` erstellen:**  
    
-   ```r
+   ```{r, message=FALSE, warning=FALSE}
    library(readxl)
    data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
    
@@ -261,7 +263,7 @@ Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblat
 2. **Daten nach Geschlecht aufteilen:**  
    Erzeugen Sie zwei Subsets für Männer und Frauen.
    
-   ```r
+   ```{r}
    height_m <- data$height[data$gender == "Male"]
    height_f <- data$height[data$gender == "Female"]
    ```
@@ -269,7 +271,7 @@ Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblat
 3. **Histogramme mit einheitlicher Skala:**  
    Bestimmen Sie gemeinsame x- und y-Achsenlimits und plotten Sie beide Histogramme übereinander.
    
-   ```r
+   ```{r, fig.height=8}
    x_range <- range(data$height)
    y_max <- max(hist(height_m, plot = FALSE)$counts, hist(height_f, plot = FALSE)$counts)
    
