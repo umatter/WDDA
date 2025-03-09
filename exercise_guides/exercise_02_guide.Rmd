@@ -357,9 +357,16 @@ Erstellen Sie ein passendes Histogramm für `cash` und geben Sie an, ob die Date
    library(readxl)
    data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    
-   # Convert cash to numeric if needed
+   # Convert cash to numeric if needed and handle NA values
    cash_numeric <- as.numeric(data$cash)
-   hist(cash_numeric, main = "Histogramm von Cash", xlab = "Cash", col = "lightgrey")
+   cash_numeric <- cash_numeric[!is.na(cash_numeric)]
+   
+   # Use breaks that work with the data range
+   hist(cash_numeric, 
+        main = "Histogramm von Cash", 
+        xlab = "Cash", 
+        col = "lightgrey",
+        breaks = "Sturges")  # Using Sturges algorithm for breaks
    ```
    
 2. **Analyse der Schiefe:**  
