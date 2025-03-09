@@ -71,9 +71,9 @@ Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `g
    Nutzen Sie `table()` für jede Variable.
    
    ```r
-   gender_freq <- table(data$gender)
-   transport_freq <- table(data$transport)
-   maths_freq <- table(data$maths)
+   gender_freq <- data$gender |> table()
+   transport_freq <- data$transport |> table()
+   maths_freq <- data$maths |> table()
    ```
    
 3. **Balkendiagramme erstellen:**  
@@ -181,7 +181,7 @@ Finden Sie die Häufigkeitsverteilung für die Daten `height` mit Bins der Breit
    Nutzen Sie `cut()` zur Unterteilung der `height`-Daten.
    
    ```r
-   height_bins <- cut(data$height, breaks = bins, right = TRUE)
+   height_bins <- data$height |> cut(breaks = bins, right = TRUE)
    ```
    
 3. **Häufigkeiten berechnen:**  
@@ -206,7 +206,7 @@ Ermitteln Sie die kumulative Häufigkeit für `height` mit denselben Bins wie in
    Verwenden Sie `cumsum()` auf der Häufigkeitstabelle.
    
    ```r
-   height_cum <- cumsum(height_freq)
+   height_cum <- height_freq |> cumsum()
    print(height_cum)
    ```
    
@@ -379,13 +379,13 @@ Erstellen Sie `Hoehe.m` und `Hoehe.f` für die Grösse der Männer und Frauen. W
 2. **Ermittlung des kleinsten Mannes:**  
    
    ```r
-   min_m <- min(Hoehe.m)
+   min_m <- Hoehe.m |> min()
    ```
    
 3. **Zählen der Frauen, die grösser sind als der kleinste Mann:**  
    
    ```r
-   count_f <- sum(Hoehe.f > min_m)
+   count_f <- (Hoehe.f > min_m) |> sum()
    print(count_f)
    ```
    
@@ -430,9 +430,11 @@ Wie viele Personen in den Daten erfüllen die Mindestgrösse (Männer $\geq$ 173
    Selektieren Sie Personen, die die entsprechenden Mindestgrösse erfüllen.
    
    ```r
-   suitable <- data$height[(data$gender == "Male" & data$height >= 173) | 
-                           (data$gender == "Female" & data$height >= 163)]
-   count_suitable <- length(suitable)
+   suitable <- data |> 
+     subset((gender == "Male" & height >= 173) | (gender == "Female" & height >= 163)) |>
+     {\(df) df$height}()
+   
+   count_suitable <- suitable |> length()
    print(count_suitable)
    ```
    
@@ -461,14 +463,14 @@ Erstellen Sie die Liste `month` (mit der library lubridate), welche die Geburtsm
    Extrahieren Sie die Monate aus dem Geburtsdatum mit der `month()`-Funktion.
    
    ```r
-   months <- month(data$dob)
+   months <- data$dob |> month()
    ```
    
 3. **Zählen der im April Geborenen:**  
    Da `month()` für April den Wert 4 zurückgibt:
    
    ```r
-   count_april <- sum(months == 4)
+   count_april <- (months == 4) |> sum()
    print(count_april)
    ```
    
