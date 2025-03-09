@@ -167,7 +167,7 @@ Das Bild zeigt Steve Jobs, der in einer Keynote den Marktanteil seiner Firma App
 # Aufgabe 6: Häufigkeitsverteilung von `height` in Bins
 
 **Aufgabenstellung:**  
-Finden Sie die Häufigkeitsverteilung für die Daten `height` mit Bins der Breite 5 cm, von 155 cm bis 185 cm.
+Finden Sie die Häufigkeitsverteilung für die Daten `height` mit Bins der Breite 5cm, von 155cm bis 185cm.
 
 **Schritt-für-Schritt-Erklärung:**
 
@@ -286,7 +286,7 @@ Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblat
    ```
    
 4. **Diskussion:**  
-   Vergleichen Sie die Verteilungen und diskutieren Sie, ob Unterschiede (z. B. Bimodalität) zwischen den Geschlechtern erkennbar sind.
+   Vergleichen Sie die Verteilungen und diskutieren Sie, ob Unterschiede (z.B. Bimodalität) zwischen den Geschlechtern erkennbar sind.
 
 # Aufgabe 10: Histogramme für `hair` und Geschlechtervergleich
 
@@ -423,7 +423,7 @@ Hat der grösste Mann auch die grössten Fusslaengen? Wie sieht es bei den Fraue
 # Aufgabe 14: Mindestgrösse für den Beitritt zur britischen Polizei
 
 **Aufgabenstellung:**  
-Wie viele Personen in den Daten erfüllen die Mindestgrösse (Männer ≥ 173 cm, Frauen ≥ 163 cm) für die britische Polizei?
+Wie viele Personen in den Daten erfüllen die Mindestgrösse (Männer ≥ 173cm, Frauen ≥ 163cm) für die britische Polizei?
 
 **Schritt-für-Schritt-Erklärung:**
 
@@ -586,8 +586,8 @@ Analysieren Sie die Umfragedaten von Golfspielern und -spielerinnen hinsichtlich
    print(perc_weiblich)
    ```
    
-   - Die Lösung zeigt, dass insgesamt Frauen mit ca. 40 % einen höheren Anteil an der Aussage „zu schnell“ aufweisen als Männer (35 %).
-   - Bei Spielern mit niedrigem Handicap liegt der höhere Beschwerdeanteil bei den Männern (20 %), während bei den Spielern mit höherem Handicap ebenfalls die Männer (50 %) den höheren Anteil haben.
+   - Die Lösung zeigt, dass insgesamt Frauen mit ca. 40% einen höheren Anteil an der Aussage „zu schnell“ aufweisen als Männer (35%).
+   - Bei Spielern mit niedrigem Handicap liegt der höhere Beschwerdeanteil bei den Männern (20%), während bei den Spielern mit höherem Handicap ebenfalls die Männer (50%) den höheren Anteil haben.
 
 4. **Diskussion der Inkonsistenzen:**  
    - Diskutieren Sie, dass aggregierte Daten (aus Teil a) einen anderen Eindruck vermitteln können als die getrennte Betrachtung (Teile b und c).  
@@ -595,5 +595,5 @@ Analysieren Sie die Umfragedaten von Golfspielern und -spielerinnen hinsichtlich
 
 # Schlussfolgerung
 
-Fassen Sie abschliessend die wichtigsten Erkenntnisse zusammen und betonen Sie, wie wichtig eine differenzierte Betrachtung (z. B. getrennt nach Geschlecht oder Handicap) für eine aussagekräftige Datenanalyse ist. Nutzen Sie diesen Übungsleitfaden, um die einzelnen Schritte nachzuvollziehen und ähnliche Aufgaben eigenständig zu bearbeiten.
+Fassen Sie abschliessend die wichtigsten Erkenntnisse zusammen und betonen Sie, wie wichtig eine differenzierte Betrachtung (z.B. getrennt nach Geschlecht oder Handicap) für eine aussagekräftige Datenanalyse ist. Nutzen Sie diesen Übungsleitfaden, um die einzelnen Schritte nachzuvollziehen und ähnliche Aufgaben eigenständig zu bearbeiten.
 
