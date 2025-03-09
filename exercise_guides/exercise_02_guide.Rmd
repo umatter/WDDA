@@ -27,7 +27,7 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
 
    ```{r, message=FALSE, warning=FALSE}
    library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    ```
 
 2. **Variable extrahieren:**  
@@ -63,7 +63,7 @@ Erstellen Sie geeignete Balkendiagramme, um die Verteilung der Daten für (a) `g
 
    ```r
    library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    ```
 
 2. **Häufigkeiten berechnen:**  
@@ -129,7 +129,7 @@ Erstellen Sie geeignete Kreisdiagramme, um die relative Verteilung der Daten von
    
    ```{r, message=FALSE, warning=FALSE}
    library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    
    eye_rel <- data$eye |> table() |> prop.table()
    ```
@@ -226,7 +226,7 @@ Erstellen Sie geeignete Histogramme für die Variablen `fruit` und `reaction1`.
    
    ```{r, message=FALSE, warning=FALSE}
    library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    
    hist(data$fruit, main = "Histogramm von Fruit", xlab = "Fruit", col = "lightblue")
    ```
@@ -255,7 +255,7 @@ Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblat
    
    ```{r, message=FALSE, warning=FALSE}
    library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    
    hist(data$height, main = "Histogramm von Height", xlab = "Height", col = "lightgrey")
    ```
@@ -514,7 +514,7 @@ Erstellen Sie ein Streudiagramm und kommentieren Sie die Art der Beziehung zwisc
    
    ```r
    library(readxl)
-   data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
+   data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
    
    plot(data$height, data$hair, main = "Scatterplot: Height vs. Hair", 
         xlab = "Height", ylab = "Hair")
