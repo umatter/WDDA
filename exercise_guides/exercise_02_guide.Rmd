@@ -423,7 +423,7 @@ Hat der grösste Mann auch die grössten Fusslaengen? Wie sieht es bei den Fraue
 # Aufgabe 14: Mindestgrösse für den Beitritt zur britischen Polizei
 
 **Aufgabenstellung:**  
-Wie viele Personen in den Daten erfüllen die Mindestgrösse (Männer ≥ 173cm, Frauen ≥ 163cm) für die britische Polizei?
+Wie viele Personen in den Daten erfüllen die Mindestgrösse (Männer $\geq$ 173cm, Frauen $\geq$ 163cm) für die britische Polizei?
 
 **Schritt-für-Schritt-Erklärung:**
 
@@ -563,12 +563,12 @@ Analysieren Sie die Umfragedaten von Golfspielern und -spielerinnen hinsichtlich
    # Spalten: "Zu schnell" und "Ok"
    golfer_maennlich <- matrix(c(10, 40, 25, 25), nrow = 2, byrow = TRUE)
    colnames(golfer_maennlich) <- c("Zu schnell", "Ok")
-   rownames(golfer_maennlich) <- c("Handicap < 15", "Handicap >= 15")
+   rownames(golfer_maennlich) <- c("Handicap < 15", "Handicap $\\geq$ 15")
    
    # Daten für Frauen:
    golfer_weiblich <- matrix(c(1, 9, 39, 51), nrow = 2, byrow = TRUE)
    colnames(golfer_weiblich) <- c("Zu schnell", "Ok")
-   rownames(golfer_weiblich) <- c("Handicap < 15", "Handicap >= 15")
+   rownames(golfer_weiblich) <- c("Handicap < 15", "Handicap $\\geq$ 15")
    ```
    
 2. **Kombinierte Kontingenztabelle:**  
