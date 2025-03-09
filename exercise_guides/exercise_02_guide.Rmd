@@ -37,8 +37,7 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
    Verwenden Sie die Funktion `table()`, um die Häufigkeiten der einzelnen Kategorien zu ermitteln.
    
    ```r
-   transport_freq <- table(data$transport)
-   print(transport_freq)
+   data$transport |> table() |> print()
    ```
    
 4. **Ergebnisvergleich:**  
@@ -131,8 +130,7 @@ Erstellen Sie geeignete Kreisdiagramme, um die relative Verteilung der Daten von
    library(readxl)
    data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
    
-   eye_freq <- table(data$eye)
-   eye_rel <- prop.table(eye_freq)
+   eye_rel <- data$eye |> table() |> prop.table()
    ```
    
 2. **Kreisdiagramm erstellen:**  
@@ -492,7 +490,7 @@ Erstellen Sie eine Kontingenztabelle mit den Variablen `gender` und `eye`.
    library(readxl)
    data <- read_excel("data/WDDA_02.xlsx", sheet = "BFH")
    
-   kontingenz <- table(data$gender, data$eye)
+   kontingenz <- data |> with(table(gender, eye))
    print(kontingenz)
    ```
    
