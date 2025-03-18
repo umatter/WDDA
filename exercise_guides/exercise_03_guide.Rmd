@@ -12,6 +12,13 @@ output:
 
 Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie 3. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
 
+**Daten laden:**  
+   Laden Sie den Datensatz aus der Excel-Datei in R mit der `readxl`-Bibliothek.
+
+```{r, message=FALSE, warning=FALSE}
+   library(readxl)
+   data <- read_excel("../data/WDDA_03.xlsx", sheet = "BFH")
+```
 
 # Aufgabe 1: Mittelwerte und Vergleich der Geschlechtsgruppen
 
@@ -25,7 +32,7 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 1. **Daten filtern und Mittelwerte berechnen:**  
    Erstellen Sie Teildatensätze für Männer und Frauen und berechnen Sie jeweils den Mittelwert der Körpergrösse.
 
-```r
+```{r}
 # Beispiel: Annahme, dass 'data' Ihren Datensatz enthält
 male_height <- data$height[data$gender == "Male"]
 female_height <- data$height[data$gender == "Female"]
@@ -41,7 +48,7 @@ cat("Mittlere Körpergrösse Frauen:", mean_female, "cm\n")
    (a) Zählen Sie, wie viele Frauen grösser sind als der Mittelwert der Männer.  
    (b) Zählen Sie, wie viele Männer kleiner sind als der Mittelwert der Frauen.
 
-```r
+```{r}
 count_female_above_male_mean <- sum(female_height > mean_male, na.rm = TRUE)
 count_male_below_female_mean <- sum(male_height < mean_female, na.rm = TRUE)
 
@@ -56,7 +63,7 @@ cat("Anzahl Männer kleiner als mittlere Frauengrösse:", count_male_below_femal
    - (a) 1 Frau grösser als der Mittelwert der Männer  
    - (b) 3 Männer kleiner als der Mittelwert der Frauen
 
----
+
 
 # Aufgabe 2: Schwarmintelligenz – Analyse der Variable `jar`
 
@@ -71,7 +78,7 @@ cat("Anzahl Männer kleiner als mittlere Frauengrösse:", count_male_below_femal
 1. **Mittelwert berechnen:**  
    Nutzen Sie die Funktion `mean()`, um den Mittelwert der Schätzwerte zu bestimmen.
 
-```r
+```{r}
 mean_jar <- mean(data$jar, na.rm = TRUE)
 cat("Mittelwert von jar:", mean_jar, "\n")
 ```
@@ -79,7 +86,7 @@ cat("Mittelwert von jar:", mean_jar, "\n")
 2. **Bestes Schätzer-Identifizieren:**  
    Finden Sie den Datensatz-Eintrag, dessen Schätzwert am nächsten an 405 liegt.
 
-```r
+```{r}
 diff_to_actual <- abs(data$jar - 405)
 best_index <- which.min(diff_to_actual)
 best_birthdate <- data$dob[best_index]  # Annahme: Geburtsdatum in 'dob'
@@ -89,7 +96,7 @@ cat("Geburtsdatum des besten Schätzers:", best_birthdate, "\n")
 3. **Vergleich der Abstände:**  
    Ermitteln Sie, wie viele Individuen näher an 405 liegen als am Mittelwert (mean_jar).
 
-```r
+```{r}
 closer_than_mean <- sum(abs(data$jar - 405) < abs(data$jar - mean_jar), na.rm = TRUE)
 cat("Anzahl Individuen, die näher an 405 liegen als am Mittelwert:", closer_than_mean, "\n")
 ```
@@ -100,7 +107,7 @@ cat("Anzahl Individuen, die näher an 405 liegen als am Mittelwert:", closer_tha
    - (b) 1997-04-10  
    - (c) 61
 
----
+
 
 # Aufgabe 3: Vergleich von Mittelwert und Median
 
@@ -115,7 +122,7 @@ cat("Anzahl Individuen, die näher an 405 liegen als am Mittelwert:", closer_tha
 1. **Berechnungen durchführen:**  
    Verwenden Sie `mean()` und `median()` für jede Variable.
 
-```r
+```{r}
 # Für jar:
 mean_jar <- mean(data$jar, na.rm = TRUE)
 median_jar <- median(data$jar, na.rm = TRUE)
@@ -136,7 +143,7 @@ cat("distance - Mittelwert:", mean_distance, "Median:", median_distance, "\n")
    - Bei `jar` liegen die Werte z. B. bei 299.7 (Mittelwert) und 287 (Median).  
    - Bei `siblings` ist der Unterschied (1.5 vs. 1) klein, bei `distance` (25.2 km vs. 24 km) könnte eine Rechtsschiefe vorliegen, weil einige Personen sehr weit entfernt wohnen.
 
----
+
 
 # Aufgabe 4: Schätzung des zentralen Trends von `cash`
 
@@ -151,7 +158,7 @@ cat("distance - Mittelwert:", mean_distance, "Median:", median_distance, "\n")
 2. **Erwartete Lösung:**  
    Aufgrund einiger sehr hoher Werte im Datensatz wird der Mittelwert höher sein als der Median.
 
----
+
 
 # Aufgabe 5: Durchschnittsausgabe für Geschwister-Geschenk
 
@@ -163,7 +170,7 @@ cat("distance - Mittelwert:", mean_distance, "Median:", median_distance, "\n")
 1. **Mittelwert berechnen:**  
    Verwenden Sie `mean()` auf der entsprechenden Variable (z. B. `gift` oder wie immer diese Variable benannt ist).
 
-```r
+```{r}
 mean_gift <- mean(data$gift, na.rm = TRUE)  # Variable ggf. anpassen
 cat("Durchschnittliche Ausgabe für ein Geschwister-Geschenk:", mean_gift, "CHF\n")
 ```
@@ -171,7 +178,7 @@ cat("Durchschnittliche Ausgabe für ein Geschwister-Geschenk:", mean_gift, "CHF\
 2. **Lösungshinweis:**  
    Die Lösung lautet 85.1 CHF.
 
----
+
 
 # Aufgabe 6: Bestimmung der Spannweite (Range)
 
@@ -186,7 +193,7 @@ cat("Durchschnittliche Ausgabe für ein Geschwister-Geschenk:", mean_gift, "CHF\
 1. **Berechnung:**  
    Die Spannweite berechnet sich als Differenz zwischen dem Maximum und Minimum.
 
-```r
+```{r}
 range_height <- diff(range(data$height, na.rm = TRUE))
 range_maths <- diff(range(data$maths, na.rm = TRUE))
 range_cash <- diff(range(data$cash, na.rm = TRUE))
@@ -202,7 +209,7 @@ cat("Spannweite cash:", range_cash, "CHF\n")
    - (b) 5  
    - (c) 749.85 CHF
 
----
+
 
 # Aufgabe 7: Interquartilsabstand (IQR)
 
@@ -217,7 +224,7 @@ cat("Spannweite cash:", range_cash, "CHF\n")
 1. **IQR berechnen:**  
    Nutzen Sie die Funktion `IQR()`.
 
-```r
+```{r}
 iqr_height <- IQR(data$height, na.rm = TRUE)
 iqr_maths <- IQR(data$maths, na.rm = TRUE)
 iqr_cash <- IQR(data$cash, na.rm = TRUE)
@@ -233,7 +240,7 @@ cat("IQR cash:", iqr_cash, "CHF\n")
    - (b) 1.5  
    - (c) 60 CHF
 
----
+
 
 # Aufgabe 8: Nebeneinander liegende Boxplots
 
@@ -250,7 +257,7 @@ cat("IQR cash:", iqr_cash, "CHF\n")
 
    Beispiel (a) – Vergleich der Haarlänge zwischen den Geschlechtern:
 
-```r
+```{r}
 boxplot(data$hair ~ data$gender,
         main = "Boxplot: Haarlänge nach Geschlecht",
         xlab = "Geschlecht", ylab = "Haarlänge",
@@ -260,7 +267,7 @@ boxplot(data$hair ~ data$gender,
 2. **Weitere Vergleiche:**  
    Für (b) und (c) gehen Sie analog vor – falls die Gruppierungsvariable numerisch ist, müssen Sie diese ggf. in einen Faktor umwandeln.
 
-```r
+```{r}
 # Beispiel (b): distance nach transport
 boxplot(data$distance ~ as.factor(data$transport),
         main = "Boxplot: Entfernung nach Transportmittel",
@@ -277,7 +284,7 @@ boxplot(data$foot ~ as.factor(data$eye),
 3. **Interpretation:**  
    Diskutieren Sie anhand der Boxplots, ob und wie sich die Gruppen in ihren Verteilungen unterscheiden.
 
----
+
 
 # Aufgabe 9: Standardabweichung (als Stichprobe)
 
@@ -291,7 +298,7 @@ boxplot(data$foot ~ as.factor(data$eye),
 
 1. **Berechnung mit `sd()`:**
 
-```r
+```{r}
 sd_height <- sd(data$height, na.rm = TRUE)
 sd_maths <- sd(data$maths, na.rm = TRUE)
 sd_cash <- sd(data$cash, na.rm = TRUE)
@@ -307,7 +314,7 @@ cat("Standardabweichung cash:", sd_cash, "CHF\n")
    - (b) 0.9  
    - (c) 83.8 CHF
 
----
+
 
 # Aufgabe 10: Überprüfung der empirischen Regel
 
@@ -330,7 +337,7 @@ cat("Standardabweichung cash:", sd_cash, "CHF\n")
 
    Beispiel für `height`:
 
-```r
+```{r}
 mean_h <- mean(data$height, na.rm = TRUE)
 sd_h <- sd(data$height, na.rm = TRUE)
 lower1 <- mean_h - sd_h; upper1 <- mean_h + sd_h
@@ -341,7 +348,7 @@ cat("Anteil innerhalb 1 SD für height:", proportion1, "\n")
 3. **Erwartete Ergebnisse:**  
    Die Lösungen werden als Mengen von Anteilen angegeben, z. B. für `height`: {0.63, 0.97, 1} usw.
 
----
+
 
 # Aufgabe 11: Analyse der IHG Kundenbewertungen
 
@@ -357,7 +364,7 @@ cat("Anteil innerhalb 1 SD für height:", proportion1, "\n")
 1. **Berechnungen:**  
    Angenommen, die Bewertungen sind in der Variable `IHG` gespeichert.
 
-```r
+```{r}
 mean_IHG <- mean(data$IHG, na.rm = TRUE)
 median_IHG <- median(data$IHG, na.rm = TRUE)
 quantiles <- quantile(data$IHG, probs = c(0.25, 0.75, 0.85), na.rm = TRUE)
@@ -375,7 +382,7 @@ cat("85. Perzentil:", quantiles[3], "\n")
    - (c) Q1 = 3.95, Q3 = 4.3, IQR = 0.35.  
    - (d) 85. Perzentil: 4.4
 
----
+
 
 # Aufgabe 12: Polizeiaufzeichnungen – Winter vs. Sommer
 
@@ -392,14 +399,14 @@ Sommer: 28, 18, 24, 32, 18, 29, 23, 38, 28, 18
 
 1. **Daten definieren:**
 
-```r
+```{r}
 winter <- c(18, 20, 15, 16, 21, 20, 12, 16, 19, 20)
 sommer <- c(28, 18, 24, 32, 18, 29, 23, 38, 28, 18)
 ```
 
 2. **Spannweite und IQR berechnen:**
 
-```r
+```{r}
 range_winter <- diff(range(winter))
 iqr_winter <- IQR(winter)
 range_sommer <- diff(range(sommer))
@@ -411,7 +418,7 @@ cat("Sommer - Spannweite:", range_sommer, ", IQR:", iqr_sommer, "\n")
 
 3. **Varianz, Standardabweichung und Variationskoeffizient:**
 
-```r
+```{r}
 var_winter <- var(winter)
 sd_winter <- sd(winter)
 vc_winter <- sd_winter / mean(winter) * 100  # in Prozent
@@ -429,7 +436,7 @@ cat("Sommer - Varianz:", var_sommer, ", SD:", sd_sommer, ", VK:", vc_sommer, "%\
    - Sommer: Spannweite = 20, IQR = 11, Varianz ≈ 44.49, SD ≈ 6.67, VK ≈ 26.05%  
    - (d) Die Sommerperiode weist eine grössere Variabilität auf.
 
----
+
 
 # Aufgabe 13: Standardisierung – z-Werte
 
@@ -444,7 +451,7 @@ cat("Sommer - Varianz:", var_sommer, ", SD:", sd_sommer, ", VK:", vc_sommer, "%\
 1. **Z-Transformation:**  
    Standardisieren Sie die Daten mit der Formel \( z = \frac{x - \text{Mittelwert}}{\text{SD}} \).
 
-```r
+```{r}
 z_height <- scale(data$height)
 z_foot   <- scale(data$foot)
 z_house  <- scale(data$house)
@@ -457,7 +464,7 @@ cat("SD z-height:", sd(z_height, na.rm = TRUE), "\n")
 2. **Ergebnis:**  
    Alle standardisierten Listen haben einen Mittelwert von 0 und eine Standardabweichung von 1.
 
----
+
 
 # Aufgabe 14: Schiefe berechnen
 
@@ -473,7 +480,7 @@ cat("SD z-height:", sd(z_height, na.rm = TRUE), "\n")
 1. **Berechnung der Schiefe:**  
    Nutzen Sie z. B. die Funktion `skewness()` aus dem Package `e1071` oder `moments`.
 
-```r
+```{r}
 library(e1071)
 
 skew_height <- skewness(data$height, na.rm = TRUE)
@@ -495,7 +502,7 @@ cat("Schiefe hair (Frauen):", skew_hair_f, "\n")
    - (c) ≈ 5.5  
    - (d) Männer: ca. 1.74, Frauen: ca. 0.31
 
----
+
 
 # Aufgabe 15: Analyse der Ebola-Symptomentwicklung
 
@@ -519,7 +526,7 @@ cat("Schiefe hair (Frauen):", skew_hair_f, "\n")
 3. **Fläche unter der Kurve:**  
    (d) Die Gesamtzahl der Fälle entspricht der Fläche unter der Kurve, was zur Abschätzung der Gesamtzahl herangezogen werden kann.
 
----
+
 
 # Aufgabe 16: Streudiagramme, Regressionsgerade und Korrelation
 
@@ -534,7 +541,7 @@ cat("Schiefe hair (Frauen):", skew_hair_f, "\n")
 1. **Streudiagramm erstellen und lineare Regression berechnen:**  
    Beispiel (a):
 
-```r
+```{r}
 plot(data$height, data$foot,
      main = "Scatterplot: Height vs. Foot",
      xlab = "Height", ylab = "Foot")
@@ -546,7 +553,7 @@ cat("Korrelation (height, foot):", correlation_a, "\n")
 
 2. **Analog für (b) und (c):**
 
-```r
+```{r}
 # (b) hair vs. foot
 plot(data$hair, data$foot,
      main = "Scatterplot: Hair vs. Foot",
@@ -573,7 +580,7 @@ cat("Korrelation (distance, siblings):", correlation_c, "\n")
      `foot = -0.04 * hair + 27.59`  
    - (c) Kein eindeutiger Zusammenhang (z. B. r ≈ -0.07)
 
----
+
 
 # Aufgabe 17: Zusammenhang zwischen Höhe und Haar – Geschlechtervergleich
 
@@ -587,14 +594,14 @@ cat("Korrelation (distance, siblings):", correlation_c, "\n")
 
 1. **Gesamtkorrelation berechnen:**
 
-```r
+```{r}
 corr_total <- cor(data$height, data$hair, use = "complete.obs")
 cat("Korrelation (gesamt):", corr_total, "\n")
 ```
 
 2. **Korrelation für Frauen:**
 
-```r
+```{r}
 corr_female <- cor(data$height[data$gender == "Female"],
                   data$hair[data$gender == "Female"], use = "complete.obs")
 cat("Korrelation (Frauen):", corr_female, "\n")
@@ -602,7 +609,7 @@ cat("Korrelation (Frauen):", corr_female, "\n")
 
 3. **Korrelation für Männer:**
 
-```r
+```{r}
 corr_male <- cor(data$height[data$gender == "Male"],
                 data$hair[data$gender == "Male"], use = "complete.obs")
 cat("Korrelation (Männer):", corr_male, "\n")
@@ -614,7 +621,7 @@ cat("Korrelation (Männer):", corr_male, "\n")
    - Nur Männer: ca. 0.12  
    Dies illustriert, wie der aggregierte Datensatz (Simpsonsches Paradoxon) andere Korrelationen ergeben kann als getrennte Gruppen.
 
----
+
 
 # Aufgabe 18: Kovarianz bei identischen Datensätzen
 
@@ -630,7 +637,7 @@ cat("Korrelation (Männer):", corr_male, "\n")
   \]
   also ist \( \text{Cov}(x, x) = \text{Var}(x) \).
 
----
+
 
 # Aufgabe 19: Schätzung der Korrelation aus Streudiagrammen
 
@@ -653,7 +660,7 @@ cat("Korrelation (Männer):", corr_male, "\n")
 
 - Diskutieren Sie, wie eng bzw. locker die Punkte um eine gedachte Regressionslinie liegen.
 
----
+
 
 # Aufgabe 20: Vergleich von Streudiagrammen und Stichprobenumfang
 
@@ -665,7 +672,7 @@ cat("Korrelation (Männer):", corr_male, "\n")
 - Obwohl die Diagramme optisch unterschiedlich erscheinen können, liegt der tatsächliche Korrelationswert in allen Fällen bei r = 0.7.
 - Der Unterschied entsteht durch variierenden Stichprobenumfang (von links nach rechts verdoppelt sich dieser).
 
----
+
 
 # Aufgabe 21: Schätzung der Korrelation bei nicht-linearem Zusammenhang
 
@@ -677,7 +684,7 @@ cat("Korrelation (Männer):", corr_male, "\n")
 - Aufgrund eines offensichtlichen quadratischen (nicht-linearen) Zusammenhangs wird der lineare Korrelationskoeffizient nur einen geringen linearen Effekt erfassen.
 - Erwartete Lösung: r ≈ -0.17.
 
----
+
 
 # Aufgabe 22: Analyse der Aktienmärkte 2008
 
@@ -692,7 +699,7 @@ cat("Korrelation (Männer):", corr_male, "\n")
 
 1. **Berechnungen:**
 
-```r
+```{r}
 mean_stock <- mean(data$Stock2008, na.rm = TRUE)
 median_stock <- median(data$Stock2008, na.rm = TRUE)
 quantiles_stock <- quantile(data$Stock2008, probs = c(0.25, 0.75), na.rm = TRUE)
@@ -704,7 +711,7 @@ cat("Q1:", quantiles_stock[1], "Q3:", quantiles_stock[2], "\n")
 
 2. **Boxplot erstellen:**
 
-```r
+```{r}
 boxplot(data$Stock2008,
         main = "Boxplot: Stock 2008",
         ylab = "Prozentuale Änderung")
@@ -713,7 +720,7 @@ boxplot(data$Stock2008,
 3. **Perzentil für Belgien:**  
    Die Lösung zeigt, dass Belgien im 71. Perzentil liegt.
 
----
+
 
 # Aufgabe 23: Korrelation der Aktienindizes
 
@@ -726,7 +733,7 @@ boxplot(data$Stock2008,
 
 1. **Berechnungen:**
 
-```r
+```{r}
 # Angenommen, die Spalten heißen 'DAX' und 'CAC40'
 corr_index <- cor(data$DAX, data$CAC40, use = "complete.obs")
 cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
@@ -735,7 +742,7 @@ cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
 2. **Ergebnis:**  
    Erwartete Lösung: r ≈ 0.923, was auf einen sehr starken positiven linearen Zusammenhang hindeutet.
 
----
+
 
 # Aufgabe 24: Zusammenhang zwischen Factual Reporting und Bias
 
@@ -748,7 +755,7 @@ cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
   - Da die Bias-Skala in beide Richtungen offen ist, ist es sinnvoll, den absoluten Bias zu betrachten.
   - Es wird erwartet, dass ein extremer Bias mit einem niedrigeren Niveau sachlicher Berichterstattung einhergeht.
 
----
+
 
 # Aufgabe 25: Analyse der ideologischen Verteilungen
 
@@ -772,7 +779,7 @@ cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
 4. **Standardabweichungen:**  
    - (e) Es scheint eine negative Assoziation zwischen den Standardabweichungen der beiden Parteien zu bestehen, was nahelegt, dass eine stärkere ideologische Ausbreitung bei einer Partei mit einer Konzentration um den Mittelwert bei der anderen einhergeht.
 
----
+
 
 # Schlussfolgerung
 
@@ -780,4 +787,4 @@ Dieser Leitfaden zeigt, wie Sie mithilfe von R verschiedene statistische Analyse
 
 Viel Erfolg beim Üben und Vertiefen Ihrer Kenntnisse in der Datenanalyse!
 
-```
+
