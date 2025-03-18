@@ -269,16 +269,28 @@ boxplot(data$hair ~ data$gender,
 
 ```{r}
 # Beispiel (b): distance nach transport
-boxplot(data$distance ~ as.factor(data$transport),
-        main = "Boxplot: Entfernung nach Transportmittel",
-        xlab = "Transportmittel", ylab = "Entfernung (km)",
-        col = "lightgreen")
+# Entferne NA-Werte vor dem Plotten
+valid_transport <- !is.na(data$distance) & !is.na(data$transport)
+if(sum(valid_transport) > 0) {
+  boxplot(data$distance[valid_transport] ~ as.factor(data$transport[valid_transport]),
+          main = "Boxplot: Entfernung nach Transportmittel",
+          xlab = "Transportmittel", ylab = "Entfernung (km)",
+          col = "lightgreen")
+} else {
+  cat("Nicht genügend gültige Daten für den Transport-Boxplot\n")
+}
 
 # Beispiel (c): foot nach eye
-boxplot(data$foot ~ as.factor(data$eye),
-        main = "Boxplot: Fusslänge nach Augenfarbe",
-        xlab = "Augenfarbe", ylab = "Fusslänge",
-        col = "lightyellow")
+# Entferne NA-Werte vor dem Plotten
+valid_eye_foot <- !is.na(data$foot) & !is.na(data$eye)
+if(sum(valid_eye_foot) > 0) {
+  boxplot(data$foot[valid_eye_foot] ~ as.factor(data$eye[valid_eye_foot]),
+          main = "Boxplot: Fusslänge nach Augenfarbe",
+          xlab = "Augenfarbe", ylab = "Fusslänge",
+          col = "lightyellow")
+} else {
+  cat("Nicht genügend gültige Daten für den Augenfarbe-Boxplot\n")
+}
 ```
 
 3. **Interpretation:**  
