@@ -25,29 +25,29 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 1. **Daten filtern und Mittelwerte berechnen:**  
    Erstellen Sie Teildatensätze für Männer und Frauen und berechnen Sie jeweils den Mittelwert der Körpergrösse.
 
-   ```r
-   # Beispiel: Annahme, dass 'data' Ihren Datensatz enthält
-   male_height <- data$height[data$gender == "Male"]
-   female_height <- data$height[data$gender == "Female"]
+```r
+# Beispiel: Annahme, dass 'data' Ihren Datensatz enthält
+male_height <- data$height[data$gender == "Male"]
+female_height <- data$height[data$gender == "Female"]
 
-   mean_male <- mean(male_height, na.rm = TRUE)
-   mean_female <- mean(female_height, na.rm = TRUE)
+mean_male <- mean(male_height, na.rm = TRUE)
+mean_female <- mean(female_height, na.rm = TRUE)
 
-   cat("Mittlere Körpergrösse Männer:", mean_male, "cm\n")
-   cat("Mittlere Körpergrösse Frauen:", mean_female, "cm\n")
-   ```
+cat("Mittlere Körpergrösse Männer:", mean_male, "cm\n")
+cat("Mittlere Körpergrösse Frauen:", mean_female, "cm\n")
+```
 
 2. **Vergleiche durchführen:**  
    (a) Zählen Sie, wie viele Frauen grösser sind als der Mittelwert der Männer.  
    (b) Zählen Sie, wie viele Männer kleiner sind als der Mittelwert der Frauen.
 
-   ```r
-   count_female_above_male_mean <- sum(female_height > mean_male, na.rm = TRUE)
-   count_male_below_female_mean <- sum(male_height < mean_female, na.rm = TRUE)
+```r
+count_female_above_male_mean <- sum(female_height > mean_male, na.rm = TRUE)
+count_male_below_female_mean <- sum(male_height < mean_female, na.rm = TRUE)
 
-   cat("Anzahl Frauen grösser als mittlere Männergrösse:", count_female_above_male_mean, "\n")
-   cat("Anzahl Männer kleiner als mittlere Frauengrösse:", count_male_below_female_mean, "\n")
-   ```
+cat("Anzahl Frauen grösser als mittlere Männergrösse:", count_female_above_male_mean, "\n")
+cat("Anzahl Männer kleiner als mittlere Frauengrösse:", count_male_below_female_mean, "\n")
+```
 
 3. **Ergebnisvergleich:**  
    Die Lösungen lauten:  
@@ -71,28 +71,28 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 1. **Mittelwert berechnen:**  
    Nutzen Sie die Funktion `mean()`, um den Mittelwert der Schätzwerte zu bestimmen.
 
-   ```r
-   mean_jar <- mean(data$jar, na.rm = TRUE)
-   cat("Mittelwert von jar:", mean_jar, "\n")
-   ```
+```r
+mean_jar <- mean(data$jar, na.rm = TRUE)
+cat("Mittelwert von jar:", mean_jar, "\n")
+```
 
 2. **Bestes Schätzer-Identifizieren:**  
    Finden Sie den Datensatz-Eintrag, dessen Schätzwert am nächsten an 405 liegt.
 
-   ```r
-   diff_to_actual <- abs(data$jar - 405)
-   best_index <- which.min(diff_to_actual)
-   best_birthdate <- data$dob[best_index]  # Annahme: Geburtsdatum in 'dob'
-   cat("Geburtsdatum des besten Schätzers:", best_birthdate, "\n")
-   ```
+```r
+diff_to_actual <- abs(data$jar - 405)
+best_index <- which.min(diff_to_actual)
+best_birthdate <- data$dob[best_index]  # Annahme: Geburtsdatum in 'dob'
+cat("Geburtsdatum des besten Schätzers:", best_birthdate, "\n")
+```
 
 3. **Vergleich der Abstände:**  
    Ermitteln Sie, wie viele Individuen näher an 405 liegen als am Mittelwert (mean_jar).
 
-   ```r
-   closer_than_mean <- sum(abs(data$jar - 405) < abs(data$jar - mean_jar), na.rm = TRUE)
-   cat("Anzahl Individuen, die näher an 405 liegen als am Mittelwert:", closer_than_mean, "\n")
-   ```
+```r
+closer_than_mean <- sum(abs(data$jar - 405) < abs(data$jar - mean_jar), na.rm = TRUE)
+cat("Anzahl Individuen, die näher an 405 liegen als am Mittelwert:", closer_than_mean, "\n")
+```
 
 4. **Lösungshinweise:**  
    Die erwarteten Lösungen sind:  
@@ -115,22 +115,22 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 1. **Berechnungen durchführen:**  
    Verwenden Sie `mean()` und `median()` für jede Variable.
 
-   ```r
-   # Für jar:
-   mean_jar <- mean(data$jar, na.rm = TRUE)
-   median_jar <- median(data$jar, na.rm = TRUE)
-   cat("jar - Mittelwert:", mean_jar, "Median:", median_jar, "\n")
+```r
+# Für jar:
+mean_jar <- mean(data$jar, na.rm = TRUE)
+median_jar <- median(data$jar, na.rm = TRUE)
+cat("jar - Mittelwert:", mean_jar, "Median:", median_jar, "\n")
 
-   # Für siblings:
-   mean_siblings <- mean(data$siblings, na.rm = TRUE)
-   median_siblings <- median(data$siblings, na.rm = TRUE)
-   cat("siblings - Mittelwert:", mean_siblings, "Median:", median_siblings, "\n")
+# Für siblings:
+mean_siblings <- mean(data$siblings, na.rm = TRUE)
+median_siblings <- median(data$siblings, na.rm = TRUE)
+cat("siblings - Mittelwert:", mean_siblings, "Median:", median_siblings, "\n")
 
-   # Für distance:
-   mean_distance <- mean(data$distance, na.rm = TRUE)
-   median_distance <- median(data$distance, na.rm = TRUE)
-   cat("distance - Mittelwert:", mean_distance, "Median:", median_distance, "\n")
-   ```
+# Für distance:
+mean_distance <- mean(data$distance, na.rm = TRUE)
+median_distance <- median(data$distance, na.rm = TRUE)
+cat("distance - Mittelwert:", mean_distance, "Median:", median_distance, "\n")
+```
 
 2. **Interpretation:**  
    - Bei `jar` liegen die Werte z. B. bei 299.7 (Mittelwert) und 287 (Median).  
@@ -163,10 +163,10 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 1. **Mittelwert berechnen:**  
    Verwenden Sie `mean()` auf der entsprechenden Variable (z. B. `gift` oder wie immer diese Variable benannt ist).
 
-   ```r
-   mean_gift <- mean(data$gift, na.rm = TRUE)  # Variable ggf. anpassen
-   cat("Durchschnittliche Ausgabe für ein Geschwister-Geschenk:", mean_gift, "CHF\n")
-   ```
+```r
+mean_gift <- mean(data$gift, na.rm = TRUE)  # Variable ggf. anpassen
+cat("Durchschnittliche Ausgabe für ein Geschwister-Geschenk:", mean_gift, "CHF\n")
+```
 
 2. **Lösungshinweis:**  
    Die Lösung lautet 85.1 CHF.
@@ -186,15 +186,15 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 1. **Berechnung:**  
    Die Spannweite berechnet sich als Differenz zwischen dem Maximum und Minimum.
 
-   ```r
-   range_height <- diff(range(data$height, na.rm = TRUE))
-   range_maths <- diff(range(data$maths, na.rm = TRUE))
-   range_cash <- diff(range(data$cash, na.rm = TRUE))
+```r
+range_height <- diff(range(data$height, na.rm = TRUE))
+range_maths <- diff(range(data$maths, na.rm = TRUE))
+range_cash <- diff(range(data$cash, na.rm = TRUE))
 
-   cat("Spannweite height:", range_height, "cm\n")
-   cat("Spannweite maths:", range_maths, "\n")
-   cat("Spannweite cash:", range_cash, "CHF\n")
-   ```
+cat("Spannweite height:", range_height, "cm\n")
+cat("Spannweite maths:", range_maths, "\n")
+cat("Spannweite cash:", range_cash, "CHF\n")
+```
 
 2. **Ergebnis:**  
    Erwartete Werte:  
@@ -217,15 +217,15 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 1. **IQR berechnen:**  
    Nutzen Sie die Funktion `IQR()`.
 
-   ```r
-   iqr_height <- IQR(data$height, na.rm = TRUE)
-   iqr_maths <- IQR(data$maths, na.rm = TRUE)
-   iqr_cash <- IQR(data$cash, na.rm = TRUE)
+```r
+iqr_height <- IQR(data$height, na.rm = TRUE)
+iqr_maths <- IQR(data$maths, na.rm = TRUE)
+iqr_cash <- IQR(data$cash, na.rm = TRUE)
 
-   cat("IQR height:", iqr_height, "cm\n")
-   cat("IQR maths:", iqr_maths, "\n")
-   cat("IQR cash:", iqr_cash, "CHF\n")
-   ```
+cat("IQR height:", iqr_height, "cm\n")
+cat("IQR maths:", iqr_maths, "\n")
+cat("IQR cash:", iqr_cash, "CHF\n")
+```
 
 2. **Ergebnis:**  
    Erwartete Werte:  
@@ -250,29 +250,29 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 
    Beispiel (a) – Vergleich der Haarlänge zwischen den Geschlechtern:
 
-   ```r
-   boxplot(data$hair ~ data$gender,
-           main = "Boxplot: Haarlänge nach Geschlecht",
-           xlab = "Geschlecht", ylab = "Haarlänge",
-           col = c("lightblue", "lightpink"))
-   ```
+```r
+boxplot(data$hair ~ data$gender,
+        main = "Boxplot: Haarlänge nach Geschlecht",
+        xlab = "Geschlecht", ylab = "Haarlänge",
+        col = c("lightblue", "lightpink"))
+```
 
 2. **Weitere Vergleiche:**  
    Für (b) und (c) gehen Sie analog vor – falls die Gruppierungsvariable numerisch ist, müssen Sie diese ggf. in einen Faktor umwandeln.
 
-   ```r
-   # Beispiel (b): distance nach transport
-   boxplot(data$distance ~ as.factor(data$transport),
-           main = "Boxplot: Entfernung nach Transportmittel",
-           xlab = "Transportmittel", ylab = "Entfernung (km)",
-           col = "lightgreen")
+```r
+# Beispiel (b): distance nach transport
+boxplot(data$distance ~ as.factor(data$transport),
+        main = "Boxplot: Entfernung nach Transportmittel",
+        xlab = "Transportmittel", ylab = "Entfernung (km)",
+        col = "lightgreen")
 
-   # Beispiel (c): foot nach eye
-   boxplot(data$foot ~ as.factor(data$eye),
-           main = "Boxplot: Fusslänge nach Augenfarbe",
-           xlab = "Augenfarbe", ylab = "Fusslänge",
-           col = "lightyellow")
-   ```
+# Beispiel (c): foot nach eye
+boxplot(data$foot ~ as.factor(data$eye),
+        main = "Boxplot: Fusslänge nach Augenfarbe",
+        xlab = "Augenfarbe", ylab = "Fusslänge",
+        col = "lightyellow")
+```
 
 3. **Interpretation:**  
    Diskutieren Sie anhand der Boxplots, ob und wie sich die Gruppen in ihren Verteilungen unterscheiden.
@@ -291,15 +291,15 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 
 1. **Berechnung mit `sd()`:**
 
-   ```r
-   sd_height <- sd(data$height, na.rm = TRUE)
-   sd_maths <- sd(data$maths, na.rm = TRUE)
-   sd_cash <- sd(data$cash, na.rm = TRUE)
+```r
+sd_height <- sd(data$height, na.rm = TRUE)
+sd_maths <- sd(data$maths, na.rm = TRUE)
+sd_cash <- sd(data$cash, na.rm = TRUE)
 
-   cat("Standardabweichung height:", sd_height, "cm\n")
-   cat("Standardabweichung maths:", sd_maths, "\n")
-   cat("Standardabweichung cash:", sd_cash, "CHF\n")
-   ```
+cat("Standardabweichung height:", sd_height, "cm\n")
+cat("Standardabweichung maths:", sd_maths, "\n")
+cat("Standardabweichung cash:", sd_cash, "CHF\n")
+```
 
 2. **Ergebnis:**  
    Erwartete Lösungen:  
@@ -330,13 +330,13 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 
    Beispiel für `height`:
 
-   ```r
-   mean_h <- mean(data$height, na.rm = TRUE)
-   sd_h <- sd(data$height, na.rm = TRUE)
-   lower1 <- mean_h - sd_h; upper1 <- mean_h + sd_h
-   proportion1 <- mean(data$height >= lower1 & data$height <= upper1, na.rm = TRUE)
-   cat("Anteil innerhalb 1 SD für height:", proportion1, "\n")
-   ```
+```r
+mean_h <- mean(data$height, na.rm = TRUE)
+sd_h <- sd(data$height, na.rm = TRUE)
+lower1 <- mean_h - sd_h; upper1 <- mean_h + sd_h
+proportion1 <- mean(data$height >= lower1 & data$height <= upper1, na.rm = TRUE)
+cat("Anteil innerhalb 1 SD für height:", proportion1, "\n")
+```
 
 3. **Erwartete Ergebnisse:**  
    Die Lösungen werden als Mengen von Anteilen angegeben, z. B. für `height`: {0.63, 0.97, 1} usw.
@@ -357,17 +357,17 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 1. **Berechnungen:**  
    Angenommen, die Bewertungen sind in der Variable `IHG` gespeichert.
 
-   ```r
-   mean_IHG <- mean(data$IHG, na.rm = TRUE)
-   median_IHG <- median(data$IHG, na.rm = TRUE)
-   quantiles <- quantile(data$IHG, probs = c(0.25, 0.75, 0.85), na.rm = TRUE)
-   iqr_IHG <- IQR(data$IHG, na.rm = TRUE)
+```r
+mean_IHG <- mean(data$IHG, na.rm = TRUE)
+median_IHG <- median(data$IHG, na.rm = TRUE)
+quantiles <- quantile(data$IHG, probs = c(0.25, 0.75, 0.85), na.rm = TRUE)
+iqr_IHG <- IQR(data$IHG, na.rm = TRUE)
 
-   cat("Mittelwert IHG:", mean_IHG, "\n")
-   cat("Median IHG:", median_IHG, "\n")
-   cat("Q1:", quantiles[1], " Q3:", quantiles[2], " IQR:", iqr_IHG, "\n")
-   cat("85. Perzentil:", quantiles[3], "\n")
-   ```
+cat("Mittelwert IHG:", mean_IHG, "\n")
+cat("Median IHG:", median_IHG, "\n")
+cat("Q1:", quantiles[1], " Q3:", quantiles[2], " IQR:", iqr_IHG, "\n")
+cat("85. Perzentil:", quantiles[3], "\n")
+```
 
 2. **Interpretation:**  
    - (a) Erwartete Werte: Mittelwert ≈ 4.16, Median ≈ 4.2.  
@@ -392,37 +392,37 @@ Sommer: 28, 18, 24, 32, 18, 29, 23, 38, 28, 18
 
 1. **Daten definieren:**
 
-   ```r
-   winter <- c(18, 20, 15, 16, 21, 20, 12, 16, 19, 20)
-   sommer <- c(28, 18, 24, 32, 18, 29, 23, 38, 28, 18)
-   ```
+```r
+winter <- c(18, 20, 15, 16, 21, 20, 12, 16, 19, 20)
+sommer <- c(28, 18, 24, 32, 18, 29, 23, 38, 28, 18)
+```
 
 2. **Spannweite und IQR berechnen:**
 
-   ```r
-   range_winter <- diff(range(winter))
-   iqr_winter <- IQR(winter)
-   range_sommer <- diff(range(sommer))
-   iqr_sommer <- IQR(sommer)
+```r
+range_winter <- diff(range(winter))
+iqr_winter <- IQR(winter)
+range_sommer <- diff(range(sommer))
+iqr_sommer <- IQR(sommer)
 
-   cat("Winter - Spannweite:", range_winter, ", IQR:", iqr_winter, "\n")
-   cat("Sommer - Spannweite:", range_sommer, ", IQR:", iqr_sommer, "\n")
-   ```
+cat("Winter - Spannweite:", range_winter, ", IQR:", iqr_winter, "\n")
+cat("Sommer - Spannweite:", range_sommer, ", IQR:", iqr_sommer, "\n")
+```
 
 3. **Varianz, Standardabweichung und Variationskoeffizient:**
 
-   ```r
-   var_winter <- var(winter)
-   sd_winter <- sd(winter)
-   vc_winter <- sd_winter / mean(winter) * 100  # in Prozent
+```r
+var_winter <- var(winter)
+sd_winter <- sd(winter)
+vc_winter <- sd_winter / mean(winter) * 100  # in Prozent
 
-   var_sommer <- var(sommer)
-   sd_sommer <- sd(sommer)
-   vc_sommer <- sd_sommer / mean(sommer) * 100
+var_sommer <- var(sommer)
+sd_sommer <- sd(sommer)
+vc_sommer <- sd_sommer / mean(sommer) * 100
 
-   cat("Winter - Varianz:", var_winter, ", SD:", sd_winter, ", VK:", vc_winter, "%\n")
-   cat("Sommer - Varianz:", var_sommer, ", SD:", sd_sommer, ", VK:", vc_sommer, "%\n")
-   ```
+cat("Winter - Varianz:", var_winter, ", SD:", sd_winter, ", VK:", vc_winter, "%\n")
+cat("Sommer - Varianz:", var_sommer, ", SD:", sd_sommer, ", VK:", vc_sommer, "%\n")
+```
 
 4. **Erwartete Ergebnisse:**  
    - Winter: Spannweite = 2, IQR = 4, Varianz ≈ 8.23, SD ≈ 2.87, VK ≈ 16.21%  
@@ -444,15 +444,15 @@ Sommer: 28, 18, 24, 32, 18, 29, 23, 38, 28, 18
 1. **Z-Transformation:**  
    Standardisieren Sie die Daten mit der Formel \( z = \frac{x - \text{Mittelwert}}{\text{SD}} \).
 
-   ```r
-   z_height <- scale(data$height)
-   z_foot   <- scale(data$foot)
-   z_house  <- scale(data$house)
+```r
+z_height <- scale(data$height)
+z_foot   <- scale(data$foot)
+z_house  <- scale(data$house)
 
-   cat("Mittelwert z-height:", mean(z_height, na.rm = TRUE), "\n")
-   cat("SD z-height:", sd(z_height, na.rm = TRUE), "\n")
-   # Analog für foot und house
-   ```
+cat("Mittelwert z-height:", mean(z_height, na.rm = TRUE), "\n")
+cat("SD z-height:", sd(z_height, na.rm = TRUE), "\n")
+# Analog für foot und house
+```
 
 2. **Ergebnis:**  
    Alle standardisierten Listen haben einen Mittelwert von 0 und eine Standardabweichung von 1.
@@ -473,21 +473,21 @@ Sommer: 28, 18, 24, 32, 18, 29, 23, 38, 28, 18
 1. **Berechnung der Schiefe:**  
    Nutzen Sie z. B. die Funktion `skewness()` aus dem Package `e1071` oder `moments`.
 
-   ```r
-   library(e1071)
+```r
+library(e1071)
 
-   skew_height <- skewness(data$height, na.rm = TRUE)
-   skew_distance <- skewness(data$distance, na.rm = TRUE)
-   skew_cash <- skewness(data$cash, na.rm = TRUE)
-   skew_hair_m <- skewness(data$hair[data$gender == "Male"], na.rm = TRUE)
-   skew_hair_f <- skewness(data$hair[data$gender == "Female"], na.rm = TRUE)
+skew_height <- skewness(data$height, na.rm = TRUE)
+skew_distance <- skewness(data$distance, na.rm = TRUE)
+skew_cash <- skewness(data$cash, na.rm = TRUE)
+skew_hair_m <- skewness(data$hair[data$gender == "Male"], na.rm = TRUE)
+skew_hair_f <- skewness(data$hair[data$gender == "Female"], na.rm = TRUE)
 
-   cat("Schiefe height:", skew_height, "\n")
-   cat("Schiefe distance:", skew_distance, "\n")
-   cat("Schiefe cash:", skew_cash, "\n")
-   cat("Schiefe hair (Männer):", skew_hair_m, "\n")
-   cat("Schiefe hair (Frauen):", skew_hair_f, "\n")
-   ```
+cat("Schiefe height:", skew_height, "\n")
+cat("Schiefe distance:", skew_distance, "\n")
+cat("Schiefe cash:", skew_cash, "\n")
+cat("Schiefe hair (Männer):", skew_hair_m, "\n")
+cat("Schiefe hair (Frauen):", skew_hair_f, "\n")
+```
 
 2. **Erwartete Werte:**  
    - (a) ≈ -0.2  
@@ -534,37 +534,37 @@ Sommer: 28, 18, 24, 32, 18, 29, 23, 38, 28, 18
 1. **Streudiagramm erstellen und lineare Regression berechnen:**  
    Beispiel (a):
 
-   ```r
-   plot(data$height, data$foot,
-        main = "Scatterplot: Height vs. Foot",
-        xlab = "Height", ylab = "Foot")
-   lm_model_a <- lm(foot ~ height, data = data)
-   abline(lm_model_a, col = "red")
-   correlation_a <- cor(data$height, data$foot, use = "complete.obs")
-   cat("Korrelation (height, foot):", correlation_a, "\n")
-   ```
+```r
+plot(data$height, data$foot,
+     main = "Scatterplot: Height vs. Foot",
+     xlab = "Height", ylab = "Foot")
+lm_model_a <- lm(foot ~ height, data = data)
+abline(lm_model_a, col = "red")
+correlation_a <- cor(data$height, data$foot, use = "complete.obs")
+cat("Korrelation (height, foot):", correlation_a, "\n")
+```
 
 2. **Analog für (b) und (c):**
 
-   ```r
-   # (b) hair vs. foot
-   plot(data$hair, data$foot,
-        main = "Scatterplot: Hair vs. Foot",
-        xlab = "Hair", ylab = "Foot")
-   lm_model_b <- lm(foot ~ hair, data = data)
-   abline(lm_model_b, col = "red")
-   correlation_b <- cor(data$hair, data$foot, use = "complete.obs")
-   cat("Korrelation (hair, foot):", correlation_b, "\n")
+```r
+# (b) hair vs. foot
+plot(data$hair, data$foot,
+     main = "Scatterplot: Hair vs. Foot",
+     xlab = "Hair", ylab = "Foot")
+lm_model_b <- lm(foot ~ hair, data = data)
+abline(lm_model_b, col = "red")
+correlation_b <- cor(data$hair, data$foot, use = "complete.obs")
+cat("Korrelation (hair, foot):", correlation_b, "\n")
 
-   # (c) distance vs. siblings
-   plot(data$distance, data$siblings,
-        main = "Scatterplot: Distance vs. Siblings",
-        xlab = "Distance", ylab = "Siblings")
-   lm_model_c <- lm(siblings ~ distance, data = data)
-   abline(lm_model_c, col = "red")
-   correlation_c <- cor(data$distance, data$siblings, use = "complete.obs")
-   cat("Korrelation (distance, siblings):", correlation_c, "\n")
-   ```
+# (c) distance vs. siblings
+plot(data$distance, data$siblings,
+     main = "Scatterplot: Distance vs. Siblings",
+     xlab = "Distance", ylab = "Siblings")
+lm_model_c <- lm(siblings ~ distance, data = data)
+abline(lm_model_c, col = "red")
+correlation_c <- cor(data$distance, data$siblings, use = "complete.obs")
+cat("Korrelation (distance, siblings):", correlation_c, "\n")
+```
 
 3. **Erwartete Ergebnisse:**  
    - (a) Es besteht ein positiver Zusammenhang (z. B. r ≈ 0.28) mit einer Anpassungsgleichung wie:  
@@ -587,26 +587,26 @@ Sommer: 28, 18, 24, 32, 18, 29, 23, 38, 28, 18
 
 1. **Gesamtkorrelation berechnen:**
 
-   ```r
-   corr_total <- cor(data$height, data$hair, use = "complete.obs")
-   cat("Korrelation (gesamt):", corr_total, "\n")
-   ```
+```r
+corr_total <- cor(data$height, data$hair, use = "complete.obs")
+cat("Korrelation (gesamt):", corr_total, "\n")
+```
 
 2. **Korrelation für Frauen:**
 
-   ```r
-   corr_female <- cor(data$height[data$gender == "Female"],
-                      data$hair[data$gender == "Female"], use = "complete.obs")
-   cat("Korrelation (Frauen):", corr_female, "\n")
-   ```
+```r
+corr_female <- cor(data$height[data$gender == "Female"],
+                  data$hair[data$gender == "Female"], use = "complete.obs")
+cat("Korrelation (Frauen):", corr_female, "\n")
+```
 
 3. **Korrelation für Männer:**
 
-   ```r
-   corr_male <- cor(data$height[data$gender == "Male"],
-                    data$hair[data$gender == "Male"], use = "complete.obs")
-   cat("Korrelation (Männer):", corr_male, "\n")
-   ```
+```r
+corr_male <- cor(data$height[data$gender == "Male"],
+                data$hair[data$gender == "Male"], use = "complete.obs")
+cat("Korrelation (Männer):", corr_male, "\n")
+```
 
 4. **Erwartete Ergebnisse:**  
    - Gesamtkorrelation: ca. -0.62  
@@ -692,23 +692,23 @@ Sommer: 28, 18, 24, 32, 18, 29, 23, 38, 28, 18
 
 1. **Berechnungen:**
 
-   ```r
-   mean_stock <- mean(data$Stock2008, na.rm = TRUE)
-   median_stock <- median(data$Stock2008, na.rm = TRUE)
-   quantiles_stock <- quantile(data$Stock2008, probs = c(0.25, 0.75), na.rm = TRUE)
-   
-   cat("Mittelwert Stock 2008:", mean_stock, "\n")
-   cat("Median Stock 2008:", median_stock, "\n")
-   cat("Q1:", quantiles_stock[1], "Q3:", quantiles_stock[2], "\n")
-   ```
+```r
+mean_stock <- mean(data$Stock2008, na.rm = TRUE)
+median_stock <- median(data$Stock2008, na.rm = TRUE)
+quantiles_stock <- quantile(data$Stock2008, probs = c(0.25, 0.75), na.rm = TRUE)
+
+cat("Mittelwert Stock 2008:", mean_stock, "\n")
+cat("Median Stock 2008:", median_stock, "\n")
+cat("Q1:", quantiles_stock[1], "Q3:", quantiles_stock[2], "\n")
+```
 
 2. **Boxplot erstellen:**
 
-   ```r
-   boxplot(data$Stock2008,
-           main = "Boxplot: Stock 2008",
-           ylab = "Prozentuale Änderung")
-   ```
+```r
+boxplot(data$Stock2008,
+        main = "Boxplot: Stock 2008",
+        ylab = "Prozentuale Änderung")
+```
 
 3. **Perzentil für Belgien:**  
    Die Lösung zeigt, dass Belgien im 71. Perzentil liegt.
@@ -726,11 +726,11 @@ Sommer: 28, 18, 24, 32, 18, 29, 23, 38, 28, 18
 
 1. **Berechnungen:**
 
-   ```r
-   # Angenommen, die Spalten heißen 'DAX' und 'CAC40'
-   corr_index <- cor(data$DAX, data$CAC40, use = "complete.obs")
-   cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
-   ```
+```r
+# Angenommen, die Spalten heißen 'DAX' und 'CAC40'
+corr_index <- cor(data$DAX, data$CAC40, use = "complete.obs")
+cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
+```
 
 2. **Ergebnis:**  
    Erwartete Lösung: r ≈ 0.923, was auf einen sehr starken positiven linearen Zusammenhang hindeutet.
