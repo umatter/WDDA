@@ -25,6 +25,7 @@ library(dplyr)
 \item Sir Francis Galton (1822-1911) war ein englischer viktorianischer Universalgelehrter und Statistiker
 \item Bekannt für seine Arbeit in Statistik, Psychologie und Anthropologie
 \item Pionier der Korrelations- und Regressionsanalyse
+\item Ebenfalls bekannt für die Einführung des Begriffs "Eugenik" (Rassenhygiene)
 \end{itemize}
 \end{column}
 \begin{column}{0.4\textwidth}
@@ -49,7 +50,7 @@ if(file.exists("../img/ox.png")) {
 ## Das überraschende Ergebnis
 
 - Keine einzelne Person erriet das exakte Gewicht des Ochsen
-- Als Galton jedoch den Durchschnitt (Median) aller Schätzungen berechnete, war dieser bemerkenswert nahe am tatsächlichen Gewicht
+- Als Galton jedoch den Mittelwert (Median) aller Schätzungen berechnete, war dieser bemerkenswert nahe am tatsächlichen Gewicht
 - Galton veröffentlichte seine Ergebnisse 1907 in der Zeitschrift Nature in einem Artikel mit dem Titel "Vox Populi" (Die Stimme des Volkes)
 
 ## Mathematische Darstellung
