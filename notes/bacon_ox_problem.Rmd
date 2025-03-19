@@ -25,13 +25,12 @@ library(dplyr)
 
 ## The Ox Market Problem
 
-\begin{center}
-\includegraphics[width=0.7\textwidth]{https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Francis_Bacon%2C_Viscount_St_Alban_from_NPG_%282%29.jpg/330px-Francis_Bacon%2C_Viscount_St_Alban_from_NPG_%282%29.jpg}
-\end{center}
+```{r, echo=FALSE, out.width="70%", fig.align="center"}
+# Use knitr to include the image instead of direct LaTeX
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Francis_Bacon%2C_Viscount_St_Alban_from_NPG_%282%29.jpg/330px-Francis_Bacon%2C_Viscount_St_Alban_from_NPG_%282%29.jpg")
+```
 
-\begin{block}{Bacon's Observation}
-At a country fair, Bacon observed a contest where participants guessed the weight of an ox.
-\end{block}
+**Bacon's Observation**: At a country fair, Bacon observed a contest where participants guessed the weight of an ox.
 
 ## The Surprising Result
 
@@ -89,7 +88,7 @@ ggplot(df, aes(x = guess)) +
 
 ## Example from Our Data
 
-```{r, results='asis'}
+```{r}
 # Create a small table of sample guesses
 set.seed(456)
 sample_guesses <- sample(guesses, 10)
@@ -99,23 +98,12 @@ sample_df <- data.frame(
   Error = round(sample_guesses - true_weight)
 )
 
-# Print a simple table without using knitr::kable
-cat("\\begin{tabular}{rrr}\n")
-cat("\\hline\n")
-cat("Participant & Guess & Error \\\\\n")
-cat("\\hline\n")
-for(i in 1:nrow(sample_df)) {
-  cat(sample_df$Participant[i], " & ", 
-      sample_df$Guess[i], " & ", 
-      sample_df$Error[i], " \\\\\n", sep="")
-}
-cat("\\hline\n")
-cat("\\end{tabular}\n")
+# Display summary statistics instead of a table
+cat("Summary of sample guesses:\n")
+cat("Mean guess:", round(mean(sample_guesses)), "kg\n")
+cat("True weight:", true_weight, "kg\n")
+cat("Error of mean:", round(mean(sample_guesses) - true_weight), "kg\n")
 ```
-
-Mean guess: `r round(mean(sample_guesses))` kg  
-True weight: `r true_weight` kg  
-Error of mean: `r round(mean(sample_guesses) - true_weight)` kg
 
 ## Applications in Modern Statistics
 
