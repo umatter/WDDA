@@ -26,8 +26,8 @@ library(dplyr)
 ## Das Ochsenmarkt-Problem
 
 ```{r, echo=FALSE, out.width="70%", fig.align="center"}
-# Use knitr to include the image instead of direct LaTeX
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Francis_Galton_1850s.jpg/330px-Francis_Galton_1850s.jpg")
+# Verwende das lokale Bild aus dem img-Ordner
+knitr::include_graphics("../img/galton.jpg")
 ```
 
 **Galtons Beobachtung**: Auf einem Jahrmarkt in Plymouth im Jahr 1906 beobachtete Galton einen Wettbewerb, bei dem Teilnehmer das Gewicht eines Ochsen schätzen sollten.
