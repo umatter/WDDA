@@ -19,9 +19,18 @@ library(dplyr)
 
 ## Einführung
 
+<div style="display: flex; align-items: center;">
+<div style="flex: 1;">
 - Sir Francis Galton (1822-1911) war ein englischer viktorianischer Universalgelehrter und Statistiker
 - Bekannt für seine Arbeit in Statistik, Psychologie und Anthropologie
 - Pionier der Korrelations- und Regressionsanalyse
+</div>
+<div style="flex: 1;">
+```{r, echo=FALSE, out.width="80%", fig.align="right"}
+knitr::include_graphics("../img/galton.png")
+```
+</div>
+</div>
 
 ## Das Ochsenmarkt-Problem
 
