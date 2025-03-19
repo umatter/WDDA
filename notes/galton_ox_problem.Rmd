@@ -1,0 +1,140 @@
+---
+title: "Sir Francis Galton's Ox Market Problem"
+subtitle: "A Historical Example of Collective Wisdom"
+author: "WDDA FS 2025"
+date: "`r Sys.Date()`"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(ggplot2)
+library(dplyr)
+```
+
+## Introduction
+
+- Sir Francis Galton (1822-1911) was an English Victorian polymath and statistician
+- Known for his work in statistics, psychology, and anthropology
+
+## The Ox Market Problem
+
+```{r, echo=FALSE, out.width="70%", fig.align="center"}
+# Use knitr to include the image instead of direct LaTeX
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Francis_Galton_1850s.jpg/330px-Francis_Galton_1850s.jpg")
+```
+
+**Galton's Observation**: At a country fair in Plymouth in 1906, Galton observed a contest where participants guessed the weight of an ox.
+
+## The Surprising Result
+
+- No individual guessed the exact weight of the ox
+- However, when Galton calculated the average (median) of all guesses, it was remarkably close to the actual weight
+- Galton published his findings in the journal Nature in a 1907 article titled "Vox Populi" (The Voice of the People)
+
+## Mathematical Representation
+
+If we have $n$ individual guesses $x_1, x_2, \ldots, x_n$, then:
+
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i$$
+
+Galton observed that $\bar{x} \approx$ true weight
+
+In his actual study, Galton found the median of 787 guesses was 1,207 pounds, while the true weight was 1,198 pounds - an error of less than 1%.
+
+```{r}
+# Simulate data for illustration
+set.seed(123)
+true_weight <- 1198
+guesses <- rnorm(100, mean = true_weight, sd = 120)
+mean_guess <- mean(guesses)
+```
+
+## Visualizing the Phenomenon
+
+```{r, fig.height=4}
+df <- data.frame(guess = guesses)
+ggplot(df, aes(x = guess)) +
+  geom_histogram(binwidth = 50, fill = "skyblue", color = "black", alpha = 0.7) +
+  geom_vline(xintercept = true_weight, color = "red", size = 1.5) +
+  geom_vline(xintercept = mean_guess, color = "blue", size = 1.5, linetype = "dashed") +
+  annotate("text", x = true_weight + 70, y = 20, label = "True Weight", color = "red") +
+  annotate("text", x = mean_guess - 70, y = 20, label = "Mean Guess", color = "blue") +
+  labs(title = "Distribution of Guesses vs. True Weight",
+       x = "Weight (kg)",
+       y = "Frequency") +
+  theme_minimal()
+```
+
+## Modern Applications: Wisdom of Crowds
+
+- James Surowiecki's 2004 book "The Wisdom of Crowds" popularized this concept
+- Key conditions for crowd wisdom:
+  - Diversity of opinion
+  - Independence of judgments
+  - Decentralization
+  - Aggregation mechanism
+
+## Statistical Explanation
+
+- Individual errors tend to cancel each other out
+- Some people overestimate, others underestimate
+- The average converges toward the true value
+- This is related to the Law of Large Numbers
+
+## Example from Our Data
+
+```{r}
+# Create a small table of sample guesses
+set.seed(456)
+sample_guesses <- sample(guesses, 10)
+sample_df <- data.frame(
+  Participant = 1:10,
+  Guess = round(sample_guesses),
+  Error = round(sample_guesses - true_weight)
+)
+
+# Display summary statistics instead of a table
+cat("Summary of sample guesses:\n")
+cat("Mean guess:", round(mean(sample_guesses)), "kg\n")
+cat("True weight:", true_weight, "kg\n")
+cat("Error of mean:", round(mean(sample_guesses) - true_weight), "kg\n")
+```
+
+## Applications in Modern Statistics
+
+- Ensemble methods in machine learning
+- Polling and survey aggregation
+- Prediction markets
+- Delphi method for expert consensus
+
+## Limitations and Considerations
+
+- The crowd needs to be knowledgeable about the subject
+- Independence is crucial (avoiding groupthink)
+- Systematic biases can skew the collective judgment
+- Outliers can significantly impact small samples
+
+## Classroom Exercise
+
+Consider our dataset from WDDA_03.xlsx:
+
+- The variable `jar` contains guesses about the number of M&Ms in a jar
+- The true count was 405 M&Ms
+- How close is the mean of all guesses to the true value?
+- Does this support Bacon's observation?
+
+## Conclusion
+
+- Galton's observation was remarkably important for statistical thinking
+- It demonstrates how collective judgment can outperform individual expertise
+- This principle underpins many modern statistical and decision-making approaches
+- A beautiful example of how empirical observations can lead to profound insights
+
+## References
+
+- Surowiecki, J. (2004). The Wisdom of Crowds.
+- Galton, F. (1907). Vox Populi. Nature, 75, 450-451.
+- Page, S. E. (2007). The Difference: How the Power of Diversity Creates Better Groups, Firms, Schools, and Societies.
+
+
