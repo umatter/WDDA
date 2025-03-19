@@ -112,30 +112,24 @@ cat("Fehler des Mittelwerts:", round(mean(sample_guesses) - true_weight), "kg\n"
 - Ensemble-Methoden im maschinellen Lernen
 - Umfrage- und Meinungsforschungsaggregation
 - Prognosemärkte
+- Restaurantbewertungen (unter gewissen Annahmen)
 - Delphi-Methode für Expertenkonsens
 
 ## Einschränkungen und Überlegungen
 
 - Die Gruppe muss über das Thema informiert sein
 - Unabhängigkeit ist entscheidend (Vermeidung von Gruppendenken)
-- Systematische Verzerrungen können das kollektive Urteil verzerren
 - Ausreisser können kleine Stichproben erheblich beeinflussen
 
-## Übung für den Unterricht
+## Link zur Übung aus Aufgabenserie 3
 
-Betrachten Sie unseren Datensatz aus WDDA_03.xlsx:
+Betrachten Sie unseren Datensatz aus `WDDA_03.xlsx`:
 
 - Die Variable `jar` enthält Schätzungen über die Anzahl der M&Ms in einem Glas
 - Die tatsächliche Anzahl betrug 405 M&Ms
 - Wie nahe kommt der Mittelwert aller Schätzungen an den wahren Wert heran?
 - Unterstützt dies Galtons Beobachtung?
 
-## Fazit
-
-- Galtons Beobachtung war bemerkenswert wichtig für das statistische Denken
-- Sie zeigt, wie kollektives Urteil die individuelle Expertise übertreffen kann
-- Dieses Prinzip untermauert viele moderne statistische und Entscheidungsfindungsansätze
-- Ein schönes Beispiel dafür, wie empirische Beobachtungen zu tiefgreifenden Erkenntnissen führen können
 
 ## Referenzen
 
