@@ -50,16 +50,20 @@ if(file.exists("../img/ox.png")) {
 ## Das überraschende Ergebnis
 
 - Keine einzelne Person erriet das exakte Gewicht des Ochsen
-- Als Galton jedoch den Mittelwert (Median) aller Schätzungen berechnete, war dieser bemerkenswert nahe am tatsächlichen Gewicht
+- Als Galton jedoch den Median aller Schätzungen berechnete, war dieser bemerkenswert nahe am tatsächlichen Gewicht
 - Galton veröffentlichte seine Ergebnisse 1907 in der Zeitschrift Nature in einem Artikel mit dem Titel "Vox Populi" (Die Stimme des Volkes)
 
 ## Mathematische Darstellung
 
-Wenn wir $n$ individuelle Schätzungen $x_1, x_2, \ldots, x_n$ haben, dann gilt:
+Wenn wir $n$ individuelle Schätzungen $x_1, x_2, \ldots, x_n$ haben, dann ist der Median der mittlere Wert in der sortierten Reihe:
 
-$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i$$
+$$\text{Median} = 
+\begin{cases} 
+x_{(n+1)/2}, & \text{wenn } n \text{ ungerade} \\
+\frac{x_{n/2} + x_{(n/2)+1}}{2}, & \text{wenn } n \text{ gerade}
+\end{cases}$$
 
-Galton beobachtete, dass $\bar{x} \approx$ wahres Gewicht
+Galton beobachtete, dass der Median $\approx$ wahres Gewicht
 
 In seiner tatsächlichen Studie fand Galton heraus, dass der Median von 787 Schätzungen 1'207 Pfund betrug, während das tatsächliche Gewicht 1'198 Pfund war - ein Fehler von weniger als 1%.
 
@@ -68,7 +72,7 @@ In seiner tatsächlichen Studie fand Galton heraus, dass der Median von 787 Sch�
 set.seed(123)
 true_weight <- 1198
 guesses <- rnorm(100, mean = true_weight, sd = 120)
-mean_guess <- mean(guesses)
+median_guess <- median(guesses)
 ```
 
 ## Visualisierung des Phänomens
@@ -78,9 +82,9 @@ df <- data.frame(guess = guesses)
 ggplot(df, aes(x = guess)) +
   geom_histogram(binwidth = 50, fill = "skyblue", color = "black", alpha = 0.7) +
   geom_vline(xintercept = true_weight, color = "red", size = 1.5) +
-  geom_vline(xintercept = mean_guess, color = "blue", size = 1.5, linetype = "dashed") +
+  geom_vline(xintercept = median_guess, color = "blue", size = 1.5, linetype = "dashed") +
   annotate("text", x = true_weight + 70, y = 20, label = "Wahres Gewicht", color = "red") +
-  annotate("text", x = mean_guess - 70, y = 20, label = "Mittlere Schätzung", color = "blue") +
+  annotate("text", x = median_guess - 70, y = 20, label = "Median der Schätzungen", color = "blue") +
   labs(title = "Verteilung der Schätzungen vs. wahres Gewicht",
        x = "Gewicht (kg)",
        y = "Häufigkeit") +
@@ -117,9 +121,9 @@ sample_df <- data.frame(
 
 # Display summary statistics instead of a table
 cat("Zusammenfassung der Stichprobenschätzungen:\n")
-cat("Mittlere Schätzung:", round(mean(sample_guesses)), "kg\n")
+cat("Median der Schätzungen:", round(median(sample_guesses)), "kg\n")
 cat("Wahres Gewicht:", true_weight, "kg\n")
-cat("Fehler des Mittelwerts:", round(mean(sample_guesses) - true_weight), "kg\n")
+cat("Fehler des Medians:", round(median(sample_guesses) - true_weight), "kg\n")
 ```
 
 ## Anwendungen in der modernen Statistik
@@ -142,7 +146,7 @@ Betrachten Sie unseren Datensatz aus `WDDA_03.xlsx`:
 
 - Die Variable `jar` enthält Schätzungen über die Anzahl der M&Ms in einem Glas
 - Die tatsächliche Anzahl betrug 405 M&Ms
-- Wie nahe kommt der Mittelwert aller Schätzungen an den wahren Wert heran?
+- Wie nahe kommt der Median aller Schätzungen an den wahren Wert heran?
 - Unterstützt dies Galtons Beobachtung?
 
 
