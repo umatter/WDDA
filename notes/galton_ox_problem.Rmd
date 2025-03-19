@@ -26,8 +26,19 @@ library(dplyr)
 ## Das Ochsenmarkt-Problem
 
 ```{r, echo=FALSE, out.width="70%", fig.align="center"}
-# Verwende das lokale Bild aus dem img-Ordner
-knitr::include_graphics("../img/galton.jpg")
+# Verwende das lokale Bild aus dem img-Ordner mit absolutem Pfad
+img_path <- file.path(getwd(), "..", "img", "galton.jpg")
+if(file.exists(img_path)) {
+  knitr::include_graphics(img_path)
+} else {
+  # Fallback: Versuche einen relativen Pfad
+  img_path2 <- "img/galton.jpg"
+  if(file.exists(img_path2)) {
+    knitr::include_graphics(img_path2)
+  } else {
+    cat("Bild konnte nicht gefunden werden. Bitte überprüfen Sie den Pfad.")
+  }
+}
 ```
 
 **Galtons Beobachtung**: Auf einem Jahrmarkt in Plymouth im Jahr 1906 beobachtete Galton einen Wettbewerb, bei dem Teilnehmer das Gewicht eines Ochsen schätzen sollten.
