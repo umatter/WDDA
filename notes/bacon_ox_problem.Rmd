@@ -1,0 +1,145 @@
+---
+title: "Sir Francis Bacon's Ox Market Problem"
+subtitle: "A Historical Example of Collective Wisdom"
+author: "WDDA FS 2025"
+date: "`r Sys.Date()`"
+output:
+  beamer_presentation:
+    theme: "Madrid"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+    slide_level: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(ggplot2)
+library(dplyr)
+```
+
+## Introduction
+
+- Sir Francis Bacon (1561-1626) was an English philosopher, statesman, and scientist
+- Known for developing the scientific method and empirical approach to knowledge
+- Observed a fascinating phenomenon at a country fair that would later influence modern statistical thinking
+
+## The Ox Market Problem
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Francis_Bacon%2C_Viscount_St_Alban_from_NPG_%282%29.jpg/330px-Francis_Bacon%2C_Viscount_St_Alban_from_NPG_%282%29.jpg}
+\end{center}
+
+\begin{block}{Bacon's Observation}
+At a country fair, Bacon observed a contest where participants guessed the weight of an ox.
+\end{block}
+
+## The Surprising Result
+
+- No individual guessed the exact weight of the ox
+- However, when Bacon calculated the average of all guesses, it was remarkably close to the actual weight
+- This observation predates modern statistical concepts by centuries
+
+## Mathematical Representation
+
+If we have $n$ individual guesses $x_1, x_2, \ldots, x_n$, then:
+
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i$$
+
+Bacon observed that $\bar{x} \approx$ true weight
+
+```{r}
+# Simulate data for illustration
+set.seed(123)
+true_weight <- 1198
+guesses <- rnorm(100, mean = true_weight, sd = 120)
+mean_guess <- mean(guesses)
+```
+
+## Visualizing the Phenomenon
+
+```{r, fig.height=4}
+df <- data.frame(guess = guesses)
+ggplot(df, aes(x = guess)) +
+  geom_histogram(binwidth = 50, fill = "skyblue", color = "black", alpha = 0.7) +
+  geom_vline(xintercept = true_weight, color = "red", size = 1.5) +
+  geom_vline(xintercept = mean_guess, color = "blue", size = 1.5, linetype = "dashed") +
+  annotate("text", x = true_weight + 70, y = 20, label = "True Weight", color = "red") +
+  annotate("text", x = mean_guess - 70, y = 20, label = "Mean Guess", color = "blue") +
+  labs(title = "Distribution of Guesses vs. True Weight",
+       x = "Weight (kg)",
+       y = "Frequency") +
+  theme_minimal()
+```
+
+## Modern Applications: Wisdom of Crowds
+
+- James Surowiecki's 2004 book "The Wisdom of Crowds" popularized this concept
+- Key conditions for crowd wisdom:
+  - Diversity of opinion
+  - Independence of judgments
+  - Decentralization
+  - Aggregation mechanism
+
+## Statistical Explanation
+
+- Individual errors tend to cancel each other out
+- Some people overestimate, others underestimate
+- The average converges toward the true value
+- This is related to the Law of Large Numbers
+
+## Example from Our Data
+
+```{r}
+# Create a small table of sample guesses
+set.seed(456)
+sample_guesses <- sample(guesses, 10)
+sample_df <- data.frame(
+  Participant = 1:10,
+  Guess = round(sample_guesses),
+  Error = round(sample_guesses - true_weight)
+)
+
+knitr::kable(sample_df, format = "latex")
+```
+
+\begin{center}
+Mean guess: `r round(mean(sample_guesses))` kg\\
+True weight: `r true_weight` kg\\
+Error of mean: `r round(mean(sample_guesses) - true_weight)` kg
+\end{center}
+
+## Applications in Modern Statistics
+
+- Ensemble methods in machine learning
+- Polling and survey aggregation
+- Prediction markets
+- Delphi method for expert consensus
+
+## Limitations and Considerations
+
+- The crowd needs to be knowledgeable about the subject
+- Independence is crucial (avoiding groupthink)
+- Systematic biases can skew the collective judgment
+- Outliers can significantly impact small samples
+
+## Classroom Exercise
+
+Consider our dataset from WDDA_03.xlsx:
+
+- The variable `jar` contains guesses about the number of M&Ms in a jar
+- The true count was 405 M&Ms
+- How close is the mean of all guesses to the true value?
+- Does this support Bacon's observation?
+
+## Conclusion
+
+- Bacon's observation was remarkably prescient
+- It demonstrates how collective judgment can outperform individual expertise
+- This principle underpins many modern statistical and decision-making approaches
+- A beautiful example of how simple observations can lead to profound insights
+
+## References
+
+- Surowiecki, J. (2004). The Wisdom of Crowds.
+- Galton, F. (1907). Vox Populi. Nature, 75, 450-451.
+- Page, S. E. (2007). The Difference: How the Power of Diversity Creates Better Groups, Firms, Schools, and Societies.
