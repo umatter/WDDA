@@ -49,9 +49,20 @@ if(file.exists("../img/ox.png")) {
 
 ## Das überraschende Ergebnis
 
-- Keine einzelne Person erriet das exakte Gewicht des Ochsen
-- Als Galton jedoch den Median ``the middle-most estimate'' aller Schätzungen berechnete, war dieser bemerkenswert nahe am tatsächlichen Gewicht
-- Galton veröffentlichte seine Ergebnisse 1907 in der Zeitschrift Nature in einem Artikel mit dem Titel "Vox Populi" (Die Stimme des Volkes)
+\begin{columns}[T]
+\begin{column}{0.6\textwidth}
+\begin{itemize}
+\item Keine einzelne Person erriet das exakte Gewicht des Ochsen
+\item Als Galton jedoch den Median ``the middle-most estimate'' aller Schätzungen berechnete, war dieser bemerkenswert nahe am tatsächlichen Gewicht
+\item Galton veröffentlichte seine Ergebnisse 1907 in der Zeitschrift Nature in einem Artikel mit dem Titel "Vox Populi" (Die Stimme des Volkes)
+\end{itemize}
+\end{column}
+\begin{column}{0.4\textwidth}
+```{r, echo=FALSE, out.width="100%", fig.align="center"}
+knitr::include_graphics("../img/voxpopuli.png")
+```
+\end{column}
+\end{columns}
 
 ## Mathematische Darstellung
 
