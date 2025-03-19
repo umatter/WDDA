@@ -19,21 +19,30 @@ library(dplyr)
 
 ## Einführung
 
-<div style="display: flex; align-items: center;">
-<div style="flex: 1;">
-- Sir Francis Galton (1822-1911) war ein englischer viktorianischer Universalgelehrter und Statistiker
-- Bekannt für seine Arbeit in Statistik, Psychologie und Anthropologie
-- Pionier der Korrelations- und Regressionsanalyse
-</div>
-<div style="flex: 1;">
-```{r, echo=FALSE, out.width="80%", fig.align="right"}
+\begin{columns}[T]
+\begin{column}{0.6\textwidth}
+\begin{itemize}
+\item Sir Francis Galton (1822-1911) war ein englischer viktorianischer Universalgelehrter und Statistiker
+\item Bekannt für seine Arbeit in Statistik, Psychologie und Anthropologie
+\item Pionier der Korrelations- und Regressionsanalyse
+\end{itemize}
+\end{column}
+\begin{column}{0.4\textwidth}
+```{r, echo=FALSE, out.width="100%", fig.align="center"}
 knitr::include_graphics("../img/galton.png")
 ```
-</div>
-</div>
+\end{column}
+\end{columns}
 
 ## Das Ochsenmarkt-Problem
 
+```{r, echo=FALSE, out.width="50%", fig.align="center"}
+# Bild eines Ochsen oder einer Jahrmarktszene einfügen
+# Wenn kein Bild verfügbar ist, wird dieser Block ignoriert
+if(file.exists("../img/ox.png")) {
+  knitr::include_graphics("../img/ox.png")
+}
+```
 
 **Galtons Beobachtung**: Auf einem Jahrmarkt in Plymouth im Jahr 1906 beobachtete Galton einen Wettbewerb, bei dem Teilnehmer das Gewicht eines Ochsen schätzen sollten.
 
