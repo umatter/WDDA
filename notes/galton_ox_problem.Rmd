@@ -61,6 +61,7 @@ if(file.exists("../img/ox.png")) {
 ```{r, echo=FALSE, out.width="100%", fig.align="center"}
 knitr::include_graphics("../img/voxpopuli.png")
 ```
+\small{Quelle: Galton, F. (1907). Vox Populi. \textit{Nature}, 75, 450-451.}
 \end{column}
 \end{columns}
 
