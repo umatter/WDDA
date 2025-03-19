@@ -1,5 +1,5 @@
 ---
-title: "Sir Francis Bacon's Ox Market Problem"
+title: "Sir Francis Galton's Ox Market Problem"
 subtitle: "A Historical Example of Collective Wisdom"
 author: "WDDA FS 2025"
 date: "`r Sys.Date()`"
@@ -14,24 +14,24 @@ library(dplyr)
 
 ## Introduction
 
-- Sir Francis Bacon (1561-1626) was an English philosopher, statesman, and scientist
-- Known for developing the scientific method and empirical approach to knowledge
+- Sir Francis Galton (1822-1911) was an English Victorian polymath and statistician
+- Known for his work in statistics, psychology, and anthropology
 - Observed a fascinating phenomenon at a country fair that would later influence modern statistical thinking
 
 ## The Ox Market Problem
 
 ```{r, echo=FALSE, out.width="70%", fig.align="center"}
 # Use knitr to include the image instead of direct LaTeX
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Francis_Bacon%2C_Viscount_St_Alban_from_NPG_%282%29.jpg/330px-Francis_Bacon%2C_Viscount_St_Alban_from_NPG_%282%29.jpg")
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Francis_Galton_1850s.jpg/330px-Francis_Galton_1850s.jpg")
 ```
 
-**Bacon's Observation**: At a country fair, Bacon observed a contest where participants guessed the weight of an ox.
+**Galton's Observation**: At a country fair in Plymouth in 1906, Galton observed a contest where participants guessed the weight of an ox.
 
 ## The Surprising Result
 
 - No individual guessed the exact weight of the ox
-- However, when Bacon calculated the average of all guesses, it was remarkably close to the actual weight
-- This observation predates modern statistical concepts by centuries
+- However, when Galton calculated the average (median) of all guesses, it was remarkably close to the actual weight
+- Galton published his findings in the journal Nature in a 1907 article titled "Vox Populi" (The Voice of the People)
 
 ## Mathematical Representation
 
@@ -39,7 +39,9 @@ If we have $n$ individual guesses $x_1, x_2, \ldots, x_n$, then:
 
 $$\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i$$
 
-Bacon observed that $\bar{x} \approx$ true weight
+Galton observed that $\bar{x} \approx$ true weight
+
+In his actual study, Galton found the median of 787 guesses was 1,207 pounds, while the true weight was 1,198 pounds - an error of less than 1%.
 
 ```{r}
 # Simulate data for illustration
@@ -125,10 +127,10 @@ Consider our dataset from WDDA_03.xlsx:
 
 ## Conclusion
 
-- Bacon's observation was remarkably prescient
+- Galton's observation was remarkably important for statistical thinking
 - It demonstrates how collective judgment can outperform individual expertise
 - This principle underpins many modern statistical and decision-making approaches
-- A beautiful example of how simple observations can lead to profound insights
+- A beautiful example of how empirical observations can lead to profound insights
 
 ## References
 
