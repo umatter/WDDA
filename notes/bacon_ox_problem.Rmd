@@ -99,14 +99,13 @@ sample_df <- data.frame(
   Error = round(sample_guesses - true_weight)
 )
 
-knitr::kable(sample_df, format = "latex")
+# Use a simpler table format that's more compatible with beamer
+knitr::kable(sample_df)
 ```
 
-\begin{center}
-Mean guess: `r round(mean(sample_guesses))` kg\\
-True weight: `r true_weight` kg\\
+Mean guess: `r round(mean(sample_guesses))` kg  
+True weight: `r true_weight` kg  
 Error of mean: `r round(mean(sample_guesses) - true_weight)` kg
-\end{center}
 
 ## Applications in Modern Statistics
 
