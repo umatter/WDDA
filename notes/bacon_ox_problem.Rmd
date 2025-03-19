@@ -89,7 +89,7 @@ ggplot(df, aes(x = guess)) +
 
 ## Example from Our Data
 
-```{r}
+```{r, results='asis'}
 # Create a small table of sample guesses
 set.seed(456)
 sample_guesses <- sample(guesses, 10)
@@ -99,8 +99,18 @@ sample_df <- data.frame(
   Error = round(sample_guesses - true_weight)
 )
 
-# Use a simpler table format that's more compatible with beamer
-knitr::kable(sample_df)
+# Print a simple table without using knitr::kable
+cat("\\begin{tabular}{rrr}\n")
+cat("\\hline\n")
+cat("Participant & Guess & Error \\\\\n")
+cat("\\hline\n")
+for(i in 1:nrow(sample_df)) {
+  cat(sample_df$Participant[i], " & ", 
+      sample_df$Guess[i], " & ", 
+      sample_df$Error[i], " \\\\\n", sep="")
+}
+cat("\\hline\n")
+cat("\\end{tabular}\n")
 ```
 
 Mean guess: `r round(mean(sample_guesses))` kg  
