@@ -1,9 +1,14 @@
 ---
-title: "Sir Francis Galton's Ox Market Problem"
-subtitle: "A Historical Example of Collective Wisdom"
+title: "Sir Francis Galtons Ochsenmarkt-Problem"
+subtitle: "Ein historisches Beispiel kollektiver Weisheit"
 author: "WDDA FS 2025"
 date: "`r Sys.Date()`"
-output: beamer_presentation
+output:
+  beamer_presentation:
+    theme: "metropolis"
+    colortheme: "default"
+    fonttheme: "structurebold"
+    slide_level: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -12,35 +17,36 @@ library(ggplot2)
 library(dplyr)
 ```
 
-## Introduction
+## Einführung
 
-- Sir Francis Galton (1822-1911) was an English Victorian polymath and statistician
-- Known for his work in statistics, psychology, and anthropology
+- Sir Francis Galton (1822-1911) war ein englischer viktorianischer Universalgelehrter und Statistiker
+- Bekannt für seine Arbeit in Statistik, Psychologie und Anthropologie
+- Pionier der Korrelations- und Regressionsanalyse
 
-## The Ox Market Problem
+## Das Ochsenmarkt-Problem
 
 ```{r, echo=FALSE, out.width="70%", fig.align="center"}
 # Use knitr to include the image instead of direct LaTeX
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Francis_Galton_1850s.jpg/330px-Francis_Galton_1850s.jpg")
 ```
 
-**Galton's Observation**: At a country fair in Plymouth in 1906, Galton observed a contest where participants guessed the weight of an ox.
+**Galtons Beobachtung**: Auf einem Jahrmarkt in Plymouth im Jahr 1906 beobachtete Galton einen Wettbewerb, bei dem Teilnehmer das Gewicht eines Ochsen schätzen sollten.
 
-## The Surprising Result
+## Das überraschende Ergebnis
 
-- No individual guessed the exact weight of the ox
-- However, when Galton calculated the average (median) of all guesses, it was remarkably close to the actual weight
-- Galton published his findings in the journal Nature in a 1907 article titled "Vox Populi" (The Voice of the People)
+- Keine einzelne Person erriet das exakte Gewicht des Ochsen
+- Als Galton jedoch den Durchschnitt (Median) aller Schätzungen berechnete, war dieser bemerkenswert nahe am tatsächlichen Gewicht
+- Galton veröffentlichte seine Ergebnisse 1907 in der Zeitschrift Nature in einem Artikel mit dem Titel "Vox Populi" (Die Stimme des Volkes)
 
-## Mathematical Representation
+## Mathematische Darstellung
 
-If we have $n$ individual guesses $x_1, x_2, \ldots, x_n$, then:
+Wenn wir $n$ individuelle Schätzungen $x_1, x_2, \ldots, x_n$ haben, dann gilt:
 
 $$\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i$$
 
-Galton observed that $\bar{x} \approx$ true weight
+Galton beobachtete, dass $\bar{x} \approx$ wahres Gewicht
 
-In his actual study, Galton found the median of 787 guesses was 1,207 pounds, while the true weight was 1,198 pounds - an error of less than 1%.
+In seiner tatsächlichen Studie fand Galton heraus, dass der Median von 787 Schätzungen 1'207 Pfund betrug, während das tatsächliche Gewicht 1'198 Pfund war - ein Fehler von weniger als 1%.
 
 ```{r}
 # Simulate data for illustration
@@ -50,7 +56,7 @@ guesses <- rnorm(100, mean = true_weight, sd = 120)
 mean_guess <- mean(guesses)
 ```
 
-## Visualizing the Phenomenon
+## Visualisierung des Phänomens
 
 ```{r, fig.height=4}
 df <- data.frame(guess = guesses)
@@ -58,82 +64,82 @@ ggplot(df, aes(x = guess)) +
   geom_histogram(binwidth = 50, fill = "skyblue", color = "black", alpha = 0.7) +
   geom_vline(xintercept = true_weight, color = "red", size = 1.5) +
   geom_vline(xintercept = mean_guess, color = "blue", size = 1.5, linetype = "dashed") +
-  annotate("text", x = true_weight + 70, y = 20, label = "True Weight", color = "red") +
-  annotate("text", x = mean_guess - 70, y = 20, label = "Mean Guess", color = "blue") +
-  labs(title = "Distribution of Guesses vs. True Weight",
-       x = "Weight (kg)",
-       y = "Frequency") +
+  annotate("text", x = true_weight + 70, y = 20, label = "Wahres Gewicht", color = "red") +
+  annotate("text", x = mean_guess - 70, y = 20, label = "Mittlere Schätzung", color = "blue") +
+  labs(title = "Verteilung der Schätzungen vs. wahres Gewicht",
+       x = "Gewicht (kg)",
+       y = "Häufigkeit") +
   theme_minimal()
 ```
 
-## Modern Applications: Wisdom of Crowds
+## Moderne Anwendungen: Die Weisheit der Vielen
 
-- James Surowiecki's 2004 book "The Wisdom of Crowds" popularized this concept
-- Key conditions for crowd wisdom:
-  - Diversity of opinion
-  - Independence of judgments
-  - Decentralization
-  - Aggregation mechanism
+- James Surowieckis Buch "Die Weisheit der Vielen" (2004) popularisierte dieses Konzept
+- Schlüsselbedingungen für kollektive Weisheit:
+  - Meinungsvielfalt
+  - Unabhängigkeit der Urteile
+  - Dezentralisierung
+  - Aggregationsmechanismus
 
-## Statistical Explanation
+## Statistische Erklärung
 
-- Individual errors tend to cancel each other out
-- Some people overestimate, others underestimate
-- The average converges toward the true value
-- This is related to the Law of Large Numbers
+- Individuelle Fehler neigen dazu, sich gegenseitig aufzuheben
+- Einige Menschen überschätzen, andere unterschätzen
+- Der Durchschnitt konvergiert zum wahren Wert
+- Dies steht im Zusammenhang mit dem Gesetz der grossen Zahlen
 
-## Example from Our Data
+## Beispiel aus unseren Daten
 
 ```{r}
 # Create a small table of sample guesses
 set.seed(456)
 sample_guesses <- sample(guesses, 10)
 sample_df <- data.frame(
-  Participant = 1:10,
-  Guess = round(sample_guesses),
-  Error = round(sample_guesses - true_weight)
+  Teilnehmer = 1:10,
+  Schätzung = round(sample_guesses),
+  Fehler = round(sample_guesses - true_weight)
 )
 
 # Display summary statistics instead of a table
-cat("Summary of sample guesses:\n")
-cat("Mean guess:", round(mean(sample_guesses)), "kg\n")
-cat("True weight:", true_weight, "kg\n")
-cat("Error of mean:", round(mean(sample_guesses) - true_weight), "kg\n")
+cat("Zusammenfassung der Stichprobenschätzungen:\n")
+cat("Mittlere Schätzung:", round(mean(sample_guesses)), "kg\n")
+cat("Wahres Gewicht:", true_weight, "kg\n")
+cat("Fehler des Mittelwerts:", round(mean(sample_guesses) - true_weight), "kg\n")
 ```
 
-## Applications in Modern Statistics
+## Anwendungen in der modernen Statistik
 
-- Ensemble methods in machine learning
-- Polling and survey aggregation
-- Prediction markets
-- Delphi method for expert consensus
+- Ensemble-Methoden im maschinellen Lernen
+- Umfrage- und Meinungsforschungsaggregation
+- Prognosemärkte
+- Delphi-Methode für Expertenkonsens
 
-## Limitations and Considerations
+## Einschränkungen und Überlegungen
 
-- The crowd needs to be knowledgeable about the subject
-- Independence is crucial (avoiding groupthink)
-- Systematic biases can skew the collective judgment
-- Outliers can significantly impact small samples
+- Die Gruppe muss über das Thema informiert sein
+- Unabhängigkeit ist entscheidend (Vermeidung von Gruppendenken)
+- Systematische Verzerrungen können das kollektive Urteil verzerren
+- Ausreisser können kleine Stichproben erheblich beeinflussen
 
-## Classroom Exercise
+## Übung für den Unterricht
 
-Consider our dataset from WDDA_03.xlsx:
+Betrachten Sie unseren Datensatz aus WDDA_03.xlsx:
 
-- The variable `jar` contains guesses about the number of M&Ms in a jar
-- The true count was 405 M&Ms
-- How close is the mean of all guesses to the true value?
-- Does this support Bacon's observation?
+- Die Variable `jar` enthält Schätzungen über die Anzahl der M&Ms in einem Glas
+- Die tatsächliche Anzahl betrug 405 M&Ms
+- Wie nahe kommt der Mittelwert aller Schätzungen an den wahren Wert heran?
+- Unterstützt dies Galtons Beobachtung?
 
-## Conclusion
+## Fazit
 
-- Galton's observation was remarkably important for statistical thinking
-- It demonstrates how collective judgment can outperform individual expertise
-- This principle underpins many modern statistical and decision-making approaches
-- A beautiful example of how empirical observations can lead to profound insights
+- Galtons Beobachtung war bemerkenswert wichtig für das statistische Denken
+- Sie zeigt, wie kollektives Urteil die individuelle Expertise übertreffen kann
+- Dieses Prinzip untermauert viele moderne statistische und Entscheidungsfindungsansätze
+- Ein schönes Beispiel dafür, wie empirische Beobachtungen zu tiefgreifenden Erkenntnissen führen können
 
-## References
+## Referenzen
 
-- Surowiecki, J. (2004). The Wisdom of Crowds.
+- Surowiecki, J. (2004). Die Weisheit der Vielen.
 - Galton, F. (1907). Vox Populi. Nature, 75, 450-451.
 - Page, S. E. (2007). The Difference: How the Power of Diversity Creates Better Groups, Firms, Schools, and Societies.
 
