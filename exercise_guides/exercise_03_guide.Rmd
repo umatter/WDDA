@@ -765,7 +765,16 @@ belgium_percentile <- mean(data$Fall < belgium_value, na.rm = TRUE) * 100
 cat("Perzentil für Belgien:", round(belgium_percentile), "\n")
 ```
 
-Die Berechnung zeigt, dass Belgien im 71. Perzentil liegt. Das bedeutet, dass etwa 71% der Länder einen geringeren prozentualen Rückgang als Belgien erlebten.
+Die Berechnung zeigt, dass Belgien im 71. Perzentil liegt. Hier ist eine intuitive Erklärung:
+
+- Ein Perzentil gibt an, welcher Prozentsatz der Daten unter einem bestimmten Wert liegt
+- Wir berechnen es, indem wir zählen, wie viele Länder einen niedrigeren Wert als Belgien haben, und teilen diese Anzahl durch die Gesamtzahl der Länder
+- Die Formel `mean(data$Fall < belgium_value)` nutzt eine elegante Eigenschaft von R: Der Ausdruck `data$Fall < belgium_value` erzeugt einen Vektor von TRUE/FALSE-Werten
+- In R wird TRUE als 1 und FALSE als 0 interpretiert, wenn wir den Mittelwert berechnen
+- Daher gibt `mean(data$Fall < belgium_value)` den Anteil der Werte, die kleiner als Belgiens Wert sind
+- Multipliziert mit 100 erhalten wir das Perzentil
+
+Das 71. Perzentil bedeutet, dass Belgien einen höheren Aktienrückgang als 71% der anderen Länder erlebte, aber einen niedrigeren Rückgang als die restlichen 29%. Dies positioniert Belgien im oberen Drittel der am stärksten betroffenen Länder während der Finanzkrise 2008.
 
 
 
