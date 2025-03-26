@@ -230,7 +230,9 @@ hist(m.500$mean, xlim = c(10000, 100000),
      col = "lightpink")
 abline(v = mu, col = "red", lwd = 2)
 par(mfrow = c(1, 1))
+```
 
+```{r stichprobengroesse2, eval=TRUE}
 # Vergleich der theoretischen und simulierten Standardfehler
 se_theo_30 <- sigma / sqrt(30)
 se_theo_100 <- sigma / sqrt(100)
@@ -304,11 +306,11 @@ plot(c(0.35, 0.5), c(0, 0),
      yaxt = "n")  # Keine y-Achse
 points(p_hat, 0, pch = 19, col = "blue")
 segments(plausible_interval[1], 0, plausible_interval[2], 0, col = "blue", lwd = 2)
-text(p_hat, 0.25, "Punktschätzung: 42%", col = "blue")
-text(mean(plausible_interval), -0.28, "95%-Konfidenzintervall: [39.2%, 44.8%]", col = "blue")
-arrows(p_hat, 0.22, p_hat, 0, col = "blue", angle = 20, length = 0.1)
-arrows(mean(plausible_interval), -0.22, plausible_interval[1], 0, col = "blue", angle = 20, length = 0.1)
-arrows(mean(plausible_interval), -0.22, plausible_interval[2], 0, col = "blue", angle = 20, length = 0.1)
+text(p_hat, 0.28, "Punktschätzung: 42%", col = "blue")
+text(mean(plausible_interval), -0.35, "95%-Konfidenzintervall: [39.2%, 44.8%]", col = "blue")
+arrows(p_hat, 0.22, p_hat, 0.05, col = "blue", angle = 20, length = 0.1)
+arrows(mean(plausible_interval), -0.25, plausible_interval[1], -0.05, col = "blue", angle = 20, length = 0.1)
+arrows(mean(plausible_interval), -0.25, plausible_interval[2], -0.05, col = "blue", angle = 20, length = 0.1)
 ```
 
 **Statistische Erklärung**: 

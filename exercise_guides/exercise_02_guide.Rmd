@@ -13,6 +13,12 @@ output:
 Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie 2. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
 
 
+
+
+
+
+
+
 # Aufgabe 1: Häufigkeitsverteilung von `transport`
 
 Die Variable `transport` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
@@ -48,6 +54,23 @@ Ermitteln Sie die Häufigkeitsverteilung von `transport`.
    - Other: 2  
    - Train: 149  
    - Walk: 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 2: Balkendiagramme für `gender`, `transport` und `maths`
 
@@ -105,6 +128,25 @@ barplot(maths_freq,
 4. **Interpretation:**  
    Erläutern Sie, was die Diagramme aussagen und ob die Verteilungen erwartungsgemäss erscheinen.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Aufgabe 3: Analyse der Diagrammdarstellung der Semester-Noten
 
 **Aufgabenstellung:**  
@@ -126,6 +168,25 @@ barplot(maths_freq,
    - Die x-Achse die Noten (ordinal) anzeigt.
    - Die y-Achse die Anzahl der Schüler pro Note darstellt.
    - Klare und nicht verzerrte Balken verwendet werden.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 4: Kreisdiagramme für `eye` und `eyetext`
 
@@ -156,6 +217,17 @@ pie(eye_rel, main = "Relative Verteilung von Eye")
 3. **Wiederholung für `eyetext`:**  
    Berechnen Sie die Häufigkeiten für `eyetext` und erstellen Sie ein entsprechendes Kreisdiagramm.
 
+
+
+
+
+
+
+
+
+
+
+
 # Aufgabe 5: Problematische Darstellung des Marktanteils bei Steve Jobs
 
 **Aufgabenstellung:**  
@@ -173,6 +245,21 @@ Das Bild zeigt Steve Jobs, der in einer Keynote den Marktanteil seiner Firma App
 
 3. **Zusammenfassung:**  
    Die korrigierte Darstellung muss die tatsächlichen Verhältnisse (z. B. 19.5% versus 21.2%) ohne optische Täuschung klar erkennbar machen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 6: Häufigkeitsverteilung von `height` in Bins
 
@@ -206,6 +293,25 @@ print(height_freq)
 4. **Ergebnisvergleich:**  
    Vergleichen Sie Ihre Häufigkeiten mit den vorgegebenen Werten.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Aufgabe 7: Kumulative Häufigkeit für `height`
 
 **Aufgabenstellung:**  
@@ -223,6 +329,23 @@ print(height_cum)
    
 2. **Interpretation:**  
    Erläutern Sie, wie die kumulative Häufigkeit angibt, wie viele Werte bis zu einem bestimmten Intervall erreicht werden.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 8: Histogramme für `foot` und `reaction1`
 
@@ -256,6 +379,18 @@ hist(reaction1_numeric, main = "Histogramm von Reaction1", xlab = "Reaction1", c
    
 3. **Analyse:**  
    Kommentieren Sie, ob die Verteilungen symmetrisch oder schief sind.
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 9: Histogramm für `height` und Geschlechtervergleich
 
@@ -302,6 +437,18 @@ hist(height_f, main = "Histogramm von Height (Frauen)", xlab = "Height",
 
 4. **Diskussion:**  
    Vergleichen Sie die Verteilungen und diskutieren Sie, ob Unterschiede (z.B. Bimodalität) zwischen den Geschlechtern erkennbar sind.
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 10: Histogramme für `hair` und Geschlechtervergleich
 
@@ -354,7 +501,20 @@ hist(hair_f, main = "Histogramm von Hair (Frauen)", xlab = "Hair",
 ```
    
 4. **Interpretation:**  
-   Diskutieren Sie, ob und welche Unterschiede in der Verteilung zwischen den Geschlechtern ersichtlich sind.
+   Diskutieren Sie, ob und welche Unterschiede in der Verteilung zwischen den Geschlechtern ersichtlich sind. 
+   
+   _Problme mit der Darstellung beim Histogramm für Frauen?_
+
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 11: Histogramm für `cash` und Beurteilung der Schiefe
 
@@ -390,6 +550,15 @@ hist(cash_numeric,
 3. **Zusammenfassung:**  
    Erklären Sie, dass eine rechtsschiefe Verteilung charakterisiert ist durch wenige, aber sehr hohe Ausreisser.
 
+
+
+
+
+
+
+
+
+
 # Aufgabe 12: Analyse der Körpergrösse: `Hoehe.m` und `Hoehe.f`
 
 Die Variablen `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
@@ -424,6 +593,17 @@ print(count_f)
    
    Es sollten 61 Frauen grösser sein als der kleinste Mann.
 
+
+
+
+
+
+
+
+
+
+
+
 # Aufgabe 13: Fusslängenanalyse
 
 Die Variablen `foot`, `height` und `gender` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
@@ -452,6 +632,18 @@ foot.f <- data$foot[data$gender == "Female"]
 3. **Interpretation:**  
    Die Lösung zeigt, dass beim grössten Mann die Fusslänge nicht maximal ist, während bei den Frauen der Zusammenhang anders sein kann.
 
+
+
+
+
+
+
+
+
+
+
+
+
 # Aufgabe 14: Mindestgrösse für den Beitritt zur britischen Polizei
 
 **Aufgabenstellung:**  
@@ -473,6 +665,16 @@ print(count_suitable)
    
 2. **Ergebnis:**  
    Die Lösung nennt 185 Personen.
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 15: Geburtsmonate mit lubridate
 
@@ -509,6 +711,16 @@ print(count_april)
    
    Die Lösung gibt 24 Personen an.
 
+
+
+
+
+
+
+
+
+
+
 # Aufgabe 16: Kontingenztabelle für `gender` und `eye`
 
 Die Variablen `gender` und `eye` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
@@ -532,6 +744,21 @@ print(kontingenz)
 2. **Interpretation:**  
    Vergleichen Sie Ihre Ergebnisse mit den Lösungsvorgaben und diskutieren Sie mögliche Zusammenhänge.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Aufgabe 17: Streudiagramme und Analyse der Zusammenhänge
 
 Die Variablen `height`, `hair`, `foot` und `reaction1` finden Sie in `WDDA_02.xlsx` im Tabellenblatt `BFH`.
@@ -550,8 +777,10 @@ Erstellen Sie ein Streudiagramm und kommentieren Sie die Art der Beziehung zwisc
 library(readxl)
 data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
 
-plot(data$height, data$hair, main = "Scatterplot: Height vs. Hair", 
-     xlab = "Height", ylab = "Hair")
+plot(data$height, data$hair, 
+     main = "Scatterplot: Height vs. Hair", 
+     xlab = "Height",
+     ylab = "Hair")
 ```
    
    - Interpretieren Sie, ob ein negativer oder positiver Zusammenhang besteht.
@@ -576,6 +805,20 @@ plot(data$height, data$reaction1, main = "Scatterplot: Height vs. Reaction1",
 
 4. **Kommentar:**  
    Fassen Sie zusammen, welche Zusammenhänge bestehen und welche Interpretationen sich daraus ableiten lassen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Aufgabe 18: Analyse der Golfspieler-Umfrage
 

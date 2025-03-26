@@ -842,10 +842,4 @@ cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
 
 
 
-# Schlussfolgerung
-
-Dieser Leitfaden zeigt, wie Sie mithilfe von R verschiedene statistische Analysen (Mittelwert, Median, Varianz, Schiefe, Korrelation usw.) Schritt für Schritt durchführen und interpretieren können. Nutzen Sie die hier vorgestellten Beispiele und Code-Snippets als Vorlage, um Ihre eigenen Datensätze zu analysieren und die einzelnen Aufgaben nachzuvollziehen.
-
-Viel Erfolg beim Üben und Vertiefen Ihrer Kenntnisse in der Datenanalyse!
-
 
