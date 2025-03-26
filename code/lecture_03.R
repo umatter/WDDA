@@ -18,6 +18,17 @@ Graduates <- read_excel("data/WDDA_03.xlsx", sheet = "Graduates")
 Brand <- read_excel("data/WDDA_03.xlsx", sheet = "Auto")
 Advertising <- read_excel("data/WDDA_03.xlsx", sheet = "Advertising")
 
+
+
+
+
+
+
+
+
+
+
+
 # ---------------------------------------------------------------
 # 1. Arithmetischer Mittelwert
 # Der arithmetische Mittelwert (Mittelwert) ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen.
@@ -35,6 +46,16 @@ mittelwert_manual <- sum_Salary / n_Salary  # Manuelle Berechnung
 mittelwert_builtin <- Salary |> mean()      # Eingebaute Funktion
 
 
+
+
+
+
+
+
+
+
+
+
 # ---------------------------------------------------------------
 # 2. Median
 # Der Median teilt die geordneten Daten in zwei Hälften.
@@ -44,6 +65,10 @@ mittelwert_builtin <- Salary |> mean()      # Eingebaute Funktion
 
 # Beispiel: Berechnung des Medians
 median_salary <- Salary |> median()
+
+
+
+
 
 
 # ---------------------------------------------------------------
@@ -61,6 +86,11 @@ modus_brand <- brand_table |>
   names()
 
 
+
+
+
+
+
 # ---------------------------------------------------------------
 # 4. Gewichteter Mittelwert
 # Beim gewichteten Mittelwert wird jedem Datenwert ein Gewicht zugeordnet.
@@ -73,6 +103,12 @@ gewichteter_mittelwert <- sum(xvar * weight) / sum(weight)
 print(gewichteter_mittelwert)
 
 
+
+
+
+
+
+
 # ---------------------------------------------------------------
 # 5. Spannweite
 # Die Spannweite ist die Differenz zwischen dem größten und dem kleinsten Wert.
@@ -81,6 +117,13 @@ print(gewichteter_mittelwert)
 max_salary <- Salary |> max()
 min_salary <- Salary |> min()
 spannweite <- max_salary - min_salary
+
+
+
+
+
+
+
 
 
 # ---------------------------------------------------------------
@@ -94,6 +137,15 @@ Q3 <- Salary |> quantile(0.75)
 IQR_salary <- Q3 - Q1
 
 
+
+
+
+
+
+
+
+
+
 # ---------------------------------------------------------------
 # 7. Perzentile
 # Das n-te Perzentil trennt die unteren n% der Daten von den oberen (100 - n)%.
@@ -101,6 +153,15 @@ IQR_salary <- Q3 - Q1
 # ---------------------------------------------------------------
 
 perzentil95 <- Salary |> quantile(0.95)
+
+
+
+
+
+
+
+
+
 
 
 # ---------------------------------------------------------------
@@ -119,6 +180,13 @@ boxplot(Salary ~ Major,
         xlab = "Major", ylab = "Salary")
 
 
+
+
+
+
+
+
+
 # ---------------------------------------------------------------
 # 9. Varianz
 # Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert.
@@ -129,6 +197,12 @@ boxplot(Salary ~ Major,
 var_manual <- Salary |> 
   (\(x) sum((x - mean(x))^2))() / (length(Salary) - 1)
 var_builtin <- Salary |> var()
+
+# Schritt weiter: Quadratwurzel
+sqrt(var_builtin)
+
+
+
 
 
 # ---------------------------------------------------------------
@@ -141,6 +215,12 @@ sd_manual <- Salary |> var() |> sqrt()
 sd_builtin <- Salary |> sd()
 
 
+
+
+
+
+
+
 # ---------------------------------------------------------------
 # 11. Empirische Regel (68-95-99,7-Regel)
 # Beispiel: Berechnung des Intervalls [mean - sd, mean + sd]
@@ -148,6 +228,14 @@ sd_builtin <- Salary |> sd()
 
 untere_grenze <- Salary |> mean() - (Salary |> sd())
 obere_grenze <- Salary |> mean() + (Salary |> sd())
+
+
+
+
+
+
+
+
 
 
 # ---------------------------------------------------------------
@@ -158,17 +246,31 @@ obere_grenze <- Salary |> mean() + (Salary |> sd())
 Salary_z <- (Salary - (Salary |> mean())) / (Salary |> sd())
 
 
+
+
+
+
 # ---------------------------------------------------------------
 # 13. Schiefe
 # Die Schiefe misst die Asymmetrie der Verteilung.
 # Für eine Stichprobe kann sie wie folgt manuell berechnet werden:
 # ---------------------------------------------------------------
 
+
 n <- Salary_z |> length()
 schiefe <- n / ((n - 1) * (n - 2)) * (Salary_z^3 |> sum())
 # Alternativ kann auch das Paket e1071 verwendet werden:
 # library(e1071)
 # print(skewness(Salary))
+
+
+
+
+
+
+
+
+
 
 
 # ---------------------------------------------------------------
@@ -201,7 +303,7 @@ mean_adverts <- mean(adverts)
 abline(h = mean_sales, col = "red", lty = 2)
 abline(v = mean_adverts, col = "red", lty = 2)
 
-# Einteilung des Plots in Quadranten mit besserer Positionierung und kleinerer Schrift
+# Einteilung des Plots in Quadranten 
 text(min(adverts), mean_sales + 0.15*(max(sales)-min(sales)), 
      "Q2: (x_i < mean(x)) & (y_i > mean(y))\nNegative Kovarianz", 
      pos = 4, col = "darkgreen", cex = 0.8)
@@ -219,12 +321,25 @@ text(max(adverts), mean_sales - 0.15*(max(sales)-min(sales)),
 par(mar = c(5, 4, 4, 2))  # Standardwerte wiederherstellen
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ---------------------------------------------------------------
 # 15. Korrelationskoeffizient
 # Der Korrelationskoeffizient (r) normiert die Kovarianz und liegt zwischen -1 und +1.
 # ---------------------------------------------------------------
 
-corr_manual <- cov(sales, adverts) / ((sales |> sd()) * (adverts |> sd()))
+corr_manual <- cov(sales, adverts) / ((sd(sales)) * (sd(adverts )))
 corr_builtin <- cor(sales, adverts)
 
 # Hinweis: Der Korrelationskoeffizient hat keine Einheit.
