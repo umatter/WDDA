@@ -752,8 +752,18 @@ boxplot(data$Fall,
         ylab = "Prozentuale Änderung")
 ```
 
-3. **Perzentil für Belgien:**  
-   Die Lösung zeigt, dass Belgien im 71. Perzentil liegt.
+3. **Perzentil für Belgien berechnen:**  
+```{r}
+# Belgiens Wert identifizieren
+belgium_value <- data$Fall[data$Country == "Belgium"]
+cat("Belgiens Wert:", belgium_value, "\n")
+
+# Perzentil berechnen
+belgium_percentile <- mean(data$Fall < belgium_value, na.rm = TRUE) * 100
+cat("Perzentil für Belgien:", round(belgium_percentile), "\n")
+```
+
+Die Berechnung zeigt, dass Belgien im 71. Perzentil liegt. Das bedeutet, dass etwa 71% der Länder einen geringeren prozentualen Rückgang als Belgien erlebten.
 
 
 
