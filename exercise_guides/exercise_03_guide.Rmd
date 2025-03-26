@@ -140,7 +140,7 @@ cat("distance - Mittelwert:", mean_distance, "Median:", median_distance, "\n")
 ```
 
 2. **Interpretation:**  
-   - Bei `jar` liegen die Werte z. B. bei 299.7 (Mittelwert) und 287 (Median).  
+   - Bei `jar` liegen die Werte z.B. bei 299.7 (Mittelwert) und 287 (Median).  
    - Bei `siblings` ist der Unterschied (1.5 vs. 1) klein, bei `distance` (25.2 km vs. 24 km) könnte eine Rechtsschiefe vorliegen, weil einige Personen sehr weit entfernt wohnen.
 
 
@@ -153,7 +153,7 @@ cat("distance - Mittelwert:", mean_distance, "Median:", median_distance, "\n")
 **Schritt-für-Schritt-Erklärung:**
 
 1. **Überlegungen anstellen:**  
-   Bei rechtsschiefen Daten – etwa wenn einzelne Personen extrem hohe Bargeldbeträge besitzen – wird der Mittelwert tendenziell durch Ausreißer nach oben verzerrt, während der Median robuster ist.
+   Bei rechtsschiefen Daten – etwa wenn einzelne Personen extrem hohe Bargeldbeträge besitzen – wird der Mittelwert tendenziell durch Ausreisser nach oben verzerrt, während der Median robuster ist.
 
 2. **Erwartete Lösung:**  
    Aufgrund einiger sehr hoher Werte im Datensatz wird der Mittelwert höher sein als der Median.
@@ -168,10 +168,10 @@ cat("distance - Mittelwert:", mean_distance, "Median:", median_distance, "\n")
 **Schritt-für-Schritt-Erklärung:**
 
 1. **Mittelwert berechnen:**  
-   Verwenden Sie `mean()` auf der entsprechenden Variable (z. B. `gift` oder wie immer diese Variable benannt ist).
+   Verwenden Sie `mean()` auf der entsprechenden Variable (Spalte `present` im `BFH` Datenblatt).
 
 ```{r}
-mean_gift <- mean(data$gift, na.rm = TRUE)  # Variable ggf. anpassen
+mean_gift <- weighted.mean(data$present, data$siblings) 
 cat("Durchschnittliche Ausgabe für ein Geschwister-Geschenk:", mean_gift, "CHF\n")
 ```
 
@@ -261,7 +261,7 @@ cat("IQR cash:", iqr_cash, "CHF\n")
 boxplot(data$hair ~ data$gender,
         main = "Boxplot: Haarlänge nach Geschlecht",
         xlab = "Geschlecht", ylab = "Haarlänge",
-        col = c("lightblue", "lightpink"))
+        col = c( "lightpink","lightblue"))
 ```
 
 2. **Weitere Vergleiche:**  
@@ -350,7 +350,7 @@ cat("Standardabweichung cash:", sd_cash, "CHF\n")
 **Schritt-für-Schritt-Erklärung:**
 
 1. **Empirische Regel:**  
-   Die empirische Regel (68-95-99.7-Regel) besagt, dass etwa 68 % der Werte innerhalb einer Standardabweichung, 95 % innerhalb von zwei und 99.7 % innerhalb von drei Standardabweichungen vom Mittelwert liegen.
+   Die empirische Regel (68-95-99.7-Regel) besagt, dass etwa 68% der Werte innerhalb einer Standardabweichung, 95% innerhalb von zwei und 99.7% innerhalb von drei Standardabweichungen vom Mittelwert liegen.
 
 2. **Berechnungen:**  
    Für jede Variable:  
@@ -368,7 +368,7 @@ cat("Anteil innerhalb 1 SD für height:", proportion1, "\n")
 ```
 
 3. **Erwartete Ergebnisse:**  
-   Die Lösungen werden als Mengen von Anteilen angegeben, z. B. für `height`: {0.63, 0.97, 1} usw.
+   Die Lösungen werden als Mengen von Anteilen angegeben, z.B. für `height`: {0.63, 0.97, 1} usw.
 
 
 
@@ -383,24 +383,30 @@ cat("Anteil innerhalb 1 SD für height:", proportion1, "\n")
 
 **Schritt-für-Schritt-Erklärung:**
 
-1. **Berechnungen:**  
-   Angenommen, die Bewertungen sind in der Variable `IHG` gespeichert.
+**Vorbereitung: Daten laden**
 
 ```{r}
-mean_IHG <- mean(data$IHG, na.rm = TRUE)
-median_IHG <- median(data$IHG, na.rm = TRUE)
-quantiles <- quantile(data$IHG, probs = c(0.25, 0.75, 0.85), na.rm = TRUE)
-iqr_IHG <- IQR(data$IHG, na.rm = TRUE)
+data <- read_excel("../data/WDDA_03.xlsx", sheet = "IHG")
+```
 
-cat("Mittelwert IHG:", mean_IHG, "\n")
-cat("Median IHG:", median_IHG, "\n")
-cat("Q1:", quantiles[1], " Q3:", quantiles[2], " IQR:", iqr_IHG, "\n")
+1. **Berechnungen:**  
+  
+
+```{r}
+mean_ratings <- mean(data$`Customer ratings`, na.rm = TRUE)
+median_ratings <- median(data$`Customer ratings`, na.rm = TRUE)
+quantiles <- quantile(data$`Customer ratings`, probs = c(0.25, 0.75, 0.85), na.rm = TRUE)
+iqr_ratings <- IQR(data$`Customer ratings`, na.rm = TRUE)
+
+cat("Mittelwert IHG:", mean_ratings, "\n")
+cat("Median IHG:", median_ratings, "\n")
+cat("Q1:", quantiles[1], " Q3:", quantiles[2], " IQR:", iqr_ratings, "\n")
 cat("85. Perzentil:", quantiles[3], "\n")
 ```
 
 2. **Interpretation:**  
    - (a) Erwartete Werte: Mittelwert ≈ 4.16, Median ≈ 4.2.  
-   - (b) Da keine offensichtlichen Ausreißer vorhanden sind, ist der Mittelwert ein gutes Mass.  
+   - (b) Da keine offensichtlichen Ausreisser vorhanden sind, ist der Mittelwert ein gutes Mass.  
    - (c) Q1 = 3.95, Q3 = 4.3, IQR = 0.35.  
    - (d) 85. Perzentil: 4.4
 
@@ -455,7 +461,7 @@ cat("Sommer - Varianz:", var_sommer, ", SD:", sd_sommer, ", VK:", vc_sommer, "%\
 
 4. **Erwartete Ergebnisse:**  
    - Winter: Spannweite = 2, IQR = 4, Varianz ≈ 8.23, SD ≈ 2.87, VK ≈ 16.21%  
-   - Sommer: Spannweite = 20, IQR = 11, Varianz ≈ 44.49, SD ≈ 6.67, VK ≈ 26.05%  
+   - Sommer: Spannweite = 20, IQR = 9 (Lösungsblatt hatte hier einen Tippfehler), Varianz ≈ 44.49, SD ≈ 6.67, VK ≈ 26.05%  
    - (d) Die Sommerperiode weist eine grössere Variabilität auf.
 
 
@@ -474,6 +480,10 @@ cat("Sommer - Varianz:", var_sommer, ", SD:", sd_sommer, ", VK:", vc_sommer, "%\
    Standardisieren Sie die Daten mit der Formel \( z = \frac{x - \text{Mittelwert}}{\text{SD}} \).
 
 ```{r}
+# Daten laden
+ data <- read_excel("../data/WDDA_03.xlsx", sheet = "BFH")
+
+
 z_height <- scale(data$height)
 z_foot   <- scale(data$foot)
 z_house  <- scale(data$house)
@@ -500,7 +510,7 @@ cat("SD z-height:", sd(z_height, na.rm = TRUE), "\n")
 **Schritt-für-Schritt-Erklärung:**
 
 1. **Berechnung der Schiefe:**  
-   Nutzen Sie z. B. die Funktion `skewness()` aus dem Package `e1071` oder `moments`.
+   Nutzen Sie z.B. die Funktion `skewness()` aus dem Package `e1071` oder `moments`.
 
 ```{r}
 library(e1071)
@@ -596,11 +606,11 @@ cat("Korrelation (distance, siblings):", correlation_c, "\n")
 ```
 
 3. **Erwartete Ergebnisse:**  
-   - (a) Es besteht ein positiver Zusammenhang (z. B. r ≈ 0.28) mit einer Anpassungsgleichung wie:  
+   - (a) Es besteht ein positiver Zusammenhang (z.B. r ≈ 0.28) mit einer Anpassungsgleichung wie:  
      `foot = 0.12 * height + 4.84`  
-   - (b) Ein negativer Zusammenhang (z. B. r ≈ -0.19) mit:  
+   - (b) Ein negativer Zusammenhang (z.B. r ≈ -0.19) mit:  
      `foot = -0.04 * hair + 27.59`  
-   - (c) Kein eindeutiger Zusammenhang (z. B. r ≈ -0.07)
+   - (c) Kein eindeutiger Zusammenhang (z.B. r ≈ -0.07)
 
 
 
@@ -640,8 +650,9 @@ cat("Korrelation (Männer):", corr_male, "\n")
 4. **Erwartete Ergebnisse:**  
    - Gesamtkorrelation: ca. -0.62  
    - Nur Frauen: ca. 0.01  
-   - Nur Männer: ca. 0.12  
-   Dies illustriert, wie der aggregierte Datensatz (Simpsonsches Paradoxon) andere Korrelationen ergeben kann als getrennte Gruppen.
+   - Nur Männer: ca. 0.12 
+   
+ ies illustriert, wie der aggregierte Datensatz andere Korrelationen ergeben kann als getrennte Gruppen (d.h. wir haben hier einen Fall von ["Simpson's paradox"](https://en.wikipedia.org/wiki/Simpson%27s_paradox)).
 
 
 
@@ -669,6 +680,7 @@ cat("Korrelation (Männer):", corr_male, "\n")
 **Schritt-für-Schritt-Erklärung:**
 
 - Vergleichen Sie visuell die Streuung und Richtung der Punktwolken.  
+- Diskutieren Sie, wie eng bzw. locker die Punkte um eine gedachte Regressionslinie liegen.
 - Erwartete Schätzungen (basierend auf den Lösungen):  
   - (a) r ≈ 0.9  
   - (b) r ≈ -0.6  
@@ -679,9 +691,6 @@ cat("Korrelation (Männer):", corr_male, "\n")
   - (g) r ≈ -0.3  
   - (h) r ≈ -0.8  
   - (i) r ≈ 0
-
-- Diskutieren Sie, wie eng bzw. locker die Punkte um eine gedachte Regressionslinie liegen.
-
 
 
 # Aufgabe 20: Vergleich von Streudiagrammen und Stichprobenumfang
@@ -704,17 +713,18 @@ cat("Korrelation (Männer):", corr_male, "\n")
 **Schritt-für-Schritt-Erklärung:**
 
 - Aufgrund eines offensichtlichen quadratischen (nicht-linearen) Zusammenhangs wird der lineare Korrelationskoeffizient nur einen geringen linearen Effekt erfassen.
-- Erwartete Lösung: r ≈ -0.17.
+- (Lösung: r ≈ -0.17, sagt hier aber nicht viel aus)
 
 
 
 # Aufgabe 22: Analyse der Aktienmärkte 2008
 
 **Aufgabenstellung:**  
+
 22. Die Tabelle "Stock 2008" enthält prozentuale Rückgänge der Aktien zwischen Januar und Anfang Oktober.  
    (a) Bestimmen Sie Mittelwert und Median.  
    (b) Bestimmen Sie das erste und dritte Quartil.  
-   (c) Enthalten die Daten Ausreißer? Konstruieren Sie ein Boxplot.  
+   (c) Enthalten die Daten Ausreisser? Konstruieren Sie ein Boxplot.  
    (d) Welches Perzentil würden Sie für Belgien melden?
 
 **Schritt-für-Schritt-Erklärung:**
@@ -722,9 +732,12 @@ cat("Korrelation (Männer):", corr_male, "\n")
 1. **Berechnungen:**
 
 ```{r}
-mean_stock <- mean(data$Stock2008, na.rm = TRUE)
-median_stock <- median(data$Stock2008, na.rm = TRUE)
-quantiles_stock <- quantile(data$Stock2008, probs = c(0.25, 0.75), na.rm = TRUE)
+# Daten aus WDDA_03 laden
+data <- read_excel("../data/WDDA_03.xlsx", sheet = "Stock_2008")
+
+mean_stock <- mean(data$Fall, na.rm = TRUE)
+median_stock <- median(data$Fall, na.rm = TRUE)
+quantiles_stock <- quantile(data$Fall, probs = c(0.25, 0.75), na.rm = TRUE)
 
 cat("Mittelwert Stock 2008:", mean_stock, "\n")
 cat("Median Stock 2008:", median_stock, "\n")
@@ -734,7 +747,7 @@ cat("Q1:", quantiles_stock[1], "Q3:", quantiles_stock[2], "\n")
 2. **Boxplot erstellen:**
 
 ```{r}
-boxplot(data$Stock2008,
+boxplot(data$Fall,
         main = "Boxplot: Stock 2008",
         ylab = "Prozentuale Änderung")
 ```
@@ -756,7 +769,7 @@ boxplot(data$Stock2008,
 1. **Berechnungen:**
 
 ```{r}
-# Angenommen, die Spalten heißen 'DAX' und 'CAC40'
+# Angenommen, die Spalten heissen 'DAX' und 'CAC40'
 corr_index <- cor(data$DAX, data$CAC40, use = "complete.obs")
 cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
 ```
