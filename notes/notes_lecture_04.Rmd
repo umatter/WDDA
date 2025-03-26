@@ -195,7 +195,7 @@ cat("Verhältnis σ/se:", round(sigma/se_simuliert, 2),
 
 Die Stichprobengrösse hat einen entscheidenden Einfluss auf die Präzision von Schätzungen. Mit zunehmender Stichprobengrösse wird die Variation der Stichprobenstatistiken kleiner.
 
-```{r stichprobengroesse, eval=TRUE}
+```{r stichprobengroesse, eval=TRUE, fig.height=10}
 # Ziehe Stichproben unterschiedlicher Grösse und berechne jeweils den Mittelwert
 set.seed(789)
 m.30  <- do(3000) * mean(sample(WeeklySalary, size = 30))
