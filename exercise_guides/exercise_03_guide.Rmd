@@ -790,8 +790,11 @@ Das 71. Perzentil bedeutet, dass Belgien einen höheren Aktienrückgang als 71% 
 1. **Berechnungen:**
 
 ```{r}
+# Daten aus WDDA_03 laden
+data <- read_excel("../data/WDDA_03.xlsx", sheet = "DAX_CAC")
+
 # Angenommen, die Spalten heissen 'DAX' und 'CAC40'
-corr_index <- cor(data$DAX, data$CAC40, use = "complete.obs")
+corr_index <- cor(data$DAX, data$CAC, use = "complete.obs")
 cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
 ```
 
@@ -808,6 +811,7 @@ cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
 **Schritt-für-Schritt-Erklärung:**
 
 - Diskutieren Sie qualitativ:  
+
   - Da die Bias-Skala in beide Richtungen offen ist, ist es sinnvoll, den absoluten Bias zu betrachten.
   - Es wird erwartet, dass ein extremer Bias mit einem niedrigeren Niveau sachlicher Berichterstattung einhergeht.
 
