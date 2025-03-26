@@ -752,6 +752,8 @@ boxplot(data$Fall,
         ylab = "Prozentuale Änderung")
 ```
 
+Es gibt keine Ausreisser. Der Boxplot zeigt, dass alle Werte innerhalb der Whiskers liegen.
+
 3. **Perzentil für Belgien berechnen:**  
 ```{r}
 # Belgiens Wert identifizieren
