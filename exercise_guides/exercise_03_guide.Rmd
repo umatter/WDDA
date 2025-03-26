@@ -5,6 +5,7 @@ output:
   pdf_document:
     fig_width: 7
     fig_height: 5
+    latex_engine: xelatex
 ---
 
 
@@ -405,7 +406,7 @@ cat("85. Perzentil:", quantiles[3], "\n")
 ```
 
 2. **Interpretation:**  
-   - (a) Erwartete Werte: Mittelwert ≈ 4.16, Median ≈ 4.2.  
+   - (a) Erwartete Werte: Mittelwert $\approx$ 4.16, Median $\approx$ 4.2.  
    - (b) Da keine offensichtlichen Ausreisser vorhanden sind, ist der Mittelwert ein gutes Mass.  
    - (c) Q1 = 3.95, Q3 = 4.3, IQR = 0.35.  
    - (d) 85. Perzentil: 4.4
@@ -460,8 +461,8 @@ cat("Sommer - Varianz:", var_sommer, ", SD:", sd_sommer, ", VK:", vc_sommer, "%\
 ```
 
 4. **Erwartete Ergebnisse:**  
-   - Winter: Spannweite = 2, IQR = 4, Varianz ≈ 8.23, SD ≈ 2.87, VK ≈ 16.21%  
-   - Sommer: Spannweite = 20, IQR = 9 (Lösungsblatt hatte hier einen Tippfehler), Varianz ≈ 44.49, SD ≈ 6.67, VK ≈ 26.05%  
+   - Winter: Spannweite = 2, IQR = 4, Varianz $\approx$ 8.23, SD $\approx$ 2.87, VK $\approx$ 16.21%  
+   - Sommer: Spannweite = 20, IQR = 9 (Lösungsblatt hatte hier einen Tippfehler), Varianz $\approx$ 44.49, SD $\approx$ 6.67, VK $\approx$ 26.05%  
    - (d) Die Sommerperiode weist eine grössere Variabilität auf.
 
 
@@ -529,9 +530,9 @@ cat("Schiefe hair (Frauen):", skew_hair_f, "\n")
 ```
 
 2. **Erwartete Werte:**  
-   - (a) ≈ -0.2  
-   - (b) ≈ 1.7  
-   - (c) ≈ 5.5  
+   - (a) $\approx$ -0.2  
+   - (b) $\approx$ 1.7  
+   - (c) $\approx$ 5.5  
    - (d) Männer: ca. 1.74, Frauen: ca. 0.31
 
 
@@ -713,7 +714,7 @@ cat("Korrelation (Männer):", corr_male, "\n")
 **Schritt-für-Schritt-Erklärung:**
 
 - Aufgrund eines offensichtlichen quadratischen (nicht-linearen) Zusammenhangs wird der lineare Korrelationskoeffizient nur einen geringen linearen Effekt erfassen.
-- (Lösung: r ≈ -0.17, sagt hier aber nicht viel aus)
+- (Lösung: r $\approx$ -0.17, sagt hier aber nicht viel aus)
 
 
 
@@ -799,7 +800,7 @@ cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
 ```
 
 2. **Ergebnis:**  
-   Erwartete Lösung: r ≈ 0.923, was auf einen sehr starken positiven linearen Zusammenhang hindeutet.
+   Erwartete Lösung: r $\approx$ 0.923, was auf einen sehr starken positiven linearen Zusammenhang hindeutet.
 
 
 
