@@ -1,0 +1,746 @@
+---
+title: "WDDA FS 2025: Leitfaden für Aufgabenserie 4"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    fig_width: 7
+    fig_height: 5
+    latex_engine: xelatex
+---
+
+
+# Einleitung
+
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie 4. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
+
+**Daten laden:**  
+   Laden Sie den Datensatz aus der Excel-Datei in R mit der `readxl`-Bibliothek.
+
+```{r, message=FALSE, warning=FALSE}
+   library(readxl)
+   data <- read_excel("../data/WDDA_04.xlsx", sheet = "BFH")
+```
+
+# Aufgabe 1: Parameter vs. Statistik
+
+**Aufgabenstellung:**  
+1. Geben Sie an, ob die beschriebene Größe ein Parameter oder eine Statistik ist und geben Sie die korrekte Schreibweise an.  
+   (a) Durchschnittliches Haushaltseinkommen für alle Häuser in den CH, unter Verwendung von Daten der CH-Volkszählung.  
+   (b) Durchschnittliche Anzahl von Fernsehgeräten pro Haushalt in North Carolina, unter Verwendung von Daten aus einer Stichprobe von 1000 Haushalten.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Unterscheidung zwischen Parameter und Statistik:**  
+   - Ein **Parameter** ist eine Kennzahl, die eine Eigenschaft der Grundgesamtheit beschreibt.
+   - Eine **Statistik** ist eine Kennzahl, die aus einer Stichprobe berechnet wird.
+
+```{r}
+# Für diese Aufgabe ist keine Berechnung erforderlich
+```
+
+2. **Analyse der Teilaufgaben:**  
+   (a) Hier wird das durchschnittliche Haushaltseinkommen für **alle** Häuser in der Schweiz berechnet, basierend auf einer Volkszählung (also einer vollständigen Erfassung der Grundgesamtheit). Dies ist ein Parameter, die korrekte Notation ist μ.
+   
+   (b) Hier wird der Durchschnitt aus einer Stichprobe von 1000 Haushalten berechnet, nicht aus allen Haushalten in North Carolina. Dies ist eine Statistik, die korrekte Notation ist x̄.
+
+3. **Lösungen:**  
+   - (a) Parameter: μ
+   - (b) Statistik: x̄
+
+
+# Aufgabe 2: Smartphone-App-Studie
+
+**Aufgabenstellung:**  
+2. Es gibt eine Studie über Smartphone-Nutzer in den USA, die Apps für ihr Smartphone herunterladen. Von den n = 355 Smartphone-Benutzern, die eine App heruntergeladen hatten, lag die durchschnittliche Anzahl der heruntergeladenen Apps bei 19.7.  
+   (a) Geben Sie die Notation für den interessierenden Parameter an, und definieren Sie den Parameter in diesem Zusammenhang.  
+   (b) Geben Sie die Notation für die Größe an, die den besten Schätzwert liefert, und geben Sie ihren Wert an.  
+   (c) Was müsste man tun, um den Parameter genau zu berechnen?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Identifizierung des Parameters und der Statistik:**
+   - Der interessierende Parameter ist der Populationsmittelwert μ, der die durchschnittliche Anzahl heruntergeladener Apps aller Smartphone-Nutzer in den USA repräsentiert, die mindestens eine App heruntergeladen haben.
+   - Die beste Schätzung für diesen Parameter ist der Stichprobenmittelwert x̄ = 19.7.
+
+```{r}
+# Keine Berechnung erforderlich, die Werte sind bereits gegeben
+```
+
+2. **Antworten:**
+   - (a) Der Parameter ist μ = mittlere Anzahl heruntergeladener Apps aller Smartphone-Nutzer in den USA, die mindestens eine App heruntergeladen haben.
+   - (b) Die beste Schätzung liefert der Stichprobenmittelwert x̄ = 19.7.
+   - (c) Um den Parameter genau zu berechnen, müsste man die Anzahl der heruntergeladenen Apps von allen Smartphone-Nutzern in den USA erfassen, die jemals eine App heruntergeladen haben.
+
+
+# Aufgabe 3: Wahrscheinlichkeit von Stichprobenmittelwerten
+
+**Aufgabenstellung:**  
+3. Es werden mehrere mögliche Werte für die oben dargestellte Beispielstatistik angegeben. Geben Sie jeweils an, ob jeder Wert bei einer Stichprobe dieses Umfangs (i) mit angemessener Wahrscheinlichkeit auftritt, (ii) ungewöhnlich ist, aber gelegentlich auftreten könnte, oder (iii) extrem unwahrscheinlich ist.  
+   Wie wahrscheinlich sind diese Stichprobenmittelwerte unter Verwendung der dargestellten Stichprobenverteilung?  
+   (a) x̄ = 70  
+   (b) x̄ = 100  
+   (c) x̄ = 140
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Analyse der Stichprobenverteilung:**  
+   Anhand des Histogramms in der Aufgabenstellung können wir die Wahrscheinlichkeit der verschiedenen Stichprobenmittelwerte beurteilen.
+
+```{r}
+# Hier würde normalerweise eine Analyse der Stichprobenverteilung erfolgen
+# Da wir nur das Bild haben, basieren die Antworten auf visueller Inspektion
+```
+
+2. **Beurteilung der Werte:**
+   - (a) x̄ = 70: Dieser Wert liegt im zentralen Bereich der Verteilung und tritt mit angemessener Wahrscheinlichkeit auf (i).
+   - (b) x̄ = 100: Dieser Wert liegt ebenfalls im Bereich der Verteilung und tritt mit angemessener Wahrscheinlichkeit auf (i).
+   - (c) x̄ = 140: Dieser Wert liegt am äußeren Rand der Verteilung und ist ungewöhnlich, könnte aber gelegentlich auftreten (ii).
+
+
+# Aufgabe 4: Analyse von Umfragedaten
+
+**Aufgabenstellung:**  
+4. Betrachten Sie folgende Grafik:  
+   (a) Erstellen Sie für die Initiative für ein Verhüllungsverbot den Bereich der plausiblen Werte. Ist davon auszugehen, dass die Initiative angenommen wird?  
+   (b) Erstellen Sie für die Initiative für den Freihandel mit Indonesien den Bereich der plausiblen Werte. Ist davon auszugehen, dass die Initiative angenommen wird?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Berechnung der Fehlermarge:**  
+   Laut der Grafik beträgt der Fehlerbereich ±2.8 Prozentpunkte.
+
+```{r}
+# Verhüllungsverbot
+ja_verhuellungsverbot <- 49
+fehlerbereich <- 2.8
+
+# Berechnung des Konfidenzintervalls
+untere_grenze_verhuellungsverbot <- ja_verhuellungsverbot - fehlerbereich
+obere_grenze_verhuellungsverbot <- ja_verhuellungsverbot + fehlerbereich
+
+cat("Plausible Werte für Verhüllungsverbot:", 
+    untere_grenze_verhuellungsverbot, "% bis", 
+    obere_grenze_verhuellungsverbot, "%\n")
+
+# Freihandel mit Indonesien
+ja_freihandel <- 52
+untere_grenze_freihandel <- ja_freihandel - fehlerbereich
+obere_grenze_freihandel <- ja_freihandel + fehlerbereich
+
+cat("Plausible Werte für Freihandel mit Indonesien:", 
+    untere_grenze_freihandel, "% bis", 
+    obere_grenze_freihandel, "%\n")
+```
+
+2. **Interpretation:**
+   - (a) Für das Verhüllungsverbot liegt der Bereich der plausiblen Werte bei [46.2%, 51.8%]. Da dieser Bereich sowohl Werte unter als auch über 50% enthält, kann nicht mit Sicherheit gesagt werden, dass die Initiative angenommen wird.
+   
+   - (b) Für den Freihandel mit Indonesien liegt der Bereich der plausiblen Werte bei [49.2%, 54.8%]. Auch hier enthält der Bereich Werte unter 50%, daher ist eine Annahme nicht sicher.
+
+
+# Aufgabe 5: Wahr oder Falsch zu Konfidenzintervallen
+
+**Aufgabenstellung:**  
+5. Wahr oder Falsch?  
+   (a) Ein 95%-Konfidenzintervall enthält 95% der Daten in der Grundgesamtheit.  
+   (b) Ich bin zu 95% sicher, dass der Mittelwert einer Stichprobe in ein 95%-Konfidenzintervall für den Mittelwert fällt.  
+   (c) Die Wahrscheinlichkeit, dass der Populationsparameter in diesem speziellen 95%-Konfidenzintervall liegt, beträgt 0.95.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Analyse der Aussagen:**
+
+```{r}
+# Keine Berechnung erforderlich
+```
+
+2. **Antworten:**
+   - (a) **Falsch.** Ein Konfidenzintervall macht eine Aussage über den Parameter (z.B. Mittelwert) der Grundgesamtheit, nicht über die einzelnen Datenpunkte. Es gibt an, in welchem Bereich der wahre Populationsparameter mit einer bestimmten Wahrscheinlichkeit liegt.
+   
+   - (b) **Falsch.** Ein Konfidenzintervall bezieht sich auf den Populationsparameter, nicht auf Stichprobenmittelwerte. Die korrekte Interpretation wäre: "Ich bin zu 95% sicher, dass der Populationsmittelwert in diesem Intervall liegt."
+   
+   - (c) **Falsch.** Nachdem ein Konfidenzintervall berechnet wurde, enthält es entweder den wahren Parameter oder nicht (mit Wahrscheinlichkeit 0 oder 1). Die 95% beziehen sich auf die Methode: Wenn wir viele Stichproben nehmen und jeweils ein 95%-Konfidenzintervall berechnen, werden etwa 95% dieser Intervalle den wahren Parameter enthalten.
+
+
+# Aufgabe 6: Konstruktion von Konfidenzintervallen
+
+**Aufgabenstellung:**  
+6. Konstruieren Sie in den folgenden Übungen ein Intervall, das einen Bereich plausibler Werte für den gegebenen Parameter angibt, unter Verwendung der gegebenen Stichprobenstatistik und der Standardfehler.  
+   (a) Für μ, unter Verwendung von x̄ = 25 mit Standardfehler 3.  
+   (b) für p unter Verwendung von p̂ = 0.37 mit einer Fehlermarge von 0.02.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Konstruktion der Konfidenzintervalle:**
+
+```{r}
+# (a) Für den Mittelwert μ
+x_bar <- 25
+se_mean <- 3
+margin_error <- 2 * se_mean  # Für ein 95%-Konfidenzintervall
+
+lower_bound_mean <- x_bar - margin_error
+upper_bound_mean <- x_bar + margin_error
+
+cat("95%-Konfidenzintervall für μ:", lower_bound_mean, "bis", upper_bound_mean, "\n")
+
+# (b) Für den Anteil p
+p_hat <- 0.37
+margin_error_p <- 0.02
+
+lower_bound_p <- p_hat - margin_error_p
+upper_bound_p <- p_hat + margin_error_p
+
+cat("Konfidenzintervall für p:", lower_bound_p, "bis", upper_bound_p, "\n")
+```
+
+2. **Ergebnisse:**
+   - (a) Für μ: Das Konfidenzintervall ist [19, 31].
+   - (b) Für p: Das Konfidenzintervall ist [0.35, 0.39].
+
+
+# Aufgabe 7: Angstassoziationen bei Heranwachsenden
+
+**Aufgabenstellung:**  
+7. Forscher finden immer wieder Hinweise darauf, dass sich die Gehirne von Heranwachsenden ganz anders verhalten als die Gehirne von Erwachsenen oder die Gehirne von Kindern. Insbesondere scheinen Heranwachsende stärker an Angstassoziationen festzuhalten als Kinder oder Erwachsene, was darauf hindeutet, dass Angstverbindungen, die in den Teenagerjahren hergestellt werden, besonders schwer wieder zu verlernen sind. In einer Studie lernten die Teilnehmer zunächst, Angst mit einem bestimmten Geräusch zu assoziieren. Im zweiten Teil der Studie hörten die Teilnehmer das Geräusch ohne den angstauslösenden Mechanismus, und ihre Fähigkeit, die Verbindung zu "verlernen", wurde gemessen. Es wurde ein physiologisches Maß für die Angst verwendet, und größere Zahlen zeigen weniger Angst an. Schätzen Sie den Unterschied in der durchschnittlichen Reaktion zwischen Erwachsenen und Teenagern. Die mittlere Reaktion für Erwachsene in der Studie war 0,225 und die mittlere Reaktion für Jugendliche in der Studie war 0.059. Man sagt uns, dass der Standardfehler der Schätzung 0.091 beträgt.  
+   (a) Geben Sie die Notation für die zu schätzende Größe an.  
+   (b) Geben Sie die Notation für die Grösse an, die die beste Schätzung ergibt, und geben Sie ihren Wert an.  
+   (c) Geben Sie ein 95%-Konfidenzintervall für die zu schätzende Größe an.  
+   (d) Handelt es sich um ein Experiment oder eine Beobachtungsstudie?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Identifizierung der Parameter und Statistiken:**
+
+```{r}
+# Gegebene Werte
+mean_adults <- 0.225
+mean_teens <- 0.059
+se_diff <- 0.091
+
+# Berechnung der Differenz
+diff_means <- mean_adults - mean_teens
+
+# Berechnung des 95%-Konfidenzintervalls
+margin_error <- 2 * se_diff
+lower_bound <- diff_means - margin_error
+upper_bound <- diff_means + margin_error
+
+cat("Differenz der Mittelwerte:", diff_means, "\n")
+cat("95%-Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
+```
+
+2. **Antworten:**
+   - (a) Die zu schätzende Größe ist μA - μT, wobei μA die mittlere Angstreaktion für Erwachsene und μT die mittlere Angstreaktion für Jugendliche darstellt.
+   
+   - (b) Die beste Schätzung ist die Differenz der Stichprobenmittelwerte x̄A - x̄T = 0.225 - 0.059 = 0.166.
+   
+   - (c) Das 95%-Konfidenzintervall ist [0.166 - 2(0.091), 0.166 + 2(0.091)] = [-0.016, 0.348].
+   
+   - (d) Es handelt sich um eine Beobachtungsstudie, da die erklärende Variable (Alter) nicht manipuliert wurde. Die Forscher haben nicht zufällig bestimmt, wer ein Teenager und wer ein Erwachsener ist.
+
+
+# Aufgabe 8: Verhaftungsraten bei jungen Menschen
+
+**Aufgabenstellung:**  
+8. Laut einer kürzlich durchgeführten Studie unter 7335 jungen Menschen in den USA wurden 30% im Alter von 23 Jahren wegen eines anderen Verbrechens als einer Verkehrsübertretung verhaftet. Zu den Straftaten gehörten u. a. Vandalismus, Alkoholkonsum bei Minderjährigen, Trunkenheit am Steuer, Ladendiebstahl und Drogenbesitz.  
+   (a) Ist der Wert 30% ein Parameter oder eine Statistik? Verwenden Sie die richtige Schreibweise.  
+   (b) Verwenden Sie die gegebenen Informationen, um einen Parameter zu schätzen, und definieren Sie den zu schätzenden Parameter eindeutig.  
+   (c) Die Fehlermarge für die Schätzung in Teil (b) ist 0.01. Verwenden Sie diese Information, um einen Bereich von plausiblen Werten für den Parameter anzugeben.  
+   (d) Wenn wir unter Berücksichtigung der Fehlermarge in Teil (c) alle Jugendlichen in den USA fragen, ob sie jemals verhaftet wurden, ist es dann wahrscheinlich, dass der tatsächliche Anteil weniger als 20% beträgt?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Analyse der Daten:**
+
+```{r}
+# Gegebene Werte
+p_hat <- 0.30
+margin_error <- 0.01
+
+# Berechnung des Konfidenzintervalls
+lower_bound <- p_hat - margin_error
+upper_bound <- p_hat + margin_error
+
+cat("Schätzung des Anteils:", p_hat, "\n")
+cat("Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
+```
+
+2. **Antworten:**
+   - (a) Der Wert 30% ist eine Statistik, da er aus einer Stichprobe berechnet wurde. Die korrekte Schreibweise ist p̂ = 0.30.
+   
+   - (b) Der zu schätzende Parameter ist p, der Anteil aller jungen Menschen in den USA, die im Alter von 23 Jahren wegen eines anderen Verbrechens als einer Verkehrsübertretung verhaftet wurden. Basierend auf der Stichprobe schätzen wir p ≈ 0.30.
+   
+   - (c) Mit einer Fehlermarge von 0.01 liegt der Bereich plausibler Werte für p bei [0.29, 0.31].
+   
+   - (d) Nein, es ist sehr unwahrscheinlich, dass der tatsächliche Anteil weniger als 20% beträgt, da dieser Wert weit außerhalb des Konfidenzintervalls [0.29, 0.31] liegt.
+
+
+# Aufgabe 9: Auto als Notwendigkeit oder Luxus
+
+**Aufgabenstellung:**  
+9. Eine Zufallsstichprobe von n = 1483 Erwachsenen in den USA wurde gefragt, ob sie ein Auto als Notwendigkeit oder als Luxus betrachten, und wir finden, dass ein 95%-Konfidenzintervall für den Anteil, der sagt, dass es eine Notwendigkeit ist, 0.83 bis 0.89 beträgt. Erläutern Sie die Bedeutung dieses Konfidenzintervalls in dem entsprechenden Kontext.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Interpretation des Konfidenzintervalls:**
+
+```{r}
+# Keine Berechnung erforderlich
+```
+
+2. **Antwort:**
+   Das 95%-Konfidenzintervall [0.83, 0.89] bedeutet, dass wir mit 95% Sicherheit davon ausgehen können, dass zwischen 83% und 89% aller Erwachsenen in den USA ein Auto als Notwendigkeit betrachten. Mit anderen Worten: Wenn wir viele Stichproben ziehen und jeweils ein 95%-Konfidenzintervall berechnen würden, würden etwa 95% dieser Intervalle den wahren Anteil der US-Erwachsenen enthalten, die ein Auto als Notwendigkeit ansehen.
+
+
+# Aufgabe 10: Action-Videospiele und Reaktionszeit
+
+**Aufgabenstellung:**  
+10. Eine neue Studie liefert einige Hinweise darauf, dass das Spielen von Action-Videospielen die Fähigkeit einer Person stärkt, sensorische Informationen schnell in genaue Entscheidungen umzusetzen. Die Forscher ließen 23 männliche Freiwillige mit einem Durchschnittsalter von 20 Jahren auf sich bewegende Felder auf einem Computerbildschirm schauen und die Richtung angeben, in die sich die Punkte bewegten. Die Hälfte der Freiwilligen (11 Männer) gab an, im vergangenen Jahr mindestens fünfmal pro Woche Action-Videospiele zu spielen, während die anderen 12 angaben, im vergangenen Jahr keine Videospiele gespielt zu haben. Gemessen wurden sowohl die Reaktionszeit als auch die Trefferquote. Ein 95%-Konfidenzintervall für die mittlere Reaktionszeit für Spieler minus die mittlere Reaktionszeit für Nicht-Spieler beträgt -1.8 bis -1.2 Sekunden, während ein 95%-Konfidenzintervall für den mittleren Genauigkeitswert für Spieler minus den mittleren Genauigkeitswert für Nicht-Spieler -4.2 bis +5.8 beträgt.  
+   (a) Interpretieren Sie die Bedeutung des 95%-Konfidenzintervalls für den Unterschied in der mittleren Reaktionszeit.  
+   (b) Ist es plausibel, dass die Reaktionszeit von Spielern und Nicht-Spielern grundsätzlich gleich ist? Warum oder warum nicht? Wenn nicht, welche Gruppe ist schneller (mit einer kleineren Reaktionszeit)?  
+   (c) Interpretieren Sie die Bedeutung des 95%-Konfidenzintervalls für den Unterschied im mittleren Genauigkeitswert.  
+   (d) Ist es plausibel, dass Spieler und Nicht-Spieler bei der Genauigkeit grundsätzlich gleich sind? Warum oder warum nicht? Wenn nicht, welche Gruppe ist genauer?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Analyse der Konfidenzintervalle:**
+
+```{r}
+# Keine Berechnung erforderlich
+```
+
+2. **Antworten:**
+   - (a) Das 95%-Konfidenzintervall [-1.8, -1.2] für die Differenz der mittleren Reaktionszeiten bedeutet, dass wir mit 95% Sicherheit davon ausgehen können, dass Spieler im Durchschnitt zwischen 1.2 und 1.8 Sekunden schneller reagieren als Nicht-Spieler.
+   
+   - (b) Es ist nicht plausibel, dass die Reaktionszeiten grundsätzlich gleich sind, da das Konfidenzintervall den Wert 0 nicht enthält. Die Spieler sind schneller, da das Konfidenzintervall nur negative Werte enthält, was bedeutet, dass die mittlere Reaktionszeit der Spieler kleiner ist als die der Nicht-Spieler.
+   
+   - (c) Das 95%-Konfidenzintervall [-4.2, +5.8] für die Differenz der mittleren Genauigkeitswerte bedeutet, dass wir mit 95% Sicherheit davon ausgehen können, dass der Unterschied in der Genauigkeit zwischen Spielern und Nicht-Spielern zwischen -4.2 und +5.8 Einheiten liegt.
+   
+   - (d) Es ist plausibel, dass Spieler und Nicht-Spieler bei der Genauigkeit grundsätzlich gleich sind, da das Konfidenzintervall den Wert 0 enthält. Das bedeutet, dass es keinen statistisch signifikanten Unterschied in der Genauigkeit zwischen den beiden Gruppen gibt.
+
+
+# Aufgabe 11: Bootstrap-Stichproben
+
+**Aufgabenstellung:**  
+11. Gegeben ist die Stichprobe 85, 72, 79, 97, 88. Stellen die angegebenen Werte eine mögliche Bootstrap-Stichprobe aus der ursprünglichen Stichprobe dar?  
+   (a) 79, 79, 97, 85, 88  
+   (b) 72, 79, 85, 88, 97  
+   (c) 85, 88, 97, 72  
+   (d) 88, 97, 81, 78, 85  
+   (e) 97, 85, 79, 85, 97  
+   (f) 72, 72, 79, 72, 79
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Überprüfung der Bootstrap-Stichproben:**
+   Eine Bootstrap-Stichprobe muss folgende Kriterien erfüllen:
+   - Sie muss durch Ziehen mit Zurücklegen aus der ursprünglichen Stichprobe entstehen.
+   - Sie muss die gleiche Größe wie die ursprüngliche Stichprobe haben.
+   - Jeder Wert in der Bootstrap-Stichprobe muss in der ursprünglichen Stichprobe vorkommen.
+
+```{r}
+# Ursprüngliche Stichprobe
+original_sample <- c(85, 72, 79, 97, 88)
+
+# Überprüfung der Stichproben
+check_bootstrap <- function(sample) {
+  # Prüfen, ob alle Werte in der ursprünglichen Stichprobe vorkommen
+  all_values_valid <- all(sample %in% original_sample)
+  
+  # Prüfen, ob die Größe stimmt
+  correct_size <- length(sample) == length(original_sample)
+  
+  return(all_values_valid && correct_size)
+}
+
+samples <- list(
+  a = c(79, 79, 97, 85, 88),
+  b = c(72, 79, 85, 88, 97),
+  c = c(85, 88, 97, 72),
+  d = c(88, 97, 81, 78, 85),
+  e = c(97, 85, 79, 85, 97),
+  f = c(72, 72, 79, 72, 79)
+)
+
+for (name in names(samples)) {
+  cat(name, ": ", check_bootstrap(samples[[name]]), "\n")
+}
+```
+
+2. **Antworten:**
+   - (a) Ja, dies ist eine mögliche Bootstrap-Stichprobe.
+   - (b) Ja, dies ist eine mögliche Bootstrap-Stichprobe (es ist sogar die ursprüngliche Stichprobe in sortierter Reihenfolge).
+   - (c) Nein, diese Stichprobe hat nur 4 Elemente statt 5.
+   - (d) Nein, die Werte 81 und 78 kommen in der ursprünglichen Stichprobe nicht vor.
+   - (e) Ja, dies ist eine mögliche Bootstrap-Stichprobe.
+   - (f) Ja, dies ist eine mögliche Bootstrap-Stichprobe.
+
+
+# Aufgabe 12: Bootstrap-Methode für Konfidenzintervalle
+
+**Aufgabenstellung:**  
+12. In einer Stichprobe von 250 Studierenden stimmen 180 Studierende für eine Ausweitung des Mathematik-Module. Schätzen Sie mit der Bootstrap-Methode den Standardfehler und bestimmen Sie anschließend ein 95%-Konfidenzintervall für den Anteil der zustimmenden Studierenden.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Durchführung der Bootstrap-Analyse:**
+
+```{r}
+library(mosaic)
+
+# Daten erstellen
+n <- 250
+yes <- 180
+no <- n - yes
+data <- c(rep(1, yes), rep(0, no))  # 1 für Ja, 0 für Nein
+
+# Anteil berechnen
+p_hat <- mean(data)
+cat("Geschätzter Anteil:", p_hat, "\n")
+
+# Bootstrap-Stichproben ziehen
+set.seed(123)  # Für Reproduzierbarkeit
+bootstrap_samples <- do(1000) * mean(resample(data))
+
+# Standardfehler berechnen
+se_bootstrap <- sd(bootstrap_samples$mean)
+cat("Bootstrap-Standardfehler:", se_bootstrap, "\n")
+
+# 95%-Konfidenzintervall berechnen
+ci_lower <- p_hat - 2 * se_bootstrap
+ci_upper <- p_hat + 2 * se_bootstrap
+cat("95%-Konfidenzintervall:", ci_lower, "bis", ci_upper, "\n")
+
+# Alternative: Perzentil-Methode
+ci_percentile <- quantile(bootstrap_samples$mean, c(0.025, 0.975))
+cat("95%-Konfidenzintervall (Perzentil-Methode):", 
+    ci_percentile[1], "bis", ci_percentile[2], "\n")
+```
+
+2. **Ergebnis:**
+   Der geschätzte Anteil beträgt p̂ = 0.72. Mit der Bootstrap-Methode erhalten wir einen Standardfehler von etwa 0.028. Das 95%-Konfidenzintervall für den Anteil der zustimmenden Studierenden liegt bei [0.664, 0.776].
+
+
+# Aufgabe 13: Ameisen auf Honigbrot
+
+**Aufgabenstellung:**  
+13. Wie viele Ameisen klettern auf ein Honigbrot, das in der Nähe eines Ameisenhügels auf dem Boden liegen gelassen wird? Um dies zu untersuchen, ließ ein Student in Australien ein Honigbort für einige Minuten liegen, bedeckte es dann mit einem Glas und zählte die Anzahl der Ameisen. Er wiederholte den Versuch achtmal und erhielt folgende Ameisenzahlen: 43, 59, 22, 25, 36, 47, 19, 21.  
+   (a) Bestimmen Sie x̄ und s.  
+   (b) Beschreiben Sie, wie wir acht Zettel verwenden könnten, um eine Bootstrap-Statistik zu erstellen. Seien Sie konkret.  
+   (c) Was erwarten Sie für die Form und das Zentrum der Bootstrap-Verteilung?  
+   (d) Was ist der interessierende Populationsparameter? Was ist die beste Schätzung für diesen Parameter?  
+   (e) Ziehen Sie 5000 Bootstrap-Stichproben und schätzen Sie damit den Standardfehler.  
+   (f) Bestimmen Sie ein 95%-Konfidenzintervall.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Berechnung von Mittelwert und Standardabweichung:**
+
+```{r}
+# Daten
+ants <- c(43, 59, 22, 25, 36, 47, 19, 21)
+
+# (a) Mittelwert und Standardabweichung
+mean_ants <- mean(ants)
+sd_ants <- sd(ants)
+cat("Mittelwert (x̄):", mean_ants, "\n")
+cat("Standardabweichung (s):", sd_ants, "\n")
+
+# (e) Bootstrap-Stichproben ziehen
+set.seed(123)
+bootstrap_samples <- do(5000) * mean(resample(ants))
+
+# Standardfehler berechnen
+se_bootstrap <- sd(bootstrap_samples$mean)
+cat("Bootstrap-Standardfehler:", se_bootstrap, "\n")
+
+# (f) 95%-Konfidenzintervall berechnen
+ci_lower <- mean_ants - 2 * se_bootstrap
+ci_upper <- mean_ants + 2 * se_bootstrap
+cat("95%-Konfidenzintervall:", ci_lower, "bis", ci_upper, "\n")
+
+# Histogramm der Bootstrap-Verteilung
+hist(bootstrap_samples$mean, 
+     main = "Bootstrap-Verteilung des Mittelwerts",
+     xlab = "Mittelwert", 
+     col = "lightblue")
+abline(v = mean_ants, col = "red", lwd = 2)
+```
+
+2. **Antworten:**
+   - (a) x̄ = 34, s = 14.63
+   
+   - (b) Wir schreiben die 8 Werte (43, 59, 22, 25, 36, 47, 19, 21) jeweils auf einen Zettel. Dann ziehen wir zufällig einen Zettel, notieren den Wert und legen den Zettel zurück. Diesen Vorgang wiederholen wir 8 Mal, um eine Bootstrap-Stichprobe zu erhalten. Der Mittelwert dieser 8 Werte bildet eine Bootstrap-Statistik.
+   
+   - (c) Wir erwarten, dass die Bootstrap-Verteilung annähernd glockenförmig ist und ihr Zentrum bei etwa 34 (dem Mittelwert der ursprünglichen Stichprobe) liegt.
+   
+   - (d) Der interessierende Populationsparameter ist μ, der Mittelwert der Anzahl von Ameisen auf allen möglichen Honigbroten, die in der Nähe dieses Ameisenhügels platziert werden könnten. Die beste Schätzung für diesen Parameter ist der Stichprobenmittelwert x̄ = 34.
+   
+   - (e) Der Bootstrap-Standardfehler beträgt etwa 4.85.
+   
+   - (f) Das 95%-Konfidenzintervall für den Mittelwert der Ameisenanzahl liegt bei [24.3, 43.7].
+
+
+# Aufgabe 14: Nussmischung
+
+**Aufgabenstellung:**  
+14. Die Nussmischung enthält 400 Nüsse, davon sind 208 Cashew-Nüsse.  
+   (g) Bestimmen Sie ein 95%-Konfidenzintervall für den Anteil der Cashew-Nüsse.  
+   (h) Vergleichen Sie dieses Konfidenzintervall mit dem Konfidenzintervall aus dem Unterricht. Welchen Effekt hatte die Erhöhung des Stichprobenumfangs?
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Berechnung des Konfidenzintervalls:**
+
+```{r}
+# Daten
+n_nuts <- 400
+n_cashew <- 208
+
+# Anteil berechnen
+p_hat <- n_cashew / n_nuts
+cat("Geschätzter Anteil Cashew-Nüsse:", p_hat, "\n")
+
+# Standardfehler berechnen
+se <- sqrt(p_hat * (1 - p_hat) / n_nuts)
+cat("Standardfehler:", se, "\n")
+
+# 95%-Konfidenzintervall berechnen
+ci_lower <- p_hat - 2 * se
+ci_upper <- p_hat + 2 * se
+cat("95%-Konfidenzintervall:", ci_lower, "bis", ci_upper, "\n")
+
+# Vergleich mit einem hypothetischen kleineren Stichprobenumfang (z.B. 100)
+n_small <- 100
+se_small <- sqrt(p_hat * (1 - p_hat) / n_small)
+ci_lower_small <- p_hat - 2 * se_small
+ci_upper_small <- p_hat + 2 * se_small
+cat("95%-KI bei n=100:", ci_lower_small, "bis", ci_upper_small, "\n")
+```
+
+2. **Antworten:**
+   - (g) Das 95%-Konfidenzintervall für den Anteil der Cashew-Nüsse liegt bei [0.466, 0.574].
+   
+   - (h) Bei einer Erhöhung des Stichprobenumfangs wird das Konfidenzintervall schmaler. Der Standardfehler nimmt mit dem Faktor 1/√n ab, d.h. eine Vervierfachung des Stichprobenumfangs halbiert die Breite des Konfidenzintervalls.
+
+
+# Aufgabe 15: Perzentil-Methode für Konfidenzintervalle
+
+**Aufgabenstellung:**  
+15. Um ein Konfidenzintervall aus einer Bootstrap-Verteilung mithilfe von Perzentilen zu erstellen, werden die mittleren Werte beibehalten und eine bestimmte Anzahl der niedrigsten und höchsten Werte abgeschnitten. Wenn unsere Bootstrap-Verteilung Werte für 1000 Bootstrap-Stichproben enthält, geben Sie an, wie viele wir an jedem Ende für jedes angegebene Konfidenzniveau abschneiden.  
+   (a) 95%  
+   (b) 90%  
+   (c) 99%
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Berechnung der abzuschneidenden Werte:**
+
+```{r}
+# Anzahl der Bootstrap-Stichproben
+n_bootstrap <- 1000
+
+# (a) 95%-Konfidenzintervall
+alpha_95 <- 0.05
+cut_each_end_95 <- n_bootstrap * (alpha_95 / 2)
+cat("Für 95%-KI: ", cut_each_end_95, "Werte an jedem Ende abschneiden\n")
+
+# (b) 90%-Konfidenzintervall
+alpha_90 <- 0.10
+cut_each_end_90 <- n_bootstrap * (alpha_90 / 2)
+cat("Für 90%-KI: ", cut_each_end_90, "Werte an jedem Ende abschneiden\n")
+
+# (c) 99%-Konfidenzintervall
+alpha_99 <- 0.01
+cut_each_end_99 <- n_bootstrap * (alpha_99 / 2)
+cat("Für 99%-KI: ", cut_each_end_99, "Werte an jedem Ende abschneiden\n")
+```
+
+2. **Antworten:**
+   - (a) Für ein 95%-Konfidenzintervall schneiden wir 25 Werte an jedem Ende ab.
+   - (b) Für ein 90%-Konfidenzintervall schneiden wir 50 Werte an jedem Ende ab.
+   - (c) Für ein 99%-Konfidenzintervall schneiden wir 5 Werte an jedem Ende ab.
+
+
+# Aufgabe 16: Änderungen im Bootstrap-Prozess
+
+**Aufgabenstellung:**  
+16. Bei der Schätzung der mittleren Punktzahl in einer Fitnessprüfung verwenden wir eine Originalstichprobe der Größe n = 30 und eine Bootstrap-Verteilung mit 5000 Bootstrap-Stichproben, um ein 95%-Konfidenzintervall von 67 Punkten bis 73 Punkten zu erhalten. In den nächsten drei Fragen wird dieser Prozess leicht verändert. Bestimmen Sie von den nachfolgenden Intervallen jeweils dasjenige, das nach dieser Änderung die bestmögiche Ergebnis darstellt.  
+   A = [66, 74], B = [67, 73], C = [67.5, 72.5]  
+   (a) Es wird ein 90%-Konfidenzintverall berechnet.  
+   (b) Der Stichprobenumfang beträgt nun n = 16.  
+   (c) Es werden 1000 Bootstrap-Stichproben bestimmt.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Analyse der Änderungen:**
+
+```{r}
+# Keine Berechnung erforderlich
+```
+
+2. **Antworten:**
+   - (a) Für ein 90%-Konfidenzintervall erwarten wir ein schmaleres Intervall als für ein 95%-Konfidenzintervall. Daher ist C = [67.5, 72.5] das wahrscheinlichste Ergebnis.
+   
+   - (b) Bei einem kleineren Stichprobenumfang (n = 16 statt n = 30) erwarten wir ein breiteres Konfidenzintervall aufgrund der größeren Unsicherheit. Daher ist A = [66, 74] das wahrscheinlichste Ergebnis.
+   
+   - (c) Die Änderung von 5000 auf 1000 Bootstrap-Stichproben sollte keinen wesentlichen Einfluss auf das Konfidenzintervall haben, solange die Anzahl der Bootstrap-Stichproben ausreichend groß ist. Daher ist B = [67, 73] das wahrscheinlichste Ergebnis.
+
+
+# Aufgabe 17: Konfidenzintervall für Umfragedaten
+
+**Aufgabenstellung:**  
+17. Ermitteln Sie ein 99%-Konfidenzintervall, wenn in einer Stichprobe von 1000 Personen 382 zustimmen, 578 nicht zustimmen und 40 sich nicht entscheiden können.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Berechnung des Konfidenzintervalls:**
+
+```{r}
+# Daten
+n <- 1000
+n_agree <- 382
+
+# Anteil berechnen
+p_hat <- n_agree / n
+cat("Geschätzter Anteil Zustimmender:", p_hat, "\n")
+
+# Standardfehler berechnen
+se <- sqrt(p_hat * (1 - p_hat) / n)
+cat("Standardfehler:", se, "\n")
+
+# 99%-Konfidenzintervall berechnen (z = 2.576 für 99%)
+z_99 <- 2.576
+margin_error <- z_99 * se
+ci_lower <- p_hat - margin_error
+ci_upper <- p_hat + margin_error
+cat("99%-Konfidenzintervall:", ci_lower, "bis", ci_upper, "\n")
+```
+
+2. **Ergebnis:**
+   Das 99%-Konfidenzintervall für den Anteil der zustimmenden Personen liegt bei [0.343, 0.421].
+
+
+# Aufgabe 18: Konfidenzintervall für Bargeldbeträge
+
+**Aufgabenstellung:**  
+18. Bestimmen Sie ein 90%-Konfidenzintervall für den Betrag an Bargeld, den die Studierenden der BFH auf sich tragen (Spalte cash in BFH).
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Berechnung des Konfidenzintervalls mit Bootstrap:**
+
+```{r}
+# Annahme: Wir haben die BFH-Daten bereits geladen
+# Wenn nicht, laden wir sie hier
+if (!exists("data") || !("cash" %in% names(data))) {
+  data <- read_excel("../data/WDDA_04.xlsx", sheet = "BFH")
+}
+
+# Bootstrap-Stichproben ziehen
+set.seed(123)
+bootstrap_samples <- do(1000) * mean(~cash, data = resample(data))
+
+# 90%-Konfidenzintervall berechnen (Perzentil-Methode)
+ci_90 <- quantile(bootstrap_samples$mean, c(0.05, 0.95))
+cat("90%-Konfidenzintervall für Bargeldbeträge:", 
+    ci_90[1], "bis", ci_90[2], "CHF\n")
+
+# Alternativ: Standardfehler-Methode
+mean_cash <- mean(data$cash, na.rm = TRUE)
+se_bootstrap <- sd(bootstrap_samples$mean)
+z_90 <- 1.645  # z-Wert für 90%-KI
+ci_lower <- mean_cash - z_90 * se_bootstrap
+ci_upper <- mean_cash + z_90 * se_bootstrap
+cat("90%-KI (Standardfehler-Methode):", ci_lower, "bis", ci_upper, "CHF\n")
+```
+
+2. **Ergebnis:**
+   Das 90%-Konfidenzintervall für den durchschnittlichen Bargeldbetrag, den Studierende der BFH bei sich tragen, liegt bei etwa [X, Y] CHF (die genauen Werte hängen von den tatsächlichen Daten ab).
+
+
+# Aufgabe 19: Schlafzeiten nach Geschlecht
+
+**Aufgabenstellung:**  
+19. Schlafen Studentinnen mehr als Studenten? Untersuchen Sie diese Behauptung mit den Datensatz BFH. Bestimmen Sie dazu ein 95%-Konfidenzintervall für die Differenz der Schlafzeiten.
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Berechnung des Konfidenzintervalls für die Differenz:**
+
+```{r}
+# Daten nach Geschlecht filtern
+# Wir schließen "Non binary" aus, um nur Männer und Frauen zu vergleichen
+female_data <- subset(data, gender == "Female")
+male_data <- subset(data, gender == "Male")
+
+# Mittlere Schlafzeiten berechnen
+mean_sleep_female <- mean(female_data$sleep, na.rm = TRUE)
+mean_sleep_male <- mean(male_data$sleep, na.rm = TRUE)
+diff_means <- mean_sleep_female - mean_sleep_male
+
+cat("Mittlere Schlafzeit Frauen:", mean_sleep_female, "Stunden\n")
+cat("Mittlere Schlafzeit Männer:", mean_sleep_male, "Stunden\n")
+cat("Differenz (Frauen - Männer):", diff_means, "Stunden\n")
+
+# Bootstrap für die Differenz der Mittelwerte
+set.seed(123)
+# Wir erstellen einen Datensatz ohne "Non binary"
+data_binary <- subset(data, gender %in% c("Female", "Male"))
+bootstrap_diff <- do(1000) * diff(mean(sleep ~ gender, data = resample(data_binary)))
+
+# 95%-Konfidenzintervall berechnen
+ci_95 <- quantile(bootstrap_diff$Female, c(0.025, 0.975))
+cat("95%-Konfidenzintervall für die Differenz:", ci_95[1], "bis", ci_95[2], "Stunden\n")
+
+# Interpretation
+if (ci_95[1] > 0) {
+  cat("Da das gesamte Konfidenzintervall positiv ist, schlafen Studentinnen signifikant mehr als Studenten.\n")
+} else if (ci_95[2] < 0) {
+  cat("Da das gesamte Konfidenzintervall negativ ist, schlafen Studenten signifikant mehr als Studentinnen.\n")
+} else {
+  cat("Da das Konfidenzintervall die Null enthält, gibt es keinen signifikanten Unterschied in den Schlafzeiten.\n")
+}
+```
+
+2. **Ergebnis und Interpretation:**
+   Das 95%-Konfidenzintervall für die Differenz der Schlafzeiten (Frauen - Männer) liegt bei etwa [X, Y] Stunden. Die Interpretation hängt davon ab, ob dieses Intervall die Null enthält oder nicht:
+   - Wenn das gesamte Intervall positiv ist, schlafen Studentinnen signifikant mehr als Studenten.
+   - Wenn das gesamte Intervall negativ ist, schlafen Studenten signifikant mehr als Studentinnen.
+   - Wenn das Intervall die Null enthält, gibt es keinen statistisch signifikanten Unterschied in den Schlafzeiten.
+
+
+# Aufgabe 20: Konfidenzintervall für Korrelation
+
+**Aufgabenstellung:**  
+20. Ermitteln Sie ein 99%-Konfidenzintervall für die Korrelation der Körpergrößen und Fußlängen (Datensatz BFH).
+
+**Schritt-für-Schritt-Erklärung:**
+
+1. **Berechnung des Konfidenzintervalls mit Bootstrap:**
+
+```{r}
+# Korrelation berechnen
+correlation <- cor(data$height, data$foot, use = "complete.obs")
+cat("Korrelation zwischen Körpergröße und Fußlänge:", correlation, "\n")
+
+# Bootstrap für die Korrelation
+set.seed(123)
+bootstrap_cor <- do(5000) * cor(height ~ foot, data = resample(data))
+
+# 99%-Konfidenzintervall berechnen
+ci_99 <- quantile(bootstrap_cor$cor, c(0.005, 0.995))
+cat("99%-Konfidenzintervall für die Korrelation:", ci_99[1], "bis", ci_99[2], "\n")
+
+# Histogramm der Bootstrap-Verteilung
+hist(bootstrap_cor$cor, 
+     main = "Bootstrap-Verteilung der Korrelation",
+     xlab = "Korrelation", 
+     col = "lightblue")
+abline(v = correlation, col = "red", lwd = 2)
+abline(v = ci_99, col = "blue", lty = 2, lwd = 2)
+```
+
+2. **Ergebnis:**
+   Das 99%-Konfidenzintervall für die Korrelation zwischen Körpergröße und Fußlänge liegt bei etwa [X, Y] (die genauen Werte hängen von den tatsächlichen Daten ab).
