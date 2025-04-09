@@ -4,7 +4,11 @@
 # Daten laden
 library(readxl)
 library(mosaic)
-data <- read_excel("../data/WDDA_04.xlsx", sheet = "BFH")
+data <- read_excel("data/WDDA_04.xlsx", sheet = "BFH")
+
+
+
+
 
 # ============================================================================
 # Aufgabe 1: Parameter vs. Statistik
@@ -12,6 +16,10 @@ data <- read_excel("../data/WDDA_04.xlsx", sheet = "BFH")
 # Keine Berechnung erforderlich
 # (a) Parameter: μ
 # (b) Statistik: x̄
+
+
+
+
 
 # ============================================================================
 # Aufgabe 2: Smartphone-App-Studie
@@ -22,6 +30,10 @@ data <- read_excel("../data/WDDA_04.xlsx", sheet = "BFH")
 # (c) Um den Parameter genau zu berechnen, müsste man die Anzahl der heruntergeladenen Apps 
 #     von allen Smartphone-Nutzern in den USA erfassen
 
+
+
+
+
 # ============================================================================
 # Aufgabe 3: Wahrscheinlichkeit von Stichprobenmittelwerten
 # ============================================================================
@@ -30,6 +42,10 @@ data <- read_excel("../data/WDDA_04.xlsx", sheet = "BFH")
 # (a) x̄ = 70: Mit angemessener Wahrscheinlichkeit (i)
 # (b) x̄ = 100: Mit angemessener Wahrscheinlichkeit (i)
 # (c) x̄ = 140: Ungewöhnlich, könnte aber gelegentlich auftreten (ii)
+
+
+
+
 
 # ============================================================================
 # Aufgabe 4: Analyse von Umfragedaten
@@ -41,6 +57,7 @@ fehlerbereich <- 2.8
 # Berechnung des Konfidenzintervalls
 untere_grenze_verhuellungsverbot <- ja_verhuellungsverbot - fehlerbereich
 obere_grenze_verhuellungsverbot <- ja_verhuellungsverbot + fehlerbereich
+
 
 cat("Plausible Werte für Verhüllungsverbot:", 
     untere_grenze_verhuellungsverbot, "% bis", 
@@ -115,7 +132,7 @@ cat("Differenz der Mittelwerte:", diff_means, "\n")
 cat("95%-Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
 
 # Antworten:
-# (a) Die zu schätzende Größe ist μA - μT (Differenz der mittleren Angstreaktionen)
+# (a) Die zu schätzende Grösse ist μA - μT (Differenz der mittleren Angstreaktionen)
 # (b) Die beste Schätzung ist x̄A - x̄T = 0.166
 # (c) Das 95%-Konfidenzintervall ist [-0.016, 0.348]
 # (d) Es handelt sich um eine Beobachtungsstudie, da die erklärende Variable (Alter) 
@@ -141,7 +158,7 @@ cat("Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
 #     die im Alter von 23 Jahren verhaftet wurden
 # (c) Der Bereich plausibler Werte für p liegt bei [0.29, 0.31]
 # (d) Nein, es ist sehr unwahrscheinlich, dass der tatsächliche Anteil weniger als 20% beträgt,
-#     da dieser Wert weit außerhalb des Konfidenzintervalls liegt
+#     da dieser Wert weit ausserhalb des Konfidenzintervalls liegt
 
 # ============================================================================
 # Aufgabe 9: Auto als Notwendigkeit oder Luxus
@@ -170,12 +187,13 @@ cat("Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
 # Ursprüngliche Stichprobe
 original_sample <- c(85, 72, 79, 97, 88)
 
-# Überprüfung der Stichproben
+# Überprüfung der Stichproben 
+# (muss nicht so gemacht werden, Sie können dies auch gut manuell überprüfen!)
 check_bootstrap <- function(sample) {
   # Prüfen, ob alle Werte in der ursprünglichen Stichprobe vorkommen
   all_values_valid <- all(sample %in% original_sample)
   
-  # Prüfen, ob die Größe stimmt
+  # Prüfen, ob die Grösse stimmt
   correct_size <- length(sample) == length(original_sample)
   
   return(all_values_valid && correct_size)
@@ -233,6 +251,10 @@ ci_percentile <- quantile(bootstrap_samples$mean, c(0.025, 0.975))
 cat("95%-Konfidenzintervall (Perzentil-Methode):", 
     ci_percentile[1], "bis", ci_percentile[2], "\n")
 
+
+
+
+
 # ============================================================================
 # Aufgabe 13: Ameisen auf Honigbrot
 # ============================================================================
@@ -275,6 +297,10 @@ abline(v = mean_ants, col = "red", lwd = 2)
 # (e) Der Bootstrap-Standardfehler beträgt etwa 4.85
 # (f) Das 95%-Konfidenzintervall liegt bei [24.3, 43.7]
 
+
+
+
+
 # ============================================================================
 # Aufgabe 14: Nussmischung
 # ============================================================================
@@ -307,6 +333,10 @@ cat("95%-KI bei n=100:", ci_lower_small, "bis", ci_upper_small, "\n")
 # (h) Bei einer Erhöhung des Stichprobenumfangs wird das Konfidenzintervall schmaler
 #     Der Standardfehler nimmt mit dem Faktor 1/√n ab
 
+
+
+
+
 # ============================================================================
 # Aufgabe 15: Perzentil-Methode für Konfidenzintervalle
 # ============================================================================
@@ -328,6 +358,10 @@ alpha_99 <- 0.01
 cut_each_end_99 <- n_bootstrap * (alpha_99 / 2)
 cat("Für 99%-KI: ", cut_each_end_99, "Werte an jedem Ende abschneiden\n")
 
+
+
+
+
 # ============================================================================
 # Aufgabe 16: Änderungen im Bootstrap-Prozess
 # ============================================================================
@@ -335,6 +369,12 @@ cat("Für 99%-KI: ", cut_each_end_99, "Werte an jedem Ende abschneiden\n")
 # (a) Für ein 90%-KI erwarten wir ein schmaleres Intervall: C = [67.5, 72.5]
 # (b) Bei kleinerem Stichprobenumfang erwarten wir ein breiteres KI: A = [66, 74]
 # (c) Die Änderung der Bootstrap-Stichprobenanzahl hat wenig Einfluss: B = [67, 73]
+
+
+
+
+
+
 
 # ============================================================================
 # Aufgabe 17: Konfidenzintervall für Umfragedaten
@@ -357,6 +397,10 @@ margin_error_survey <- z_99 * se_survey
 ci_lower_survey <- p_hat_survey - margin_error_survey
 ci_upper_survey <- p_hat_survey + margin_error_survey
 cat("99%-Konfidenzintervall:", ci_lower_survey, "bis", ci_upper_survey, "\n")
+
+
+
+
 
 # ============================================================================
 # Aufgabe 18: Konfidenzintervall für Bargeldbeträge
@@ -429,7 +473,7 @@ if (!is.na(ci_95_sleep[1]) && !is.na(ci_95_sleep[2])) {
 # ============================================================================
 # Korrelation berechnen
 correlation <- cor(data$height, data$foot, use = "complete.obs")
-cat("Korrelation zwischen Körpergröße und Fußlänge:", correlation, "\n")
+cat("Korrelation zwischen Körpergrösse und Fusslänge:", correlation, "\n")
 
 # Daten für Bootstrap vorbereiten - nur vollständige Fälle verwenden
 complete_data <- data[complete.cases(data[, c("height", "foot")]), ]

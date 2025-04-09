@@ -24,7 +24,7 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 # Aufgabe 1: Parameter vs. Statistik
 
 **Aufgabenstellung:**  
-1. Geben Sie an, ob die beschriebene Größe ein Parameter oder eine Statistik ist und geben Sie die korrekte Schreibweise an.  
+1. Geben Sie an, ob die beschriebene Grösse ein Parameter oder eine Statistik ist und geben Sie die korrekte Schreibweise an.  
    (a) Durchschnittliches Haushaltseinkommen für alle Häuser in den CH, unter Verwendung von Daten der CH-Volkszählung.  
    (b) Durchschnittliche Anzahl von Fernsehgeräten pro Haushalt in North Carolina, unter Verwendung von Daten aus einer Stichprobe von 1000 Haushalten.
 
@@ -34,17 +34,14 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
    - Ein **Parameter** ist eine Kennzahl, die eine Eigenschaft der Grundgesamtheit beschreibt.
    - Eine **Statistik** ist eine Kennzahl, die aus einer Stichprobe berechnet wird.
 
-```{r}
-# Für diese Aufgabe ist keine Berechnung erforderlich
-```
 
 2. **Analyse der Teilaufgaben:**  
-   (a) Hier wird das durchschnittliche Haushaltseinkommen für **alle** Häuser in der Schweiz berechnet, basierend auf einer Volkszählung (also einer vollständigen Erfassung der Grundgesamtheit). Dies ist ein Parameter, die korrekte Notation ist μ.
+   (a) Hier wird das durchschnittliche Haushaltseinkommen für **alle** Häuser in der Schweiz berechnet, basierend auf einer Volkszählung (also einer vollständigen Erfassung der Grundgesamtheit). Dies ist ein Parameter, die korrekte Notation ist $\mu$.
    
    (b) Hier wird der Durchschnitt aus einer Stichprobe von 1000 Haushalten berechnet, nicht aus allen Haushalten in North Carolina. Dies ist eine Statistik, die korrekte Notation ist x̄.
 
 3. **Lösungen:**  
-   - (a) Parameter: μ
+   - (a) Parameter: $\mu$
    - (b) Statistik: x̄
 
 
@@ -53,21 +50,18 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 **Aufgabenstellung:**  
 2. Es gibt eine Studie über Smartphone-Nutzer in den USA, die Apps für ihr Smartphone herunterladen. Von den n = 355 Smartphone-Benutzern, die eine App heruntergeladen hatten, lag die durchschnittliche Anzahl der heruntergeladenen Apps bei 19.7.  
    (a) Geben Sie die Notation für den interessierenden Parameter an, und definieren Sie den Parameter in diesem Zusammenhang.  
-   (b) Geben Sie die Notation für die Größe an, die den besten Schätzwert liefert, und geben Sie ihren Wert an.  
+   (b) Geben Sie die Notation für die Grösse an, die den besten Schätzwert liefert, und geben Sie ihren Wert an.  
    (c) Was müsste man tun, um den Parameter genau zu berechnen?
 
 **Schritt-für-Schritt-Erklärung:**
 
 1. **Identifizierung des Parameters und der Statistik:**
-   - Der interessierende Parameter ist der Populationsmittelwert μ, der die durchschnittliche Anzahl heruntergeladener Apps aller Smartphone-Nutzer in den USA repräsentiert, die mindestens eine App heruntergeladen haben.
+   - Der interessierende Parameter ist der Populationsmittelwert $\mu$, der die durchschnittliche Anzahl heruntergeladener Apps aller Smartphone-Nutzer in den USA repräsentiert, die mindestens eine App heruntergeladen haben.
    - Die beste Schätzung für diesen Parameter ist der Stichprobenmittelwert x̄ = 19.7.
 
-```{r}
-# Keine Berechnung erforderlich, die Werte sind bereits gegeben
-```
 
 2. **Antworten:**
-   - (a) Der Parameter ist μ = mittlere Anzahl heruntergeladener Apps aller Smartphone-Nutzer in den USA, die mindestens eine App heruntergeladen haben.
+   - (a) Der Parameter ist $\mu$ = mittlere Anzahl heruntergeladener Apps aller Smartphone-Nutzer in den USA, die mindestens eine App heruntergeladen haben.
    - (b) Die beste Schätzung liefert der Stichprobenmittelwert x̄ = 19.7.
    - (c) Um den Parameter genau zu berechnen, müsste man die Anzahl der heruntergeladenen Apps von allen Smartphone-Nutzern in den USA erfassen, die jemals eine App heruntergeladen haben.
 
@@ -94,7 +88,7 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 2. **Beurteilung der Werte:**
    - (a) x̄ = 70: Dieser Wert liegt im zentralen Bereich der Verteilung und tritt mit angemessener Wahrscheinlichkeit auf (i).
    - (b) x̄ = 100: Dieser Wert liegt ebenfalls im Bereich der Verteilung und tritt mit angemessener Wahrscheinlichkeit auf (i).
-   - (c) x̄ = 140: Dieser Wert liegt am äußeren Rand der Verteilung und ist ungewöhnlich, könnte aber gelegentlich auftreten (ii).
+   - (c) x̄ = 140: Dieser Wert liegt am äusseren Rand der Verteilung und ist ungewöhnlich, könnte aber gelegentlich auftreten (ii).
 
 
 # Aufgabe 4: Analyse von Umfragedaten
@@ -166,7 +160,7 @@ cat("Plausible Werte für Freihandel mit Indonesien:",
 
 **Aufgabenstellung:**  
 6. Konstruieren Sie in den folgenden Übungen ein Intervall, das einen Bereich plausibler Werte für den gegebenen Parameter angibt, unter Verwendung der gegebenen Stichprobenstatistik und der Standardfehler.  
-   (a) Für μ, unter Verwendung von x̄ = 25 mit Standardfehler 3.  
+   (a) Für $\mu$, unter Verwendung von x̄ = 25 mit Standardfehler 3.  
    (b) für p unter Verwendung von p̂ = 0.37 mit einer Fehlermarge von 0.02.
 
 **Schritt-für-Schritt-Erklärung:**
@@ -174,7 +168,7 @@ cat("Plausible Werte für Freihandel mit Indonesien:",
 1. **Konstruktion der Konfidenzintervalle:**
 
 ```{r}
-# (a) Für den Mittelwert μ
+# (a) Für den Mittelwert $\mu$
 x_bar <- 25
 se_mean <- 3
 margin_error <- 2 * se_mean  # Für ein 95%-Konfidenzintervall
@@ -182,7 +176,7 @@ margin_error <- 2 * se_mean  # Für ein 95%-Konfidenzintervall
 lower_bound_mean <- x_bar - margin_error
 upper_bound_mean <- x_bar + margin_error
 
-cat("95%-Konfidenzintervall für μ:", lower_bound_mean, "bis", upper_bound_mean, "\n")
+cat("95%-Konfidenzintervall für mu:", lower_bound_mean, "bis", upper_bound_mean, "\n")
 
 # (b) Für den Anteil p
 p_hat <- 0.37
@@ -195,17 +189,17 @@ cat("Konfidenzintervall für p:", lower_bound_p, "bis", upper_bound_p, "\n")
 ```
 
 2. **Ergebnisse:**
-   - (a) Für μ: Das Konfidenzintervall ist [19, 31].
+   - (a) Für $\mu$: Das Konfidenzintervall ist [19, 31].
    - (b) Für p: Das Konfidenzintervall ist [0.35, 0.39].
 
 
 # Aufgabe 7: Angstassoziationen bei Heranwachsenden
 
 **Aufgabenstellung:**  
-7. Forscher finden immer wieder Hinweise darauf, dass sich die Gehirne von Heranwachsenden ganz anders verhalten als die Gehirne von Erwachsenen oder die Gehirne von Kindern. Insbesondere scheinen Heranwachsende stärker an Angstassoziationen festzuhalten als Kinder oder Erwachsene, was darauf hindeutet, dass Angstverbindungen, die in den Teenagerjahren hergestellt werden, besonders schwer wieder zu verlernen sind. In einer Studie lernten die Teilnehmer zunächst, Angst mit einem bestimmten Geräusch zu assoziieren. Im zweiten Teil der Studie hörten die Teilnehmer das Geräusch ohne den angstauslösenden Mechanismus, und ihre Fähigkeit, die Verbindung zu "verlernen", wurde gemessen. Es wurde ein physiologisches Maß für die Angst verwendet, und größere Zahlen zeigen weniger Angst an. Schätzen Sie den Unterschied in der durchschnittlichen Reaktion zwischen Erwachsenen und Teenagern. Die mittlere Reaktion für Erwachsene in der Studie war 0,225 und die mittlere Reaktion für Jugendliche in der Studie war 0.059. Man sagt uns, dass der Standardfehler der Schätzung 0.091 beträgt.  
-   (a) Geben Sie die Notation für die zu schätzende Größe an.  
+7. Forscher finden immer wieder Hinweise darauf, dass sich die Gehirne von Heranwachsenden ganz anders verhalten als die Gehirne von Erwachsenen oder die Gehirne von Kindern. Insbesondere scheinen Heranwachsende stärker an Angstassoziationen festzuhalten als Kinder oder Erwachsene, was darauf hindeutet, dass Angstverbindungen, die in den Teenagerjahren hergestellt werden, besonders schwer wieder zu verlernen sind. In einer Studie lernten die Teilnehmer zunächst, Angst mit einem bestimmten Geräusch zu assoziieren. Im zweiten Teil der Studie hörten die Teilnehmer das Geräusch ohne den angstauslösenden Mechanismus, und ihre Fähigkeit, die Verbindung zu "verlernen", wurde gemessen. Es wurde ein physiologisches Mass für die Angst verwendet, und grössere Zahlen zeigen weniger Angst an. Schätzen Sie den Unterschied in der durchschnittlichen Reaktion zwischen Erwachsenen und Teenagern. Die mittlere Reaktion für Erwachsene in der Studie war 0,225 und die mittlere Reaktion für Jugendliche in der Studie war 0.059. Man sagt uns, dass der Standardfehler der Schätzung 0.091 beträgt.  
+   (a) Geben Sie die Notation für die zu schätzende Grösse an.  
    (b) Geben Sie die Notation für die Grösse an, die die beste Schätzung ergibt, und geben Sie ihren Wert an.  
-   (c) Geben Sie ein 95%-Konfidenzintervall für die zu schätzende Größe an.  
+   (c) Geben Sie ein 95%-Konfidenzintervall für die zu schätzende Grösse an.  
    (d) Handelt es sich um ein Experiment oder eine Beobachtungsstudie?
 
 **Schritt-für-Schritt-Erklärung:**
@@ -231,7 +225,7 @@ cat("95%-Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
 ```
 
 2. **Antworten:**
-   - (a) Die zu schätzende Größe ist μA - μT, wobei μA die mittlere Angstreaktion für Erwachsene und μT die mittlere Angstreaktion für Jugendliche darstellt.
+   - (a) Die zu schätzende Grösse ist $\mu$A - $\mu$T, wobei $\mu$A die mittlere Angstreaktion für Erwachsene und $\mu$T die mittlere Angstreaktion für Jugendliche darstellt.
    
    - (b) Die beste Schätzung ist die Differenz der Stichprobenmittelwerte x̄A - x̄T = 0.225 - 0.059 = 0.166.
    
@@ -273,7 +267,7 @@ cat("Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
    
    - (c) Mit einer Fehlermarge von 0.01 liegt der Bereich plausibler Werte für p bei [0.29, 0.31].
    
-   - (d) Nein, es ist sehr unwahrscheinlich, dass der tatsächliche Anteil weniger als 20% beträgt, da dieser Wert weit außerhalb des Konfidenzintervalls [0.29, 0.31] liegt.
+   - (d) Nein, es ist sehr unwahrscheinlich, dass der tatsächliche Anteil weniger als 20% beträgt, da dieser Wert weit ausserhalb des Konfidenzintervalls [0.29, 0.31] liegt.
 
 
 # Aufgabe 9: Auto als Notwendigkeit oder Luxus
@@ -296,7 +290,7 @@ cat("Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
 # Aufgabe 10: Action-Videospiele und Reaktionszeit
 
 **Aufgabenstellung:**  
-10. Eine neue Studie liefert einige Hinweise darauf, dass das Spielen von Action-Videospielen die Fähigkeit einer Person stärkt, sensorische Informationen schnell in genaue Entscheidungen umzusetzen. Die Forscher ließen 23 männliche Freiwillige mit einem Durchschnittsalter von 20 Jahren auf sich bewegende Felder auf einem Computerbildschirm schauen und die Richtung angeben, in die sich die Punkte bewegten. Die Hälfte der Freiwilligen (11 Männer) gab an, im vergangenen Jahr mindestens fünfmal pro Woche Action-Videospiele zu spielen, während die anderen 12 angaben, im vergangenen Jahr keine Videospiele gespielt zu haben. Gemessen wurden sowohl die Reaktionszeit als auch die Trefferquote. Ein 95%-Konfidenzintervall für die mittlere Reaktionszeit für Spieler minus die mittlere Reaktionszeit für Nicht-Spieler beträgt -1.8 bis -1.2 Sekunden, während ein 95%-Konfidenzintervall für den mittleren Genauigkeitswert für Spieler minus den mittleren Genauigkeitswert für Nicht-Spieler -4.2 bis +5.8 beträgt.  
+10. Eine neue Studie liefert einige Hinweise darauf, dass das Spielen von Action-Videospielen die Fähigkeit einer Person stärkt, sensorische Informationen schnell in genaue Entscheidungen umzusetzen. Die Forscher liessen 23 männliche Freiwillige mit einem Durchschnittsalter von 20 Jahren auf sich bewegende Felder auf einem Computerbildschirm schauen und die Richtung angeben, in die sich die Punkte bewegten. Die Hälfte der Freiwilligen (11 Männer) gab an, im vergangenen Jahr mindestens fünfmal pro Woche Action-Videospiele zu spielen, während die anderen 12 angaben, im vergangenen Jahr keine Videospiele gespielt zu haben. Gemessen wurden sowohl die Reaktionszeit als auch die Trefferquote. Ein 95%-Konfidenzintervall für die mittlere Reaktionszeit für Spieler minus die mittlere Reaktionszeit für Nicht-Spieler beträgt -1.8 bis -1.2 Sekunden, während ein 95%-Konfidenzintervall für den mittleren Genauigkeitswert für Spieler minus den mittleren Genauigkeitswert für Nicht-Spieler -4.2 bis +5.8 beträgt.  
    (a) Interpretieren Sie die Bedeutung des 95%-Konfidenzintervalls für den Unterschied in der mittleren Reaktionszeit.  
    (b) Ist es plausibel, dass die Reaktionszeit von Spielern und Nicht-Spielern grundsätzlich gleich ist? Warum oder warum nicht? Wenn nicht, welche Gruppe ist schneller (mit einer kleineren Reaktionszeit)?  
    (c) Interpretieren Sie die Bedeutung des 95%-Konfidenzintervalls für den Unterschied im mittleren Genauigkeitswert.  
@@ -336,7 +330,7 @@ cat("Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
 1. **Überprüfung der Bootstrap-Stichproben:**
    Eine Bootstrap-Stichprobe muss folgende Kriterien erfüllen:
    - Sie muss durch Ziehen mit Zurücklegen aus der ursprünglichen Stichprobe entstehen.
-   - Sie muss die gleiche Größe wie die ursprüngliche Stichprobe haben.
+   - Sie muss die gleiche Grösse wie die ursprüngliche Stichprobe haben.
    - Jeder Wert in der Bootstrap-Stichprobe muss in der ursprünglichen Stichprobe vorkommen.
 
 ```{r}
@@ -348,7 +342,7 @@ check_bootstrap <- function(sample) {
   # Prüfen, ob alle Werte in der ursprünglichen Stichprobe vorkommen
   all_values_valid <- all(sample %in% original_sample)
   
-  # Prüfen, ob die Größe stimmt
+  # Prüfen, ob die Grösse stimmt
   correct_size <- length(sample) == length(original_sample)
   
   return(all_values_valid && correct_size)
@@ -380,7 +374,7 @@ for (name in names(samples)) {
 # Aufgabe 12: Bootstrap-Methode für Konfidenzintervalle
 
 **Aufgabenstellung:**  
-12. In einer Stichprobe von 250 Studierenden stimmen 180 Studierende für eine Ausweitung des Mathematik-Module. Schätzen Sie mit der Bootstrap-Methode den Standardfehler und bestimmen Sie anschließend ein 95%-Konfidenzintervall für den Anteil der zustimmenden Studierenden.
+12. In einer Stichprobe von 250 Studierenden stimmen 180 Studierende für eine Ausweitung des Mathematik-Module. Schätzen Sie mit der Bootstrap-Methode den Standardfehler und bestimmen Sie anschliessend ein 95%-Konfidenzintervall für den Anteil der zustimmenden Studierenden.
 
 **Schritt-für-Schritt-Erklärung:**
 
@@ -425,7 +419,7 @@ cat("95%-Konfidenzintervall (Perzentil-Methode):",
 # Aufgabe 13: Ameisen auf Honigbrot
 
 **Aufgabenstellung:**  
-13. Wie viele Ameisen klettern auf ein Honigbrot, das in der Nähe eines Ameisenhügels auf dem Boden liegen gelassen wird? Um dies zu untersuchen, ließ ein Student in Australien ein Honigbort für einige Minuten liegen, bedeckte es dann mit einem Glas und zählte die Anzahl der Ameisen. Er wiederholte den Versuch achtmal und erhielt folgende Ameisenzahlen: 43, 59, 22, 25, 36, 47, 19, 21.  
+13. Wie viele Ameisen klettern auf ein Honigbrot, das in der Nähe eines Ameisenhügels auf dem Boden liegen gelassen wird? Um dies zu untersuchen, liess ein Student in Australien ein Honigbort für einige Minuten liegen, bedeckte es dann mit einem Glas und zählte die Anzahl der Ameisen. Er wiederholte den Versuch achtmal und erhielt folgende Ameisenzahlen: 43, 59, 22, 25, 36, 47, 19, 21.  
    (a) Bestimmen Sie x̄ und s.  
    (b) Beschreiben Sie, wie wir acht Zettel verwenden könnten, um eine Bootstrap-Statistik zu erstellen. Seien Sie konkret.  
    (c) Was erwarten Sie für die Form und das Zentrum der Bootstrap-Verteilung?  
@@ -475,7 +469,7 @@ abline(v = mean_ants, col = "red", lwd = 2)
    
    - (c) Wir erwarten, dass die Bootstrap-Verteilung annähernd glockenförmig ist und ihr Zentrum bei etwa 34 (dem Mittelwert der ursprünglichen Stichprobe) liegt.
    
-   - (d) Der interessierende Populationsparameter ist μ, der Mittelwert der Anzahl von Ameisen auf allen möglichen Honigbroten, die in der Nähe dieses Ameisenhügels platziert werden könnten. Die beste Schätzung für diesen Parameter ist der Stichprobenmittelwert x̄ = 34.
+   - (d) Der interessierende Populationsparameter ist $\mu$, der Mittelwert der Anzahl von Ameisen auf allen möglichen Honigbroten, die in der Nähe dieses Ameisenhügels platziert werden könnten. Die beste Schätzung für diesen Parameter ist der Stichprobenmittelwert x̄ = 34.
    
    - (e) Der Bootstrap-Standardfehler beträgt etwa 4.85.
    
@@ -566,7 +560,7 @@ cat("Für 99%-KI: ", cut_each_end_99, "Werte an jedem Ende abschneiden\n")
 # Aufgabe 16: Änderungen im Bootstrap-Prozess
 
 **Aufgabenstellung:**  
-16. Bei der Schätzung der mittleren Punktzahl in einer Fitnessprüfung verwenden wir eine Originalstichprobe der Größe n = 30 und eine Bootstrap-Verteilung mit 5000 Bootstrap-Stichproben, um ein 95%-Konfidenzintervall von 67 Punkten bis 73 Punkten zu erhalten. In den nächsten drei Fragen wird dieser Prozess leicht verändert. Bestimmen Sie von den nachfolgenden Intervallen jeweils dasjenige, das nach dieser Änderung die bestmögiche Ergebnis darstellt.  
+16. Bei der Schätzung der mittleren Punktzahl in einer Fitnessprüfung verwenden wir eine Originalstichprobe der Grösse n = 30 und eine Bootstrap-Verteilung mit 5000 Bootstrap-Stichproben, um ein 95%-Konfidenzintervall von 67 Punkten bis 73 Punkten zu erhalten. In den nächsten drei Fragen wird dieser Prozess leicht verändert. Bestimmen Sie von den nachfolgenden Intervallen jeweils dasjenige, das nach dieser Änderung die bestmögiche Ergebnis darstellt.  
    A = [66, 74], B = [67, 73], C = [67.5, 72.5]  
    (a) Es wird ein 90%-Konfidenzintverall berechnet.  
    (b) Der Stichprobenumfang beträgt nun n = 16.  
@@ -583,9 +577,9 @@ cat("Für 99%-KI: ", cut_each_end_99, "Werte an jedem Ende abschneiden\n")
 2. **Antworten:**
    - (a) Für ein 90%-Konfidenzintervall erwarten wir ein schmaleres Intervall als für ein 95%-Konfidenzintervall. Daher ist C = [67.5, 72.5] das wahrscheinlichste Ergebnis.
    
-   - (b) Bei einem kleineren Stichprobenumfang (n = 16 statt n = 30) erwarten wir ein breiteres Konfidenzintervall aufgrund der größeren Unsicherheit. Daher ist A = [66, 74] das wahrscheinlichste Ergebnis.
+   - (b) Bei einem kleineren Stichprobenumfang (n = 16 statt n = 30) erwarten wir ein breiteres Konfidenzintervall aufgrund der grösseren Unsicherheit. Daher ist A = [66, 74] das wahrscheinlichste Ergebnis.
    
-   - (c) Die Änderung von 5000 auf 1000 Bootstrap-Stichproben sollte keinen wesentlichen Einfluss auf das Konfidenzintervall haben, solange die Anzahl der Bootstrap-Stichproben ausreichend groß ist. Daher ist B = [67, 73] das wahrscheinlichste Ergebnis.
+   - (c) Die Änderung von 5000 auf 1000 Bootstrap-Stichproben sollte keinen wesentlichen Einfluss auf das Konfidenzintervall haben, solange die Anzahl der Bootstrap-Stichproben ausreichend gross ist. Daher ist B = [67, 73] das wahrscheinlichste Ergebnis.
 
 
 # Aufgabe 17: Konfidenzintervall für Umfragedaten
@@ -671,7 +665,7 @@ cat("90%-KI (Standardfehler-Methode):", ci_lower, "bis", ci_upper, "CHF\n")
 
 ```{r}
 # Daten nach Geschlecht filtern
-# Wir schließen "Non binary" aus, um nur Männer und Frauen zu vergleichen
+# Wir schliessen "Non binary" aus, um nur Männer und Frauen zu vergleichen
 female_data <- subset(data, gender == "Female")
 male_data <- subset(data, gender == "Male")
 
@@ -725,7 +719,7 @@ if (!is.na(ci_95[1]) && !is.na(ci_95[2])) {
 # Aufgabe 20: Konfidenzintervall für Korrelation
 
 **Aufgabenstellung:**  
-20. Ermitteln Sie ein 99%-Konfidenzintervall für die Korrelation der Körpergrößen und Fußlängen (Datensatz BFH).
+20. Ermitteln Sie ein 99%-Konfidenzintervall für die Korrelation der Körpergrössen und Fusslängen (Datensatz BFH).
 
 **Schritt-für-Schritt-Erklärung:**
 
@@ -734,7 +728,7 @@ if (!is.na(ci_95[1]) && !is.na(ci_95[2])) {
 ```{r}
 # Korrelation berechnen
 correlation <- cor(data$height, data$foot, use = "complete.obs")
-cat("Korrelation zwischen Körpergröße und Fußlänge:", correlation, "\n")
+cat("Korrelation zwischen Körpergrösse und Fusslänge:", correlation, "\n")
 
 # Daten für Bootstrap vorbereiten - nur vollständige Fälle verwenden
 complete_data <- data[complete.cases(data[, c("height", "foot")]), ]
@@ -761,4 +755,4 @@ if (nrow(complete_data) > 0) {
 ```
 
 2. **Ergebnis:**
-   Das 99%-Konfidenzintervall für die Korrelation zwischen Körpergröße und Fußlänge liegt bei etwa [X, Y] (die genauen Werte hängen von den tatsächlichen Daten ab).
+   Das 99%-Konfidenzintervall für die Korrelation zwischen Körpergrösse und Fusslänge liegt bei etwa [X, Y] (die genauen Werte hängen von den tatsächlichen Daten ab).
