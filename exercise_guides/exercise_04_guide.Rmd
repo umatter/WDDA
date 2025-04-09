@@ -686,21 +686,32 @@ cat("Differenz (Frauen - Männer):", diff_means, "Stunden\n")
 
 # Bootstrap für die Differenz der Mittelwerte
 set.seed(123)
-# Wir erstellen einen Datensatz ohne "Non binary"
-data_binary <- subset(data, gender %in% c("Female", "Male"))
-bootstrap_diff <- do(1000) * diff(mean(sleep ~ gender, data = resample(data_binary)))
+# Wir erstellen einen Datensatz ohne "Non binary" und ohne NA-Werte
+data_binary <- subset(data, gender %in% c("Female", "Male") & !is.na(sleep))
+# Prüfen, ob genügend Daten vorhanden sind
+if (nrow(data_binary) > 0 && length(unique(data_binary$gender)) > 1) {
+  bootstrap_diff <- do(1000) * diff(mean(sleep ~ gender, data = resample(data_binary)))
+} else {
+  # Fallback, wenn nicht genügend Daten vorhanden sind
+  bootstrap_diff <- data.frame(Female = NA)
+  cat("Warnung: Nicht genügend Daten für Bootstrap-Analyse vorhanden.\n")
+}
 
 # 95%-Konfidenzintervall berechnen
-ci_95 <- quantile(bootstrap_diff$Female, c(0.025, 0.975))
+ci_95 <- quantile(bootstrap_diff$Female, c(0.025, 0.975), na.rm = TRUE)
 cat("95%-Konfidenzintervall für die Differenz:", ci_95[1], "bis", ci_95[2], "Stunden\n")
 
-# Interpretation
-if (ci_95[1] > 0) {
-  cat("Da das gesamte Konfidenzintervall positiv ist, schlafen Studentinnen signifikant mehr als Studenten.\n")
-} else if (ci_95[2] < 0) {
-  cat("Da das gesamte Konfidenzintervall negativ ist, schlafen Studenten signifikant mehr als Studentinnen.\n")
+# Interpretation - mit Fehlerbehandlung
+if (!is.na(ci_95[1]) && !is.na(ci_95[2])) {
+  if (ci_95[1] > 0) {
+    cat("Da das gesamte Konfidenzintervall positiv ist, schlafen Studentinnen signifikant mehr als Studenten.\n")
+  } else if (ci_95[2] < 0) {
+    cat("Da das gesamte Konfidenzintervall negativ ist, schlafen Studenten signifikant mehr als Studentinnen.\n")
+  } else {
+    cat("Da das Konfidenzintervall die Null enthält, gibt es keinen signifikanten Unterschied in den Schlafzeiten.\n")
+  }
 } else {
-  cat("Da das Konfidenzintervall die Null enthält, gibt es keinen signifikanten Unterschied in den Schlafzeiten.\n")
+  cat("Die Berechnung des Konfidenzintervalls ergab NA-Werte, möglicherweise aufgrund fehlender Daten.\n")
 }
 ```
 
@@ -725,21 +736,28 @@ if (ci_95[1] > 0) {
 correlation <- cor(data$height, data$foot, use = "complete.obs")
 cat("Korrelation zwischen Körpergröße und Fußlänge:", correlation, "\n")
 
+# Daten für Bootstrap vorbereiten - nur vollständige Fälle verwenden
+complete_data <- data[complete.cases(data[, c("height", "foot")]), ]
+
 # Bootstrap für die Korrelation
 set.seed(123)
-bootstrap_cor <- do(5000) * cor(height ~ foot, data = resample(data))
-
-# 99%-Konfidenzintervall berechnen
-ci_99 <- quantile(bootstrap_cor$cor, c(0.005, 0.995))
-cat("99%-Konfidenzintervall für die Korrelation:", ci_99[1], "bis", ci_99[2], "\n")
-
-# Histogramm der Bootstrap-Verteilung
-hist(bootstrap_cor$cor, 
-     main = "Bootstrap-Verteilung der Korrelation",
-     xlab = "Korrelation", 
-     col = "lightblue")
-abline(v = correlation, col = "red", lwd = 2)
-abline(v = ci_99, col = "blue", lty = 2, lwd = 2)
+if (nrow(complete_data) > 0) {
+  bootstrap_cor <- do(5000) * cor(height ~ foot, data = resample(complete_data))
+  
+  # 99%-Konfidenzintervall berechnen
+  ci_99 <- quantile(bootstrap_cor$cor, c(0.005, 0.995), na.rm = TRUE)
+  cat("99%-Konfidenzintervall für die Korrelation:", ci_99[1], "bis", ci_99[2], "\n")
+  
+  # Histogramm der Bootstrap-Verteilung
+  hist(bootstrap_cor$cor, 
+       main = "Bootstrap-Verteilung der Korrelation",
+       xlab = "Korrelation", 
+       col = "lightblue")
+  abline(v = correlation, col = "red", lwd = 2)
+  abline(v = ci_99, col = "blue", lty = 2, lwd = 2)
+} else {
+  cat("Nicht genügend vollständige Daten für Bootstrap-Analyse vorhanden.\n")
+}
 ```
 
 2. **Ergebnis:**
