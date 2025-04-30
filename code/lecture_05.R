@@ -172,11 +172,11 @@ cat("TSS = ESS + RSS:", round(TSS, 2), "=", round(ESS, 2), "+", round(RSS, 2), "
 
 
 
-# Bestimmtheitsmaß R²
+# Bestimmtheitsmass R²
 r_squared <- (TSS - RSS) / TSS
 r_squared_check <- cor(sales, TV)^2
-cat("Bestimmtheitsmaß R² (aus Varianzanalyse):", round(r_squared, 4), "\n")
-cat("Bestimmtheitsmaß R² (aus Korrelation):    ", round(r_squared_check, 4), "\n\n")
+cat("Bestimmtheitsmass R² (aus Varianzanalyse):", round(r_squared, 4), "\n")
+cat("Bestimmtheitsmass R² (aus Korrelation):    ", round(r_squared_check, 4), "\n\n")
 
 
 

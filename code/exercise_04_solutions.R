@@ -422,6 +422,8 @@ ci_lower_cash <- mean_cash - z_90 * se_bootstrap_cash
 ci_upper_cash <- mean_cash + z_90 * se_bootstrap_cash
 cat("90%-KI (Standardfehler-Methode):", ci_lower_cash, "bis", ci_upper_cash, "CHF\n")
 
+
+
 # ============================================================================
 # Aufgabe 19: Schlafzeiten nach Geschlecht
 # ============================================================================
@@ -442,17 +444,14 @@ cat("Differenz (Frauen - Männer):", diff_means_sleep, "Stunden\n")
 set.seed(123)
 # Wir erstellen einen Datensatz ohne "Non binary" und ohne NA-Werte
 data_binary <- subset(data, gender %in% c("Female", "Male") & !is.na(sleep))
-# Prüfen, ob genügend Daten vorhanden sind
-if (nrow(data_binary) > 0 && length(unique(data_binary$gender)) > 1) {
-  bootstrap_diff <- do(1000) * diff(mean(sleep ~ gender, data = resample(data_binary)))
-} else {
-  # Fallback, wenn nicht genügend Daten vorhanden sind
-  bootstrap_diff <- data.frame(Female = NA)
-  cat("Warnung: Nicht genügend Daten für Bootstrap-Analyse vorhanden.\n")
-}
+
+# Bootstrapping der differenz
+# Erklärung
+bootstrap_diff <- do(1000) * diff(mean(sleep ~ gender, data = resample(data_binary)))
+
 
 # 95%-Konfidenzintervall berechnen
-ci_95_sleep <- quantile(bootstrap_diff$Female, c(0.025, 0.975), na.rm = TRUE)
+ci_95_sleep <- quantile(bootstrap_diff$Male, c(0.025, 0.975), na.rm = TRUE)
 cat("95%-Konfidenzintervall für die Differenz:", ci_95_sleep[1], "bis", ci_95_sleep[2], "Stunden\n")
 
 # Interpretation - mit Fehlerbehandlung

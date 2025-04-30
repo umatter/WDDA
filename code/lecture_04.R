@@ -1,12 +1,12 @@
 ##############################################################
 # WDDA Lecture 04 – Von Stichproben zur Population
-# Schließende Statistik, Bootstrap und Konfidenzintervalle
+# Schliessende Statistik, Bootstrap und Konfidenzintervalle
 #
 # Dieses Script fasst sämtliche Inhalte aus den vier Folien-Batches zusammen.
 # Themen:
 #   1. Notation: Population vs. Stichprobe (Parameter vs. Schätzung)
 #   2. Simulation der Stichprobenvariation und Berechnung des Standardfehlers
-#   3. Einfluss der Stichprobengröße
+#   3. Einfluss der Stichprobengrösse
 #   4. Bereich plausibler Werte (Punktschätzung ± Fehlerbereich)
 #   5. Simulation von Konfidenzintervallen für Proportionen
 #   6. Bootstrap-Stichproben: Ermittlung von Standardfehlern und
@@ -78,9 +78,9 @@ cat("Hinweis: Stichprobenmittelwerte variieren deutlich weniger als einzelne Wer
 
 
 ##############################################################
-# 4. Einfluss der Stichprobengröße ("Size does matter!")
+# 4. Einfluss der Stichprobengrösse ("Size does matter!")
 ##############################################################
-# Mit zunehmender Stichprobengröße wird die Variation der Mittelwerte kleiner.
+# Mit zunehmender Stichprobengrösse wird die Variation der Mittelwerte kleiner.
 m.30  <- do(3000) * mean(sample(WeeklySalary, size = 30))
 m.100 <- do(3000) * mean(sample(WeeklySalary, size = 100))
 m.500 <- do(3000) * mean(sample(WeeklySalary, size = 500))
