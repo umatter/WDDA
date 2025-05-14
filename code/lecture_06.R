@@ -12,6 +12,7 @@
 library(scatterplot3d)
 library(rgl)
 library(car)
+library(readxl)
 
 # Daten laden
 data <- read_excel("data/WDDA_06.xlsx", sheet = "Advertising")
