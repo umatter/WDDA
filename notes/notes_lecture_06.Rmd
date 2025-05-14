@@ -452,7 +452,10 @@ model_stats <- data.frame(
 )
 
 # Ausgabe der Modelstatistiken
-print(round(model_stats, 4))
+# Round only the numeric columns
+model_stats_rounded <- model_stats
+model_stats_rounded[, 2:4] <- round(model_stats[, 2:4], 4)
+print(model_stats_rounded)
 
 # Visualisierung des Modellvergleichs
 par(mfrow = c(1, 2))
