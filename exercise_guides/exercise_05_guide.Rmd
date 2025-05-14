@@ -6,6 +6,7 @@ output:
   pdf_document:
     toc: true
     number_sections: true
+    latex_engine: xelatex
 lang: de
 ---
 
@@ -107,8 +108,8 @@ mod_dr <- lm(price ~ weight, data = diamonds)
 summary(mod_dr)
 ```
 
-* **Intercept** $\approx -259.63$: theoretischer Preis bei 0 ct (nicht sinnvoll).
-* **Steigung** $\approx 3721.02$: Mehrpreis von SGD 3721.02 pro zusätzlichem Karat.
+* **Intercept** $\approx$ -259.63: theoretischer Preis bei 0 ct (nicht sinnvoll).
+* **Steigung** $\approx$ 3721.02: Mehrpreis von SGD 3721.02 pro zusätzlichem Karat.
 
 ## Schritt 4: $R^2$, RSE, RSS, TSS berechnen
 
@@ -227,8 +228,8 @@ mod_dl <- lm(time_sec ~ size_mb, data = dl)
 summary(mod_dl)
 ```
 
-* **Intercept** $\approx 7.27$ s: Startlatenz im Netzwerk.
-* **Steigung** $\approx 0.3133$ s/MB: zusätzliche Zeit pro MB.
+* **Intercept** $\approx$ 7.27 s: Startlatenz im Netzwerk.
+* **Steigung** $\approx$ 0.3133 s/MB: zusätzliche Zeit pro MB.
 
 ## Schritt 4: Kennzahlen berechnen
 
@@ -289,7 +290,7 @@ Keine erkennbaren Muster – die Varianz scheint konstant.
 ```{r}
 plot(fitted(mod_dl), resid_dl,
      main = "Residuen vs. Geschätzte Werte",
-     xlab = "ŷ (s)", ylab = "Residuen (s)")
+     xlab = "Geschätzte Werte (s)", ylab = "Residuen (s)")
 abline(h = 0, lty = 2)
 ```
 
@@ -353,8 +354,8 @@ mod_cars <- lm(horsepower ~ displacement, data = cars)
 summary(mod_cars)
 ```
 
-* **Intercept** $\approx 34.19$ PS: Grundleistung bei 0 L (nicht realistisch).
-* **Steigung** $\approx 69.20$ PS/L: zusätzliche Leistung pro Liter.
+* **Intercept** $\approx$ 34.19 PS: Grundleistung bei 0 L (nicht realistisch).
+* **Steigung** $\approx$ 69.20 PS/L: zusätzliche Leistung pro Liter.
 
 ## Schritt 4: $R^2$ & RSE
 
@@ -408,7 +409,7 @@ cars3 <- filter(cars, displacement == 3)
 t.test(cars3$horsepower)$conf.int
 ```
 
-Sie erhalten ca. **\[251, 284] PS**. Das Modell-Prediction $≈242$ PS liegt teilweise ausserhalb – Hinweis auf Abweichung.
+Sie erhalten ca. **[251, 284] PS**. Das Modell-Prediction $\approx$ 242 PS liegt teilweise ausserhalb – Hinweis auf Abweichung.
 
 ## Schritt 10: Wiederholung für 2 L und 6.2 L
 
