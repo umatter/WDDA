@@ -1,0 +1,502 @@
+---
+title: "R-Code Beispiele aus WDDA Vorlesung 6 (Kapitel 6)"
+author: "Ulrich Matter"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Einleitung
+
+Dieses Dokument fasst alle R-Code-Beispiele der Folien aus der WDDA FS2025 Vorlesung 6 (Kapitel 6) zusammen. Der Fokus liegt auf der multiplen linearen Regression, einer Erweiterung der einfachen linearen Regression auf mehrere Prädiktoren.
+
+Die multiple lineare Regression ist ein statistisches Verfahren, das den Zusammenhang zwischen einer abhängigen Variable und mehreren unabhängigen Variablen modelliert. Im Gegensatz zur einfachen linearen Regression, die nur einen Prädiktor verwendet, können mit der multiplen Regression komplexere Zusammenhänge untersucht werden.
+
+Zentrale Konzepte in diesem Bereich sind:
+
+1. **Multiple Regression mit mehreren Prädiktoren**: Wie modelliert man den Einfluss mehrerer Variablen?
+2. **Residuenanalyse und Modellgüte**: Wie gut passt das Modell zu den Daten?
+3. **Prognose und Fehlerbereich**: Wie genau sind die Vorhersagen des Modells?
+4. **Nichtlineare und polynomiale Regression**: Wie modelliert man nichtlineare Zusammenhänge?
+5. **Modellvergleich**: Wie vergleicht man verschiedene Regressionsmodelle?
+
+# 0. Vorbereitung
+
+```{r vorbereitung-sichtbar, eval=FALSE}
+# Pakete laden
+library(scatterplot3d)
+library(rgl)
+library(car)
+library(readxl)
+
+# Daten laden
+data <- read_excel("data/WDDA_06.xlsx", sheet = "Advertising")
+
+# variablen direkt anwählbar machen
+attach(data)
+```
+
+```{r vorbereitung, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+# Pakete laden
+library(scatterplot3d)
+library(rgl)
+library(car)
+library(readxl)
+
+# Daten laden
+data <- read_excel("../data/WDDA_06.xlsx", sheet = "Advertising")
+
+# variablen direkt anwählbar machen
+attach(data)
+
+# Überprüfen der Datenstruktur
+str(data)
+```
+
+**R-Erklärung**: 
+
+- Die Funktion `library()` lädt ein installiertes Paket in die aktuelle R-Sitzung.
+- Das Paket `scatterplot3d` ermöglicht die Erstellung von 3D-Streudiagrammen.
+- Das Paket `rgl` bietet interaktive 3D-Visualisierungen.
+- Das Paket `car` (Companion to Applied Regression) enthält Funktionen für die Regressionsanalyse.
+- Mit `read_excel()` aus dem Paket `readxl` können Excel-Dateien eingelesen werden.
+- Die Funktion `attach()` macht die Variablen eines Dataframes direkt ansprechbar, ohne dass man den Dataframe-Namen voranstellen muss.
+- Die Funktion `str()` zeigt die Struktur eines Objekts, einschliesslich Datentypen und Dimensionen.
+
+**Hinweis zu Datenpfaden**: In R-Markdown-Dateien werden relative Pfade vom Speicherort der Datei aus interpretiert, daher der Pfad `"../data/WDDA_06.xlsx"`. In regulären R-Skripten würde der Pfad relativ zum Arbeitsverzeichnis angegeben werden.
+
+# 1. Untersuchung der erklärenden Variablen
+
+Bevor wir mit der multiplen Regression beginnen, untersuchen wir die Beziehungen zwischen den Variablen.
+
+```{r untersuchung_variablen, eval=TRUE}
+# Korrelationen
+cor_tv <- cor(sales, TV)
+cor_radio <- cor(sales, radio)
+cat("Korrelation (TV vs. Sales):", round(cor_tv, 4), "\n")
+cat("Korrelation (Radio vs. Sales):", round(cor_radio, 4), "\n\n")
+
+# Korrelationsmatrix
+cor_matrix <- cor(data[, c("TV", "radio", "newspaper", "sales")])
+print(round(cor_matrix, 4))
+
+# 3D-Visualisierung (TV, Radio, Sales)
+scatterplot3d(x = TV, y = radio, z = sales, scale.y = 0.9, angle = 30,
+              main = "3D Scatterplot: TV, Radio und Sales",
+              xlab = "TV (in 1000 USD)", ylab = "Radio (in 1000 USD)", zlab = "Sales (in 1000 USD)")
+
+# Paarweise Streudiagramme
+pairs(data[, c("TV", "radio", "newspaper", "sales")],
+      main = "Paarweise Streudiagramme")
+```
+
+```{r dynamischer_3d_plot, eval=FALSE}
+# Dynamisches 3D-Scatterplot
+# Hinweis: Diese Funktion öffnet ein interaktives Fenster
+scatter3d(x = TV, z = radio, y = sales, surface = FALSE)
+```
+
+**Statistische Erklärung**: 
+
+- Die **Korrelation** ist ein Mass für den linearen Zusammenhang zwischen zwei Variablen und liegt zwischen -1 und +1.
+- Eine **Korrelationsmatrix** zeigt die paarweisen Korrelationen zwischen mehreren Variablen.
+- **3D-Streudiagramme** ermöglichen die Visualisierung des Zusammenhangs zwischen drei Variablen.
+- **Paarweise Streudiagramme** zeigen die Beziehungen zwischen allen Paaren von Variablen in einem Datensatz.
+- Bei der multiplen Regression ist es wichtig, die Beziehungen zwischen den Prädiktoren zu verstehen, da Multikollinearität (starke Korrelationen zwischen Prädiktoren) die Interpretation der Koeffizienten erschweren kann.
+
+**R-Erklärung**:
+
+- Die Funktion `cor()` berechnet die Pearson-Korrelation zwischen zwei Vektoren oder eine Korrelationsmatrix für einen Dataframe.
+- Die Funktion `scatterplot3d()` aus dem gleichnamigen Paket erstellt ein 3D-Streudiagramm.
+- Die Funktion `scatter3d()` aus dem Paket `car` erstellt ein interaktives 3D-Streudiagramm.
+- Die Funktion `pairs()` erstellt eine Matrix von paarweisen Streudiagrammen.
+
+# 2. Multiple lineare Regression (TV und Radio)
+
+Nun führen wir eine multiple Regression mit zwei Prädiktoren durch: TV und Radio.
+
+```{r multiple_regression, eval=TRUE}
+# Modell mit zwei Prädiktoren
+md2 <- lm(sales ~ TV + radio)
+summary(md2)
+
+# Regressionsgleichung
+B <- coef(md2)
+cat("Regressionsgleichung:\n")
+cat("sales ≈", round(B[1], 3), "+", round(B[2], 3), "* TV +", round(B[3], 3), "* radio\n\n")
+
+# Vergleich mit einfacher Regression (nur TV)
+md1 <- lm(sales ~ TV)
+summary(md1)
+
+# Vergleich der Koeffizienten
+cat("Koeffizient für TV (einfache Regression):", round(coef(md1)[2], 4), "\n")
+cat("Koeffizient für TV (multiple Regression):", round(coef(md2)[2], 4), "\n\n")
+
+# Interpretation der Koeffizienten
+cat("Interpretation der Koeffizienten (multiple Regression):\n")
+cat("- Achsenabschnitt:", round(B[1], 3), 
+    "→ erwartete sales bei TV = 0 und radio = 0 (in Tausend USD)\n")
+cat("- TV-Koeffizient:", round(B[2], 4), 
+    "→ erwarteter Anstieg von sales bei +1 Einheit TV, wenn radio konstant bleibt\n")
+cat("- Radio-Koeffizient:", round(B[3], 4), 
+    "→ erwarteter Anstieg von sales bei +1 Einheit radio, wenn TV konstant bleibt\n")
+```
+
+**Statistische Erklärung**: 
+
+- Die **multiple lineare Regression** modelliert den Zusammenhang zwischen einer abhängigen Variable und mehreren unabhängigen Variablen: y = β₀ + β₁x₁ + β₂x₂ + ... + βₚxₚ + ε
+- Die **Regressionskoeffizienten** (β₁, β₂, ...) geben den Einfluss jeder unabhängigen Variable auf die abhängige Variable an, wenn alle anderen Variablen konstant gehalten werden.
+- Der **Achsenabschnitt** (β₀) ist der erwartete Wert der abhängigen Variable, wenn alle unabhängigen Variablen Null sind.
+- Die **Interpretation der Koeffizienten** in der multiplen Regression unterscheidet sich von der einfachen Regression:
+  - In der einfachen Regression gibt der Koeffizient den Gesamteffekt der Variable an.
+  - In der multiplen Regression gibt der Koeffizient den partiellen Effekt der Variable an, wenn alle anderen Variablen konstant gehalten werden.
+- Die Koeffizienten können sich zwischen einfacher und multipler Regression unterscheiden, wenn die Prädiktoren korreliert sind.
+
+**R-Erklärung**:
+
+- Die Funktion `lm()` (linear model) passt ein lineares Regressionsmodell an die Daten an.
+- Die Formel `sales ~ TV + radio` in `lm()` gibt an, dass `sales` die abhängige Variable und `TV` und `radio` die unabhängigen Variablen sind.
+- Die Funktion `summary()` liefert eine detaillierte Zusammenfassung des Regressionsmodells, einschliesslich Koeffizienten, Standardfehler, t-Werte, p-Werte und R².
+- Die Funktion `coef()` extrahiert die Koeffizienten aus einem Regressionsmodell.
+
+# 3. Vorhersage mit dem Modell
+
+Mit dem Regressionsmodell können wir Vorhersagen für neue Werte der unabhängigen Variablen treffen.
+
+```{r vorhersage, eval=TRUE}
+# Vorhersage mit Fehlerbereich
+RSE <- summary(md2)$sigma
+tv_new <- 230.1
+radio_new <- 37.8
+predicted <- predict(md2, newdata = data.frame(TV = tv_new, radio = radio_new))
+pred_interval <- predicted + c(-1, 1) * 2 * RSE
+cat("Prognose für TV =", tv_new, "und Radio =", radio_new, ":", round(predicted, 2), "\n")
+cat("95%-Prognoseintervall:", round(pred_interval[1], 2), "bis", round(pred_interval[2], 2), "\n\n")
+
+# Exaktes Prognoseintervall
+pred_interval_exact <- predict(md2, newdata = data.frame(TV = tv_new, radio = radio_new), 
+                              interval = "prediction", level = 0.95)
+cat("Exaktes 95%-Prognoseintervall:", 
+    round(pred_interval_exact[2], 2), "bis", 
+    round(pred_interval_exact[3], 2), "\n")
+
+# Konfidenzintervall für den Erwartungswert
+conf_interval <- predict(md2, newdata = data.frame(TV = tv_new, radio = radio_new), 
+                        interval = "confidence", level = 0.95)
+cat("95%-Konfidenzintervall für den Erwartungswert:", 
+    round(conf_interval[2], 2), "bis", 
+    round(conf_interval[3], 2), "\n")
+```
+
+**Statistische Erklärung**: 
+
+- Die **Vorhersage** (Prognose) ist der vorhergesagte Wert der abhängigen Variable für bestimmte Werte der unabhängigen Variablen: ŷ = β₀ + β₁x₁ + β₂x₂ + ... + βₚxₚ
+- Der **Residual Standard Error (RSE)** ist ein Mass für die typische Grösse der Residuen und hat die gleiche Einheit wie die abhängige Variable.
+- Das **Prognoseintervall** gibt den Bereich an, in dem ein einzelner neuer Wert mit einer bestimmten Wahrscheinlichkeit liegen wird.
+- Das **Konfidenzintervall für den Erwartungswert** gibt den Bereich an, in dem der wahre Erwartungswert mit einer bestimmten Wahrscheinlichkeit liegt.
+- Prognoseintervalle sind breiter als Konfidenzintervalle für den Erwartungswert, da sie zusätzlich die Variation der einzelnen Beobachtungen um den Erwartungswert berücksichtigen.
+
+**R-Erklärung**:
+
+- Die Funktion `predict()` berechnet vorhergesagte Werte für ein Regressionsmodell.
+- Der Parameter `newdata` in `predict()` gibt einen Dataframe mit den Werten der Prädiktoren an, für die Vorhersagen gemacht werden sollen.
+- Der Parameter `interval` in `predict()` gibt an, ob Konfidenz- oder Prognoseintervalle berechnet werden sollen.
+- Der Parameter `level` in `predict()` gibt das Konfidenzniveau an.
+- Der Ausdruck `summary(md2)$sigma` extrahiert den RSE aus dem Regressionsobjekt.
+
+# 4. Regressionsfläche (Plane of Best Fit)
+
+Bei der multiplen Regression mit zwei Prädiktoren können wir die Regressionsfläche in einem 3D-Raum visualisieren.
+
+```{r regressionsfläche, eval=FALSE}
+# Visualisierung der Regressionsfläche
+# Hinweis: Diese Funktion öffnet ein interaktives Fenster
+scatter3d(x = TV, z = radio, y = sales, fit = "linear", residuals = TRUE, grid = TRUE)
+```
+
+```{r regressionsfläche_statisch, eval=TRUE}
+# Statische Visualisierung der Regressionsfläche
+s3d <- scatterplot3d(TV, radio, sales, 
+                    main = "Regressionsfläche (Plane of Best Fit)",
+                    xlab = "TV", ylab = "Radio", zlab = "Sales",
+                    pch = 16, highlight.3d = TRUE, angle = 45)
+
+# Regressionsfläche hinzufügen
+my.lm <- lm(sales ~ TV + radio)
+s3d$plane3d(my.lm, lty.box = "solid")
+```
+
+**Statistische Erklärung**: 
+
+- Bei der **multiplen Regression mit zwei Prädiktoren** wird der Zusammenhang durch eine Ebene im dreidimensionalen Raum dargestellt: z = β₀ + β₁x + β₂y
+- Diese Ebene wird als **Regressionsfläche** (Plane of Best Fit) bezeichnet.
+- Die Regressionsfläche wird so gewählt, dass die Summe der quadrierten vertikalen Abstände der Datenpunkte zur Fläche minimiert wird.
+- Die **Residuen** sind die vertikalen Abstände der Datenpunkte zur Regressionsfläche.
+- Die Visualisierung der Regressionsfläche hilft, den gemeinsamen Einfluss der beiden Prädiktoren auf die abhängige Variable zu verstehen.
+
+**R-Erklärung**:
+
+- Die Funktion `scatter3d()` aus dem Paket `car` erstellt ein interaktives 3D-Streudiagramm mit einer Regressionsfläche.
+- Der Parameter `fit = "linear"` in `scatter3d()` gibt an, dass eine lineare Regressionsfläche angepasst werden soll.
+- Der Parameter `residuals = TRUE` in `scatter3d()` zeigt die Residuen als vertikale Linien an.
+- Die Funktion `scatterplot3d()` erstellt ein statisches 3D-Streudiagramm.
+- Die Methode `plane3d()` fügt eine Regressionsfläche zu einem `scatterplot3d`-Objekt hinzu.
+
+# 5. Modellgüte und Erklärungskraft
+
+Wir untersuchen nun, wie gut das Modell die Variation in den Daten erklärt.
+
+```{r modellgüte, eval=TRUE}
+# Berechnung von TSS, RSS und R²
+TSS <- sum((sales - mean(sales))^2)
+RSS <- sum((sales - predict(md2))^2)
+r_squared <- 1 - (RSS / TSS)
+
+cat("Bestimmtheitsmaß (R²):", round(r_squared, 4), "\n")
+cat("TV und Radio erklären", round(r_squared * 100, 2), "% der Variation in Sales.\n\n")
+
+# Vergleich mit R² aus summary()
+r_squared_summary <- summary(md2)$r.squared
+cat("R² aus summary():", round(r_squared_summary, 4), "\n")
+
+# Vergleich mit einfacher Regression (nur TV)
+r_squared_tv <- summary(md1)$r.squared
+cat("R² (nur TV):", round(r_squared_tv, 4), "\n")
+cat("R² (TV + Radio):", round(r_squared_summary, 4), "\n")
+cat("Zunahme von R² durch Hinzufügen von Radio:", 
+    round((r_squared_summary - r_squared_tv) * 100, 2), "Prozentpunkte\n")
+```
+
+**Statistische Erklärung**: 
+
+- Das **Bestimmtheitsmass R²** gibt den Anteil der Variation in der abhängigen Variable an, der durch das Regressionsmodell erklärt wird.
+- R² liegt zwischen 0 und 1:
+  - R² = 0: Das Modell erklärt keine Variation in den Daten.
+  - R² = 1: Das Modell erklärt die gesamte Variation in den Daten.
+- R² kann auf verschiedene Weisen berechnet werden:
+  - R² = 1 - (RSS / TSS)
+  - R² = ESS / TSS
+- Ein höheres R² bedeutet eine bessere Anpassung des Modells an die Daten.
+- Durch Hinzufügen weiterer Prädiktoren kann R² nur zunehmen oder gleich bleiben, nie abnehmen.
+- Dies kann zu einer Überanpassung (Overfitting) führen, wenn zu viele Prädiktoren hinzugefügt werden.
+
+**R-Erklärung**:
+
+- Die Funktion `predict()` ohne weitere Parameter berechnet die vorhergesagten Werte für die Beobachtungen im Trainingsdatensatz.
+- Der Ausdruck `summary(md2)$r.squared` extrahiert den R²-Wert aus dem Regressionsobjekt.
+- Die Berechnung von R² erfolgt direkt nach der Formel R² = 1 - (RSS / TSS).
+
+# 6. Residuenanalyse
+
+Die Analyse der Residuen ist ein wichtiger Schritt, um die Annahmen der linearen Regression zu überprüfen.
+
+```{r residuenanalyse, eval=TRUE}
+# Residuenplots
+hist(resid(md2), main = "Histogramm der Residuen", xlab = "Residuen")
+plot(resid(md2) ~ TV, main = "Residuen vs. TV", xlab = "TV", ylab = "Residuen")
+abline(h = 0, col = "gray")
+plot(resid(md2) ~ radio, main = "Residuen vs. Radio", xlab = "Radio", ylab = "Residuen")
+abline(h = 0, col = "gray")
+
+# Residuen vs. Vorhergesagte Werte
+plot(resid(md2) ~ predict(md2), main = "Residuen vs. Vorhergesagte Werte", xlab = "Vorhersage", ylab = "Residuen")
+abline(h = 0, col = "gray")
+
+# Kalibrierungsplot
+plot(sales ~ predict(md2), main = "Kalibrierungsplot: sales vs. Vorhersage", xlab = "Vorhersage", ylab = "Sales")
+abline(0, 1, col = "blue")
+
+# QQ-Plot der Residuen
+qqnorm(resid(md2), main = "Q-Q Plot der Residuen")
+qqline(resid(md2), col = "red")
+```
+
+**Statistische Erklärung**: 
+
+- Die **Residuenanalyse** dient der Überprüfung der Annahmen der linearen Regression:
+  - Normalität: Die Residuen sollten normalverteilt sein.
+  - Homoskedastizität: Die Varianz der Residuen sollte konstant sein.
+  - Unabhängigkeit: Die Residuen sollten unabhängig voneinander sein.
+  - Linearität: Der Zusammenhang zwischen den Prädiktoren und der abhängigen Variable sollte linear sein.
+- **Residuenplots** zeigen die Residuen in Abhängigkeit von den Prädiktoren oder den vorhergesagten Werten.
+- Ein **Histogramm der Residuen** gibt Aufschluss über die Verteilung der Residuen.
+- Ein **Q-Q-Plot** vergleicht die Verteilung der Residuen mit der Normalverteilung.
+- Ein **Kalibrierungsplot** zeigt die beobachteten Werte in Abhängigkeit von den vorhergesagten Werten. Im Idealfall liegen die Punkte auf der Diagonalen.
+
+**R-Erklärung**:
+
+- Die Funktion `resid()` extrahiert die Residuen aus einem Regressionsmodell.
+- Die Funktion `hist()` erstellt ein Histogramm.
+- Die Funktion `plot()` mit einer Formel erstellt ein Streudiagramm.
+- Die Funktion `abline()` mit dem Parameter `h` fügt eine horizontale Linie zum Plot hinzu.
+- Die Funktion `qqnorm()` erstellt einen Q-Q-Plot, der die Verteilung der Residuen mit der Normalverteilung vergleicht.
+- Die Funktion `qqline()` fügt eine Referenzlinie zum Q-Q-Plot hinzu.
+
+# 7. Erweiterung: Multiple Regression mit drei Prädiktoren
+
+Wir erweitern nun das Modell um einen dritten Prädiktor: Newspaper.
+
+```{r drei_prädiktoren, eval=TRUE}
+# Modell mit TV, Radio und Newspaper
+md3 <- lm(sales ~ TV + radio + newspaper)
+summary(md3)
+
+# Vergleich von R² und RSE
+cat("Modellvergleich:\n")
+cat("R² (TV + Radio):", round(summary(md2)$r.squared, 4), "\n")
+cat("R² (TV + Radio + Newspaper):", round(summary(md3)$r.squared, 4), "\n")
+cat("RSE (TV + Radio):", round(summary(md2)$sigma, 4), "\n")
+cat("RSE (TV + Radio + Newspaper):", round(summary(md3)$sigma, 4), "\n\n")
+
+# Adjustiertes R²
+cat("Adjustiertes R² (TV + Radio):", round(summary(md2)$adj.r.squared, 4), "\n")
+cat("Adjustiertes R² (TV + Radio + Newspaper):", round(summary(md3)$adj.r.squared, 4), "\n")
+```
+
+**Statistische Erklärung**: 
+
+- Bei der **multiplen Regression mit drei Prädiktoren** wird der Zusammenhang durch eine Hyperebene im vierdimensionalen Raum dargestellt: y = β₀ + β₁x₁ + β₂x₂ + β₃x₃
+- Das **adjustierte R²** berücksichtigt die Anzahl der Prädiktoren im Modell und bestraft Modelle mit zu vielen Prädiktoren:
+  - Adj. R² = 1 - [(1 - R²) * (n - 1) / (n - p - 1)]
+  - n ist die Anzahl der Beobachtungen
+  - p ist die Anzahl der Prädiktoren
+- Das adjustierte R² kann abnehmen, wenn ein hinzugefügter Prädiktor wenig zur Erklärungskraft des Modells beiträgt.
+- Der **Residual Standard Error (RSE)** ist ein Mass für die typische Grösse der Residuen und sollte bei einem besseren Modell kleiner sein.
+- In diesem Beispiel führt das Hinzufügen von Newspaper zu einer minimalen Verbesserung von R², aber das adjustierte R² nimmt sogar leicht ab, was darauf hindeutet, dass Newspaper keinen wesentlichen Beitrag zur Erklärungskraft des Modells leistet.
+
+**R-Erklärung**:
+
+- Die Formel `sales ~ TV + radio + newspaper` in `lm()` gibt an, dass `sales` die abhängige Variable und `TV`, `radio` und `newspaper` die unabhängigen Variablen sind.
+- Der Ausdruck `summary(md2)$adj.r.squared` extrahiert das adjustierte R² aus dem Regressionsobjekt.
+- Der Ausdruck `summary(md2)$sigma` extrahiert den RSE aus dem Regressionsobjekt.
+
+# 8. Nichtlineare Modelle: Quadratische und polynomiale Regression
+
+Nicht alle Zusammenhänge sind linear. Wir untersuchen nun nichtlineare Modelle, insbesondere quadratische und polynomiale Regression.
+
+```{r nichtlineare_modelle, eval=TRUE}
+# Quadratische Regression
+md.q2 <- lm(sales ~ TV + I(TV^2) + radio)
+summary(md.q2)
+
+# Polynomiale Regression (Grad 3)
+md.q3 <- lm(sales ~ poly(TV, 3) + radio)
+summary(md.q3)
+
+# Modellvergleich: Adjustiertes R²
+cat("Modellvergleich (nichtlinear):\n")
+cat("R² (linear):", round(summary(md2)$adj.r.squared, 4), "\n")
+cat("R² (quadratisch):", round(summary(md.q2)$adj.r.squared, 4), "\n")
+cat("R² (kubisch):", round(summary(md.q3)$adj.r.squared, 4), "\n\n")
+
+# Visualisierung der Modelle
+# Erstelle ein Gitter von TV-Werten
+tv_grid <- seq(min(TV), max(TV), length.out = 100)
+radio_mean <- mean(radio)
+
+# Vorhersagen für die verschiedenen Modelle
+pred_linear <- predict(md2, newdata = data.frame(TV = tv_grid, radio = radio_mean))
+pred_quad <- predict(md.q2, newdata = data.frame(TV = tv_grid, radio = radio_mean))
+pred_poly3 <- predict(md.q3, newdata = data.frame(TV = tv_grid, radio = radio_mean))
+
+# Plot
+plot(TV, sales, main = "Vergleich der Modelle", xlab = "TV", ylab = "Sales")
+lines(tv_grid, pred_linear, col = "blue", lwd = 2)
+lines(tv_grid, pred_quad, col = "red", lwd = 2, lty = 2)
+lines(tv_grid, pred_poly3, col = "green", lwd = 2, lty = 3)
+legend("bottomright", 
+       legend = c("Linear", "Quadratisch", "Kubisch"), 
+       col = c("blue", "red", "green"), 
+       lty = c(1, 2, 3), 
+       lwd = 2)
+```
+
+**Statistische Erklärung**: 
+
+- **Nichtlineare Regression** modelliert nichtlineare Zusammenhänge zwischen den Prädiktoren und der abhängigen Variable.
+- **Quadratische Regression** fügt einen quadratischen Term hinzu: y = β₀ + β₁x + β₂x² + ε
+- **Polynomiale Regression** verallgemeinert dies auf höhere Potenzen: y = β₀ + β₁x + β₂x² + β₃x³ + ... + βₚxᵖ + ε
+- Die Funktion `I(TV^2)` in R fügt einen quadratischen Term hinzu, wobei die ursprüngliche Skala beibehalten wird.
+- Die Funktion `poly(TV, 3)` fügt orthogonale Polynome bis zum Grad 3 hinzu, was numerisch stabiler ist.
+- Nichtlineare Modelle können komplexere Zusammenhänge erfassen, aber sie sind auch anfälliger für Überanpassung (Overfitting).
+- Die Wahl zwischen linearen und nichtlinearen Modellen sollte auf der Natur des Problems, der Visualisierung der Daten und Modellvergleichskriterien wie dem adjustierten R² basieren.
+
+**R-Erklärung**:
+
+- Die Funktion `I()` in einer Formel schützt den Ausdruck vor der Interpretation durch die Formelsprache.
+- Die Funktion `poly()` erzeugt orthogonale Polynome, die numerisch stabiler sind als einfache Potenzen.
+- Die Funktion `seq()` erzeugt eine Sequenz von Werten.
+- Die Funktion `lines()` fügt Linien zu einem bestehenden Plot hinzu.
+- Die Parameter `col`, `lwd` und `lty` in `lines()` geben die Farbe, Breite und den Typ der Linie an.
+
+# 9. Modellvergleich: R², Adjustiertes R² und RSE
+
+Wir vergleichen nun systematisch die verschiedenen Modelle anhand von R², adjustiertem R² und RSE.
+
+```{r modellvergleich, eval=TRUE}
+# Modellvergleich: R², Adjustiertes R² und RSE
+models <- list(
+  "TV" = md1,
+  "TV + Radio" = md2,
+  "TV + Radio + Newspaper" = md3,
+  "TV + TV² + Radio" = md.q2,
+  "TV (Poly3) + Radio" = md.q3
+)
+
+# Extrahiere R², Adj. R² und RSE für jedes Modell
+model_stats <- data.frame(
+  Model = names(models),
+  R2 = sapply(models, function(m) summary(m)$r.squared),
+  Adj_R2 = sapply(models, function(m) summary(m)$adj.r.squared),
+  RSE = sapply(models, function(m) summary(m)$sigma)
+)
+
+# Ausgabe der Modelstatistiken
+print(round(model_stats, 4))
+
+# Visualisierung des Modellvergleichs
+par(mfrow = c(1, 2))
+barplot(model_stats$Adj_R2, names.arg = model_stats$Model, 
+        main = "Adjustiertes R²", las = 2, cex.names = 0.7,
+        col = "lightblue", ylim = c(0, 1))
+barplot(model_stats$RSE, names.arg = model_stats$Model, 
+        main = "Residual Standard Error (RSE)", las = 2, cex.names = 0.7,
+        col = "salmon")
+par(mfrow = c(1, 1))
+```
+
+**Statistische Erklärung**: 
+
+- Der **Modellvergleich** ist ein wichtiger Schritt bei der Auswahl des besten Modells für die Daten.
+- **R²** gibt den Anteil der erklärten Variation an, aber es steigt immer, wenn Prädiktoren hinzugefügt werden, auch wenn diese nicht informativ sind.
+- Das **adjustierte R²** berücksichtigt die Anzahl der Prädiktoren und bestraft Modelle mit zu vielen Prädiktoren.
+- Der **Residual Standard Error (RSE)** gibt die typische Grösse der Residuen an und sollte bei einem besseren Modell kleiner sein.
+- Bei der Modellauswahl sollte man einen Kompromiss zwischen Anpassungsgüte und Modellkomplexität finden:
+  - Ein zu einfaches Modell kann wichtige Zusammenhänge übersehen (Underfitting).
+  - Ein zu komplexes Modell kann Rauschen modellieren und schlecht generalisieren (Overfitting).
+- In diesem Beispiel scheint das Modell "TV + TV² + Radio" den besten Kompromiss zu bieten, da es das höchste adjustierte R² und einen niedrigen RSE hat.
+
+**R-Erklärung**:
+
+- Die Funktion `list()` erstellt eine Liste von Objekten.
+- Die Funktion `sapply()` wendet eine Funktion auf jedes Element einer Liste an und gibt einen Vektor zurück.
+- Die Funktion `par(mfrow = c(1, 2))` teilt das Grafikfenster in 1 Zeile und 2 Spalten.
+- Die Funktion `barplot()` erstellt ein Balkendiagramm.
+- Der Parameter `las = 2` in `barplot()` dreht die Achsenbeschriftungen.
+- Der Parameter `cex.names = 0.7` in `barplot()` verkleinert die Schriftgrösse der Namen.
+
+# Zusammenfassung
+
+In dieser Vorlesung haben wir die multiple lineare Regression kennengelernt, eine Erweiterung der einfachen linearen Regression auf mehrere Prädiktoren. Die wichtigsten Konzepte waren:
+
+1. **Multiple Regression mit mehreren Prädiktoren**: Die multiple Regression modelliert den Zusammenhang zwischen einer abhängigen Variable und mehreren unabhängigen Variablen. Die Koeffizienten geben den partiellen Effekt jeder Variable an, wenn alle anderen Variablen konstant gehalten werden.
+
+2. **Residuenanalyse und Modellgüte**: Die Analyse der Residuen hilft, die Annahmen der linearen Regression zu überprüfen. Die Modellgüte wird durch Masse wie R², adjustiertes R² und RSE quantifiziert.
+
+3. **Prognose und Fehlerbereich**: Mit dem Regressionsmodell können Vorhersagen für neue Werte der unabhängigen Variablen getroffen werden. Prognose- und Konfidenzintervalle quantifizieren die Unsicherheit dieser Vorhersagen.
+
+4. **Nichtlineare und polynomiale Regression**: Nicht alle Zusammenhänge sind linear. Quadratische und polynomiale Regression können komplexere Beziehungen modellieren.
+
+5. **Modellvergleich**: Die Wahl zwischen verschiedenen Modellen sollte auf Kriterien wie dem adjustierten R² und dem RSE basieren, wobei ein Kompromiss zwischen Anpassungsgüte und Modellkomplexität gefunden werden sollte.
+
+Die multiple Regression ist ein mächtiges Werkzeug für die Datenanalyse, hat aber auch Einschränkungen. Sie setzt lineare Beziehungen voraus (es sei denn, nichtlineare Terme werden explizit hinzugefügt), kann durch Multikollinearität beeinträchtigt werden und ist anfällig für Ausreisser. In solchen Fällen können robustere oder flexiblere Methoden angemessener sein.
