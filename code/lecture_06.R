@@ -110,8 +110,14 @@ TSS <- sum((sales - mean(sales))^2)
 RSS <- sum((sales - predict(md2))^2)
 r_squared <- 1 - (RSS / TSS)
 
-cat("Bestimmtheitsmaß (R²):", round(r_squared, 4), "\n")
+cat("Bestimmtheitsmass (R²):", round(r_squared, 4), "\n")
 cat("TV und Radio erklären", round(r_squared * 100, 2), "% der Variation in Sales.\n\n")
+
+
+
+
+
+
 
 ##############################################################
 # 5. Residuenanalyse
@@ -132,6 +138,12 @@ abline(h = 0, col = "gray")
 plot(sales ~ predict(md2), main = "Kalibrierungsplot: sales vs. Vorhersage", xlab = "Vorhersage", ylab = "Sales")
 abline(0, 1, col = "blue")
 
+
+
+
+
+
+
 ##############################################################
 # 6. Erweiterung: Multiple Regression mit drei Prädiktoren
 ##############################################################
@@ -146,6 +158,13 @@ cat("R² (TV + Radio):", round(summary(md2)$r.squared, 4), "\n")
 cat("R² (TV + Radio + Newspaper):", round(summary(md3)$r.squared, 4), "\n")
 cat("RSE (TV + Radio):", round(summary(md2)$sigma, 4), "\n")
 cat("RSE (TV + Radio + Newspaper):", round(summary(md3)$sigma, 4), "\n\n")
+
+
+
+
+
+
+
 
 ##############################################################
 # 7. Nichtlineare Modelle: Quadratische und polynomiale Regression
