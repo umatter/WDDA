@@ -1,10 +1,9 @@
 ---
-title: "Übungsleitfaden zu WDDA FS 2025: Aufgabenserie 5"
-author: "Ihr Name"
-date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+title: "WDDA FS 2025: Leitfaden für Aufgabenserie 4"
+date: "`r Sys.Date()`"
 output:
   pdf_document:
-    toc: true
+    toc: false
     number_sections: true
     latex_engine: xelatex
 lang: de
@@ -12,7 +11,7 @@ lang: de
 
 # Einleitung
 
-Dieser Leitfaden erläutert Schritt für Schritt, wie Sie die Aufgaben der Serie 5 mit R lösen. Sie lernen, Modelle zu schätzen, Grafiken zu erstellen und Resultate zu interpretieren. Stellen Sie sicher, dass die Datei **WDDA_05.xlsx** im gleichen Verzeichnis wie dieses `.Rmd` liegt.
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie/Übungsblatt 5. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)

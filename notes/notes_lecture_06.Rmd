@@ -252,7 +252,7 @@ TSS <- sum((sales - mean(sales))^2)
 RSS <- sum((sales - predict(md2))^2)
 r_squared <- 1 - (RSS / TSS)
 
-cat("Bestimmtheitsmaß (R²):", round(r_squared, 4), "\n")
+cat("Bestimmtheitsmass (R²):", round(r_squared, 4), "\n")
 cat("TV und Radio erklären", round(r_squared * 100, 2), "% der Variation in Sales.\n\n")
 
 # Vergleich mit R² aus summary()

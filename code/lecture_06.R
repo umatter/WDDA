@@ -160,7 +160,9 @@ cat("RSE (TV + Radio):", round(summary(md2)$sigma, 4), "\n")
 cat("RSE (TV + Radio + Newspaper):", round(summary(md3)$sigma, 4), "\n\n")
 
 
-
+# Adjusted R²
+cat("Adjusted R² (TV + Radio):", round(summary(md2)$adj.r.squared, 4), "\n")
+cat("Adjusted R² (TV + Radio + Newspaper):", round(summary(md3)$adj.r.squared, 4), "\n\n")
 
 
 

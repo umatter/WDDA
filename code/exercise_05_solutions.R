@@ -21,6 +21,7 @@ head(adv)
 tv    <- adv$TV
 sales <- adv$sales
 
+# Mögliche Geraden (aus Aufgabenstellung)
 kandidaten <- list(
   a = c(intercept = 7.1, slope = 0.049),
   b = c(intercept = 6.8, slope = 0.048),
@@ -28,6 +29,15 @@ kandidaten <- list(
   d = c(intercept = 7.3, slope = 0.041)
 )
 
+# RSS für eine einzelne Gerade berechnen
+pred <- 7.1 + 0.049 * tv
+rss_a <- sum((sales - pred)^2)
+
+pred <- 6.8 + 0.048 * tv
+rss_b <- sum((sales - pred)^2)
+
+
+# RSS für jede Gerade
 rss <- sapply(kandidaten, function(par) {
   pred  <- par["intercept"] + par["slope"] * tv
   sum((sales - pred)^2)
