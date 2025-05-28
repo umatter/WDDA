@@ -4,7 +4,7 @@
 # Benötigte Pakete laden
 library(readxl)
 library(dplyr)
-library(ggplot2)
+# library(ggplot2) # Nicht benötigt, wir verwenden native R-Plotting-Funktionen
 
 
 
@@ -60,9 +60,10 @@ diamonds <- read_excel("data/WDDA_05.xlsx", sheet = "Diamonds Rings") %>%
 head(diamonds)
 
 # Streudiagramm
-ggplot(diamonds, aes(x = weight, y = price)) +
-  geom_point() +
-  labs(title = "Price vs. Weight", x = "Gewicht (ct)", y = "Preis (SGD)")
+plot(diamonds$weight, diamonds$price, 
+     main = "Price vs. Weight", 
+     xlab = "Gewicht (ct)", ylab = "Preis (SGD)",
+     pch = 16)
 
 # Lineares Modell schätzen
 mod_dr <- lm(price ~ weight, data = diamonds)
@@ -129,10 +130,10 @@ dl <- read_excel("data/WDDA_05.xlsx", sheet = "Download") %>%
 head(dl)
 
 # Streudiagramm
-ggplot(dl, aes(x = size_mb, y = time_sec)) +
-  geom_point() +
-  labs(title = "Transferzeit vs. Dateigrösse",
-       x = "Dateigrösse (MB)", y = "Zeit (s)")
+plot(dl$size_mb, dl$time_sec, 
+     main = "Transferzeit vs. Dateigrösse",
+     xlab = "Dateigrösse (MB)", ylab = "Zeit (s)",
+     pch = 16)
 
 # Lineares Modell
 mod_dl <- lm(time_sec ~ size_mb, data = dl)
@@ -190,10 +191,10 @@ cars <- read_excel("data/WDDA_05.xlsx", sheet = "Cars") %>%
 head(cars)
 
 # Streudiagramm
-ggplot(cars, aes(x = displacement, y = horsepower)) +
-  geom_point(alpha = 0.5) +
-  labs(title = "Horsepower vs. Displacement",
-       x = "Hubraum (L)", y = "Leistung (PS)")
+plot(cars$displacement, cars$horsepower, 
+     main = "Horsepower vs. Displacement",
+     xlab = "Hubraum (L)", ylab = "Leistung (PS)",
+     pch = 16, col = rgb(0,0,0,0.5))
 
 # Lineares Modell
 mod_cars <- lm(horsepower ~ displacement, data = cars)
