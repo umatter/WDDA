@@ -100,19 +100,32 @@ cat("Bootstrap 95%-CI für Steigung (TV):", round(CI_tv, 3), "\n\n")
 # Visualisierung der Bootstrap-Verteilungen
 par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.8, cex.axis = 1.6, mar = c(5, 5, 4, 2))
 
+# Gemeinsame Achsenlimits definieren
+tv_range <- range(simcoef$TV)
+intercept_range <- range(simcoef$Intercept)
+
 # Histogramm für Steigung (beta1)
 hist(simcoef$TV, main = "Simulated beta1", xlab = "simulated beta1", 
-     col = "lightgray", border = "white", breaks = 20)
+     col = "lightgray", border = "white", breaks = 20,
+     xaxt = "n") # Keine Achsenbeschriftung zunächst
+axis(1, at = axTicks(1)) # Explizite Achsenbeschriftung
+tv_ticks <- axTicks(1)
 abline(v = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 
 # Histogramm für Intercept (beta0)
 hist(simcoef$Intercept, main = "Simulated intercepts", xlab = "simulated intercepts", 
-     col = "lightgray", border = "white", breaks = 20)
+     col = "lightgray", border = "white", breaks = 20,
+     xaxt = "n") # Keine Achsenbeschriftung zunächst
+axis(1, at = axTicks(1)) # Explizite Achsenbeschriftung
+intercept_ticks <- axTicks(1)
 abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 
 # Scatterplot der Koeffizienten
 plot(simcoef$Intercept, simcoef$TV, pch = 1, cex = 0.7,
-     xlab = "simulated intercepts", ylab = "simulated slopes")
+     xlab = "simulated intercepts", ylab = "simulated slopes",
+     xaxt = "n", yaxt = "n") # Keine Achsenbeschriftung zunächst
+axis(1, at = intercept_ticks) # Gleiche Ticks wie im Intercept-Histogramm
+axis(2, at = tv_ticks) # Gleiche Ticks wie im TV-Histogramm
 abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 abline(h = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 par(mfrow = c(1, 1))
@@ -169,19 +182,32 @@ cat("95%-CI für Radio (multi):", round(CI_radio_multi, 3), "\n\n")
 # Visualisierung der Bootstrap-Verteilungen für multiple Regression
 par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.8, cex.axis = 1.6, mar = c(5, 5, 4, 2))
 
+# Gemeinsame Achsenlimits definieren
+tv_multi_range <- range(simcoef_multi$TV)
+radio_multi_range <- range(simcoef_multi$radio)
+
 # Histogramm für TV-Koeffizient
 hist(simcoef_multi$TV, main = "TV coefficient", xlab = "simulated TV coef", 
-     col = "lightgray", border = "white", breaks = 20)
+     col = "lightgray", border = "white", breaks = 20,
+     xaxt = "n") # Keine Achsenbeschriftung zunächst
+axis(1, at = axTicks(1)) # Explizite Achsenbeschriftung
+tv_multi_ticks <- axTicks(1)
 abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 
 # Histogramm für Radio-Koeffizient
 hist(simcoef_multi$radio, main = "Radio coefficient", xlab = "simulated radio coef", 
-     col = "lightgray", border = "white", breaks = 20)
+     col = "lightgray", border = "white", breaks = 20,
+     xaxt = "n") # Keine Achsenbeschriftung zunächst
+axis(1, at = axTicks(1)) # Explizite Achsenbeschriftung
+radio_multi_ticks <- axTicks(1)
 abline(v = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 
 # Scatterplot der Koeffizienten
 plot(simcoef_multi$TV, simcoef_multi$radio, pch = 1, cex = 0.7,
-     xlab = "TV coefficient", ylab = "Radio coefficient")
+     xlab = "TV coefficient", ylab = "Radio coefficient",
+     xaxt = "n", yaxt = "n") # Keine Achsenbeschriftung zunächst
+axis(1, at = tv_multi_ticks) # Gleiche Ticks wie im TV-Histogramm
+axis(2, at = radio_multi_ticks) # Gleiche Ticks wie im Radio-Histogramm
 abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 abline(h = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 par(mfrow = c(1, 1))
