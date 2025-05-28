@@ -124,11 +124,19 @@ cat("Residuen-SD:", round(sd_resid,2), "SGD\n")
 # ============================================================================
 # Aufgabe 3: Netzwerk-Performance (Download)
 # ============================================================================
+
+
 # Daten einlesen
 dl <- read_excel("data/WDDA_05.xlsx", sheet = "Download") %>%
   rename(time_sec = `Transfer Time (sec)`,
          size_mb  = `File Size (MB)`)
 head(dl)
+
+
+# Aufgabenstellung a):
+# Erstellen Sie ein Streudiagramm der Übertragungszeit auf der Dateigrösse.
+# Erscheint Ihnen eine Linie als gute Zusammenfassung für die Assozia-
+# tion zwischen diesen beiden Variablen?
 
 # Streudiagramm
 par(mar = c(4, 4, 3, 2))  # Reduzierte Ränder
@@ -137,11 +145,24 @@ plot(dl$size_mb, dl$time_sec,
      xlab = "Dateigrösse (MB)", ylab = "Zeit (s)",
      pch = 16)
 
+
+# Aufgabenstellung b):
+# Passen Sie ein lineares Modell für die Übertragungszeit auf der Dateigrösse
+# an. Interpretieren Sie die angepasste Steigung und den Achsenabschnitt.
+
 # Lineares Modell
 mod_dl <- lm(time_sec ~ size_mb, data = dl)
 summary(mod_dl)
 # Intercept ≈ 7.27 s: Startlatenz im Netzwerk
 # Steigung ≈ 0.3133 s/MB: zusätzliche Zeit pro MB
+
+
+
+
+
+
+# Aufgabenstellung c):
+#(c) Interpretieren Sie r2 , RSE, RSS und TSS.
 
 # Kennzahlen berechnen
 resid_dl <- resid(mod_dl)
@@ -155,11 +176,23 @@ cat("RSE =", round(rse_dl,2), "s\n")
 cat("RSS =", round(rss_dl,0), "s²\n")
 cat("TSS =", round(tss_dl,0), "s²\n")
 
+
+# Aufgabenstellung d):
+# Was ist der geschätzte durchschnittliche Übertragungszeitunterschied
+# zwischen 50MB und 60MB Dateien?
+# 
+
 # Zeitdifferenz 50 → 60 MB
 time_diff <- coef(mod_dl)["size_mb"] * 10
 cat("Geschätzter Unterschied:", round(time_diff,2), "s\n")
 
+
+# Aufgabenstellung e):
+# Um das System eindrucksvoller aussehen zu lassen (d. h. kleinere
+# Steigung und kleinerer Achsenabschnitt), ändert ein Kollege die Einheiten für die Übertragungszeit auf Minuten und für die Dateigröße auf Kilobyte. Wie sieht die neue Gleichung aus? Passt sie besser zu den Daten als die Gleichung in (b)?
+
 # Modell in Minuten & Kilobyte
+
 # Zeit in Minuten: time_min = 7.2747/60 + 0.3133/60 × size_MB = 0.1212 + 0.005222 × size_MB
 # In Kilobyte: time_min = 0.1212 + 5.22×10^-6 × size_KB
 
