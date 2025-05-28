@@ -40,22 +40,22 @@ cat("Bootstrap 95%-CI für Steigung (TV):", round(CI_tv, 3), "\n\n")
 
 
 # Visualisierung der Bootstrap-Verteilungen
-par(mfrow = c(1, 3))
+par(mfrow = c(1, 3), cex.main = 1.5, cex.lab = 1.3, cex.axis = 1.2, mar = c(5, 5, 4, 2))
 # Histogramm für Steigung (beta1)
 hist(simcoef$TV, main = "Simulated beta1", xlab = "simulated beta1", 
      col = "lightgray", border = "white", breaks = 20)
-abline(v = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2)
+abline(v = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 
 # Histogramm für Intercept (beta0)
 hist(simcoef$Intercept, main = "Simulated intercepts", xlab = "simulated intercepts", 
      col = "lightgray", border = "white", breaks = 20)
-abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2)
+abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 
 # Scatterplot der Koeffizienten
-plot(simcoef$Intercept, simcoef$TV, pch = 1, cex = 0.5,
+plot(simcoef$Intercept, simcoef$TV, pch = 1, cex = 0.7,
      xlab = "simulated intercepts", ylab = "simulated slopes")
-abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2)
-abline(h = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2)
+abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+abline(h = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 par(mfrow = c(1, 1))
 
 
@@ -78,22 +78,22 @@ cat("95%-CI für TV (multi):", round(CI_tv_multi, 3), "\n")
 cat("95%-CI für Radio (multi):", round(CI_radio_multi, 3), "\n\n")
 
 # Visualisierung der Bootstrap-Verteilungen für multiple Regression
-par(mfrow = c(1, 3))
+par(mfrow = c(1, 3), cex.main = 1.5, cex.lab = 1.3, cex.axis = 1.2, mar = c(5, 5, 4, 2))
 # Histogramm für TV-Koeffizient
 hist(simcoef_multi$TV, main = "TV coefficient", xlab = "simulated TV coef", 
      col = "lightgray", border = "white", breaks = 20)
-abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2)
+abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 
 # Histogramm für Radio-Koeffizient
 hist(simcoef_multi$radio, main = "Radio coefficient", xlab = "simulated radio coef", 
      col = "lightgray", border = "white", breaks = 20)
-abline(v = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2)
+abline(v = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 
 # Scatterplot der Koeffizienten
-plot(simcoef_multi$TV, simcoef_multi$radio, pch = 1, cex = 0.5,
+plot(simcoef_multi$TV, simcoef_multi$radio, pch = 1, cex = 0.7,
      xlab = "TV coefficient", ylab = "Radio coefficient")
-abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2)
-abline(h = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2)
+abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+abline(h = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 par(mfrow = c(1, 1))
 
 
