@@ -60,6 +60,7 @@ diamonds <- read_excel("data/WDDA_05.xlsx", sheet = "Diamonds Rings") %>%
 head(diamonds)
 
 # Streudiagramm
+par(mar = c(4, 4, 3, 2))  # Reduzierte Ränder: (unten, links, oben, rechts)
 plot(diamonds$weight, diamonds$price, 
      main = "Price vs. Weight", 
      xlab = "Gewicht (ct)", ylab = "Preis (SGD)",
@@ -105,14 +106,14 @@ mean_resid <- mean(resid_dr)
 sd_resid   <- sd(resid_dr)
 
 # Residuen-Plots
-par(mfrow = c(1,2))
+par(mfrow = c(1,2), mar = c(4, 4, 3, 2))  # Reduzierte Ränder
 plot(diamonds$weight, resid_dr,
      main = "Residuen vs. Gewicht", xlab = "Weight (ct)", ylab = "Residuen")
 abline(h = 0, lty = 2)
 hist(resid_dr, main = "Histogramm der Residuen",
      xlab = "Residuen")
 
-par(mfrow = c(1,1))
+par(mfrow = c(1,1), mar = c(5, 4, 4, 2) + 0.1)  # Zurück zu Standardrändern
 cat("Residuen-Mittelwert:", round(mean_resid,2), "\n")
 cat("Residuen-SD:", round(sd_resid,2), "SGD\n")
 
@@ -130,6 +131,7 @@ dl <- read_excel("data/WDDA_05.xlsx", sheet = "Download") %>%
 head(dl)
 
 # Streudiagramm
+par(mar = c(4, 4, 3, 2))  # Reduzierte Ränder
 plot(dl$size_mb, dl$time_sec, 
      main = "Transferzeit vs. Dateigrösse",
      xlab = "Dateigrösse (MB)", ylab = "Zeit (s)",
@@ -162,12 +164,14 @@ cat("Geschätzter Unterschied:", round(time_diff,2), "s\n")
 # In Kilobyte: time_min = 0.1212 + 5.22×10^-6 × size_KB
 
 # Residuen vs. Grösse
+par(mar = c(4, 4, 3, 2))  # Reduzierte Ränder
 plot(dl$size_mb, resid_dl,
      main = "Residuen vs. Dateigrösse",
      xlab = "Dateigrösse (MB)", ylab = "Residuen (s)")
 abline(h = 0, lty = 2)
 
 # Residuen vs. geschätzte Werte
+par(mar = c(4, 4, 3, 2))  # Reduzierte Ränder
 plot(fitted(mod_dl), resid_dl,
      main = "Residuen vs. Geschätzte Werte",
      xlab = "Geschätzte Werte (s)", ylab = "Residuen (s)")
@@ -191,6 +195,7 @@ cars <- read_excel("data/WDDA_05.xlsx", sheet = "Cars") %>%
 head(cars)
 
 # Streudiagramm
+par(mar = c(4, 4, 3, 2))  # Reduzierte Ränder
 plot(cars$displacement, cars$horsepower, 
      main = "Horsepower vs. Displacement",
      xlab = "Hubraum (L)", ylab = "Leistung (PS)",
