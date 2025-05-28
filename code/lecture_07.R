@@ -17,9 +17,9 @@ library(readxl)    # zum Einlesen von Excel-Dateien
 Advertising <- read_excel("data/WDDA_07.xlsx", sheet = "Advertising")
 
 
-##############################################################
-# Teil 1: Bootstrap & Konfidenzintervalle
-##############################################################
+
+
+#  Bootstrap & Konfidenzintervalle ------------------------------------
 
 # Einfaches Regressionsmodell (TV)
 md1 <- lm(sales ~ TV, data = Advertising)
@@ -33,6 +33,11 @@ CI_intercept <- quantile(simcoef$Intercept, c(0.025, 0.975))
 CI_tv <- quantile(simcoef$TV, c(0.025, 0.975))
 cat("Bootstrap 95%-CI für Intercept:", round(CI_intercept, 3), "\n")
 cat("Bootstrap 95%-CI für Steigung (TV):", round(CI_tv, 3), "\n\n")
+
+
+
+
+
 
 # Visualisierung der Bootstrap-Verteilungen
 par(mfrow = c(1, 3))
@@ -52,6 +57,11 @@ plot(simcoef$Intercept, simcoef$TV, pch = 1, cex = 0.5,
 abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2)
 abline(h = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2)
 par(mfrow = c(1, 1))
+
+
+
+
+
 
 
 # Multiple Regression (TV + radio)
@@ -87,7 +97,7 @@ abline(h = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2)
 par(mfrow = c(1, 1))
 
 
-# Inferenz & Signifikanztests
+# Inferenz & Signifikanztests --------------------------------------------------
 
 # t-Tests für Regressionskoeffizienten
 cat("t-Werte und p-Werte für md2:\n")
