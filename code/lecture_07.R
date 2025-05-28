@@ -40,7 +40,7 @@ cat("Bootstrap 95%-CI für Steigung (TV):", round(CI_tv, 3), "\n\n")
 
 
 # Visualisierung der Bootstrap-Verteilungen
-par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.8, cex.axis = 1.6, mar = c(5, 5, 4, 2))
+par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.6, cex.axis = 1.4, mar = c(4, 4, 3, 1))
 
 # Gemeinsame Achsenlimits definieren
 tv_range <- range(simcoef$TV)
@@ -92,7 +92,7 @@ cat("95%-CI für TV (multi):", round(CI_tv_multi, 3), "\n")
 cat("95%-CI für Radio (multi):", round(CI_radio_multi, 3), "\n\n")
 
 # Visualisierung der Bootstrap-Verteilungen für multiple Regression
-par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.8, cex.axis = 1.6, mar = c(5, 5, 4, 2))
+par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.6, cex.axis = 1.4, mar = c(4, 4, 3, 1))
 
 # Gemeinsame Achsenlimits definieren
 tv_multi_range <- range(simcoef_multi$TV)
