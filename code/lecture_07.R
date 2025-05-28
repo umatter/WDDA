@@ -40,7 +40,7 @@ cat("Bootstrap 95%-CI für Steigung (TV):", round(CI_tv, 3), "\n\n")
 
 
 # Visualisierung der Bootstrap-Verteilungen
-par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.6, cex.axis = 1.4, mar = c(5, 5, 4, 2))
+par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.8, cex.axis = 1.6, mar = c(5, 5, 4, 2))
 # Histogramm für Steigung (beta1)
 hist(simcoef$TV, main = "Simulated beta1", xlab = "simulated beta1", 
      col = "lightgray", border = "white", breaks = 20)
@@ -78,7 +78,7 @@ cat("95%-CI für TV (multi):", round(CI_tv_multi, 3), "\n")
 cat("95%-CI für Radio (multi):", round(CI_radio_multi, 3), "\n\n")
 
 # Visualisierung der Bootstrap-Verteilungen für multiple Regression
-par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.6, cex.axis = 1.4, mar = c(5, 5, 4, 2))
+par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.8, cex.axis = 1.6, mar = c(5, 5, 4, 2))
 # Histogramm für TV-Koeffizient
 hist(simcoef_multi$TV, main = "TV coefficient", xlab = "simulated TV coef", 
      col = "lightgray", border = "white", breaks = 20)
@@ -95,6 +95,10 @@ plot(simcoef_multi$TV, simcoef_multi$radio, pch = 1, cex = 0.7,
 abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 abline(h = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
 par(mfrow = c(1, 1))
+
+
+
+
 
 
 # Inferenz & Signifikanztests --------------------------------------------------
@@ -127,14 +131,5 @@ print(pred)
 cat("\nPrognoseintervall für Einzelbeobachtung:\n")
 print(pred2)
 
-# Visualisierung: Konfidenz- und Prognoseintervall
-ggplot(Advertising, aes(x = TV, y = sales)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue", fill = "lightblue") +
-  labs(title = "Regressionslinie mit 95%-Konfidenzband (TV ~ sales)") +
-  theme(text = element_text(size = 16),
-        axis.title = element_text(size = 18),
-        axis.text = element_text(size = 14),
-        plot.title = element_text(size = 20))
 
 
