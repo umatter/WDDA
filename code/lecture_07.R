@@ -40,7 +40,7 @@ cat("Bootstrap 95%-CI für Steigung (TV):", round(CI_tv, 3), "\n\n")
 
 
 # Visualisierung der Bootstrap-Verteilungen
-par(mfrow = c(1, 3), cex.main = 1.5, cex.lab = 1.3, cex.axis = 1.2, mar = c(5, 5, 4, 2))
+par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.6, cex.axis = 1.4, mar = c(5, 5, 4, 2))
 # Histogramm für Steigung (beta1)
 hist(simcoef$TV, main = "Simulated beta1", xlab = "simulated beta1", 
      col = "lightgray", border = "white", breaks = 20)
@@ -78,7 +78,7 @@ cat("95%-CI für TV (multi):", round(CI_tv_multi, 3), "\n")
 cat("95%-CI für Radio (multi):", round(CI_radio_multi, 3), "\n\n")
 
 # Visualisierung der Bootstrap-Verteilungen für multiple Regression
-par(mfrow = c(1, 3), cex.main = 1.5, cex.lab = 1.3, cex.axis = 1.2, mar = c(5, 5, 4, 2))
+par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.6, cex.axis = 1.4, mar = c(5, 5, 4, 2))
 # Histogramm für TV-Koeffizient
 hist(simcoef_multi$TV, main = "TV coefficient", xlab = "simulated TV coef", 
      col = "lightgray", border = "white", breaks = 20)
@@ -131,6 +131,10 @@ print(pred2)
 ggplot(Advertising, aes(x = TV, y = sales)) +
   geom_point() +
   geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue", fill = "lightblue") +
-  labs(title = "Regressionslinie mit 95%-Konfidenzband (TV ~ sales)")
+  labs(title = "Regressionslinie mit 95%-Konfidenzband (TV ~ sales)") +
+  theme(text = element_text(size = 16),
+        axis.title = element_text(size = 18),
+        axis.text = element_text(size = 14),
+        plot.title = element_text(size = 20))
 
 
