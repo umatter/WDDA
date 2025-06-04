@@ -1,0 +1,397 @@
+---
+title: "WDDA FS 2025: Leitfaden für Aufgabenserie 6"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: true
+    latex_engine: xelatex
+lang: de
+---
+
+# Einleitung
+
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie/Übungsblatt 6. Diese Serie konzentriert sich auf **Multiple Regression** (MRM), bei der wir mehrere erklärende Variablen verwenden, um eine Zielvariable zu modellieren.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(corrplot)
+library(car)
+library(scatterplot3d)
+```
+
+# Aufgabe 1: Gold Chains (Multiple Regression)
+
+**Aufgabenstellung:**
+Analysieren Sie den Datensatz **Gold Chains** mit Preis als Zielvariable und Länge sowie Breite als erklärende Variablen.
+
+## Schritt 1: Daten einlesen und erkunden
+
+```{r}
+gold <- read_excel("../data/WDDA_06.xlsx", sheet = "Gold Chains") %>%
+  rename(price = `Price ($)`,
+         length = `Length (inches)`,
+         width = `Width (mm)`)
+head(gold)
+```
+
+## Schritt 2: Streudiagramme untersuchen (a)
+
+```{r}
+pairs(gold, main = "Streudiagramme Gold Chains")
+```
+
+**Bewertung:** Die Diagramme zeigen lineare Beziehungen ohne starke Krümmung. Dies ist gut für eine multiple Regression geeignet.
+
+## Schritt 3: Korrelationen berechnen (b)
+
+```{r}
+cor_matrix <- cor(gold)
+print(cor_matrix)
+corrplot(cor_matrix, method = "number")
+```
+
+**Größte Korrelation:** Preis und Breite (r ≈ 0.95)
+
+**Erklärung:** Breitere Ketten benötigen mehr Gold, was zu höheren Preisen führt.
+
+## Schritt 4: Marginale Steigung der Breite (c)
+
+Die **marginale Steigung** ist der Koeffizient in einer einfachen Regression:
+
+```{r}
+mod_width_simple <- lm(price ~ width, data = gold)
+summary(mod_width_simple)
+```
+
+**Interpretation:** Pro mm Breitenzunahme steigt der Preis um ca. 224$.
+
+## Schritt 5: Erwartung für partielle Steigung (d)
+
+Da Länge und Breite **unkorreliert** sind (r ≈ 0.04), erwarten wir, dass die partielle Steigung der Breite ähnlich der marginalen Steigung ist.
+
+## Schritt 6: Multiple Regression anpassen (e)
+
+```{r}
+mod_gold <- lm(price ~ length + width, data = gold)
+summary(mod_gold)
+```
+
+**Partielle Steigung der Breite:** Pro mm Breitenzunahme (bei konstanter Länge) steigt der Preis um ca. 222$.
+
+## Schritt 7: Intercept, R² und Standardfehler interpretieren (f)
+
+```{r}
+r2_gold <- summary(mod_gold)$r.squared
+rse_gold <- summary(mod_gold)$sigma
+cat("R² =", round(r2_gold, 4), "\n")
+cat("RSE =", round(rse_gold, 2), "$\n")
+```
+
+- **Intercept:** Nicht sinnvoll interpretierbar (Preis bei Länge=0, Breite=0)
+- **R²:** Das Modell erklärt 94% der Preisvariation
+- **RSE:** Typische Abweichung von ±57$ vom geschätzten Preis
+
+## Schritt 8: Residuen analysieren (g)
+
+```{r}
+resid_gold <- resid(mod_gold)
+par(mfrow = c(1,2))
+hist(resid_gold, main = "Histogramm der Residuen", xlab = "Residuen")
+qqnorm(resid_gold)
+qqline(resid_gold)
+par(mfrow = c(1,1))
+
+mean_resid_gold <- mean(resid_gold)
+sd_resid_gold <- sd(resid_gold)
+cat("Residuen-Mittelwert:", round(mean_resid_gold, 2), "\n")
+cat("Residuen-SD:", round(sd_resid_gold, 2), "$\n")
+```
+
+**Bewertung:** Residuen sind ungefähr glockenförmig mit Mittelwert ≈ 0.
+
+## Schritt 9: Residuen vs. erklärende Variablen (h)
+
+```{r}
+par(mfrow = c(1,2))
+plot(gold$length, resid_gold, main = "Residuen vs. Länge", 
+     xlab = "Länge (inches)", ylab = "Residuen")
+abline(h = 0, lty = 2)
+plot(gold$width, resid_gold, main = "Residuen vs. Breite", 
+     xlab = "Breite (mm)", ylab = "Residuen")
+abline(h = 0, lty = 2)
+par(mfrow = c(1,1))
+```
+
+**Bewertung:** 
+- Länge: OK (konstante Streuung)
+- Breite: Problematisch (U-förmiges Muster)
+
+## Schritt 10: MRM-Bedingungen erfüllt? (i)
+
+1. **Linearität:** ✓ OK aus Streudiagrammen
+2. **Konstante Varianz:** ✗ Problematisch bei Breite
+3. **Normalität:** ✓ Ungefähr erfüllt
+4. **Unabhängigkeit:** ✓ Angenommen
+
+**Fazit:** Nicht alle Bedingungen erfüllt wegen Heteroskedastizität.
+
+## Schritt 11: Länge und Breite kombinieren (j)
+
+```{r}
+gold$volume <- gold$length * gold$width
+mod_gold_vol <- lm(price ~ length + width + volume, data = gold)
+summary(mod_gold_vol)
+```
+
+Das Volumen (Länge × Breite) könnte eine wichtige Variable sein, da es das Goldgewicht approximiert.
+
+## Schritt 12: Weitere Analysen (k-p)
+
+```{r}
+# (k) Residuum der 1. Beobachtung
+pred_1 <- predict(mod_gold)[1]
+resid_1 <- gold$price[1] - pred_1
+cat("Residuum 1. Beobachtung:", round(resid_1, 2), "$\n")
+
+# (l) 25. Beobachtung extrem hoch?
+pred_25 <- predict(mod_gold)[25]
+ci_25 <- predict(mod_gold, interval = "prediction")[25,]
+cat("25. Beobachtung - Preis:", gold$price[25], "$\n")
+cat("95% Prognose-Intervall: [", round(ci_25["lwr"], 2), ",", round(ci_25["upr"], 2), "] $\n")
+
+# (m) Kalibrierungsdiagramm
+plot(fitted(mod_gold), gold$price, 
+     main = "Kalibrierungsdiagramm", 
+     xlab = "Geschätzte Werte", ylab = "Beobachtete Werte")
+abline(0, 1, col = "red")
+
+# (n) Residuen vs. angepasste Werte
+plot(fitted(mod_gold), resid_gold,
+     main = "Residuen vs. Angepasste Werte",
+     xlab = "Angepasste Werte", ylab = "Residuen")
+abline(h = 0, lty = 2)
+```
+
+# Aufgabe 2: HR Regression (Pfaddiagramm-Interpretation)
+
+**Aufgabenstellung:**
+Interpretieren Sie das gegebene Pfaddiagramm für Gehaltsvorhersage basierend auf Alter und Testscore.
+
+## Pfaddiagramm-Analyse
+
+Aus dem Pfaddiagramm lesen wir ab:
+- **Age → Salary:** 5 $000/year
+- **Test Score → Salary:** 2 $000/point  
+- **Age ↔ Test Score:** 5 points/year (Korrelation)
+
+## Schritt 1: Gleichungen notieren (a)
+
+```{r}
+cat("MRM: Salary = b0 + b1*Age + b2*TestScore\n")
+cat("Angepasstes MRM: Salary = b0 + 5*Age + 2*TestScore\n")
+```
+
+**Interpretation:**
+- Pro Jahr Alter: +5000$ (bei konstantem Testscore)
+- Pro Testpunkt: +2000$ (bei konstantem Alter)
+
+## Schritt 2: Nötige Informationen für Schätzung? (b)
+
+**Nein!** Das **Intercept (b₀)** fehlt im Pfaddiagramm. Ohne diesen können wir keine konkreten Gehaltsschätzungen machen.
+
+## Schritt 3: Direkter vs. indirekter Effekt (c)
+
+```{r}
+direct_effect <- 2  # $000/point
+indirect_effect <- 5 * 2  # 5 points/year * 2 $000/point
+cat("Direkter Effekt:", direct_effect, "$000/point\n")
+cat("Indirekter Effekt:", indirect_effect, "$000/year\n")
+```
+
+**Indirekter Effekt ist größer** (10 > 2).
+
+## Schritt 4: Marginale Steigung (d)
+
+Die **marginale Steigung** berücksichtigt sowohl direkte als auch indirekte Effekte:
+
+$$\text{Marginale Steigung} = \text{Direkter Effekt} + \text{Indirekter Effekt}$$
+
+## Schritt 5: Kurs-Investition bewerten (e)
+
+```{r}
+cat("Nutzen: 5 Punkte × 2000$/Punkt = 10.000 USD\n")
+cat("Kosten: 25.000 USD\n")
+cat("Partielle Steigung ist relevant (2000$/Punkt)\n")
+```
+
+**Fazit:** Der Kurs lohnt sich nur, wenn man länger als 2.5 Jahre im Unternehmen bleibt.
+
+# Aufgabe 3: Download (Netzwerk-Performance)
+
+**Aufgabenstellung:**
+Erweitern Sie die Download-Analyse um die Variable "Stunden nach 8AM".
+
+## Schritt 1: Daten einlesen und Korrelationen (a)
+
+```{r}
+download <- read_excel("../data/WDDA_06.xlsx", sheet = "Download") %>%
+  rename(time_sec = `Transfer Time (sec)`,
+         size_mb = `File Size (MB)`,
+         hours_after_8 = `Hours after 8AM`)
+
+cor_download <- cor(download)
+print(cor_download)
+```
+
+**Wichtige Beobachtung:** Dateigröße und Stunden sind sehr stark korreliert (r ≈ 0.99)!
+
+## Schritt 2: Streudiagramme (b)
+
+```{r}
+pairs(download, main = "Streudiagramme Download")
+```
+
+**Bewertung:** Lineare Beziehungen, aber starke Korrelation zwischen den erklärenden Variablen.
+
+## Schritt 3: Marginale vs. partielle Steigung (c-e)
+
+```{r}
+# Marginale Steigung
+mod_size_simple <- lm(time_sec ~ size_mb, data = download)
+marginal_slope <- coef(mod_size_simple)["size_mb"]
+
+# Multiple Regression
+mod_download <- lm(time_sec ~ size_mb + hours_after_8, data = download)
+partial_slope <- coef(mod_download)["size_mb"]
+
+cat("Marginale Steigung:", round(marginal_slope, 3), "s/MB\n")
+cat("Partielle Steigung:", round(partial_slope, 3), "s/MB\n")
+```
+
+**Erwartung:** Wegen der starken Korrelation (r = 0.99) erwarten wir deutliche Unterschiede zwischen marginaler und partieller Steigung.
+
+## Schritt 4: Modell-Diagnostik (f-i)
+
+```{r}
+# Modell-Zusammenfassung
+summary(mod_download)
+
+# Residuen-Analyse
+resid_download <- resid(mod_download)
+par(mfrow = c(1,2))
+hist(resid_download, main = "Histogramm der Residuen")
+plot(fitted(mod_download), resid_download, main = "Residuen vs. Fitted")
+abline(h = 0, lty = 2)
+par(mfrow = c(1,1))
+```
+
+**MRM-Bedingungen:**
+- ✓ Linearität: OK
+- ✓ Konstante Varianz: OK
+- ✓ Normalität: OK
+- ✗ **Multikollinearität:** Problematisch (r = 0.99)
+
+## Schritt 5: Modellvergleich (n-o)
+
+```{r}
+# SRM vs MRM Vergleich
+mod_download_srm <- lm(time_sec ~ size_mb, data = download)
+r2_srm <- summary(mod_download_srm)$r.squared
+r2_adj_srm <- summary(mod_download_srm)$adj.r.squared
+r2_mrm <- summary(mod_download)$r.squared
+r2_adj_mrm <- summary(mod_download)$adj.r.squared
+
+cat("SRM R²:", round(r2_srm, 4), ", Adj-R²:", round(r2_adj_srm, 4), "\n")
+cat("MRM R²:", round(r2_mrm, 4), ", Adj-R²:", round(r2_adj_mrm, 4), "\n")
+```
+
+**Empfehlung:** SRM bevorzugen wegen Multikollinearität.
+
+# Aufgabe 4: BFH (Körpergröße-Modellierung)
+
+**Aufgabenstellung:**
+Modellieren Sie die Körpergröße mit verfügbaren Variablen im BFH-Datensatz.
+
+## Schritt 1: Mögliche erklärende Variablen (a-b)
+
+```{r}
+bfh <- read_excel("../data/WDDA_06.xlsx", sheet = "BFH")
+head(bfh)
+```
+
+**Mögliche Variablen:**
+- **gender:** Geschlecht beeinflusst Körpergröße stark
+- **foot:** Fußgröße korreliert biologisch mit Körpergröße
+- **dob:** Alter könnte relevant sein
+- **siblings:** Genetische Faktoren
+- **sleep:** Weniger wahrscheinlich relevant
+
+**Beste Einzelwahl:** foot (Fußgröße) wegen starker biologischer Korrelation.
+
+## Schritt 2: MRM anpassen (c)
+
+```{r}
+# Daten bereinigen
+bfh_clean <- bfh %>%
+  filter(!is.na(height), !is.na(foot), !is.na(gender)) %>%
+  mutate(age = as.numeric(Sys.Date() - as.Date(dob)) / 365.25)
+
+mod_bfh <- lm(height ~ foot + gender + age, data = bfh_clean)
+summary(mod_bfh)
+```
+
+## Schritt 3: Modell-Diagnostik (d-f)
+
+```{r}
+# Linearität beurteilen
+plot(fitted(mod_bfh), bfh_clean$height, 
+     main = "Kalibrierungsdiagramm", 
+     xlab = "Geschätzte Körpergröße", ylab = "Beobachtete Körpergröße")
+abline(0, 1, col = "red")
+
+# Konstante Streuung
+resid_bfh <- resid(mod_bfh)
+plot(fitted(mod_bfh), resid_bfh,
+     main = "Residuen vs. Fitted Values",
+     xlab = "Angepasste Werte", ylab = "Residuen")
+abline(h = 0, lty = 2)
+
+# Normalität
+hist(resid_bfh, main = "Histogramm der Residuen", xlab = "Residuen")
+```
+
+## Schritt 4: Modell-Optimierung (g-i)
+
+```{r}
+# Modell-Bewertung
+r2_bfh <- summary(mod_bfh)$r.squared
+cat("R² =", round(r2_bfh, 4), "\n")
+
+# Schrittweise Regression für optimale Variablenkombination
+mod_step <- step(mod_bfh, direction = "both", trace = FALSE)
+summary(mod_step)
+```
+
+**Interpretation der Koeffizienten:**
+- **foot:** Pro cm Fußlänge steigt die Körpergröße um X cm
+- **gender:** Geschlechtsunterschied in der Körpergröße
+- **age:** Alterseffekt (falls signifikant)
+
+# Zusammenfassung
+
+Diese Aufgabenserie führt in die **Multiple Regression** ein und zeigt wichtige Konzepte:
+
+1. **Marginale vs. partielle Steigungen**
+2. **Multikollinearität** und ihre Auswirkungen
+3. **Modell-Diagnostik** für MRM
+4. **Pfaddiagramme** zur Visualisierung komplexer Beziehungen
+5. **Modellvergleich** und -optimierung
+
+**Wichtige Erkenntnisse:**
+- Korrelationen zwischen erklärenden Variablen können Interpretationen erschweren
+- Residuen-Analyse ist entscheidend für Modellvalidierung
+- Nicht immer ist das komplexeste Modell das beste
