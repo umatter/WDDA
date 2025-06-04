@@ -54,7 +54,7 @@ print(cor_matrix)
 corrplot(cor_matrix, method = "number")
 ```
 
-**Größte Korrelation:** Preis und Breite (r ≈ 0.95)
+**Grösste Korrelation:** Preis und Breite (r ≈ 0.95)
 
 **Erklärung:** Breitere Ketten benötigen mehr Gold, was zu höheren Preisen führt.
 
@@ -212,7 +212,7 @@ cat("Direkter Effekt:", direct_effect, "$000/point\n")
 cat("Indirekter Effekt:", indirect_effect, "$000/year\n")
 ```
 
-**Indirekter Effekt ist größer** (10 > 2).
+**Indirekter Effekt ist grösser** (10 > 2).
 
 ## Schritt 4: Marginale Steigung (d)
 
@@ -247,7 +247,7 @@ cor_download <- cor(download)
 print(cor_download)
 ```
 
-**Wichtige Beobachtung:** Dateigröße und Stunden sind sehr stark korreliert (r ≈ 0.99)!
+**Wichtige Beobachtung:** Dateigrösse und Stunden sind sehr stark korreliert (r ≈ 0.99)!
 
 ## Schritt 2: Streudiagramme (b)
 
@@ -311,10 +311,10 @@ cat("MRM R²:", round(r2_mrm, 4), ", Adj-R²:", round(r2_adj_mrm, 4), "\n")
 
 **Empfehlung:** SRM bevorzugen wegen Multikollinearität.
 
-# Aufgabe 4: BFH (Körpergröße-Modellierung)
+# Aufgabe 4: BFH (Körpergrösse-Modellierung)
 
 **Aufgabenstellung:**
-Modellieren Sie die Körpergröße mit verfügbaren Variablen im BFH-Datensatz.
+Modellieren Sie die Körpergrösse mit verfügbaren Variablen im BFH-Datensatz.
 
 ## Schritt 1: Mögliche erklärende Variablen (a-b)
 
@@ -324,13 +324,13 @@ head(bfh)
 ```
 
 **Mögliche Variablen:**
-- **gender:** Geschlecht beeinflusst Körpergröße stark
-- **foot:** Fußgröße korreliert biologisch mit Körpergröße
+- **gender:** Geschlecht beeinflusst Körpergrösse stark
+- **foot:** Fussgrösse korreliert biologisch mit Körpergrösse
 - **dob:** Alter könnte relevant sein
 - **siblings:** Genetische Faktoren
 - **sleep:** Weniger wahrscheinlich relevant
 
-**Beste Einzelwahl:** foot (Fußgröße) wegen starker biologischer Korrelation.
+**Beste Einzelwahl:** foot (Fussgrösse) wegen starker biologischer Korrelation.
 
 ## Schritt 2: MRM anpassen (c)
 
@@ -350,7 +350,7 @@ summary(mod_bfh)
 # Linearität beurteilen
 plot(fitted(mod_bfh), bfh_clean$height, 
      main = "Kalibrierungsdiagramm", 
-     xlab = "Geschätzte Körpergröße", ylab = "Beobachtete Körpergröße")
+     xlab = "Geschätzte Körpergrösse", ylab = "Beobachtete Körpergrösse")
 abline(0, 1, col = "red")
 
 # Konstante Streuung
@@ -377,8 +377,8 @@ summary(mod_step)
 ```
 
 **Interpretation der Koeffizienten:**
-- **foot:** Pro cm Fußlänge steigt die Körpergröße um X cm
-- **gender:** Geschlechtsunterschied in der Körpergröße
+- **foot:** Pro cm Fusslänge steigt die Körpergrösse um X cm
+- **gender:** Geschlechtsunterschied in der Körpergrösse
 - **age:** Alterseffekt (falls signifikant)
 
 # Zusammenfassung
