@@ -31,10 +31,8 @@ Analysieren Sie den Datensatz **Gold Chains** mit Preis als Zielvariable und Lä
 ## Schritt 1: Daten einlesen und erkunden
 
 ```{r}
-gold <- read_excel("../data/WDDA_06.xlsx", sheet = "Gold Chains") %>%
-  rename(price = `Price ($)`,
-         length = `Length (inches)`,
-         width = `Width (mm)`)
+gold <- read_excel("../data/WDDA_06.xlsx", sheet = "Gold Chains")
+names(gold) <- c("price", "length", "width")
 head(gold)
 ```
 
@@ -238,10 +236,8 @@ Erweitern Sie die Download-Analyse um die Variable "Stunden nach 8AM".
 ## Schritt 1: Daten einlesen und Korrelationen (a)
 
 ```{r}
-download <- read_excel("../data/WDDA_06.xlsx", sheet = "Download") %>%
-  rename(time_sec = `Transfer Time (sec)`,
-         size_mb = `File Size (MB)`,
-         hours_after_8 = `Hours after 8AM`)
+download <- read_excel("../data/WDDA_06.xlsx", sheet = "Download")
+names(download) <- c("time_sec", "size_mb", "hours_after_8")
 
 cor_download <- cor(download)
 print(cor_download)
@@ -336,9 +332,8 @@ head(bfh)
 
 ```{r}
 # Daten bereinigen
-bfh_clean <- bfh %>%
-  filter(!is.na(height), !is.na(foot), !is.na(gender)) %>%
-  mutate(age = as.numeric(Sys.Date() - as.Date(dob)) / 365.25)
+bfh_clean <- bfh[!is.na(bfh$height) & !is.na(bfh$foot) & !is.na(bfh$gender), ]
+bfh_clean$age <- as.numeric(Sys.Date() - as.Date(bfh_clean$dob)) / 365.25
 
 mod_bfh <- lm(height ~ foot + gender + age, data = bfh_clean)
 summary(mod_bfh)

@@ -17,10 +17,8 @@ library(scatterplot3d)
 # Aufgabe 1: Gold Chains (Multiple Regression)
 # ============================================================================
 # Daten einlesen
-gold <- read_excel("data/WDDA_06.xlsx", sheet = "Gold Chains") %>%
-  rename(price = `Price ($)`,
-         length = `Length (inches)`,
-         width = `Width (mm)`)
+gold <- read_excel("data/WDDA_06.xlsx", sheet = "Gold Chains")
+names(gold) <- c("price", "length", "width")
 head(gold)
 
 # (a) Streudiagramme untersuchen
@@ -177,10 +175,8 @@ cat("Lohnt sich nur bei längerer Beschäftigung\n")
 # Aufgabe 3: Download (Netzwerk-Performance mit mehreren Variablen)
 # ============================================================================
 # Daten einlesen
-download <- read_excel("data/WDDA_06.xlsx", sheet = "Download") %>%
-  rename(time_sec = `Transfer Time (sec)`,
-         size_mb = `File Size (MB)`,
-         hours_after_8 = `Hours after 8AM`)
+download <- read_excel("data/WDDA_06.xlsx", sheet = "Download")
+names(download) <- c("time_sec", "size_mb", "hours_after_8")
 head(download)
 
 # (a) Korrelationen finden
@@ -313,9 +309,8 @@ cat("Beste Wahl: foot (Fußgröße) - starke biologische Korrelation\n")
 
 # (c) MRM mit mehreren Variablen anpassen
 # Erst Daten bereinigen
-bfh_clean <- bfh %>%
-  filter(!is.na(height), !is.na(foot), !is.na(gender)) %>%
-  mutate(age = as.numeric(Sys.Date() - as.Date(dob)) / 365.25)
+bfh_clean <- bfh[!is.na(bfh$height) & !is.na(bfh$foot) & !is.na(bfh$gender), ]
+bfh_clean$age <- as.numeric(Sys.Date() - as.Date(bfh_clean$dob)) / 365.25
 
 mod_bfh <- lm(height ~ foot + gender + age, data = bfh_clean)
 summary(mod_bfh)
