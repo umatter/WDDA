@@ -1,0 +1,428 @@
+---
+title: "WDDA FS 2025: Leitfaden für Aufgabenserie 4"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: true
+    latex_engine: xelatex
+lang: de
+---
+
+# Einleitung
+
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie/Übungsblatt 5. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+```
+
+
+# Aufgabe 1: Advertising–Datensatz (TV → Sales)
+
+**Aufgabenstellung:**
+Betrachten Sie den Datensatz **Advertising** mit `TV` als erklärende Variable. Welche der folgenden Geraden passt am besten zu den Daten?
+
+> (a) Intercept = 7.1, Steigung = 0.049
+> (b) Intercept = 6.8, Steigung = 0.048
+> (c) Intercept = 7.0, Steigung = 0.045
+> (d) Intercept = 7.3, Steigung = 0.041
+
+## Schritt 1: Daten einlesen
+
+```{r}
+# Der Pfad zur Datei muss in Ihrem fall allenfalls angepasst werden
+adv <- read_excel("../data/WDDA_05.xlsx", sheet = "Advertising")
+head(adv)
+```
+
+## Schritt 2: RSS für jede Gerade berechnen
+
+Wir definieren jede Kandidaten-Gerade und berechnen die Residuenquadratsumme (RSS):
+
+```{r}
+tv    <- adv$TV
+sales <- adv$sales
+
+kandidaten <- list(
+  a = c(intercept = 7.1, slope = 0.049),
+  b = c(intercept = 6.8, slope = 0.048),
+  c = c(intercept = 7.0, slope = 0.045),
+  d = c(intercept = 7.3, slope = 0.041)
+)
+
+rss <- sapply(kandidaten, function(par) {
+  pred  <- par["intercept"] + par["slope"] * tv
+  sum((sales - pred)^2)
+})
+print(rss)
+```
+
+## Schritt 3: Beste Gerade auswählen
+
+Die Gerade mit dem kleinsten RSS passt am besten. Aus der Ausgabe wählen wir **(b)**:
+
+> **Beste Wahl:** Intercept = 6.8, Steigung = 0.048
+
+
+
+# Aufgabe 2: Diamond Rings (Price \~ Weight)
+
+**Aufgabenstellung:**
+Analysieren Sie den Zusammenhang zwischen Gewicht (`weight`) und Listenpreis (`price`) von Diamantringen.
+
+1. Streudiagramm;
+2. Lineares Modell und Interpretation von Intercept & Steigung;
+3. Interpretation von $R^2$, RSE, RSS & TSS;
+4. Geschätzter Preisunterschied zwischen 0.25 und 0.35 ct;
+5. Modell in CHF (1 SGD = 0.68 CHF) umrechnen;
+6. Einfluss der Fixkosten;
+7. Ring mit 0.18 ct für SGD 325: Schnäppchen?;
+8. Residuen plotten und Standardabweichung interpretieren.
+
+## Schritt 1: Daten einlesen
+
+```{r}
+diamonds <- read_excel("../data/WDDA_05.xlsx", sheet = "Diamonds Rings") %>%
+  rename(weight = `Weight (carats)`,
+         price  = `Price (Singapore dollars)`)
+head(diamonds)
+```
+
+## Schritt 2: Streudiagramm
+
+```{r}
+ggplot(diamonds, aes(x = weight, y = price)) +
+  geom_point() +
+  labs(title = "Price vs. Weight", x = "Gewicht (ct)", y = "Preis (SGD)")
+```
+
+## Schritt 3: Lineares Modell schätzen
+
+```{r}
+mod_dr <- lm(price ~ weight, data = diamonds)
+summary(mod_dr)
+```
+
+* **Intercept** $\approx$ -259.63: theoretischer Preis bei 0 ct (nicht sinnvoll).
+* **Steigung** $\approx$ 3721.02: Mehrpreis von SGD 3721.02 pro zusätzlichem Karat.
+
+## Schritt 4: $R^2$, RSE, RSS, TSS berechnen
+
+```{r}
+resid_dr <- resid(mod_dr)
+rss_dr   <- sum(resid_dr^2)
+tss_dr   <- sum((diamonds$price - mean(diamonds$price))^2)
+rse_dr   <- sqrt(rss_dr / df.residual(mod_dr))
+r2_dr    <- summary(mod_dr)$r.squared
+
+cat("R^2 =", round(r2_dr, 4), "\n")
+cat("RSE =", round(rse_dr, 2), "SGD\n")
+cat("RSS =", round(rss_dr, 0), "SGD^2\n")
+cat("TSS =", round(tss_dr, 0), "SGD^2\n")
+```
+
+## Schritt 5: Preisunterschied für 0.25 → 0.35 ct
+
+$$
+\Delta \hat{price} = b_1 \times (0.35 - 0.25)
+$$
+
+```{r}
+preisdiff <- coef(mod_dr)["weight"] * (0.35 - 0.25)
+cat("Geschätzter Unterschied:", round(preisdiff, 1), "SGD\n")
+```
+
+## Schritt 6: Modell in CHF umrechnen
+
+$$
+\hat{price}_{CHF} = 0.68 \times \hat{price}_{SGD}
+$$
+
+```{r}
+b0_chf <- coef(mod_dr)["(Intercept)"] * 0.68
+b1_chf <- coef(mod_dr)["weight"]       * 0.68
+cat("Preismodell (CHF): ŷ =", round(b0_chf,1), "+", round(b1_chf,1), "× weight\n")
+```
+
+## Schritt 7: Einfluss der Fixkosten
+
+Fixkosten erhöhen den **Intercept**, da sie den Basispreis auch bei 0 ct erhöhen. Die Steigung bleibt unverändert.
+
+## Schritt 8: Schnäppchen-Check für 0.18 ct und SGD 325
+
+```{r}
+pred_018 <- predict(mod_dr, newdata = data.frame(weight = 0.18))
+ci      <- predict(mod_dr, newdata = data.frame(weight = 0.18),
+                   interval = "prediction", level = 0.95)
+cat("Prognose für 0.18 ct:", round(pred_018,1), "SGD\n")
+cat("95% Prognose-Intervall: [", round(ci[,"lwr"],1), ",", round(ci[,"upr"],1), "] SGD\n")
+```
+
+Da SGD 325 unter dem Untergrenzwert liegt, ist es ein **Schnäppchen**.
+
+## Schritt 9: Residuen analysieren
+
+```{r}
+resid_dr <- resid(mod_dr)
+mean_resid <- mean(resid_dr)
+sd_resid   <- sd(resid_dr)
+
+# Plot
+par(mfrow = c(1,2))
+plot(diamonds$weight, resid_dr,
+     main = "Residuen vs. Gewicht", xlab = "Weight (ct)", ylab = "Residuen")
+abline(h = 0, lty = 2)
+hist(resid_dr, main = "Histogramm der Residuen",
+     xlab = "Residuen")
+
+par(mfrow = c(1,1))
+cat("Residuen-Mittelwert:", round(mean_resid,2), "\n")
+cat("Residuen-SD:", round(sd_resid,2), "SGD\n")
+```
+
+Die **Standardabweichung der Residuen** (≈ 31.84 SGD) zeigt den typischen Abstand der beobachteten Preise von der Regressionsgerade.
+
+
+
+# Aufgabe 3: Netzwerk-Performance (Download)
+
+**Aufgabenstellung:**
+Untersuchen Sie den Datensatz **Download** mit Übertragungszeit (`time_sec`) und Dateigrösse (`size_mb`).
+
+1. Streudiagramm;
+2. Lineares Modell und Interpretation;
+3. $R^2$, RSE, RSS & TSS;
+4. Geschätzte Zeitdifferenz 50 → 60 MB;
+5. Modell in Minuten und Kilobyte;
+6. Residuen vs Grösse;
+7. Residuen vs geschätzte Werte;
+8. Datenmenge in 15 Sekunden abschätzen.
+
+## Schritt 1: Daten einlesen
+
+```{r}
+dl <- read_excel("../data/WDDA_05.xlsx", sheet = "Download") %>%
+  rename(time_sec = `Transfer Time (sec)`,
+         size_mb  = `File Size (MB)`)
+head(dl)
+```
+
+## Schritt 2: Streudiagramm
+
+```{r}
+ggplot(dl, aes(x = size_mb, y = time_sec)) +
+  geom_point() +
+  labs(title = "Transferzeit vs. Dateigrösse",
+       x = "Dateigrösse (MB)", y = "Zeit (s)")
+```
+
+## Schritt 3: Lineares Modell
+
+```{r}
+mod_dl <- lm(time_sec ~ size_mb, data = dl)
+summary(mod_dl)
+```
+
+* **Intercept** $\approx$ 7.27 s: Startlatenz im Netzwerk.
+* **Steigung** $\approx$ 0.3133 s/MB: zusätzliche Zeit pro MB.
+
+## Schritt 4: Kennzahlen berechnen
+
+```{r}
+resid_dl <- resid(mod_dl)
+rss_dl   <- sum(resid_dl^2)
+tss_dl   <- sum((dl$time_sec - mean(dl$time_sec))^2)
+rse_dl   <- sqrt(rss_dl / df.residual(mod_dl))
+r2_dl    <- summary(mod_dl)$r.squared
+
+cat("R^2 =", round(r2_dl,4), "\n")
+cat("RSE =", round(rse_dl,2), "s\n")
+cat("RSS =", round(rss_dl,0), "s²\n")
+cat("TSS =", round(tss_dl,0), "s²\n")
+```
+
+## Schritt 5: Zeitdifferenz 50 → 60 MB
+
+$$
+\Delta \hat{time} = b_1 \times (60 - 50)
+$$
+
+```{r}
+time_diff <- coef(mod_dl)["size_mb"] * 10
+cat("Geschätzter Unterschied:", round(time_diff,2), "s\n")
+```
+
+## Schritt 6: Modell in Minuten & Kilobyte
+
+Wir setzen $1\text{ MB}=1000\text{ KB}$ und Zeit in Minuten ($/60$):
+
+$$
+\begin{aligned}
+\hat{time}_{min} &= \frac{7.2747}{60} + \frac{0.3133}{60}\times size_{MB}\\
+                &= 0.1212 + 0.005222\times size_{MB}
+\end{aligned}
+$$
+
+In Kilobyte:
+
+$$
+\hat{time}_{min} = 0.1212 + 5.22\times10^{-6}\times size_{KB}
+$$
+
+## Schritt 7: Residuen vs. Grösse
+
+```{r}
+plot(dl$size_mb, resid_dl,
+     main = "Residuen vs. Dateigrösse",
+     xlab = "Dateigrösse (MB)", ylab = "Residuen (s)")
+abline(h = 0, lty = 2)
+```
+
+Keine erkennbaren Muster – die Varianz scheint konstant.
+
+## Schritt 8: Residuen vs. geschätzte Werte
+
+```{r}
+plot(fitted(mod_dl), resid_dl,
+     main = "Residuen vs. Geschätzte Werte",
+     xlab = "Geschätzte Werte (s)", ylab = "Residuen (s)")
+abline(h = 0, lty = 2)
+```
+
+Hier schaut man auf Abweichungen relativ zum Modell–Output, nicht zur Variablen.
+
+## Schritt 9: Datenmenge in 15 Sekunden
+
+Invertieren des Modells:
+
+$$
+size = \frac{time - b_0}{b_1}
+$$
+
+```{r}
+pred_size_15 <- (15 - coef(mod_dl)["(Intercept)"]) /
+                 coef(mod_dl)["size_mb"]
+cat("In 15 s übertragbar:", round(pred_size_15,2), "MB\n")
+```
+
+**Hinweis:** Modell ist nur innerhalb des beobachteten Bereichs zuverlässig. Für grosse Extrapolationen ist ein anderes Modell (z. B. nicht‐linear) empfehlenswert.
+
+
+
+# Aufgabe 4: Cars – Displacement vs. Horsepower
+
+**Aufgabenstellung:**
+Im Datensatz **Cars** finden Sie Motor-Hubraum (`displacement`) und Leistung (`horsepower`).
+
+1. Streudiagramm;
+2. Lineares Modell;
+3. Interpretation von $R^2$ & RSE;
+4. Mehrleistung für +0.5 L?;
+5. Residuum für 3 L/333 PS;
+6. Beschreibung +/– Residuen;
+7. RSE als Residuen-SD?;
+8. 95 % CI für mittlere Leistung bei 3 L;
+9. Wiederholung für 2 L und 6.2 L.
+
+## Schritt 1: Daten einlesen
+
+```{r}
+cars <- read_excel("../data/WDDA_05.xlsx", sheet = "Cars") %>%
+  rename(displacement = `Displacement (liters)`,
+         horsepower   = Horsepower)
+head(cars)
+```
+
+## Schritt 2: Streudiagramm
+
+```{r}
+ggplot(cars, aes(x = displacement, y = horsepower)) +
+  geom_point(alpha = 0.5) +
+  labs(title = "Horsepower vs. Displacement",
+       x = "Hubraum (L)", y = "Leistung (PS)")
+```
+
+## Schritt 3: Lineares Modell
+
+```{r}
+mod_cars <- lm(horsepower ~ displacement, data = cars)
+summary(mod_cars)
+```
+
+* **Intercept** $\approx$ 34.19 PS: Grundleistung bei 0 L (nicht realistisch).
+* **Steigung** $\approx$ 69.20 PS/L: zusätzliche Leistung pro Liter.
+
+## Schritt 4: $R^2$ & RSE
+
+```{r}
+resid_c <- resid(mod_cars)
+rss_c   <- sum(resid_c^2)
+tss_c   <- sum((cars$horsepower - mean(cars$horsepower))^2)
+rse_c   <- sqrt(rss_c / df.residual(mod_cars))
+r2_c    <- summary(mod_cars)$r.squared
+
+cat("R^2 =", round(r2_c,4), "\n")
+cat("RSE =", round(rse_c,2), "PS\n")
+```
+
+## Schritt 5: Mehrleistung für +0.5 L
+
+$$
+\Delta \hat{hp} = b_1 \times 0.5
+$$
+
+```{r}
+delta_hp <- coef(mod_cars)["displacement"] * 0.5
+cat("Geschätzte Mehrleistung:", round(delta_hp,1), "PS\n")
+```
+
+> **Achtung:** Korrelation ≠ Kausalität, aber für lineare Approximation kann man so vorgehen.
+
+## Schritt 6: Residuum für 3 L/333 PS
+
+```{r}
+pred_3L <- predict(mod_cars, newdata = data.frame(displacement = 3))
+resid_3L <- 333 - pred_3L
+cat("Residual (333 PS bei 3 L):", round(resid_3L,2), "PS\n")
+```
+
+Da das Residuum **positiv** ist, liegt der Wagen **über** der Regressionsgerade (Performance-Fahrzeug).
+
+## Schritt 7: Beschreibung der Residuen
+
+* **Positive Residuen:** Mehr Leistung als erwartet (z. B. Sportwagen).
+* **Negative Residuen:** Weniger Leistung als erwartet (z. B. sparsamer Alltagswagen).
+
+## Schritt 8: RSE als SD der Residuen?
+
+Per Definition ist RSE die Standardabweichung der Residuen – sinnvoll, solange keine starke Heteroskedastizität vorliegt.
+
+## Schritt 9: Konfidenzintervall für mittlere Leistung bei 3 L
+
+```{r}
+cars3 <- filter(cars, displacement == 3)
+t.test(cars3$horsepower)$conf.int
+```
+
+Sie erhalten ca. **[251, 284] PS**. Das Modell-Prediction $\approx$ 242 PS liegt teilweise ausserhalb – Hinweis auf Abweichung.
+
+## Schritt 10: Wiederholung für 2 L und 6.2 L
+
+```{r}
+for(d in c(2, 6.2)) {
+  subset <- filter(cars, displacement == d)
+  ci     <- t.test(subset$horsepower)$conf.int
+  cat("\nDisplacement =", d, "L:\n")
+  cat("  95% CI:", round(ci[1],1), "–", round(ci[2],1), "PS\n")
+  pred   <- predict(mod_cars, newdata = data.frame(displacement = d))
+  cat("  Modell-Prediction:", round(pred,1), "PS\n")
+}
+```
+
+Vergleichen Sie diese Intervalle mit den Modellvorhersagen und der globalen RSE.
+
+

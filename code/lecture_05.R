@@ -120,6 +120,9 @@ abline(md1, col = "orange", lwd = 2, lty = 1)
 # 1. Residuum (Beobachtung: TV = 230.1, sales = 22.1)
 tv_val <- 230.1
 sales_obs <- 22.1
+
+7.03259 + 0.04753 * tv_val
+
 sales_hat <- predict(md1, newdata = data.frame(TV = tv_val))
 resid1 <- sales_obs - sales_hat
 cat("1. Residuum:", round(resid1, 2), "\n\n")

@@ -1,0 +1,42 @@
+---
+title: "Lösungen: Kapitel 1 – Aufgaben"
+date: "`r Sys.Date()`"
+output:
+  pdf_document
+---
+
+# Lösungen zu Kapitel 1
+
+## Frage 1: Variablenklassifikation
+**a)** Anzahl Autos: metrisch, diskret  
+**b)** Schulnote: ordinal, diskret  
+**c)** Temperatur: metrisch, stetig  
+*Bewertungshinweis:* Je 1 Punkt für korrekte Skalierung und Messniveau (insgesamt 6 Punkte).
+
+## Frage 2: Vektoroperationen in R
+a) `sum(a)` = 24; `mean(b)` = 3.5  
+b) `c` = `a * 2 + b` ergibt `c(5, 13, 18, 26)`  
+c) Jeder Eintrag von `a` wird mit 2 multipliziert und anschliessend das entsprechende Element von `b` addiert.  
+*Bewertungshinweis:* Je Teilaufgabe 1 Punkt (insgesamt 4 Punkte).
+
+## Frage 3: Summennotation
+a) \sum_{k=1}^{10} (2k - 1)  
+b) \sum_{k=1}^{8} 2^k  
+*Bewertungshinweis:* Je korrekte Notation 2 Punkte (insgesamt 4 Punkte).
+
+## Frage 4: Summeneigenschaft
+Erläuterung:  
+\[
+\sum x_r + \sum y_r = (x_1 + \dots + x_n) + (y_1 + \dots + y_n)
+= \sum (x_r + y_r).
+\]  
+*Bewertungshinweis:* 3 Punkte für schlüssige Erklärung.
+
+## Frage 5: Tabelle und Summen
+a) Diagonalsumme: 1 + 5 + 9 = 15  
+b) Gesamtsumme: 1 + 2 + \dots + 9 = 45  
+*Bewertungshinweis:* Je 2 Punkte (insgesamt 4 Punkte).
+
+## Frage 6: Interpretation
+Weil `gender` nominal ist und keine numerische Codierung besitzt, ist `sum(gender)` nicht definiert und führt zu einem Fehler in R.  
+*Bewertungshinweis:* 2 Punkte für klare Erläuterung.  

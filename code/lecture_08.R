@@ -1,5 +1,5 @@
 ##############################################################
-# WDDA Lecture 08 – Inferenz in Regressionsmodellen 
+# WDDA Lecture 08 – Nichtlineare Zusammenhänge
 # Themen:
 # - Konfidenzintervalle (CI) und Bootstrap
 # - Inferenz in einfacher und multipler Regression
