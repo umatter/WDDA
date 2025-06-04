@@ -148,7 +148,7 @@ cat("\nF-Statistik:", f_value, " (df1 =", df1, ", df2 =", df2, ")\n")
 
 # Modellvergleich mit Zusatzprädiktor (Newspaper)
 md3 <- lm(sales ~ TV + radio + newspaper, data = Advertising)
-anova(md2, md3)  # Vergleich mittels F-Test
+#anova(md2, md3)  # Vergleich mittels F-Test
 
 # Prognose: Punktschätzung & Intervalle
 neue_werte <- data.frame(TV = 230.1, radio = 37.8)
