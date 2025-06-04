@@ -237,10 +237,12 @@ Erweitern Sie die Download-Analyse um die Variable "Stunden nach 8AM".
 
 ```{r}
 download <- read_excel("../data/WDDA_06.xlsx", sheet = "Download")
-names(download) <- c("time_sec", "size_mb", "hours_after_8")
+names(download) <- c("time_sec", "size_mb", "hours_after_8", "vendor")
 
-cor_download <- cor(download)
+cor_download <- cor(download$time_sec, download$size_mb)
 print(cor_download)
+cor_download2 <- cor(download$hours_after_8, download$size_mb)
+print(cor_download2)
 ```
 
 **Wichtige Beobachtung:** Dateigrösse und Stunden sind sehr stark korreliert (r ≈ 0.99)!
@@ -248,7 +250,7 @@ print(cor_download)
 ## Schritt 2: Streudiagramme (b)
 
 ```{r}
-pairs(download, main = "Streudiagramme Download")
+plot(download$size_mb, download$time_sec, main = "Streudiagramme Download")
 ```
 
 **Bewertung:** Lineare Beziehungen, aber starke Korrelation zwischen den erklärenden Variablen.
