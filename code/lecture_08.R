@@ -214,11 +214,6 @@ summary(md.BE)
 cat("\n=== Mittlere Salden nach Ethnicity ===\n")
 aggregate(Balance, by = list(Ethnicity), FUN = mean)
 
-# ANOVA-Tabelle für Ethnicity-Effekt
-cat("\n=== ANOVA-Tabelle ===\n")
-anova(md.BE)
-# Interpretation: F-Test für Gesamteffekt von Ethnicity
-
 
 
 
@@ -258,10 +253,6 @@ summary(md.BIS2)
 # - Income:StudentYes: Unterschied im Income-Effekt zwischen Studenten und Nicht-Studenten
 # - Interaktion bedeutet: Der Effekt von Income hängt vom Studentenstatus ab
 
-# Modellvergleich: Mit vs. ohne Interaktion
-cat("\n=== Modellvergleich: Haupteffekte vs. Interaktionsmodell ===\n")
-anova(md.BIS, md.BIS2)
-# Interpretation: F-Test für Signifikanz der Interaktion
 
 # Separate Regressionsgeraden für Studenten und Nicht-Studenten
 cat("\n=== Separate Effekte von Income ===\n")
