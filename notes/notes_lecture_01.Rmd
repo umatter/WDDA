@@ -19,6 +19,11 @@ library(readxl)  # Lade das Paket readxl zum Importieren von Excel-Dateien
 markets <- read_excel("WDDA_01.xlsx", sheet = "Exchanges")  # Importiere die Daten aus dem Blatt "Exchanges"
 ```
 
+```{r import-datensatz-hidden, echo=FALSE, message=FALSE}
+library(readxl)
+markets <- read_excel("../data/WDDA_01.xlsx", sheet = "Exchanges")
+```
+
 *Zusätzlicher Tipp:* Prüfe die Struktur des importierten Dataframes:
 ```{r}
 str(markets)  # Zeigt die Struktur des Dataframes 'markets'
@@ -114,7 +119,7 @@ trades
 with(markets, summary(trades))  # Fasst die Spalte 'trades' zusammen, ohne das Dataframe dauerhaft anzuhängen
 ```
 
-# 4. Verwendung von length()
+# 5. Verwendung von length()
 
 Die Funktion `length()` verhält sich bei Dataframes und Vektoren unterschiedlich. Bei einem Dataframe gibt `length()` die Anzahl der Spalten (Variablen) zurück, nicht die Anzahl der Zeilen (Beobachtungen). Für die Zeilenzählung solltest Du `nrow()` verwenden.
 

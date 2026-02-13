@@ -1,5 +1,5 @@
 ---
-title: "WDDA FS 2025: Leitfaden für Aufgabenserie 1"
+title: "WDDA FS 2026: Leitfaden für Aufgabenserie 1"
 date: "`r Sys.Date()`"
 output:
   pdf_document
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Einleitung
 
-Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie 1. Für jede Aufgabe werden wir den Denkprozess durchgehen und erklären, wie man zur richtigen Lösung gelangt.
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2026 Aufgabenserie 1. Für jede Aufgabe werden wir den Denkprozess durchgehen und erklären, wie man zur richtigen Lösung gelangt.
 
 # Aufgabe 1: Variablenklassifikation
 

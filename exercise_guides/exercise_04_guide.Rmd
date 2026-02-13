@@ -1,5 +1,5 @@
 ---
-title: "WDDA FS 2025: Leitfaden für Aufgabenserie 4"
+title: "WDDA FS 2026: Leitfaden für Aufgabenserie 4"
 date: "`r Sys.Date()`"
 output:
   pdf_document:
@@ -11,7 +11,7 @@ output:
 
 # Einleitung
 
-Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie 4. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2026 Aufgabenserie 4. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
 
 **Daten laden:**  
    Laden Sie den Datensatz aus der Excel-Datei in R mit der `readxl`-Bibliothek.

@@ -1,5 +1,5 @@
 ---
-title: "WDDA FS 2025: Leitfaden für Aufgabenserie 2"
+title: "WDDA FS 2026: Leitfaden für Aufgabenserie 2"
 date: "`r Sys.Date()`"
 output:
   pdf_document:
@@ -10,7 +10,7 @@ output:
 
 # Einleitung
 
-Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie 2. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2026 Aufgabenserie 2. Für jede Aufgabe werden wir den Denkprozess (und die notwendigen Schritte in R) durchgehen und erklären, wie man zur richtigen Lösung gelangt.
 
 
 

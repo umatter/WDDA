@@ -7,7 +7,7 @@ output: html_document
 
 # Einleitung
 
-Dieses Dokument fasst alle R-Code-Beispiele der Folien aus der WDDA FS2025 Vorlesung 5 (Kapitel 5) zusammen. Der Fokus liegt auf der einfachen linearen Regression, einem grundlegenden statistischen Verfahren zur Modellierung des Zusammenhangs zwischen zwei Variablen.
+Dieses Dokument fasst alle R-Code-Beispiele der Folien aus der WDDA FS2026 Vorlesung 5 (Kapitel 5) zusammen. Der Fokus liegt auf der einfachen linearen Regression, einem grundlegenden statistischen Verfahren zur Modellierung des Zusammenhangs zwischen zwei Variablen.
 
 Die einfache lineare Regression ist ein statistisches Verfahren, das den linearen Zusammenhang zwischen einer abhängigen Variable (Zielvariable) und einer unabhängigen Variable (Prädiktor) modelliert. Das Ziel ist es, eine Gerade zu finden, die den Zusammenhang zwischen den beiden Variablen am besten beschreibt.
 

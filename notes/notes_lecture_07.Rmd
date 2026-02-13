@@ -7,7 +7,7 @@ output: html_document
 
 # Einleitung
 
-Dieses Dokument fasst alle R-Code-Beispiele der Folien aus der WDDA FS2025 Vorlesung 7 (Kapitel 7) zusammen. Der Fokus liegt auf der Inferenz in Regressionsmodellen, insbesondere auf Konfidenzintervallen, Signifikanztests und Prognosen.
+Dieses Dokument fasst alle R-Code-Beispiele der Folien aus der WDDA FS2026 Vorlesung 7 (Kapitel 7) zusammen. Der Fokus liegt auf der Inferenz in Regressionsmodellen, insbesondere auf Konfidenzintervallen, Signifikanztests und Prognosen.
 
 Die statistische Inferenz ermöglicht es uns, von einer Stichprobe auf die Grundgesamtheit zu schliessen. In der Regressionsanalyse interessieren wir uns für die Unsicherheit der geschätzten Koeffizienten und die Zuverlässigkeit unserer Vorhersagen.
 

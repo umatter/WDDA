@@ -1,5 +1,5 @@
 ---
-title: "WDDA FS 2025: Leitfaden für Aufgabenserie 6"
+title: "WDDA FS 2026: Leitfaden für Aufgabenserie 6"
 date: "`r Sys.Date()`"
 output:
   pdf_document:
@@ -11,7 +11,7 @@ lang: de
 
 # Einleitung
 
-Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2025 Aufgabenserie/Übungsblatt 6. Diese Serie konzentriert sich auf **Multiple Regression** (MRM), bei der wir mehrere erklärende Variablen verwenden, um eine Zielvariable zu modellieren.
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2026 Aufgabenserie/Übungsblatt 6. Diese Serie konzentriert sich auf **Multiple Regression** (MRM), bei der wir mehrere erklärende Variablen verwenden, um eine Zielvariable zu modellieren.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)

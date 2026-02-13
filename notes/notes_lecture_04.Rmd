@@ -7,7 +7,7 @@ output: html_document
 
 # Einleitung
 
-Dieses Dokument fasst alle R-Code-Beispiele der Folien aus der WDDA FS2025 Vorlesung 6 (Kapitel 4) zusammen. Der Fokus liegt auf der schliessenden Statistik, insbesondere auf Stichprobenvariation, Standardfehlern, Bootstrap-Methoden und Konfidenzintervallen.
+Dieses Dokument fasst alle R-Code-Beispiele der Folien aus der WDDA FS2026 Vorlesung 6 (Kapitel 4) zusammen. Der Fokus liegt auf der schliessenden Statistik, insbesondere auf Stichprobenvariation, Standardfehlern, Bootstrap-Methoden und Konfidenzintervallen.
 
 Die schliessende Statistik (inferentielle Statistik) ist ein Bereich der Statistik, der Schlussfolgerungen über eine Grundgesamtheit auf Basis von Stichproben zieht. Im Gegensatz zur deskriptiven Statistik, die "nur" die vorliegenden Daten beschreibt, versucht die schliessende Statistik, Aussagen über die Gesamtpopulation zu treffen.
 
