@@ -102,13 +102,13 @@ Die Funktion `attach()` erleichtert den Zugriff auf die Variablen eines Datafram
 
 ```{r attach-detach, eval=FALSE}
 # Hänge das Dataframe an, sodass dessen Spalten direkt zugänglich sind
-markets |> attach()
+attach(markets)
 
 # Jetzt kann auf 'trades' direkt zugegriffen werden, ohne den Dataframe-Namen zu verwenden
 trades
 
 # Entferne das Dataframe aus dem Suchpfad, um Namenskonflikte zu vermeiden
-markets |> detach()
+detach(markets)
 
 # Nach dem Detach führt der Zugriff auf 'trades' ohne Dataframe-Namen zu einem Fehler:
 trades

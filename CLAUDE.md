@@ -24,14 +24,29 @@ Teaching repository for the WDDA (Datenmanagement und Datenanalyse) course at BU
 
 ## Rendering R Markdown
 
-- Exercise guides: render to PDF via `xelatex` engine (`rmarkdown::render()`)
-- Lecture notes: render to HTML (`rmarkdown::render()`)
-- Rmd files use relative paths (e.g., `../data/WDDA_01.xlsx`)
+Render lecture notes to HTML:
+```bash
+Rscript -e 'rmarkdown::render("notes/notes_lecture_01.Rmd")'
+```
+
+Render exercise guides to PDF (requires xelatex):
+```bash
+Rscript -e 'rmarkdown::render("exercise_guides/exercise_01_guide.Rmd")'
+```
+
+Render Beamer slides (e.g., Galton problem):
+```bash
+Rscript -e 'rmarkdown::render("notes/galton_ox_problem.Rmd")'
+```
+
+## Data Path Conventions
+
+R scripts in `code/` are run from the **repo root** and use paths like `data/WDDA_01.xlsx`. Rmd files in `notes/` and `exercise_guides/` are rendered from their own subdirectory and use `../data/WDDA_01.xlsx`. Some notes Rmd files contain a **dual-chunk pattern**: a visible `eval=FALSE` chunk showing the simple path students see (e.g., `"WDDA_01.xlsx"`) and a hidden `echo=FALSE` chunk with the real relative path (e.g., `"../data/WDDA_01.xlsx"`). Preserve both chunks when editing.
 
 ## Code Style
 
 - 2 spaces for indentation
 - Follow the [tidyverse style guide](https://style.tidyverse.org/)
 - Comments in German explaining statistical concepts alongside code
-- Section dividers using `#----` notation
+- Section dividers using `# ---` notation in R scripts
 - Linear, teaching-oriented code structure (avoid complex abstractions)

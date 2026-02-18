@@ -264,6 +264,9 @@ Histogramme können Hinweise auf die Schiefe (Asymmetrie) der Verteilung geben.
 
 ```{r schiefe, eval=TRUE}
 # Berechnung der Schiefe mit dem Paket 'e1071'
+if (!requireNamespace("e1071", quietly = TRUE)) {
+  install.packages("e1071")
+}
 library(e1071)
 skewness_value <- skewness(Time)
 print(skewness_value)

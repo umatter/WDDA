@@ -1,0 +1,169 @@
+---
+title: "WDDA -- Modulübersicht"
+subtitle: "Datenmanagement und Datenanalyse, Frühlingssemester 2026"
+author: "Prof. Dr. Ulrich Matter"
+date: "BFH -- Berner Fachhochschule"
+output:
+  pdf_document:
+    latex_engine: pdflatex
+    includes:
+      in_header: moodle_preamble.tex
+geometry: margin=2cm
+fontsize: 11pt
+---
+
+\thispagestyle{empty}
+
+# Semesterplan
+
+Jede Vorlesungseinheit findet mittwochs von 9:05 bis 12:30 statt und besteht aus zwei Teilen:
+
+\begin{description}[leftmargin=3.5cm, style=sameline]
+\item[Datenanalyse] 9:05--10:35 (2 $\times$ 45 Min.)
+\item[Datenmanagement] 10:50--12:30 (2 $\times$ 45 Min.)
+\end{description}
+
+\noindent Der nachfolgende Semesterplan und die Materialien beziehen sich auf den Teil \textbf{Datenanalyse}.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccccl}
+\toprule
+\textbf{SW} & \textbf{KW} & \textbf{Datum} & \textbf{VL} & \textbf{Thema (Datenanalyse)} \\
+\midrule
+1  & 8  & 18.02. & 01         & Einführung und Datenimport \\
+2  & 9  & 25.02. & 02         & Deskriptive Statistik (tabellarisch \& grafisch) \\
+3  & 10 & 04.03. & 03         & Deskriptive Statistik (Kennzahlen) \\
+4  & 11 & 11.03. & 03         & Deskriptive Statistik (Kennzahlen, Forts.) \\
+5  & 12 & 18.03. & 04         & Schliessende Statistik \\
+6  & 13 & 25.03. & 04         & Schliessende Statistik (Forts.) \\
+\rowcolor{gray!15}
+-- & 14 & 01.04. & --         & \textit{Osterferien} \\
+\rowcolor{gray!15}
+-- & 15 & 08.04. & --         & \textit{Osterferien} \\
+7  & 16 & 15.04. & 05         & Einfache lineare Regression \\
+8  & 17 & 22.04. & 05         & Einfache lineare Regression (Forts.) \\
+9  & 18 & 29.04. & 06         & Multiple lineare Regression \\
+10 & 19 & 06.05. & 06         & Multiple lineare Regression (Forts.) \\
+11 & 20 & 13.05. & 07         & Inferenz in Regressionsmodellen \\
+12 & 21 & 20.05. & 07         & Inferenz in Regressionsmodellen (Forts.) \\
+\rowcolor{gray!15}
+-- & 22 & 27.05. & --         & \textit{Pfingstwoche} \\
+13 & 23 & 03.06. & 08         & Nichtlineare Zusammenhänge \& Abschluss \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{2em}
+\noindent Alle Kursmaterialien sind auf Moodle verfügbar. Zusätzliche Materialien (R-Skripte, Vorlesungsnotizen etc.) finden Sie im GitHub-Repository des Moduls: \url{https://github.com/umatter/wdda}
+
+\newpage
+
+# Software-Installation
+
+In diesem Modul verwenden wir \textbf{R} (eine Programmiersprache für Statistik) und \textbf{RStudio} (einen komfortablen Editor für R). Beide sind kostenlos und für Windows und macOS verfügbar. Bitte installieren Sie beides \textit{vor} der ersten Vorlesung.
+
+## Schritt 1: R installieren
+
+\begin{enumerate}[leftmargin=1.5cm]
+  \item Gehen Sie zu \textbf{\url{https://cloud.r-project.org}}
+  \item Klicken Sie auf den Link für Ihr Betriebssystem:
+  \begin{description}[leftmargin=2cm, style=sameline, itemsep=0.2ex]
+    \item[Windows] Klicken Sie auf \textit{Download R for Windows} $\rightarrow$ \textit{base} $\rightarrow$ \textit{Download R-4.5.2 for Windows}. Führen Sie die \texttt{.exe}-Datei aus und klicken Sie bei allen Dialogen auf \textit{Next}.
+    \item[macOS] Klicken Sie auf \textit{Download R for macOS}. Laden Sie die \texttt{.pkg}-Datei herunter, die zu Ihrem Mac passt:
+    \begin{itemize}
+      \item Apple Silicon (M1/M2/M3/M4): \texttt{R-4.5.2-arm64.pkg}
+      \item Intel Mac: \texttt{R-4.5.2-x86\_64.pkg}
+    \end{itemize}
+    Öffnen Sie die Datei und folgen Sie den Installationsschritten.
+  \end{description}
+\end{enumerate}
+
+\medskip
+\noindent\textit{Nicht sicher, welchen Mac Sie haben?} Klicken Sie auf das Apple-Menü $\rightarrow$ \textit{Über diesen Mac}. Wenn dort ``Apple M1'' (oder M2, M3, M4) steht, wählen Sie die ARM-Version; andernfalls die Intel-Version.
+
+## Schritt 2: RStudio installieren
+
+\begin{enumerate}[leftmargin=1.5cm]
+  \item Gehen Sie zu \textbf{\url{https://posit.co/download/rstudio-desktop/}}
+  \item Scrollen Sie nach unten und klicken Sie auf den Installer für Ihr Betriebssystem (Windows \texttt{.exe} oder macOS \texttt{.dmg}).
+  \item \textbf{Windows:} Führen Sie den Installer aus und folgen Sie dem Setup-Assistenten.\\
+        \textbf{macOS:} Öffnen Sie die \texttt{.dmg}-Datei und ziehen Sie das RStudio-Symbol in den Ordner \textit{Programme}.
+\end{enumerate}
+
+## Schritt 3: Überprüfen
+
+\begin{enumerate}[leftmargin=1.5cm]
+  \item Öffnen Sie \textbf{RStudio} (nicht R direkt --- RStudio findet R automatisch).
+  \item Geben Sie im \textit{Console}-Bereich (unten links) \texttt{1 + 1} ein und drücken Sie Enter.
+  \item Wenn Sie \texttt{[1] 2} sehen, funktioniert alles.
+\end{enumerate}
+
+\medskip
+\noindent\textit{Probleme?} Schreiben Sie im Moodle-Forum oder fragen Sie die Lehrperson vor oder nach der Vorlesung.
+
+\newpage
+
+# Materialien pro Vorlesung (Datenanalyse)
+
+Für den Teil Datenanalyse stehen pro Vorlesung folgende Materialien auf Moodle zur Verfügung:
+
+\begin{description}[leftmargin=3cm, style=sameline, itemsep=0.3ex]
+\item[Folien/Handout] Beamer-Folien (druckfreundlich, eine Folie pro Seite)
+\item[Notizen] Zusammenfassung der Kernkonzepte mit R-Code-Beispielen
+\item[R-Skript] Begleitender R-Code für Live-Demos und Selbststudium
+\item[Datensatz] Excel-Datei (\texttt{.xlsx}) mit den in der Vorlesung verwendeten Daten
+\item[Aufgabenserie] Übungsaufgaben mit Leitfaden (für VL 01--06)
+\end{description}
+
+\bigskip
+\SessionBlock{1}{Einführung und Datenimport}{18.02.2026}
+\MaterialTable{WDDA\_Lecture\_01}{lecture\_01}{WDDA\_01.xlsx}
+\noindent\textit{Aufgabenserie:} \texttt{exercise\_01\_guide.pdf}
+
+\SessionBlock{2}{Deskriptive Statistik (tabellarisch \& grafisch)}{25.02.2026}
+\MaterialTable{WDDA\_Lecture\_02}{lecture\_02}{WDDA\_02.xlsx}
+\noindent\textit{Aufgabenserie:} \texttt{exercise\_02\_guide.pdf}
+
+\SessionBlock{3}{Deskriptive Statistik (Kennzahlen)}{04.03.2026}
+\MaterialTable{WDDA\_Lecture\_03}{lecture\_03}{WDDA\_03.xlsx}
+\noindent\textit{Aufgabenserie:} \texttt{exercise\_03\_guide.pdf}
+
+\SessionBlock{4}{Deskriptive Statistik (Kennzahlen, Forts.)}{11.03.2026}
+\noindent\textit{Fortsetzung mit den Materialien aus VL~03.}
+
+\bigskip
+\SessionBlock{5}{Schliessende Statistik}{18.03.2026}
+\MaterialTable{WDDA\_Lecture\_04}{lecture\_04}{WDDA\_04.xlsx}
+\noindent\textit{Aufgabenserie:} \texttt{exercise\_04\_guide.pdf}
+
+\SessionBlock{6}{Schliessende Statistik (Forts.)}{25.03.2026}
+\noindent\textit{Fortsetzung mit den Materialien aus VL~04.}
+
+\bigskip
+\SessionBlock{7}{Einfache lineare Regression}{15.04.2026}
+\MaterialTable{WDDA\_Lecture\_05}{lecture\_05}{WDDA\_05.xlsx}
+\noindent\textit{Aufgabenserie:} \texttt{exercise\_05\_guide.pdf}
+
+\SessionBlock{8}{Einfache lineare Regression (Forts.)}{22.04.2026}
+\noindent\textit{Fortsetzung mit den Materialien aus VL~05.}
+
+\bigskip
+\SessionBlock{9}{Multiple lineare Regression}{29.04.2026}
+\MaterialTable{WDDA\_Lecture\_06}{lecture\_06}{WDDA\_06.xlsx}
+\noindent\textit{Aufgabenserie:} \texttt{exercise\_06\_guide.pdf}
+
+\SessionBlock{10}{Multiple lineare Regression (Forts.)}{06.05.2026}
+\noindent\textit{Fortsetzung mit den Materialien aus VL~06.}
+
+\bigskip
+\SessionBlock{11}{Inferenz in Regressionsmodellen}{13.05.2026}
+\MaterialTable{WDDA\_Lecture\_07}{lecture\_07}{WDDA\_07.xlsx}
+
+\SessionBlock{12}{Inferenz in Regressionsmodellen (Forts.)}{20.05.2026}
+\noindent\textit{Fortsetzung mit den Materialien aus VL~07.}
+
+\bigskip
+\SessionBlock{13}{Nichtlineare Zusammenhänge \& Abschluss}{03.06.2026}
+\MaterialTableNoNotes{WDDA\_Lecture\_08}{lecture\_08}{WDDA\_08.xlsx}

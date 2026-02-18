@@ -1,5 +1,5 @@
 ---
-title: "R-Code Beispiele aus WDDA Vorlesung 6 (Kapitel 4)"
+title: "R-Code Beispiele aus WDDA Vorlesung 4 (Kapitel 4)"
 author: "Ulrich Matter"
 date: "`r Sys.Date()`"
 output: html_document

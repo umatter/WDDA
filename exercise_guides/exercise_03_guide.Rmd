@@ -653,14 +653,14 @@ cat("Korrelation (Männer):", corr_male, "\n")
    - Nur Frauen: ca. 0.01  
    - Nur Männer: ca. 0.12 
    
- ies illustriert, wie der aggregierte Datensatz andere Korrelationen ergeben kann als getrennte Gruppen (d.h. wir haben hier einen Fall von ["Simpson's paradox"](https://en.wikipedia.org/wiki/Simpson%27s_paradox)).
+Dies illustriert, wie der aggregierte Datensatz andere Korrelationen ergeben kann als getrennte Gruppen (d.h. wir haben hier einen Fall von ["Simpson's paradox"](https://en.wikipedia.org/wiki/Simpson%27s_paradox)).
 
 
 
 # Aufgabe 18: Kovarianz bei identischen Datensätzen
 
 **Aufgabenstellung:**  
-18. Was laesst sich über die Formel für die Kovarianz sagen, wenn beide Listen aus denselben Daten bestehen?
+18. Was lässt sich über die Formel für die Kovarianz sagen, wenn beide Listen aus denselben Daten bestehen?
 
 **Schritt-für-Schritt-Erklärung:**
 
@@ -794,9 +794,9 @@ Das 71. Perzentil bedeutet, dass Belgien einen höheren Aktienrückgang als 71% 
 # Daten aus WDDA_03 laden
 data <- read_excel("../data/WDDA_03.xlsx", sheet = "DAX_CAC")
 
-# Angenommen, die Spalten heissen 'DAX' und 'CAC40'
+# Die Spalten heissen 'DAX' und 'CAC'
 corr_index <- cor(data$DAX, data$CAC, use = "complete.obs")
-cat("Korrelationskoeffizient (DAX, CAC40):", corr_index, "\n")
+cat("Korrelationskoeffizient (DAX, CAC):", corr_index, "\n")
 ```
 
 2. **Ergebnis:**  

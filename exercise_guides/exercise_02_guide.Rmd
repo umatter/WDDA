@@ -503,7 +503,7 @@ hist(hair_f, main = "Histogramm von Hair (Frauen)", xlab = "Hair",
 4. **Interpretation:**  
    Diskutieren Sie, ob und welche Unterschiede in der Verteilung zwischen den Geschlechtern ersichtlich sind. 
    
-   _Problme mit der Darstellung beim Histogramm für Frauen?_
+   _Problem mit der Darstellung beim Histogramm für Frauen?_
 
 
 

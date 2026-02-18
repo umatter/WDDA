@@ -18,6 +18,7 @@ Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2
 
 ```{r, message=FALSE, warning=FALSE}
    library(readxl)
+   library(mosaic)
    data <- read_excel("../data/WDDA_04.xlsx", sheet = "BFH")
 ```
 

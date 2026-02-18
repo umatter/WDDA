@@ -1,0 +1,55 @@
+% ---------------------------------------------------------
+% Preamble for WDDA Moodle module-overview document
+% ---------------------------------------------------------
+
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+% ---- Session block header ----
+% #1 = session week number, #2 = topic, #3 = date
+\newcommand{\SessionBlock}[3]{%
+  \noindent\rule{\textwidth}{0.4pt}\\[0.3em]%
+  {\large\textbf{Vorlesungswoche #1:} #2}\hfill\textit{#3}\\[0.3em]%
+}
+
+% ---- Material table (with dataset) ----
+% #1 = slide-deck base name  (e.g. WDDA\_Lecture\_01)
+% #2 = lecture base name      (e.g. lecture\_01)
+% #3 = data file              (e.g. WDDA\_01.xlsx)
+\newcommand{\MaterialTable}[3]{%
+  \smallskip
+  \begin{tabular}{@{}p{3cm}l@{}}
+  Folien/Handout & \texttt{#1.pdf} \\
+  Notizen        & \texttt{notes\_#2.html} \\
+  R-Skript       & \texttt{#2.R} \\
+  Datensatz      & \texttt{#3} \\
+  \end{tabular}\\[0.5em]%
+}
+
+% ---- Material table (without notes) ----
+% #1 = slide-deck base name
+% #2 = lecture base name
+% #3 = data file
+\newcommand{\MaterialTableNoNotes}[3]{%
+  \smallskip
+  \begin{tabular}{@{}p{3cm}l@{}}
+  Folien/Handout & \texttt{#1.pdf} \\
+  R-Skript       & \texttt{#2.R} \\
+  Datensatz      & \texttt{#3} \\
+  \end{tabular}\\[0.5em]%
+}
+
+% ---- Material table (without dataset) ----
+% #1 = slide-deck base name
+% #2 = lecture base name
+\newcommand{\MaterialTableNoData}[2]{%
+  \smallskip
+  \begin{tabular}{@{}p{3cm}l@{}}
+  Folien/Handout & \texttt{#1.pdf} \\
+  Notizen        & \texttt{notes\_#2.html} \\
+  R-Skript       & \texttt{#2.R} \\
+  \end{tabular}\\[0.5em]%
+}
