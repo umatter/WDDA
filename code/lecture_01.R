@@ -6,6 +6,8 @@
 
 # Lade das Paket readxl zum Importieren von Excel-Dateien
 library(readxl)
+# Lade das Paket tidyverse (hier für Datenaufbereitung)
+library(tidyverse)
 
 # Importiere die Daten aus dem Blatt "Exchanges"
 markets <- read_excel("data/WDDA_01.xlsx",
@@ -45,12 +47,12 @@ x |> abs() |> sqrt() |> mean()  # Gleiche Operation, besser lesbar
 # Komplexeres Beispiel mit dem markets Dataframe:
 # Klassisch (verschachtelt)
 head(subset(transform(markets, 
-                     total = trades + volume), 
+                     total = trades + turnover), 
             total > 1000))
 
 # Mit Pipe (übersichtlicher)
 markets |>
-  transform(total = trades + volume) |>
+  transform(total = trades + turnover) |>
   subset(total > 1000) |>
   head()
 
