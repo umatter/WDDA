@@ -64,7 +64,7 @@ freq <- Brand |> table()
 # -----------------------------------------------------------------------------
 
 # Berechnung der relativen Häufigkeiten
-relfreq <- freq / sum(freq)
+relfreq <- (freq/ sum(freq))*1
 
 
 
@@ -242,7 +242,7 @@ library(dplyr)
 # Auswahl der 'Price'-Spalte für Restaurants mit guter Qualität
 good_price <- 
   Restaurant |> 
-  filter(Quality != 'Good') |>
+  filter(Quality == 'Good') |>
   select(Price)
 
 print(good_price)
