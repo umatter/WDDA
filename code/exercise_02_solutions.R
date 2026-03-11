@@ -227,7 +227,7 @@ min_m <- Hoehe.m |> min()
 
 # Frauen, die grösser sind als der kleinste Mann
 count_f <- (Hoehe.f > min_m) |> sum()
-count_f  # Erwartet: 61
+count_f  # Erwartet: 58
 
 
 
