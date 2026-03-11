@@ -591,7 +591,7 @@ count_f <- (Hoehe.f > min_m) |> sum()
 print(count_f)
 ```
    
-   Es sollten 61 Frauen grösser sein als der kleinste Mann.
+   Es sollten 58 Frauen *strikt grösser* sein als der kleinste Mann (mit `>`). Hinweis: Mit `>=` (grösser oder gleich) wären es 61, da 3 Frauen genau gleich gross sind wie der kleinste Mann (164 cm).
 
 
 
@@ -777,34 +777,37 @@ Erstellen Sie ein Streudiagramm und kommentieren Sie die Art der Beziehung zwisc
 library(readxl)
 data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
 
-plot(data$height, data$hair, 
-     main = "Scatterplot: Height vs. Hair", 
+plot(data$height, data$hair,
+     main = "Scatterplot: Height vs. Hair",
      xlab = "Height",
      ylab = "Hair")
+abline(lm(hair ~ height, data = data), col = "red", lwd = 2)
 ```
-   
-   - Interpretieren Sie, ob ein negativer oder positiver Zusammenhang besteht.
+
+   - Die Trendlinie zeigt einen leicht negativen Zusammenhang: Grössere Personen haben tendenziell etwas kürzere Haare. Dieser Effekt ist jedoch schwach und lässt sich dadurch erklären, dass grössere Personen häufiger männlich sind und Männer im Durchschnitt kürzere Haare tragen.
 
 2. **Streudiagramm für `height` und `foot`:**  
    
 ```{r, fig.height=4}
-plot(data$height, data$foot, main = "Scatterplot: Height vs. Foot", 
+plot(data$height, data$foot, main = "Scatterplot: Height vs. Foot",
      xlab = "Height", ylab = "Foot")
+abline(lm(foot ~ height, data = data), col = "red", lwd = 2)
 ```
-   
-   - Es wird ein positiver linearer Zusammenhang erwartet.
+
+   - Die Trendlinie zeigt einen deutlichen positiven linearen Zusammenhang: Grössere Personen haben tendenziell auch grössere Füsse.
 
 3. **Streudiagramm für `height` und `reaction1`:**  
 
 ```{r, fig.height=4}
-plot(data$height, data$reaction1, main = "Scatterplot: Height vs. Reaction1", 
+plot(data$height, data$reaction1, main = "Scatterplot: Height vs. Reaction1",
      xlab = "Height", ylab = "Reaction1")
+abline(lm(reaction1 ~ height, data = data), col = "red", lwd = 2)
 ```
-   
-   - Diskutieren Sie, dass hier der Zusammenhang weniger eindeutig ist.
 
-4. **Kommentar:**  
-   Fassen Sie zusammen, welche Zusammenhänge bestehen und welche Interpretationen sich daraus ableiten lassen.
+   - Die Trendlinie verläuft nahezu horizontal: Es besteht kein erkennbarer linearer Zusammenhang zwischen Körpergrösse und Reaktionszeit.
+
+4. **Kommentar:**
+   Die Trendlinien (`abline(lm(...), col = "red")`) helfen, den Zusammenhang visuell einzuschätzen. Ein steiler Anstieg/Abfall deutet auf einen starken Zusammenhang hin, eine flache Linie auf keinen. Hier zeigt sich: Height vs. Foot hat den stärksten (positiven) Zusammenhang, Height vs. Hair einen schwachen (negativen), und Height vs. Reaction1 praktisch keinen.
 
 
 

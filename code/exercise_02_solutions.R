@@ -297,18 +297,22 @@ data |> with(table(gender, eye))
 plot(data$height, data$hair,
      main = "Scatterplot: Height vs. Hair",
      xlab = "Height", ylab = "Hair")
+abline(lm(hair ~ height, data = data), col = "red", lwd = 2)
+# Schwacher negativer Zusammenhang
 
 # (b) height vs. foot
 plot(data$height, data$foot,
      main = "Scatterplot: Height vs. Foot",
      xlab = "Height", ylab = "Foot")
-# Positiver linearer Zusammenhang erwartet
+abline(lm(foot ~ height, data = data), col = "red", lwd = 2)
+# Deutlicher positiver linearer Zusammenhang
 
 # (c) height vs. reaction1
 plot(data$height, data$reaction1,
      main = "Scatterplot: Height vs. Reaction1",
      xlab = "Height", ylab = "Reaction1")
-# Kein klarer Zusammenhang erwartet
+abline(lm(reaction1 ~ height, data = data), col = "red", lwd = 2)
+# Kein erkennbarer Zusammenhang (Trendlinie nahezu horizontal)
 
 
 
