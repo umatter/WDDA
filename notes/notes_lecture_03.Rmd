@@ -142,15 +142,15 @@ modus_brand <- brand_table |>
 print(paste("Modus:", modus_brand))
 
 # Visualisierung der Häufigkeitsverteilung
-barplot(brand_table, 
-        main = "Häufigkeitsverteilung der Automarken",
-        xlab = "Marke", 
-        ylab = "Häufigkeit",
-        col = "steelblue")
+bp <- barplot(brand_table,
+              main = "Häufigkeitsverteilung der Automarken",
+              xlab = "Marke",
+              ylab = "Häufigkeit",
+              col = "steelblue")
 # Markierung des Modus
-text(which(names(brand_table) == modus_brand), 
-     brand_table[modus_brand] + 1, 
-     "Modus", 
+text(bp[which(names(brand_table) == modus_brand)],
+     brand_table[modus_brand] + 1,
+     "Modus",
      col = "red")
 ```
 
@@ -163,6 +163,50 @@ text(which(names(brand_table) == modus_brand),
 - R hat keine eingebaute Funktion für den Modus, daher wird er typischerweise mit einer Kombination aus `table()` und `which.max()` berechnet.
 
 **Hinweis**: Bei mehreren gleich häufigen Werten gibt `which.max()` nur den ersten zurück. Um alle Modi zu finden, müsste man alle Positionen identifizieren, an denen die Häufigkeit dem Maximum entspricht.
+
+## 1.4 Gewichteter Mittelwert
+
+Beim gewichteten Mittelwert wird jedem Datenwert ein Gewicht zugeordnet, das seine relative Bedeutung widerspiegelt. Dies ist besonders nützlich, wenn nicht alle Beobachtungen gleich wichtig sind oder wenn Daten bereits in aggregierter Form vorliegen.
+
+Mathematische Formel: $\bar{x}_w = \frac{\sum_{i=1}^{n} w_i x_i}{\sum_{i=1}^{n} w_i}$
+
+```{r gewichteter-mittelwert, eval=TRUE}
+# Beispiel: Berechnung des gewichteten Mittelwerts
+xvar <- c(3, 3.4, 2.8, 2.9, 3.25)  # Werte
+weight <- c(1200, 500, 2750, 1000, 800)  # Gewichte
+
+# Berechnung des gewichteten Mittelwerts
+gewichteter_mittelwert <- sum(xvar * weight) / sum(weight)
+print(paste("Gewichteter Mittelwert:", round(gewichteter_mittelwert, 4)))
+
+# Vergleich mit dem ungewichteten Mittelwert
+ungewichteter_mittelwert <- mean(xvar)
+print(paste("Ungewichteter Mittelwert:", round(ungewichteter_mittelwert, 4)))
+
+# Visualisierung der Gewichtung
+barplot(xvar,
+        names.arg = xvar,
+        col = "lightblue",
+        main = "Werte mit ihren Gewichten",
+        xlab = "Werte",
+        ylab = "Wert")
+# Füge Gewichte als Text hinzu
+text(1:length(xvar), xvar/2,
+     labels = paste("Gewicht:", weight),
+     col = "darkblue")
+```
+
+**Statistische Erklärung**: Der gewichtete Mittelwert berücksichtigt die unterschiedliche Bedeutung oder Häufigkeit der einzelnen Beobachtungen. Typische Anwendungsfälle sind:
+
+1. **Aggregierte Daten**: Wenn Daten bereits in Gruppen zusammengefasst sind (z.B. Durchschnittsgehälter nach Abteilungen mit unterschiedlicher Mitarbeiterzahl)
+2. **Ungleiche Stichprobengrössen**: Wenn verschiedene Teilstichproben unterschiedlich gross sind
+3. **Qualitätsunterschiede**: Wenn einige Messungen zuverlässiger sind als andere
+4. **Zeitreihen**: Bei der Berechnung gleitender Durchschnitte, bei denen neuere Daten oft stärker gewichtet werden
+
+**R-Erklärung**:
+- Die elementweise Multiplikation von Vektoren in R erfolgt mit dem `*`-Operator.
+- Die Funktion `weighted.mean(x, w)` ist eine eingebaute Alternative zur manuellen Berechnung.
+- Bei der Visualisierung mit `barplot()` kann der Parameter `names.arg` verwendet werden, um die Balken zu beschriften.
 
 
 # 2. Streuungsmasse
@@ -204,51 +248,7 @@ text(max_salary, max(hist(Salary, plot = FALSE)$counts) * 0.9,
 - Die Funktion `abline()` mit dem Parameter `v` fügt vertikale Linien zu einem bestehenden Plot hinzu.
 - Die Funktion `hist()` mit dem Parameter `plot = FALSE` berechnet die Histogramm-Statistiken, ohne sie zu plotten.
 
-## 2.2 Gewichteter Mittelwert
-
-Beim gewichteten Mittelwert wird jedem Datenwert ein Gewicht zugeordnet, das seine relative Bedeutung widerspiegelt. Dies ist besonders nützlich, wenn nicht alle Beobachtungen gleich wichtig sind oder wenn Daten bereits in aggregierter Form vorliegen.
-
-Mathematische Formel: $\bar{x}_w = \frac{\sum_{i=1}^{n} w_i x_i}{\sum_{i=1}^{n} w_i}$
-
-```{r gewichteter-mittelwert, eval=TRUE}
-# Beispiel: Berechnung des gewichteten Mittelwerts
-xvar <- c(3, 3.4, 2.8, 2.9, 3.25)  # Werte
-weight <- c(1200, 500, 2750, 1000, 800)  # Gewichte
-
-# Berechnung des gewichteten Mittelwerts
-gewichteter_mittelwert <- sum(xvar * weight) / sum(weight)
-print(paste("Gewichteter Mittelwert:", round(gewichteter_mittelwert, 4)))
-
-# Vergleich mit dem ungewichteten Mittelwert
-ungewichteter_mittelwert <- mean(xvar)
-print(paste("Ungewichteter Mittelwert:", round(ungewichteter_mittelwert, 4)))
-
-# Visualisierung der Gewichtung
-barplot(xvar, 
-        names.arg = xvar, 
-        col = "lightblue",
-        main = "Werte mit ihren Gewichten",
-        xlab = "Werte", 
-        ylab = "Wert")
-# Füge Gewichte als Text hinzu
-text(1:length(xvar), xvar/2, 
-     labels = paste("Gewicht:", weight), 
-     col = "darkblue")
-```
-
-**Statistische Erklärung**: Der gewichtete Mittelwert berücksichtigt die unterschiedliche Bedeutung oder Häufigkeit der einzelnen Beobachtungen. Typische Anwendungsfälle sind:
-
-1. **Aggregierte Daten**: Wenn Daten bereits in Gruppen zusammengefasst sind (z.B. Durchschnittsgehälter nach Abteilungen mit unterschiedlicher Mitarbeiterzahl)
-2. **Ungleiche Stichprobengrössen**: Wenn verschiedene Teilstichproben unterschiedlich gross sind
-3. **Qualitätsunterschiede**: Wenn einige Messungen zuverlässiger sind als andere
-4. **Zeitreihen**: Bei der Berechnung gleitender Durchschnitte, bei denen neuere Daten oft stärker gewichtet werden
-
-**R-Erklärung**:
-- Die elementweise Multiplikation von Vektoren in R erfolgt mit dem `*`-Operator.
-- Die Funktion `weighted.mean(x, w)` ist eine eingebaute Alternative zur manuellen Berechnung.
-- Bei der Visualisierung mit `barplot()` kann der Parameter `names.arg` verwendet werden, um die Balken zu beschriften.
-
-## 2.3 Quartile und Interquartilsabstand (IQR)
+## 2.2 Quartile und Interquartilsabstand (IQR)
 
 Quartile teilen die geordneten Daten in vier gleiche Teile. Der Interquartilsabstand (IQR) ist die Differenz zwischen dem dritten Quartil (Q3) und dem ersten Quartil (Q1) und umfasst die mittleren 50% der Daten. Er ist ein robustes Streuungsmass, das nicht von Ausreissern beeinflusst wird.
 
@@ -309,7 +309,7 @@ text(1.3, lower_fence, "Untere Ausreissergrenze", col = "darkred")
 - Die Funktion `IQR()` ist eine eingebaute Alternative zur manuellen Berechnung des Interquartilsabstands.
 - In Boxplots werden Ausreisser typischerweise als einzelne Punkte dargestellt.
 
-## 2.4 Varianz und Standardabweichung
+## 2.3 Varianz und Standardabweichung
 
 Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert und ist ein zentrales Mass für die Streuung der Daten. Die Standardabweichung ist die Quadratwurzel der Varianz und hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
 

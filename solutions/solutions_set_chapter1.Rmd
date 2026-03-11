@@ -1,42 +1,118 @@
 ---
-title: "Lösungen: Kapitel 1 – Aufgaben"
+title: "Lösungen: Aufgabenserie 1"
 date: "`r Sys.Date()`"
 output:
   pdf_document
 ---
 
-# Lösungen zu Kapitel 1
+# Lösungen zu Aufgabenserie 1
 
-## Frage 1: Variablenklassifikation
-**a)** Anzahl Autos: metrisch, diskret  
-**b)** Schulnote: ordinal, diskret  
-**c)** Temperatur: metrisch, stetig  
-*Bewertungshinweis:* Je 1 Punkt für korrekte Skalierung und Messniveau (insgesamt 6 Punkte).
+## Aufgabe 1: Variablenklassifikation
 
-## Frage 2: Vektoroperationen in R
-a) `sum(a)` = 24; `mean(b)` = 3.5  
-b) `c` = `a * 2 + b` ergibt `c(5, 13, 18, 26)`  
-c) Jeder Eintrag von `a` wird mit 2 multipliziert und anschliessend das entsprechende Element von `b` addiert.  
-*Bewertungshinweis:* Je Teilaufgabe 1 Punkt (insgesamt 4 Punkte).
+| | Variable | Skalenniveau | Diskret/Stetig |
+|---|---|---|---|
+| (a) | Tore pro Woche | metrisch | diskret |
+| (b) | Körpergrössen | metrisch | stetig |
+| (c) | Beliebteste Radiosender | nominal | diskret |
+| (d) | Anzahl Kinder | metrisch | diskret |
+| (e) | Dienstgrad | ordinal | diskret |
+| (f) | Anzahl Brote | metrisch | diskret |
+| (g) | Art der Haustiere | nominal | diskret |
+| (h) | Anzahl Blätter | metrisch | diskret |
+| (i) | Sonnenstunden | metrisch | stetig |
+| (j) | Krebstote pro Jahr | metrisch | diskret |
+| (k) | Herkunftsländer | nominal | diskret |
+| (l) | Farben der Autos | nominal | diskret |
+| (m) | Geschlecht | nominal | diskret |
+| (n) | Zeit für Hausaufgaben | metrisch | stetig |
+| (o) | Pokerhände | ordinal | diskret |
+| (p) | Lebensmittelausgaben | metrisch | stetig |
+| (q) | Noten | ordinal | diskret |
+| (r) | Verkaufte Artikel | metrisch | diskret |
+| (s) | Streichhölzer pro Schachtel | metrisch | diskret |
+| (t) | Endpositionen Rennen | ordinal | diskret |
+| (u) | Endzeiten Rennen | metrisch | stetig |
+| (v) | Gründe für Taxi | nominal | diskret |
+| (w) | Sportarten | nominal | diskret |
+| (x) | Produktpräferenz | nominal | diskret |
+| (y) | Pulsraten | metrisch | stetig |
 
-## Frage 3: Summennotation
-a) \sum_{k=1}^{10} (2k - 1)  
-b) \sum_{k=1}^{8} 2^k  
-*Bewertungshinweis:* Je korrekte Notation 2 Punkte (insgesamt 4 Punkte).
+## Aufgabe 2: Bestimmung von Variablenwerten
 
-## Frage 4: Summeneigenschaft
-Erläuterung:  
-\[
-\sum x_r + \sum y_r = (x_1 + \dots + x_n) + (y_1 + \dots + y_n)
-= \sum (x_r + y_r).
-\]  
-*Bewertungshinweis:* 3 Punkte für schlüssige Erklärung.
+**(a)** Politisches Spektrum: Umfrage mit Likert-Skala oder Selbstidentifikation.
 
-## Frage 5: Tabelle und Summen
-a) Diagonalsumme: 1 + 5 + 9 = 15  
-b) Gesamtsumme: 1 + 2 + \dots + 9 = 45  
-*Bewertungshinweis:* Je 2 Punkte (insgesamt 4 Punkte).
+**(b)** Blutdruck: Messung mit Sphygmomanometer, metrisch und stetig.
 
-## Frage 6: Interpretation
-Weil `gender` nominal ist und keine numerische Codierung besitzt, ist `sum(gender)` nicht definiert und führt zu einem Fehler in R.  
-*Bewertungshinweis:* 2 Punkte für klare Erläuterung.  
+**(c)** Armutsgrenze: Absoluter oder relativer Ansatz, metrisch und stetig.
+
+**(d)** Ausdauerleistung: Zeit-bis-zur-Erschöpfung oder VO2-max-Test.
+
+**(e)** Anzahl Lügen pro Tag: Selbstberichterstattung oder Beobachtung, metrisch und diskret.
+
+## Aufgabe 3: Grafikanalyse
+
+**(a)** Variablen: Faktische Berichterstattung und Politische Voreingenommenheit.
+
+**(b)** Werte könnten durch Inhaltsanalyse, Expertenpanel oder Publikumsbefragung ermittelt werden.
+
+**(c)** Beide Variablen sind ordinal und diskret.
+
+## Aufgaben 4–7: BFH-Datensatz (konzeptionell)
+
+**Aufgabe 4:** `sum(cash)` funktioniert (metrisch), `sum(gender)` erzeugt Fehler (nominal).
+
+**Aufgabe 5:** `height/100` konvertiert cm in Meter.
+
+**Aufgabe 6:** `reaction1 - reaction2` berechnet die Verbesserung der Reaktionszeit.
+
+**Aufgabe 7:** `siblings * present` ergibt Gesamtausgaben für Geschenke pro Person.
+
+## Aufgabe 8: Ausschreiben von Summen
+
+**(a)** $\sum_{r=1}^{4} r^3 = 1 + 8 + 27 + 64 = 100$
+
+**(b)** $\sum_{r=1}^{6} (2r+1) = 3 + 5 + 7 + 9 + 11 + 13 = 48$
+
+**(c)** $\sum_{n=1}^{5} 3^{2n} = 9 + 81 + 729 + 6561 + 59049 = 66429$
+
+**(d)** $\sum_{n=1}^{7} 4 = 7 \times 4 = 28$
+
+## Aufgabe 9: Sigma-Notation
+
+**(a)** $\sum_{n=1}^{7} n^2$ \quad **(b)** $\sum_{n=1}^{10} 2^n$ \quad **(c)** $\sum_{n=1}^{77} \frac{1}{n}$ \quad **(d)** $\sum_{n=1}^{19} \frac{n(n+2)}{(n+1)(n+3)}$
+
+## Aufgabe 10: Auswerten von Summen
+
+**(a)** $\sum_{r=1}^{6} r = 21$ \quad **(b)** $\sum_{r=1}^{6} 3r = 63$ \quad **(c)** $3 \cdot \sum_{r=1}^{6} r = 63$
+
+(b) und (c) ergeben dasselbe: eine Konstante kann aus der Summe gezogen werden.
+
+## Aufgabe 11: Allgemeine Summen
+
+**(a)** $x_1 + x_2 + \dots + x_n$ \quad **(b)** $x_1^2 + x_2^2 + \dots + x_n^2$ \quad **(c)** $x_1^1 + x_2^2 + \dots + x_n^n$
+
+## Aufgabe 12: Richtig oder falsch
+
+**(a)** Richtig \quad **(b)** Falsch \quad **(c)** Richtig
+
+## Aufgabe 13
+
+$(-1)^1 x + (-1)^2 x + (-1)^3 x + (-1)^4 x = -x + x - x + x = 0$
+
+## Aufgabe 14
+
+$\sum_{r=1}^{7}(x_r - 2)^2 = \sum x_r^2 - 4\sum x_r + 7 \cdot 4 = 100 - 40 + 28 = 88$
+
+## Aufgabe 15: Statistische Notationen
+
+**(a)** Arithmetisches Mittel \quad **(b)** Summe der quadrierten Abweichungen \quad **(c)** Gewichtete Summe
+
+**(d)** Summe der Wahrscheinlichkeiten \quad **(e)** Doppelsumme ($P_{11} + P_{12} + \dots + P_{32}$)
+
+**(f)** Summe der Kreuzprodukte der Abweichungen (Kovarianzberechnung)
+
+## Aufgabe 16: Tabellenbasierte Summationen
+
+Tabelle: $a(r,c)$ mit Zeilen 1–4 und Spalten 1–4, Werte 1–16.
+
+**(a)** 32 \quad **(b)** 10 \quad **(c)** 34 \quad **(d)** 332 \quad **(e)** 1008 \quad **(f)** 94 \quad **(g)** 136 \quad **(h)** 66

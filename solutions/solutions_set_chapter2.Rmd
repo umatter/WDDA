@@ -1,0 +1,245 @@
+---
+title: "Lösungen: Aufgabenserie 2"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    fig_width: 7
+    fig_height: 5
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(readxl)
+data <- read_excel("../data/WDDA_02.xlsx", sheet = "BFH")
+```
+
+# Lösungen zu Aufgabenserie 2
+
+## Aufgabe 1: Häufigkeitsverteilung von `transport`
+
+```{r}
+data$transport |> table()
+```
+
+Erwartete Ergebnisse: Bicycle: 7, Bus: 35, Car: 22, Other: 2, Train: 149, Walk: 2.
+
+## Aufgabe 2: Balkendiagramme
+
+```{r, fig.height=4}
+# (a) gender
+barplot(table(data$gender), main = "Verteilung von Gender",
+        col = "lightblue", ylab = "Häufigkeit")
+```
+
+```{r, fig.height=4}
+# (b) transport
+barplot(table(data$transport), main = "Verteilung von Transport",
+        col = "lightgreen", ylab = "Häufigkeit")
+```
+
+```{r, fig.height=4}
+# (c) maths
+barplot(table(data$maths), main = "Verteilung von Maths",
+        col = "lightcoral", ylab = "Häufigkeit")
+```
+
+## Aufgabe 3: Analyse der Diagrammdarstellung
+
+**(a)** Das Diagramm verwendet eine ungeeignete Darstellungsform für ordinale Daten (z.B. Linien- oder Punktdiagramm statt Balkendiagramm).
+
+**(b)** Korrekt: Balkendiagramm mit Noten auf der x-Achse und Häufigkeit auf der y-Achse.
+
+## Aufgabe 4: Kreisdiagramme für `eye` und `eyetext`
+
+```{r, fig.height=4}
+eye_rel <- data$eye |> table() |> prop.table()
+pie(eye_rel, main = "Relative Verteilung von Eye")
+```
+
+```{r, fig.height=4}
+eyetext_rel <- data$eyetext |> table() |> prop.table()
+pie(eyetext_rel, main = "Relative Verteilung von Eyetext")
+```
+
+## Aufgabe 5: Problematische Darstellung bei Steve Jobs
+
+Perspektivische Verzerrung im 3D-Kreisdiagramm lässt Segmente grösser/kleiner erscheinen als ihre tatsächlichen Prozentwerte. Korrektur: Einfaches 2D-Kreisdiagramm oder Balkendiagramm.
+
+## Aufgabe 6: Häufigkeitsverteilung von `height` in Bins
+
+```{r}
+bins <- seq(155, 185, by = 5)
+height_bins <- data$height |> cut(breaks = bins, right = TRUE)
+table(height_bins)
+```
+
+## Aufgabe 7: Kumulative Häufigkeit für `height`
+
+```{r}
+table(height_bins) |> cumsum()
+```
+
+## Aufgabe 8: Histogramme für `foot` und `reaction1`
+
+```{r, fig.height=4}
+hist(as.numeric(data$foot), main = "Histogramm von Foot",
+     xlab = "Foot", col = "lightblue")
+```
+
+```{r, fig.height=4}
+hist(as.numeric(data$reaction1), main = "Histogramm von Reaction1",
+     xlab = "Reaction1", col = "lightgreen")
+```
+
+## Aufgabe 9: Histogramm für `height` und Geschlechtervergleich
+
+```{r, fig.height=4}
+# (a)
+hist(data$height, main = "Histogramm von Height",
+     xlab = "Height", col = "lightgrey")
+```
+
+```{r, fig.height=4}
+# (b)
+height_m <- data$height[data$gender == "Male"]
+height_f <- data$height[data$gender == "Female"]
+
+x_range <- range(data$height)
+y_max <- max(hist(height_m, plot = FALSE)$counts,
+             hist(height_f, plot = FALSE)$counts)
+
+hist(height_m, main = "Histogramm von Height (Männer)",
+     xlab = "Height", xlim = x_range, ylim = c(0, y_max), col = "lightblue")
+hist(height_f, main = "Histogramm von Height (Frauen)",
+     xlab = "Height", xlim = x_range, ylim = c(0, y_max), col = "lightpink")
+```
+
+## Aufgabe 10: Histogramme für `hair` und Geschlechtervergleich
+
+```{r, fig.height=4}
+# (a)
+hist(as.numeric(data$hair), main = "Histogramm von Hair",
+     xlab = "Hair", col = "lightgrey")
+```
+
+```{r, fig.height=4}
+# (b)
+hair_m <- as.numeric(data$hair[data$gender == "Male"])
+hair_f <- as.numeric(data$hair[data$gender == "Female"])
+
+x_range_hair <- range(c(hair_m, hair_f), na.rm = TRUE)
+y_max_hair <- max(hist(hair_m, plot = FALSE)$counts,
+                  hist(hair_f, plot = FALSE)$counts)
+
+hist(hair_m, main = "Histogramm von Hair (Männer)",
+     xlab = "Hair", ylim = c(0, y_max_hair), col = "lightblue")
+hist(hair_f, main = "Histogramm von Hair (Frauen)",
+     xlab = "Hair", ylim = c(0, y_max_hair), col = "lightpink")
+```
+
+## Aufgabe 11: Histogramm für `cash` und Schiefe
+
+```{r, fig.height=4}
+cash_numeric <- as.numeric(data$cash)
+cash_numeric <- cash_numeric[!is.na(cash_numeric)]
+hist(cash_numeric, main = "Histogramm von Cash",
+     xlab = "Cash", col = "lightgrey", breaks = "Sturges")
+```
+
+Die Verteilung ist rechtsschief: wenige hohe Ausreisser ziehen den rechten Schwanz nach aussen.
+
+## Aufgabe 12: Körpergrösse nach Geschlecht
+
+```{r}
+Hoehe.m <- data$height[data$gender == "Male"]
+Hoehe.f <- data$height[data$gender == "Female"]
+
+min_m <- Hoehe.m |> min()
+count_f <- (Hoehe.f > min_m) |> sum()
+count_f  # Erwartet: 61
+```
+
+## Aufgabe 13: Fusslängenanalyse
+
+```{r}
+foot.m <- data$foot[data$gender == "Male"]
+foot.f <- data$foot[data$gender == "Female"]
+
+# Grösster Mann vs. grösste Füsse bei Männern
+which.max(data$height[data$gender == "Male"])
+which.max(data$foot[data$gender == "Male"])
+
+# Grösste Frau vs. grösste Füsse bei Frauen
+which.max(data$height[data$gender == "Female"])
+which.max(data$foot[data$gender == "Female"])
+```
+
+Die Indizes stimmen nicht überein: der grösste Mann hat nicht die grössten Füsse.
+
+## Aufgabe 14: Mindestgrösse für britische Polizei
+
+```{r}
+suitable <- data |>
+  subset((gender == "Male" & height >= 173) |
+         (gender == "Female" & height >= 163))
+nrow(suitable)  # Erwartet: 185
+```
+
+## Aufgabe 15: Geburtsmonate mit lubridate
+
+```{r}
+library(lubridate)
+months <- data$dob |> month()
+count_april <- (months == 4) |> sum()
+count_april  # Erwartet: 24
+```
+
+## Aufgabe 16: Kontingenztabelle für `gender` und `eye`
+
+```{r}
+data |> with(table(gender, eye))
+```
+
+## Aufgabe 17: Streudiagramme
+
+```{r, fig.height=4}
+# (a) height vs. hair
+plot(data$height, data$hair, main = "Height vs. Hair",
+     xlab = "Height", ylab = "Hair")
+```
+
+```{r, fig.height=4}
+# (b) height vs. foot — positiver linearer Zusammenhang
+plot(data$height, data$foot, main = "Height vs. Foot",
+     xlab = "Height", ylab = "Foot")
+```
+
+```{r, fig.height=4}
+# (c) height vs. reaction1 — kein klarer Zusammenhang
+plot(data$height, data$reaction1, main = "Height vs. Reaction1",
+     xlab = "Height", ylab = "Reaction1")
+```
+
+## Aufgabe 18: Golfspieler-Umfrage (Simpson-Paradoxon)
+
+```{r}
+# Daten
+golfer_m <- matrix(c(10, 40, 25, 25), nrow = 2, byrow = TRUE,
+                   dimnames = list(c("Handicap < 15", "Handicap >= 15"),
+                                   c("Zu schnell", "Ok")))
+golfer_f <- matrix(c(1, 9, 39, 51), nrow = 2, byrow = TRUE,
+                   dimnames = list(c("Handicap < 15", "Handicap >= 15"),
+                                   c("Zu schnell", "Ok")))
+
+# (a) Kombinierte Tabelle
+gesamt <- rbind(Männlich = colSums(golfer_m),
+                Weiblich = colSums(golfer_f))
+gesamt
+round(gesamt / rowSums(gesamt) * 100, 1)
+```
+
+**(b)** Niedriges Handicap: Männer 20% vs. Frauen 10% "Zu schnell" — Männer beschweren sich häufiger.
+
+**(c)** Höheres Handicap: Männer 50% vs. Frauen 43.3% "Zu schnell" — Männer beschweren sich häufiger.
+
+**(d)** Simpson-Paradoxon: Aggregiert beschweren sich Frauen häufiger (40% vs. 35%), aber in beiden Handicap-Gruppen einzeln beschweren sich Männer häufiger. Der Grund liegt in der unterschiedlichen Handicap-Verteilung: Frauen haben mehr Spielerinnen mit hohem Handicap, wo generell mehr Beschwerden auftreten.
