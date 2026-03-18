@@ -214,8 +214,13 @@ eye_rel <- data$eye |> table() |> prop.table()
 pie(eye_rel, main = "Relative Verteilung von Eye")
 ```
    
-3. **Wiederholung für `eyetext`:**  
+3. **Wiederholung für `eyetext`:**
    Berechnen Sie die Häufigkeiten für `eyetext` und erstellen Sie ein entsprechendes Kreisdiagramm.
+
+```{r}
+eyetext_rel <- data$eyetext |> table() |> prop.table()
+pie(eyetext_rel, main = "Relative Verteilung von Eyetext")
+```
 
 
 

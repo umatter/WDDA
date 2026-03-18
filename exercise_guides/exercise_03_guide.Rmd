@@ -91,7 +91,7 @@ cat("Mittelwert von jar:", mean_jar, "\n")
 diff_to_actual <- abs(data$jar - 405)
 best_index <- which.min(diff_to_actual)
 best_birthdate <- data$dob[best_index]  # Annahme: Geburtsdatum in 'dob'
-cat("Geburtsdatum des besten Schätzers:", best_birthdate, "\n")
+cat("Geburtsdatum des besten Schätzers:", format(best_birthdate), "\n")
 ```
 
 3. **Vergleich der Abstände:**  
@@ -461,7 +461,7 @@ cat("Sommer - Varianz:", var_sommer, ", SD:", sd_sommer, ", VK:", vc_sommer, "%\
 ```
 
 4. **Erwartete Ergebnisse:**  
-   - Winter: Spannweite = 2, IQR = 4, Varianz $\approx$ 8.23, SD $\approx$ 2.87, VK $\approx$ 16.21%  
+   - Winter: Spannweite = 9, IQR = 4, Varianz $\approx$ 8.23, SD $\approx$ 2.87, VK $\approx$ 16.21%  
    - Sommer: Spannweite = 20, IQR = 9 (Lösungsblatt hatte hier einen Tippfehler), Varianz $\approx$ 44.49, SD $\approx$ 6.67, VK $\approx$ 26.05%  
    - (d) Die Sommerperiode weist eine grössere Variabilität auf.
 
