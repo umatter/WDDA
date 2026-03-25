@@ -457,9 +457,9 @@ cat("95%-Konfidenzintervall für die Differenz:", ci_95_sleep[1], "bis", ci_95_s
 # Interpretation - mit Fehlerbehandlung
 if (!is.na(ci_95_sleep[1]) && !is.na(ci_95_sleep[2])) {
   if (ci_95_sleep[1] > 0) {
-    cat("Da das gesamte Konfidenzintervall positiv ist, schlafen Studentinnen signifikant mehr als Studenten.\n")
+    cat("Da das gesamte Konfidenzintervall positiv ist, schlafen Studenten signifikant mehr als Studentinnen.\n")
   } else if (ci_95_sleep[2] < 0) {
-    cat("Da das gesamte Konfidenzintervall negativ ist, schlafen Studenten signifikant mehr als Studentinnen.\n")
+    cat("Da das gesamte Konfidenzintervall negativ ist, schlafen Studentinnen signifikant mehr als Studenten.\n")
   } else {
     cat("Da das Konfidenzintervall die Null enthält, gibt es keinen signifikanten Unterschied in den Schlafzeiten.\n")
   }

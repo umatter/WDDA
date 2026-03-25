@@ -693,15 +693,15 @@ if (nrow(data_binary) > 0 && length(unique(data_binary$gender)) > 1) {
 }
 
 # 95%-Konfidenzintervall berechnen
-ci_95 <- quantile(bootstrap_diff$Female, c(0.025, 0.975), na.rm = TRUE)
+ci_95 <- quantile(bootstrap_diff$Male, c(0.025, 0.975), na.rm = TRUE)
 cat("95%-Konfidenzintervall für die Differenz:", ci_95[1], "bis", ci_95[2], "Stunden\n")
 
 # Interpretation - mit Fehlerbehandlung
 if (!is.na(ci_95[1]) && !is.na(ci_95[2])) {
   if (ci_95[1] > 0) {
-    cat("Da das gesamte Konfidenzintervall positiv ist, schlafen Studentinnen signifikant mehr als Studenten.\n")
+    cat("Da das gesamte Konfidenzintervall positiv ist, schlafen Studenten signifikant mehr als Studentinnen.\n")
   } else if (ci_95[2] < 0) {
-    cat("Da das gesamte Konfidenzintervall negativ ist, schlafen Studenten signifikant mehr als Studentinnen.\n")
+    cat("Da das gesamte Konfidenzintervall negativ ist, schlafen Studentinnen signifikant mehr als Studenten.\n")
   } else {
     cat("Da das Konfidenzintervall die Null enthält, gibt es keinen signifikanten Unterschied in den Schlafzeiten.\n")
   }

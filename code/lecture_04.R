@@ -236,8 +236,8 @@ cat("95%-Konfidenzintervall (Quantile) für distance:", round(dist.q25, 2),
 ##############################################################
 # 90%-Konfidenzintervall:
 dist.q05 <- quantile(boot1000.m, probs = 0.05, type = 1)
-dist.q90 <- quantile(boot1000.m, probs = 0.90, type = 1)
-cat("90%-Konfidenzintervall für distance:", round(dist.q05, 2), "bis", round(dist.q90, 2), "\n")
+dist.q95 <- quantile(boot1000.m, probs = 0.95, type = 1)
+cat("90%-Konfidenzintervall für distance:", round(dist.q05, 2), "bis", round(dist.q95, 2), "\n")
 # 99%-Konfidenzintervall:
 dist.q005 <- quantile(boot1000.m, probs = 0.005, type = 1)
 dist.q995 <- quantile(boot1000.m, probs = 0.995, type = 1)
