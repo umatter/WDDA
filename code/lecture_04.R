@@ -55,7 +55,13 @@ dotPlot(m.stichps$mean, nint = 200, cex = 2, pch = 1, ylim = c(0, 100))
 cat("Verteilung der Stichprobenmittelwerte wurde dargestellt.\n\n")
 
 
+# Zum Vergleich: kleinere bzw. grössere Stichproben (ohne m.stichps zu überschreiben,
+# damit Section 3 weiterhin den Standardfehler für n = 30 berechnet).
+m.stichps3 <- do(3000) * mean(sample(WeeklySalary, size = 3))
+dotPlot(m.stichps3$mean, nint = 200, cex = 2, pch = 1, ylim = c(0, 100))
 
+m.stichps300 <- do(3000) * mean(sample(WeeklySalary, size = 300))
+dotPlot(m.stichps300$mean, nint = 200, cex = 2, pch = 1, ylim = c(0, 100))
 
 
 
@@ -163,6 +169,7 @@ cat("Konfidenzintervalle (95%-Niveau) aus der Simulation wurden geplottet.\n\n")
 ##############################################################
 # Beispiel: BFH-Datensatz, Variable distance (Arbeitsweg)
 BFH <- read_excel("data/WDDA_04.xlsx", sheet = "BFH")
+
 hist(BFH$distance, main = "Histogramm der Arbeitswege", xlab = "Entfernung (km)")
 boot1000.dist <- do(1000) * resample(BFH$distance)
 boot1000.m <- apply(boot1000.dist, 1, mean)
@@ -269,9 +276,9 @@ diff.hat <- mw.m - mw.f
 cat("Differenz der durchschnittlichen Exercise-Stunden (Männer - Frauen):", round(diff.hat, 2), "\n")
 # Bootstrap für Differenzen: Ziehe 3000 Bootstrap-Stichproben
 boot3000.diff <- do(3000) * (mean(resample(men$Exercise)) - mean(resample(women$Exercise)))
-diff.q005 <- quantile(boot3000.diff$result, probs = 0.025, type = 1)
-diff.q995 <- quantile(boot3000.diff$result, probs = 0.975, type = 1)
-cat("95%-Konfidenzintervall für Differenzen:", round(diff.q005, 2), "bis", round(diff.q995, 2), "\n\n")
+diff.q025 <- quantile(boot3000.diff$result, probs = 0.025, type = 1)
+diff.q975 <- quantile(boot3000.diff$result, probs = 0.975, type = 1)
+cat("95%-Konfidenzintervall für Differenzen:", round(diff.q025, 2), "bis", round(diff.q975, 2), "\n\n")
 
 
 

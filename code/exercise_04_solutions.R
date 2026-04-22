@@ -1,4 +1,4 @@
-# WDDA FS 2025: Lösungen für Aufgabenserie 4
+# WDDA FS 2026: Lösungen für Aufgabenserie 4
 # Dieses Skript enthält die R-Code-Lösungen für die Aufgabenserie 4
 
 # Daten laden
@@ -329,7 +329,7 @@ ci_upper_small <- p_hat_nuts + 2 * se_small
 cat("95%-KI bei n=100:", ci_lower_small, "bis", ci_upper_small, "\n")
 
 # Antworten:
-# (g) Das 95%-Konfidenzintervall für den Anteil der Cashew-Nüsse liegt bei [0.466, 0.574]
+# (g) Das 95%-Konfidenzintervall für den Anteil der Cashew-Nüsse liegt bei [0.470, 0.570]
 # (h) Bei einer Erhöhung des Stichprobenumfangs wird das Konfidenzintervall schmaler
 #     Der Standardfehler nimmt mit dem Faktor 1/√n ab
 
