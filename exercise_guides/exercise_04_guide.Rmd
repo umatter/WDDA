@@ -166,18 +166,29 @@ cat("Plausible Werte für Freihandel mit Indonesien:",
 
 **Schritt-für-Schritt-Erklärung:**
 
+Für Teil (a) sind zwei Lesarten möglich, je nachdem wie die Formulierung "Bereich plausibler Werte ... unter Verwendung der Standardfehler" interpretiert wird:
+
+- **Variante 1 (Fehlermarge = Standardfehler):** Der angegebene Standardfehler wird direkt als Fehlermarge verwendet, analog zu Teil (b). Dies entspricht dem Ansatz in der Musterlösung des Aufgabenblatts.
+- **Variante 2 (95%-Konfidenzintervall nach der "95%-Regel"):** Die Fehlermarge wird als $2 \cdot SE$ angesetzt, was näherungsweise einem 95%-Konfidenzintervall entspricht.
+
+Beide Varianten sind verbreitet; Teil (b) gibt die Fehlermarge bereits direkt an, sodass dort keine Ambiguität besteht.
+
 1. **Konstruktion der Konfidenzintervalle:**
 
 ```{r}
-# (a) Für den Mittelwert $\mu$
+# (a) Für den Mittelwert mu
 x_bar <- 25
 se_mean <- 3
-margin_error <- 2 * se_mean  # Für ein 95%-Konfidenzintervall
 
-lower_bound_mean <- x_bar - margin_error
-upper_bound_mean <- x_bar + margin_error
+# Variante 1: Fehlermarge = Standardfehler (wie Musterlösung Aufgabenblatt)
+lower_v1 <- x_bar - se_mean
+upper_v1 <- x_bar + se_mean
+cat("Variante 1 (x̄ ± SE):       ", lower_v1, "bis", upper_v1, "\n")
 
-cat("95%-Konfidenzintervall für mu:", lower_bound_mean, "bis", upper_bound_mean, "\n")
+# Variante 2: 95%-KI mit 2 * SE
+lower_v2 <- x_bar - 2 * se_mean
+upper_v2 <- x_bar + 2 * se_mean
+cat("Variante 2 (95%-KI, x̄ ± 2·SE):", lower_v2, "bis", upper_v2, "\n")
 
 # (b) Für den Anteil p
 p_hat <- 0.37
@@ -190,7 +201,9 @@ cat("Konfidenzintervall für p:", lower_bound_p, "bis", upper_bound_p, "\n")
 ```
 
 2. **Ergebnisse:**
-   - (a) Für $\mu$: Das Konfidenzintervall ist [19, 31].
+   - (a) Für $\mu$:
+     - Variante 1 (Musterlösung Aufgabenblatt, x̄ ± SE): [22, 28]
+     - Variante 2 (95%-Konfidenzintervall, x̄ ± 2·SE): [19, 31]
    - (b) Für p: Das Konfidenzintervall ist [0.35, 0.39].
 
 

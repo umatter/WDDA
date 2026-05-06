@@ -1,8 +1,18 @@
 ---
 title: "R-Code Beispiele aus WDDA Vorlesung 7 (Kapitel 7)"
-author: "Ulrich Matter"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
 ---
 
 # Einleitung
@@ -18,7 +28,7 @@ Zentrale Konzepte in diesem Bereich sind:
 3. **Signifikanztests**: Sind die beobachteten Effekte statistisch signifikant?
 4. **Prognoseintervalle**: Wie zuverlässig sind unsere Vorhersagen?
 
-# 0. Vorbereitung
+# Vorbereitung
 
 ```{r vorbereitung-sichtbar, eval=FALSE}
 # Pakete laden
@@ -53,11 +63,11 @@ str(Advertising)
 
 **Hinweis zu Datenpfaden**: In R-Markdown-Dateien werden relative Pfade vom Speicherort der Datei aus interpretiert, daher der Pfad `"../data/WDDA_07.xlsx"`. In regulären R-Skripten würde der Pfad relativ zum Arbeitsverzeichnis angegeben werden.
 
-# 1. Bootstrap und Konfidenzintervalle
+# Bootstrap und Konfidenzintervalle
 
 Die Bootstrap-Methode ist ein Resampling-Verfahren, das es ermöglicht, die Stichprobenverteilung einer Statistik zu schätzen, ohne Annahmen über die zugrundeliegende Verteilung zu treffen.
 
-## 1.1 Einfache lineare Regression
+## Einfache lineare Regression
 
 ```{r bootstrap_einfach, eval=TRUE}
 # Einfaches Regressionsmodell (TV)
@@ -94,7 +104,7 @@ cat("Bootstrap 95%-CI für Steigung (TV):", round(CI_tv, 3), "\n\n")
 - Die Funktion `do()` aus dem Paket `mosaic` wiederholt einen Ausdruck mehrmals und sammelt die Ergebnisse.
 - Die Funktion `quantile()` berechnet Quantile einer Verteilung.
 
-## 1.2 Visualisierung der Bootstrap-Verteilungen
+## Visualisierung der Bootstrap-Verteilungen
 
 ```{r bootstrap_visualisierung, eval=TRUE, fig.width=12, fig.height=4}
 # Visualisierung der Bootstrap-Verteilungen
@@ -147,7 +157,7 @@ par(mfrow = c(1, 1))
 - Die Funktion `abline()` mit dem Parameter `v` fügt vertikale Linien zum Plot hinzu.
 - Die Funktion `plot()` erstellt ein Streudiagramm.
 
-## 1.3 Multiple Regression
+## Multiple Regression
 
 ```{r bootstrap_multiple, eval=TRUE}
 # Multiple Regression (TV + radio)
@@ -176,7 +186,7 @@ cat("95%-CI für Radio (multi):", round(CI_radio_multi, 3), "\n\n")
 - Die Formel `sales ~ TV + radio` in `lm()` gibt an, dass `sales` die abhängige Variable und `TV` und `radio` die unabhängigen Variablen sind.
 - Der Ausdruck `simcoef_multi$TV` extrahiert die Spalte `TV` aus dem Dataframe `simcoef_multi`.
 
-## 1.4 Visualisierung der Bootstrap-Verteilungen für multiple Regression
+## Visualisierung der Bootstrap-Verteilungen für multiple Regression
 
 ```{r bootstrap_visualisierung_multi, eval=TRUE, fig.width=12, fig.height=4}
 # Visualisierung der Bootstrap-Verteilungen für multiple Regression
@@ -221,11 +231,11 @@ par(mfrow = c(1, 1))
 - Bei starker Multikollinearität können die Konfidenzintervalle breiter werden, was die Präzision der Schätzungen verringert.
 - Die Visualisierung der gemeinsamen Verteilung kann helfen, komplexe Beziehungen zwischen den Koeffizienten zu erkennen, die in den einzelnen Konfidenzintervallen nicht sichtbar sind.
 
-# 2. Inferenz und Signifikanztests
+# Inferenz und Signifikanztests
 
 Signifikanztests ermöglichen es, die statistische Signifikanz der geschätzten Koeffizienten zu beurteilen und Hypothesen über die Parameter zu testen.
 
-## 2.1 t-Tests für Regressionskoeffizienten
+## t-Tests für Regressionskoeffizienten
 
 ```{r t_tests, eval=TRUE}
 # t-Tests für Regressionskoeffizienten
@@ -247,7 +257,7 @@ print(summary(md2)$coefficients)
 - Der Ausdruck `summary(md2)$coefficients` extrahiert die Koeffiziententabelle aus dem Regressionsobjekt.
 - Diese Tabelle enthält die geschätzten Koeffizienten, ihre Standardfehler, t-Werte und p-Werte.
 
-## 2.2 F-Statistik und Modellvergleich
+## F-Statistik und Modellvergleich
 
 ```{r f_test, eval=TRUE}
 # F-Statistik des Gesamtmodells
@@ -277,7 +287,7 @@ anova(md2, md3)  # Vergleich mittels F-Test
 - Die Funktion `anova()` führt einen F-Test zum Vergleich zweier geschachtelter Modelle durch.
 - Die Modelle müssen geschachtelt sein, d.h. alle Prädiktoren des einfacheren Modells müssen auch im komplexeren Modell enthalten sein.
 
-## 2.3 Prognose mit Konfidenz- und Prognoseintervallen
+## Prognose mit Konfidenz- und Prognoseintervallen
 
 ```{r prognose, eval=TRUE}
 # Prognose: Punktschätzung & Intervalle
@@ -308,7 +318,7 @@ print(pred2)
 - Der Parameter `interval` in `predict()` gibt an, ob Konfidenz- oder Prognoseintervalle berechnet werden sollen.
 - Die Ausgabe enthält drei Spalten: `fit` (die Punktprognose), `lwr` (die untere Grenze des Intervalls) und `upr` (die obere Grenze des Intervalls).
 
-## 2.4 Visualisierung von Konfidenz- und Prognoseintervallen
+## Visualisierung von Konfidenz- und Prognoseintervallen
 
 ```{r visualisierung_intervalle, eval=TRUE, fig.width=10, fig.height=6}
 # Erstellen eines Gitters von TV-Werten für die Vorhersage

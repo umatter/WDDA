@@ -1,4 +1,4 @@
-# WDDA FS 2025: Lösungen für Aufgabenserie 6
+# WDDA FS 2026: Lösungen für Aufgabenserie 6
 # Dieses Skript enthält die R-Code-Lösungen für die Aufgabenserie 6
 
 # Benötigte Pakete laden
@@ -176,6 +176,8 @@ cat("Lohnt sich nur bei längerer Beschäftigung\n")
 # ============================================================================
 # Daten einlesen
 download <- read_excel("data/WDDA_06.xlsx", sheet = "Download")
+# Nur die numerischen Variablen auswählen (Vendor ist eine Kategorialvariable)
+download <- download[, 1:3]
 names(download) <- c("time_sec", "size_mb", "hours_after_8")
 head(download)
 

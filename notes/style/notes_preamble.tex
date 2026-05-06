@@ -1,0 +1,97 @@
+% WDDA Vorlesungsnotizen Preamble
+% Geteiltes Styling für alle Notizen-Dokumente
+
+% ---- Seitenlayout ----
+\geometry{margin=2.5cm}
+
+% ---- Typografie ----
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ---- Code-/Verbatim-Zeilenumbruch ----
+% Lange Zeilen in Code-Chunks am Rand umbrechen
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines,breakanywhere}
+\fvset{breaklines=true,breakanywhere=true}
+
+% ---- Mathematik ----
+\usepackage{amsmath, amssymb}
+
+% ---- Mehr Abstand um Grafiken ----
+% Grössere Float-Abstände (für Bilder mit Caption innerhalb von figure-Floats)
+\setlength{\textfloatsep}{16pt plus 2pt minus 2pt}
+\setlength{\intextsep}{14pt plus 2pt minus 2pt}
+\setlength{\floatsep}{14pt plus 2pt minus 2pt}
+% Auch um inline-includegraphics (knitr-Plots ohne fig.cap) etwas Luft schaffen
+\usepackage{etoolbox}
+\AtBeginDocument{%
+  \let\WDDAoldincludegraphics\includegraphics
+  \renewcommand{\includegraphics}[2][]{%
+    \par\addvspace{0.8em}%
+    \WDDAoldincludegraphics[#1]{#2}%
+    \par\addvspace{0.8em}%
+  }%
+}
+
+% ---- Mehr Abstand um Code-Blöcke ----
+% Pandoc verpackt knitr-R-Chunks in 'Shaded' (Highlighting) und R-Output in 'verbatim'
+\BeforeBeginEnvironment{Shaded}{\par\addvspace{0.8em}}
+\AfterEndEnvironment{Shaded}{\par\addvspace{0.8em}}
+\BeforeBeginEnvironment{verbatim}{\par\addvspace{0.6em}}
+\AfterEndEnvironment{verbatim}{\par\addvspace{0.6em}}
+
+% ---- Farben (passend zum Foliendeck) ----
+\usepackage{xcolor}
+\definecolor{BFHdunkelblau}{RGB}{0,60,120}
+\definecolor{BFHorange}{RGB}{237,128,0}
+\definecolor{BFHmittelblau}{RGB}{0,90,170}
+\definecolor{BFHmittelgruen}{RGB}{0,130,80}
+
+% ---- Hyperlinks ----
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=BFHdunkelblau,
+  urlcolor=BFHmittelblau,
+  citecolor=BFHmittelgruen
+}
+
+% ---- Eigene Befehle ----
+\newcommand{\textti}[1]{\texttt{#1}}
+\newcommand{\courseName}{WDDA}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\SD}{SD}
+\DeclareMathOperator{\SE}{SE}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\corr}{corr}
+
+% ---- Boxen für Kernkonzepte ----
+\usepackage{tcolorbox}
+\newtcolorbox{keybox}[1][]{
+  colback=BFHdunkelblau!5,
+  colframe=BFHdunkelblau,
+  fonttitle=\bfseries,
+  title=#1
+}
+\newtcolorbox{examplebox}[1][]{
+  colback=BFHorange!5,
+  colframe=BFHorange,
+  fonttitle=\bfseries,
+  title=#1
+}
+
+% ---- Section-Styling ----
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{BFHdunkelblau}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{BFHmittelblau}}{\thesubsection}{1em}{}
+
+% ---- Kopf-/Fusszeile ----
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+% Kurzform der Section im Header: ohne Nummer, nicht in Grossbuchstaben
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancyhead[L]{\small\textcolor{BFHdunkelblau}{WDDA}}
+\fancyhead[R]{\small\textcolor{BFHdunkelblau}{\nouppercase{\leftmark}}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}

@@ -90,20 +90,28 @@ cat("Plausible Werte für Freihandel mit Indonesien:",
 # (c) FALSCH. Nachdem ein Konfidenzintervall berechnet wurde, enthält es entweder den wahren 
 #     Parameter oder nicht. Die 95% beziehen sich auf die Methode.
 
+
+
 # ============================================================================
 # Aufgabe 6: Konstruktion von Konfidenzintervallen
 # ============================================================================
-# (a) Für den Mittelwert μ
+# (a) Für den Mittelwert μ -- zwei mögliche Lesarten:
+#     Variante 1: Fehlermarge = SE (wie Musterlösung Aufgabenblatt)
+#     Variante 2: 95%-KI mit Fehlermarge 2·SE ("95%-Regel")
 x_bar <- 25
 se_mean <- 3
-margin_error <- 2 * se_mean  # Für ein 95%-Konfidenzintervall
 
-lower_bound_mean <- x_bar - margin_error
-upper_bound_mean <- x_bar + margin_error
+# Variante 1
+lower_v1 <- x_bar - se_mean
+upper_v1 <- x_bar + se_mean
+cat("Variante 1 (x̄ ± SE):        ", lower_v1, "bis", upper_v1, "\n")
 
-cat("95%-Konfidenzintervall für μ:", lower_bound_mean, "bis", upper_bound_mean, "\n")
+# Variante 2
+lower_v2 <- x_bar - 2 * se_mean
+upper_v2 <- x_bar + 2 * se_mean
+cat("Variante 2 (95%-KI, x̄ ± 2·SE):", lower_v2, "bis", upper_v2, "\n")
 
-# (b) Für den Anteil p
+# (b) Für den Anteil p (Fehlermarge direkt gegeben)
 p_hat <- 0.37
 margin_error_p <- 0.02
 
@@ -115,21 +123,39 @@ cat("Konfidenzintervall für p:", lower_bound_p, "bis", upper_bound_p, "\n")
 # ============================================================================
 # Aufgabe 7: Angstassoziationen bei Heranwachsenden
 # ============================================================================
+
+
 # Gegebene Werte
 mean_adults <- 0.225
 mean_teens <- 0.059
-se_diff <- 0.091
+se_diff <- 0.091 # Hinweis: "Schätzen Sie den Unterschied" + "Standardfehler der Schätzung"
+
+
+
 
 # Berechnung der Differenz
 diff_means <- mean_adults - mean_teens
+# Antwort für Teilaufgabe b)
+diff_means
+
+
+
+
 
 # Berechnung des 95%-Konfidenzintervalls
-margin_error <- 2 * se_diff
+margin_error <- 2 * se_diff # "Faustregel"
 lower_bound <- diff_means - margin_error
 upper_bound <- diff_means + margin_error
 
-cat("Differenz der Mittelwerte:", diff_means, "\n")
-cat("95%-Konfidenzintervall:", lower_bound, "bis", upper_bound, "\n")
+# Werte für Teilaufgabe c
+lower_bound
+upper_bound
+
+
+
+
+
+
 
 # Antworten:
 # (a) Die zu schätzende Grösse ist μA - μT (Differenz der mittleren Angstreaktionen)

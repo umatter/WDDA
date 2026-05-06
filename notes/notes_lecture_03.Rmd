@@ -1,8 +1,18 @@
 ---
 title: "R-Code Beispiele aus WDDA Vorlesung 03"
-author: "Ulrich Matter"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
 ---
 
 # Einleitung
@@ -16,7 +26,7 @@ Numerische Masse in der deskriptiven Statistik können in drei Hauptkategorien e
 2. **Streuungsmasse**: Beschreiben die Variabilität oder Dispersion der Daten (z.B. Varianz, Standardabweichung)
 3. **Zusammenhangsmasse**: Beschreiben die Beziehung zwischen zwei oder mehr Variablen (z.B. Kovarianz, Korrelation)
 
-# 0. Vorbereitung
+# Vorbereitung
 
 ```{r vorbereitung, eval=TRUE, message=FALSE, warning=FALSE}
 # Pakete laden
@@ -48,11 +58,11 @@ head(Salary)    # Zeigt die ersten Werte der Salary-Variable
 **Hinweis zu Datenpfaden**: In R-Markdown-Dateien werden relative Pfade vom Speicherort der Datei aus interpretiert, daher der Pfad `"../data/WDDA_03.xlsx"`. In regulären R-Skripten würde der Pfad relativ zum Arbeitsverzeichnis angegeben werden.
 
 
-# 1. Lagemasse
+# Lagemasse
 
 Lagemasse beschreiben die zentrale Tendenz einer Verteilung und geben an, wo sich das Zentrum der Daten befindet. Sie sind wichtige Kennzahlen, um einen ersten Eindruck von der Lage der Daten zu bekommen.
 
-## 1.1 Arithmetischer Mittelwert
+## Arithmetischer Mittelwert
 
 Der arithmetische Mittelwert ist die Summe aller Datenwerte geteilt durch die Anzahl der Beobachtungen. Er ist das am häufigsten verwendete Lagemass, hat jedoch den Nachteil, dass er empfindlich gegenüber Ausreissern ist.
 
@@ -86,7 +96,7 @@ print(paste("Mittelwert mit Ausreisser:", round(mean(salary_with_outlier), 2)))
 - Der Pipe-Operator `|>` leitet das Ergebnis des linken Ausdrucks als erstes Argument an die rechte Funktion weiter.
 - Die Funktion `round()` rundet auf eine bestimmte Anzahl von Dezimalstellen.
 
-## 1.2 Median
+## Median
 
 Der Median teilt die geordneten Daten in zwei Hälften. Er ist robust gegenüber Ausreissern und daher besonders nützlich für schiefe Verteilungen oder Daten mit extremen Werten.
 
@@ -126,7 +136,7 @@ print(paste("Mittelwert mit Ausreisser:", round(mean(salary_with_outlier), 2)))
 - Die Funktion `sort()` sortiert einen Vektor in aufsteigender Reihenfolge.
 - Der Modulo-Operator `%%` gibt den Rest einer Division zurück und wird hier verwendet, um zu prüfen, ob die Anzahl gerade oder ungerade ist.
 
-## 1.3 Modus
+## Modus
 
 Der Modus ist der am häufigsten vorkommende Wert in einem Datensatz. Er ist besonders nützlich für kategoriale Daten und kann im Gegensatz zu Mittelwert und Median auch für nominalskalierte Daten berechnet werden.
 
@@ -164,7 +174,7 @@ text(bp[which(names(brand_table) == modus_brand)],
 
 **Hinweis**: Bei mehreren gleich häufigen Werten gibt `which.max()` nur den ersten zurück. Um alle Modi zu finden, müsste man alle Positionen identifizieren, an denen die Häufigkeit dem Maximum entspricht.
 
-## 1.4 Gewichteter Mittelwert
+## Gewichteter Mittelwert
 
 Beim gewichteten Mittelwert wird jedem Datenwert ein Gewicht zugeordnet, das seine relative Bedeutung widerspiegelt. Dies ist besonders nützlich, wenn nicht alle Beobachtungen gleich wichtig sind oder wenn Daten bereits in aggregierter Form vorliegen.
 
@@ -209,11 +219,11 @@ text(1:length(xvar), xvar/2,
 - Bei der Visualisierung mit `barplot()` kann der Parameter `names.arg` verwendet werden, um die Balken zu beschriften.
 
 
-# 2. Streuungsmasse
+# Streuungsmasse
 
 Streuungsmasse beschreiben, wie stark die Daten um das Zentrum (Lagemass) verteilt sind. Sie geben Aufschluss über die Variabilität oder Dispersion der Daten und sind wichtig, um die Homogenität oder Heterogenität eines Datensatzes zu beurteilen.
 
-## 2.1 Spannweite
+## Spannweite
 
 Die Spannweite (Range) ist die Differenz zwischen dem grössten und dem kleinsten Wert in einem Datensatz. Sie ist das einfachste Streuungsmass, hat jedoch den Nachteil, dass sie nur von zwei extremen Werten abhängt und nichts über die Verteilung dazwischen aussagt.
 
@@ -248,7 +258,7 @@ text(max_salary, max(hist(Salary, plot = FALSE)$counts) * 0.9,
 - Die Funktion `abline()` mit dem Parameter `v` fügt vertikale Linien zu einem bestehenden Plot hinzu.
 - Die Funktion `hist()` mit dem Parameter `plot = FALSE` berechnet die Histogramm-Statistiken, ohne sie zu plotten.
 
-## 2.2 Quartile und Interquartilsabstand (IQR)
+## Quartile und Interquartilsabstand (IQR)
 
 Quartile teilen die geordneten Daten in vier gleiche Teile. Der Interquartilsabstand (IQR) ist die Differenz zwischen dem dritten Quartil (Q3) und dem ersten Quartil (Q1) und umfasst die mittleren 50% der Daten. Er ist ein robustes Streuungsmass, das nicht von Ausreissern beeinflusst wird.
 
@@ -309,7 +319,7 @@ text(1.3, lower_fence, "Untere Ausreissergrenze", col = "darkred")
 - Die Funktion `IQR()` ist eine eingebaute Alternative zur manuellen Berechnung des Interquartilsabstands.
 - In Boxplots werden Ausreisser typischerweise als einzelne Punkte dargestellt.
 
-## 2.3 Varianz und Standardabweichung
+## Varianz und Standardabweichung
 
 Die Varianz misst die durchschnittliche quadrierte Abweichung vom Mittelwert und ist ein zentrales Mass für die Streuung der Daten. Die Standardabweichung ist die Quadratwurzel der Varianz und hat den Vorteil, dass sie in der gleichen Einheit wie die Originaldaten ist.
 
@@ -366,7 +376,7 @@ legend("topright",
 - Die Berechnung von Konfidenzintervallen
 
 
-# 3. Empirische Regel
+# Empirische Regel
 
 Die empirische Regel (auch 68-95-99,7-Regel genannt) beschreibt die Verteilung der Daten um den Mittelwert bei annähernd normalverteilten Daten. Sie besagt, dass:
 - Etwa 68% der Daten innerhalb einer Standardabweichung vom Mittelwert liegen
@@ -452,7 +462,7 @@ Die Abweichungen der tatsächlichen Anteile von den erwarteten Werten (68%, 95%,
 - Die Funktion `rgb()` erstellt Farben mit Transparenz (der vierte Parameter ist Alpha).
 
 
-# 4. Standardisierung
+# Standardisierung
 
 Die Standardisierung (z-Transformation) macht verschiedene Variablen vergleichbar, indem sie sie auf eine gemeinsame Skala mit Mittelwert 0 und Standardabweichung 1 bringt. Dies ist besonders nützlich, wenn Variablen mit unterschiedlichen Einheiten oder Grössenordnungen verglichen werden sollen.
 
@@ -515,7 +525,7 @@ if (length(extreme_values) > 0) {
 - Die Funktion `abs()` berechnet den Absolutbetrag eines Wertes.
 
 
-# 5. Schiefe
+# Schiefe
 
 Die Schiefe (Skewness) misst die Asymmetrie der Verteilung. Sie gibt an, ob die Verteilung symmetrisch ist oder ob sie einen längeren Schwanz auf einer Seite hat.
 
@@ -599,11 +609,11 @@ Die Schiefe ist wichtig für die Wahl geeigneter statistischer Methoden, da viel
 - Die Normalverteilung ist immer symmetrisch (Schiefe = 0).
 
 
-# 6. Zusammenhangsmasse
+# Zusammenhangsmasse
 
 Zusammenhangsmasse quantifizieren die Stärke und Richtung der Beziehung zwischen zwei oder mehr Variablen. Sie sind grundlegend für die Analyse von Abhängigkeiten und Korrelationen in Daten.
 
-## 6.1 Kovarianz
+## Kovarianz
 
 Die Kovarianz misst den linearen Zusammenhang zwischen zwei Variablen. Sie gibt an, ob die Variablen tendenziell gemeinsam steigen und fallen (positive Kovarianz) oder gegenläufig sind (negative Kovarianz).
 
@@ -685,7 +695,7 @@ Die Kovarianz hat jedoch einen Nachteil: Ihr Wert hängt von den Einheiten der V
 - Der Parameter `lty` steuert den Linientyp (1 = durchgezogen, 2 = gestrichelt, etc.).
 - Die Funktion `text()` fügt Text an bestimmten Koordinaten hinzu.
 
-## 6.2 Korrelationskoeffizient
+## Korrelationskoeffizient
 
 Der Korrelationskoeffizient (Pearson's r) normiert die Kovarianz auf den Bereich [-1, 1], indem er sie durch das Produkt der Standardabweichungen teilt. Dies macht ihn unabhängig von den Einheiten der Variablen und ermöglicht direkte Vergleiche zwischen verschiedenen Variablenpaaren.
 
@@ -785,11 +795,11 @@ Richtwerte für die Interpretation der Korrelationsstärke:
 - Die Funktion `rnorm()` erzeugt normalverteilte Zufallszahlen.
 
 
-# 7. Visualisierung
+# Visualisierung
 
 Visualisierungen sind ein mächtiges Werkzeug in der deskriptiven Statistik, um Muster, Trends und Beziehungen in Daten zu erkennen und zu kommunizieren. Sie ergänzen numerische Masse und helfen, komplexe Zusammenhänge intuitiv zu erfassen.
 
-## 7.1 Boxplots
+## Boxplots
 
 Boxplots (auch Box-Whisker-Plots genannt) zeigen die Verteilung der Daten über ihre Quartile. Sie sind besonders nützlich zum Erkennen von Ausreissern und zum Vergleich von Gruppen.
 

@@ -1,8 +1,18 @@
 ---
 title: "R-Code Beispiele aus WDDA Vorlesung 01"
-author: "Ulrich Matter"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
 ---
 
 # Einleitung
@@ -10,7 +20,7 @@ output: html_document
 Dieses Dokument fasst alle R-Code-Beispiele der WDDA Lecture 01 Folien zusammen. Es enthält zusätzliche Kommentare, Erklärungen und Beispiele, um das Verständnis für die einzelnen Code-Snippets zu erleichtern.
 
 
-# 1. Import eines Datensatzes
+# Import eines Datensatzes
 
 In diesem Abschnitt importieren wir einen Datensatz mit dem **readxl**-Paket. Dabei erkennt `read_excel()` automatisch die Datentypen. Zur Überprüfung der importierten Datenstruktur kannst Du `str()` verwenden.
 
@@ -32,7 +42,7 @@ str(markets)  # Zeigt die Struktur des Dataframes 'markets'
 *Hinweis:* R speichert das Objekt `markets` als einen Dataframe.
 
 
-# 2. R Syntax-Stile
+# R Syntax-Stile
 
 R bietet verschiedene Möglichkeiten, Code zu schreiben. Die zwei Hauptstile sind:
 
@@ -65,7 +75,7 @@ Tools -> Global Options -> Code -> "Use native pipe operator"
 (Quelle: [Stack Overflow](https://stackoverflow.com/questions/68667933/how-to-fast-insert-new-pipe-operator-in-rstudio))
 
 
-# 3. Navigation in Dataframes
+# Navigation in Dataframes
 
 Hier zeigen wir verschiedene Methoden, um ein Dataframe zu inspizieren und zu unterteilen. Jede Methode ist für unterschiedliche Aufgaben nützlich.
 
@@ -96,7 +106,7 @@ head(markets)  # Zeige die ersten sechs Zeilen des Dataframes
 ```
 
 
-# 4. Verwendung von attach() und detach()
+# Verwendung von attach() und detach()
 
 Die Funktion `attach()` erleichtert den Zugriff auf die Variablen eines Dataframes, indem sie diese dem Suchpfad hinzufügt. Allerdings kann dies zu Namenskonflikten führen, wenn mehrere Objekte denselben Namen haben. Eine Alternative ist die Verwendung von `with()`, die den Gültigkeitsbereich einschränkt.
 
@@ -119,7 +129,7 @@ trades
 with(markets, summary(trades))  # Fasst die Spalte 'trades' zusammen, ohne das Dataframe dauerhaft anzuhängen
 ```
 
-# 5. Verwendung von length()
+# Verwendung von length()
 
 Die Funktion `length()` verhält sich bei Dataframes und Vektoren unterschiedlich. Bei einem Dataframe gibt `length()` die Anzahl der Spalten (Variablen) zurück, nicht die Anzahl der Zeilen (Beobachtungen). Für die Zeilenzählung solltest Du `nrow()` verwenden.
 

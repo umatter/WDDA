@@ -1,8 +1,18 @@
 ---
 title: "R-Code Beispiele aus WDDA Vorlesung 5 (Kapitel 5)"
-author: "Ulrich Matter"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
 ---
 
 # Einleitung
@@ -19,7 +29,7 @@ Zentrale Konzepte in diesem Bereich sind:
 4. **Bestimmtheitsmass (R²)**: Wie gut erklärt das Modell die Variation in den Daten?
 5. **Prognose**: Wie können wir das Modell für Vorhersagen nutzen?
 
-# 0. Vorbereitung
+# Vorbereitung
 
 ```{r vorbereitung-sichtbar, eval=FALSE}
 # Pakete laden
@@ -55,7 +65,7 @@ str(data)
 
 **Hinweis zu Datenpfaden**: In R-Markdown-Dateien werden relative Pfade vom Speicherort der Datei aus interpretiert, daher der Pfad `"../data/WDDA_05.xlsx"`. In regulären R-Skripten würde der Pfad relativ zum Arbeitsverzeichnis angegeben werden.
 
-# 1. Variation
+# Variation
 
 Bevor wir mit der Regression beginnen, betrachten wir die Variation in unserer Zielvariable (sales).
 
@@ -86,7 +96,7 @@ cat("Maximum von sales:", max(sales), "\n")
 - Die Funktion `sd()` berechnet die Standardabweichung eines Vektors.
 - Die Funktionen `min()` und `max()` geben den kleinsten bzw. grössten Wert eines Vektors zurück.
 
-# 2. Erklärende Variable
+# Erklärende Variable
 
 Nun betrachten wir den Zusammenhang zwischen unserer Zielvariable (sales) und der erklärenden Variable (TV-Werbeausgaben).
 
@@ -122,7 +132,7 @@ cat("Kovarianz zwischen sales und TV:", round(kovarianz, 3), "\n")
 - Die Funktion `cor()` berechnet die Pearson-Korrelation zwischen zwei Vektoren.
 - Die Funktion `cov()` berechnet die Kovarianz zwischen zwei Vektoren.
 
-# 3. Kandidaten vergleichen
+# Kandidaten vergleichen
 
 Wir vergleichen verschiedene mögliche Regressionsgeraden, um zu sehen, welche den Zusammenhang zwischen TV-Werbeausgaben und Verkaufszahlen am besten beschreibt.
 
@@ -160,7 +170,7 @@ legend("bottomright",
 - Der Parameter `lty` (line type) in `curve()` und `legend()` gibt den Linientyp an (1 = durchgezogen, 2 = gestrichelt, 3 = gepunktet, etc.).
 - Die Funktion `legend()` fügt eine Legende zum Plot hinzu.
 
-# 4. Abweichungen vom Modell: Quantifizierung
+# Abweichungen vom Modell: Quantifizierung
 
 Um zu bestimmen, welche Regressionsgerade besser ist, quantifizieren wir die Abweichungen zwischen den beobachteten und den vorhergesagten Werten.
 
@@ -213,7 +223,7 @@ legend("bottomright",
 - Die **Summe der quadrierten Residuen** (Residual Sum of Squares, RSS) ist ein Mass für die Gesamtabweichung des Modells: RSS = Σ(y_i - ŷ_i)²
 - Je kleiner die RSS, desto besser passt das Modell zu den Daten.
 - Die **Methode der kleinsten Quadrate** (Least Squares) wählt die Regressionsgerade, die die RSS minimiert.
-- In diesem Beispiel hat Linie 2 (y = 5 + 0.07x) eine kleinere RSS als Linie 1 (y = 7 + 0.04x), was darauf hindeutet, dass sie besser zu den Daten passt.
+- In diesem Beispiel hat Linie 1 (y = 7 + 0.04x) eine kleinere RSS als Linie 2 (y = 5 + 0.07x), was darauf hindeutet, dass sie besser zu den Daten passt.
 
 **R-Erklärung**:
 
@@ -223,7 +233,7 @@ legend("bottomright",
 - Der Parameter `pch` (plotting character) in `points()` und `legend()` gibt das Symbol für Punkte an.
 - Der Parameter `cex` (character expansion) in `points()` gibt die Grösse der Punkte an.
 
-# 5. Best Fit: Schätzgerade
+# Best Fit: Schätzgerade
 
 Nun berechnen wir die optimale Regressionsgerade nach der Methode der kleinsten Quadrate.
 
@@ -261,10 +271,11 @@ plot(sales ~ TV, main = "Vergleich: Händische Berechnung vs. lm()",
      xlab = "TV-Ausgaben (in 1000 USD)", ylab = "Sales (in 1000 USD)")
 curve(lbf(x), add = TRUE, col = "darkgreen", lwd = 2)
 abline(md1, col = "orange", lwd = 2, lty = 2)
-legend("bottomright", 
-       legend = c("Händisch: y = 7.0326 + 0.0475x", "lm(): y = 7.0326 + 0.0475x"), 
-       col = c("darkgreen", "orange"), 
-       lty = c(1, 2), 
+legend("bottomright",
+       legend = c(sprintf("Händisch: y = %.4f + %.4fx", b0, b1),
+                  sprintf("lm():     y = %.4f + %.4fx", coef(md1)[1], coef(md1)[2])),
+       col = c("darkgreen", "orange"),
+       lty = c(1, 2),
        lwd = 2)
 ```
 
@@ -285,7 +296,7 @@ legend("bottomright",
 - Die Funktion `coef()` extrahiert die Koeffizienten aus einem Regressionsmodell.
 - Die Funktion `abline()` fügt eine Gerade zu einem bestehenden Plot hinzu, basierend auf einem Regressionsmodell.
 
-# 6. Residuen
+# Residuen
 
 Wir betrachten nun die Residuen des Regressionsmodells, um die Qualität der Anpassung zu beurteilen.
 
@@ -343,7 +354,7 @@ abline(h = 0, col = "darkgray", lwd = 2)
 - Die Funktion `resid()` extrahiert die Residuen aus einem Regressionsmodell.
 - Die Funktion `abline()` mit dem Parameter `h` fügt eine horizontale Linie zum Plot hinzu.
 
-# 7. TSS und RSS
+# TSS und RSS
 
 Wir untersuchen nun die Zerlegung der Gesamtvariation in erklärte und nicht erklärte Variation.
 
@@ -379,7 +390,7 @@ cat("Differenz (sollte nahe 0 sein):", round(TSS - (ESS + RSS), 10), "\n")
 - Die Funktion `mean()` berechnet den Mittelwert eines Vektors.
 - Die Funktion `round()` rundet eine Zahl auf eine bestimmte Anzahl von Dezimalstellen.
 
-# 8. Zerlegung der Variation
+# Zerlegung der Variation
 
 Wir visualisieren die Zerlegung der Gesamtvariation in erklärte und nicht erklärte Variation.
 
@@ -433,7 +444,7 @@ cat("TSS = ESS + RSS:", round(TSS, 2), "=", round(ESS, 2), "+", round(RSS, 2), "
 - Die Funktion `points()` fügt Punkte zu einem bestehenden Plot hinzu.
 - Die Funktion `legend()` fügt eine Legende zum Plot hinzu.
 
-# 9. Bestimmtheitsmass
+# Bestimmtheitsmass
 
 Das Bestimmtheitsmass R² gibt an, wie gut das Regressionsmodell die Variation in den Daten erklärt.
 
@@ -481,7 +492,7 @@ barplot(c(r_squared, 1 - r_squared),
 - Der Parameter `names.arg` in `barplot()` gibt die Namen der Balken an.
 - Der Parameter `col` in `barplot()` gibt die Farben der Balken an.
 
-# 10. Erwartungen an Residuen
+# Erwartungen an Residuen
 
 Wir untersuchen die Eigenschaften der Residuen, um die Annahmen der linearen Regression zu überprüfen.
 
@@ -535,7 +546,7 @@ cat("Der typische Fehler bei der Vorhersage von sales beträgt etwa", round(RSE_
 - Der Ausdruck `summary(md1)$sigma` extrahiert den RSE aus dem Regressionsobjekt.
 - Die Funktion `sqrt()` berechnet die Quadratwurzel einer Zahl.
 
-# 11. Prognose
+# Prognose
 
 Schliesslich verwenden wir das Regressionsmodell, um Vorhersagen für neue Werte der unabhängigen Variable zu treffen.
 

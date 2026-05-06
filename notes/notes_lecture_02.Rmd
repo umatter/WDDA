@@ -1,8 +1,18 @@
 ---
 title: "R-Code Beispiele aus WDDA Vorlesung 02"
-author: "Ulrich Matter"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
 ---
 
 # Einleitung
@@ -12,7 +22,7 @@ Die hier verwendeten Daten finden Sie in `data/WDDA_02.xlsx`.
 
 Die deskriptive Statistik ist ein grundlegender Bereich der Statistik, der sich mit der Zusammenfassung, Visualisierung und Interpretation von Daten befasst. Im Gegensatz zur inferentiellen Statistik, die Schlussfolgerungen über eine Grundgesamtheit auf Basis von Stichproben zieht, beschreibt die deskriptive Statistik die vorliegenden Daten ohne darüber hinausgehende Schlussfolgerungen.
 
-# 0. Vorbereitung
+# Vorbereitung
 
 ```{r vorbereitung, eval=TRUE}
 # Laden der benötigten Pakete
@@ -43,7 +53,7 @@ Stereo <- read_excel("../data/WDDA_02.xlsx", sheet = "Stereo")
 
 **Hinweis zu Datenpfaden**: Beachten Sie, dass in den R-Markdown-Dateien relative Pfade verwendet werden (`../data/`), während im R-Skript direkte Pfade (`data/`) verwendet werden. Dies liegt daran, dass R-Markdown-Dateien vom Speicherort der Datei aus arbeiten, während R-Skripte vom Arbeitsverzeichnis aus arbeiten.
 
-# 1. Häufigkeitsverteilungen
+# Häufigkeitsverteilungen
 
 Eine Häufigkeitsverteilung fasst die Daten tabellarisch zusammen, indem sie die Anzahl der Elemente in nicht-überlappenden Klassen angibt.
 
@@ -64,7 +74,7 @@ print(freq)  # Ausgabe der Häufigkeitstabelle
 - Die Funktion `table()` erstellt eine Häufigkeitstabelle, die für jede eindeutige Kategorie die Anzahl der Vorkommen zählt.
 
 
-# 2. Relative Häufigkeiten
+# Relative Häufigkeiten
 
 Die relative Häufigkeit einer Kategorie entspricht dem Anteil der absoluten Häufigkeit an der Gesamthäufigkeit.
 
@@ -86,9 +96,9 @@ print(relfreq_alt)  # Gibt das gleiche Ergebnis wie oben
 - Beide Methoden liefern das gleiche Ergebnis, aber `prop.table()` ist oft kürzer und lesbarer.
 
 
-# 3. Grafische Darstellungen
+# Grafische Darstellungen
 
-## 3.1 Balkendiagramme
+## Balkendiagramme
 
 Balkendiagramme visualisieren die absolute Häufigkeit von kategorialen Daten.
 
@@ -121,7 +131,7 @@ barplot(freq,
   - `names.arg`: Alternative Beschriftungen für die Kategorien
 
 
-## 3.2 Kuchendiagramme
+## Kuchendiagramme
 
 Kreisdiagramme visualisieren die relative Häufigkeit von nominalen Daten.
 
@@ -149,7 +159,7 @@ pie(freq,
 **Hinweis zur Visualisierung**: Obwohl Kreisdiagramme weit verbreitet sind, werden sie in der professionellen Datenanalyse oft kritisch gesehen, da Menschen Winkel und Flächen schwerer vergleichen können als Längen. Balkendiagramme sind daher oft die bessere Wahl für präzise Vergleiche.
 
 
-# 4. Zusammenfassen quantitativer Daten
+# Zusammenfassen quantitativer Daten
 
 Bei quantitativen Daten mit vielen einzigartigen Werten ist eine Gruppierung in Klassen (Bins) sinnvoll.
 
@@ -181,7 +191,7 @@ Eine Faustregel ist die Sturges-Regel: k ≈ 1 + 3.322 × log10(n), wobei k die 
 - Die Notation `(a,b]` bedeutet, dass das Intervall a ausschliesst und b einschliesst.
 
 
-# 5. Kumulierte Häufigkeiten
+# Kumulierte Häufigkeiten
 
 Die kumulierte Häufigkeit gibt an, wie viele Datenwerte kleiner oder gleich der oberen Grenze der jeweiligen Klasse sind.
 
@@ -213,7 +223,7 @@ Kumulierte Häufigkeiten werden oft verwendet für:
 - Die Division durch die Gesamtsumme ergibt die kumulierten relativen Häufigkeiten.
 
 
-# 6. Histogramme
+# Histogramme
 
 Histogramme sind die wichtigste grafische Darstellung für quantitative Daten.
 
@@ -258,7 +268,7 @@ Die Wahl der Klassenanzahl ist entscheidend: Zu wenige Klassen können wichtige 
 *Tipp*: Bei der Wahl der Klassenanzahl gilt es, das Signal (Muster) zu modellieren und nicht das Rauschen. Experimentieren Sie mit verschiedenen Werten für `breaks`, um die aussagekräftigste Darstellung zu finden.
 
 
-# 7. Schiefe
+# Schiefe
 
 Histogramme können Hinweise auf die Schiefe (Asymmetrie) der Verteilung geben.
 
@@ -304,7 +314,7 @@ Die Schiefe ist wichtig für die Wahl geeigneter statistischer Methoden, da viel
 - Die Parameter `col` und `lwd` steuern die Farbe und Breite der Linie.
 
 
-# 8. Filterung von Datensätzen
+# Filterung von Datensätzen
 
 Filter ermöglichen die Auswahl von Teilmengen eines Datensatzes anhand von Bedingungen.
 
@@ -363,7 +373,7 @@ head(complex_filter)
 - Die Funktion `nrow()` gibt die Anzahl der Zeilen zurück.
 
 
-# 9. Kreuztabellen
+# Kreuztabellen
 
 Kreuztabellen (Kontingenztafeln) fassen die Daten für zwei Variablen tabellarisch zusammen.
 
@@ -415,7 +425,7 @@ Kreuztabellen können verwendet werden, um:
 - Die Funktion `mosaicplot()` erstellt eine grafische Darstellung einer Kreuztabelle, bei der die Flächen proportional zu den Häufigkeiten sind.
 
 
-# 10. Recoding und Umgestalten
+# Recoding und Umgestalten
 
 Beim Recoding werden Variablen umkodiert oder neu strukturiert.
 
@@ -471,7 +481,7 @@ Diese Transformationen sind oft notwendig, um Daten für spezifische Analysen vo
 - `setNames()` benennt die Spalten eines Dataframes um.
 - Der `$`-Operator wird verwendet, um auf Spalten zuzugreifen oder neue Spalten zu erstellen.
 
-# 11. Aggregation
+# Aggregation
 
 Aggregation fasst Daten zusammen.
 
@@ -518,7 +528,7 @@ Aggregation ist ein zentraler Bestandteil der deskriptiven Statistik und der exp
 - Mit `summarise()` können mehrere Aggregationen gleichzeitig durchgeführt werden.
 
 
-# 12. Streudiagramme
+# Streudiagramme
 
 Streudiagramme visualisieren die Beziehung zwischen zwei quantitativen Variablen.
 

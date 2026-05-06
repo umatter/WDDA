@@ -273,9 +273,15 @@ women <- ExerciseHours[ExerciseHours$Sex == "F", ]
 mw.m  <- mean(men$Exercise)
 mw.f  <- mean(women$Exercise)
 diff.hat <- mw.m - mw.f
+
 cat("Differenz der durchschnittlichen Exercise-Stunden (Männer - Frauen):", round(diff.hat, 2), "\n")
+
+
+
 # Bootstrap für Differenzen: Ziehe 3000 Bootstrap-Stichproben
 boot3000.diff <- do(3000) * (mean(resample(men$Exercise)) - mean(resample(women$Exercise)))
+
+
 diff.q025 <- quantile(boot3000.diff$result, probs = 0.025, type = 1)
 diff.q975 <- quantile(boot3000.diff$result, probs = 0.975, type = 1)
 cat("95%-Konfidenzintervall für Differenzen:", round(diff.q025, 2), "bis", round(diff.q975, 2), "\n\n")

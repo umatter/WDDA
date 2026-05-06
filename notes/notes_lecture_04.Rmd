@@ -1,8 +1,18 @@
 ---
 title: "R-Code Beispiele aus WDDA Vorlesung 4 (Kapitel 4)"
-author: "Ulrich Matter"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
 ---
 
 # Einleitung
@@ -18,7 +28,7 @@ Zentrale Konzepte in diesem Bereich sind:
 3. **Bootstrap-Methoden**: Resampling-Techniken zur Schätzung von Standardfehlern und Konfidenzintervallen
 4. **Konfidenzintervalle**: Bereiche, die mit einer bestimmten Wahrscheinlichkeit den wahren Populationsparameter enthalten
 
-# 0. Vorbereitung
+# Vorbereitung
 
 
 
@@ -62,7 +72,7 @@ str(Footballer)
 
 **Hinweis zu Datenpfaden**: In R-Markdown-Dateien werden relative Pfade vom Speicherort der Datei aus interpretiert, daher der Pfad `"../data/WDDA_04.xlsx"`. In regulären R-Skripten würde der Pfad relativ zum Arbeitsverzeichnis angegeben werden.
 
-# 1. Notation: Population vs. Stichprobe
+# Notation: Population vs. Stichprobe
 
 In der Statistik unterscheiden wir zwischen Parametern der Population und Schätzungen aus Stichproben. Diese werden mit unterschiedlichen Symbolen notiert:
 
@@ -108,7 +118,7 @@ par(mfrow = c(1, 1))
 - Die Funktion `abline()` mit dem Parameter `v` fügt eine vertikale Linie zum Plot hinzu.
 
 
-# 2. Simulation der Stichprobenvariation
+# Simulation der Stichprobenvariation
 
 Um die Variation zwischen verschiedenen Stichproben zu verstehen, können wir viele Stichproben ziehen und die Verteilung der Stichprobenmittelwerte betrachten.
 
@@ -155,7 +165,7 @@ abline(v = mu, col = "red", lwd = 2)
 - Die Funktion `dotPlot()` erstellt einen Punktdiagramm, wobei jeder Punkt einem Stichprobenmittelwert entspricht.
 
 
-# 3. Standardfehler der Stichprobenmittelwerte
+# Standardfehler der Stichprobenmittelwerte
 
 Der Standardfehler ist ein Mass für die Präzision einer Stichprobenstatistik. Er gibt an, wie stark die Stichprobenstatistik (z.B. der Mittelwert) zwischen verschiedenen Stichproben variiert.
 
@@ -191,7 +201,7 @@ cat("Verhältnis σ/se:", round(sigma/se_simuliert, 2),
 - Die Funktion `sqrt()` berechnet die Quadratwurzel einer Zahl.
 
 
-# 4. Einfluss der Stichprobengrösse
+# Einfluss der Stichprobengrösse
 
 Die Stichprobengrösse hat einen entscheidenden Einfluss auf die Präzision von Schätzungen. Mit zunehmender Stichprobengrösse wird die Variation der Stichprobenstatistiken kleiner.
 
@@ -284,7 +294,7 @@ legend("topright",
 - Die Funktion `legend()` fügt eine Legende zum Plot hinzu.
 
 
-# 5. Bereich plausibler Werte
+# Bereich plausibler Werte
 
 Ein Bereich plausibler Werte (oft als Konfidenzintervall bezeichnet) gibt an, in welchem Bereich der wahre Populationsparameter mit einer bestimmten Wahrscheinlichkeit liegt.
 
@@ -330,7 +340,7 @@ arrows(mean(plausible_interval), -0.25, plausible_interval[2], -0.05, col = "blu
 
 
 
-# 6. Konfidenzintervalle – Simulation für Proportionen
+# Konfidenzintervalle – Simulation für Proportionen
 
 Wir können die Eigenschaften von Konfidenzintervallen durch Simulation untersuchen. Hier simulieren wir den Anteil von Personen mit Hochschulabschluss in der Schweiz.
 
@@ -373,7 +383,7 @@ cat("Theoretischer Standardfehler (SE) für den Anteil:", round(se_theo, 4), "\n
 
 
 
-# 7. Darstellung von Konfidenzintervallen aus der Simulation
+# Darstellung von Konfidenzintervallen aus der Simulation
 
 Wir können für jede simulierte Stichprobe ein Konfidenzintervall berechnen und visualisieren, wie viele dieser Intervalle den wahren Populationsparameter enthalten.
 
@@ -423,7 +433,7 @@ legend("topright",
 
 
 
-# 8. Bootstrap-Stichproben und Standardfehler
+# Bootstrap-Stichproben und Standardfehler
 
 Die Bootstrap-Methode ist eine Resampling-Technik, bei der wiederholt Stichproben mit Zurücklegen aus der ursprünglichen Stichprobe gezogen werden. Sie ermöglicht die Schätzung von Standardfehlern und Konfidenzintervallen ohne Annahmen über die zugrundeliegende Verteilung.
 
@@ -482,7 +492,7 @@ cat("Theoretischer Standardfehler (distance):", round(se_theo_dist, 2), "km\n")
 
 
 
-# 9. Bootstrap: Beispiel – Nussmischung
+# Bootstrap: Beispiel – Nussmischung
 
 Ein weiteres Beispiel für die Bootstrap-Methode: Wir schätzen den Anteil von Cashew-Nüssen in einer Nussmischung.
 
@@ -528,7 +538,7 @@ cat("Theoretischer Standardfehler (Nussanteil):", round(se_theo_nuts, 3), "\n")
 
 
 
-# 10. Konfidenzintervalle mit der Bootstrap-Methode (SE-Methode)
+# Konfidenzintervalle mit der Bootstrap-Methode (SE-Methode)
 
 Mit dem Bootstrap-Standardfehler können wir Konfidenzintervalle für den Mittelwert der Arbeitswege berechnen.
 
@@ -572,7 +582,7 @@ legend("topright",
 
 
 
-# 11. Alternative Konfidenzintervalle – Bootstrap-Perzentil-Methode
+# Alternative Konfidenzintervalle – Bootstrap-Perzentil-Methode
 
 Eine alternative Methode zur Berechnung von Bootstrap-Konfidenzintervallen ist die Perzentil-Methode, bei der direkt die Perzentile der Bootstrap-Verteilung verwendet werden.
 
@@ -625,7 +635,7 @@ legend("topright",
 
 
 
-# 12. Konfidenzintervalle mit Perzentilen für unterschiedliche Konfidenzniveaus
+# Konfidenzintervalle mit Perzentilen für unterschiedliche Konfidenzniveaus
 
 Wir können Bootstrap-Konfidenzintervalle für verschiedene Konfidenzniveaus berechnen, um die Auswirkung des Konfidenzniveaus auf die Breite des Intervalls zu untersuchen.
 
@@ -677,7 +687,7 @@ legend("topright",
 
 
 
-# 13. Konfidenzintervalle für Differenzen
+# Konfidenzintervalle für Differenzen
 
 Wir können die Bootstrap-Methode auch verwenden, um Konfidenzintervalle für Differenzen zwischen Gruppen zu berechnen, z.B. für die Differenz der durchschnittlichen Trainingszeiten zwischen Männern und Frauen.
 
@@ -737,7 +747,7 @@ cat("Interpretation: Die Differenz ist", ifelse(enthält_null, "nicht", ""), "st
 
 
 
-# 14. Konfidenzintervalle für Korrelationen
+# Konfidenzintervalle für Korrelationen
 
 Schliesslich können wir die Bootstrap-Methode auch verwenden, um Konfidenzintervalle für Korrelationen zu berechnen, z.B. für die Korrelation zwischen Preis und Kilometerstand von Mustang-Autos.
 

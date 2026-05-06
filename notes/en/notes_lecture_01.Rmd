@@ -1,0 +1,150 @@
+---
+title: "R Code Examples from WDDA Lecture 01"
+subtitle: "WDDA -- Data Management and Data Analysis"
+author: "Prof. Dr. Ulrich Matter"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: ../style/notes_preamble.tex
+lang: en
+---
+
+# Introduction
+
+This document collects all R code examples from the WDDA Lecture 01 slides. It contains additional comments, explanations, and examples to make the individual code snippets easier to understand.
+
+
+# Importing a Dataset
+
+In this section we import a dataset using the **readxl** package. `read_excel()` automatically detects column types. Use `str()` to inspect the structure of the imported data.
+
+```{r import-dataset, eval=FALSE}
+library(readxl)  # Load the readxl package for importing Excel files
+markets <- read_excel("WDDA_01.xlsx", sheet = "Exchanges")  # Import the data from the "Exchanges" sheet
+```
+
+```{r import-dataset-hidden, echo=FALSE, message=FALSE}
+library(readxl)
+markets <- read_excel("../../data/WDDA_01.xlsx", sheet = "Exchanges")
+```
+
+*Additional tip:* Inspect the structure of the imported data frame:
+```{r}
+str(markets)  # Show the structure of the data frame 'markets'
+```
+
+*Note:* R stores the object `markets` as a data frame.
+
+
+# R Syntax Styles
+
+R offers several ways of writing code. The two main styles are:
+
+1. **Classic (nested) syntax**: functions are read from the inside out
+2. **Pipe syntax**: functions are read from left to right (like a pipeline)
+
+Here is a comparison of the two styles:
+
+```{r syntax-comparison, eval=FALSE}
+# Classic syntax (nested)
+mean(sqrt(abs(x)))  # Read from inside to outside: first abs(), then sqrt(), then mean()
+
+# Pipe syntax with |>
+x |> abs() |> sqrt() |> mean()  # Read left to right: first abs(), then sqrt(), then mean()
+
+# A more complex example:
+# Classic
+subset(transform(data, z = x + y), z > 0)
+
+# With the pipe
+data |>
+  transform(z = x + y) |>
+  subset(z > 0)
+```
+
+The pipe syntax (`|>`) was introduced in R 4.1.0 and is now the recommended style for readable code. The older pipe operator (`%>%`) from the magrittr package works similarly.
+
+*Tip*: In RStudio you can use the keyboard shortcut `Ctrl + Shift + M` to insert the pipe operator. To switch between the native (`|>`) and the magrittr (`%>%`) pipe operator, go to:
+Tools -> Global Options -> Code -> "Use native pipe operator"
+(Source: [Stack Overflow](https://stackoverflow.com/questions/68667933/how-to-fast-insert-new-pipe-operator-in-rstudio))
+
+
+# Navigating Data Frames
+
+Here we show different methods for inspecting and subsetting a data frame. Each method is useful for different tasks.
+
+```{r navigation-dataframes, eval=FALSE}
+# Show the entire data frame
+markets
+
+# Show the column names of the data frame
+names(markets)
+
+# Classic subsetting examples:
+markets$trades        # Access the column 'trades'
+markets[3,]           # Access the third row
+markets[,2]           # Access the second column
+markets[3,2]          # Access the element in the 3rd row and 2nd column
+
+# Using tidyverse functions for a more readable syntax:
+markets |> pull(trades)         # Extract the column 'trades' as a vector
+markets |> slice(3)             # Access the third row
+markets |> select(2)            # Select the second column by position
+markets |> select(trades)       # Select the column 'trades' by name
+markets |> slice(2) |> select(trades)   # First take the second row, then select the column 'trades'
+```
+
+*Additional example:* Show the first six rows of the data frame:
+```{r}
+head(markets)  # Show the first six rows of the data frame
+```
+
+
+# Using attach() and detach()
+
+The function `attach()` makes it easier to access the variables of a data frame by adding them to the search path. However, this can lead to naming conflicts if multiple objects share the same name. An alternative is `with()`, which restricts the scope.
+
+```{r attach-detach, eval=FALSE}
+# Attach the data frame so that its columns can be accessed directly
+attach(markets)
+
+# Now 'trades' can be accessed directly, without prefixing the data frame name
+trades
+
+# Remove the data frame from the search path to avoid naming conflicts
+detach(markets)
+
+# After detaching, accessing 'trades' without the data frame name will throw an error:
+trades
+```
+
+*Additional note:* An alternative to `attach()` is `with()`, which only takes effect inside a specific expression:
+```{r}
+with(markets, summary(trades))  # Summarise the column 'trades' without permanently attaching the data frame
+```
+
+# Using length()
+
+The function `length()` behaves differently for data frames and vectors. For a data frame, `length()` returns the number of columns (variables), not the number of rows (observations). To count rows, use `nrow()`.
+
+```{r length-examples, eval=FALSE}
+# For a data frame, length() returns the number of columns
+markets |> length()
+
+# For a vector, length() returns the number of elements (observations)
+trades |> length()
+
+# To get the number of rows (observations) of a data frame, use nrow():
+nrow(markets)
+```
+
+*Additional tip:* You can use `ncol()` to obtain the number of columns:
+```{r}
+ncol(markets)
+```

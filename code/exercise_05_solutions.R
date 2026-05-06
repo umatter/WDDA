@@ -1,4 +1,4 @@
-# WDDA FS 2025: Lösungen für Aufgabenserie 5
+# WDDA FS 2026: Lösungen für Aufgabenserie 5
 # Dieses Skript enthält die R-Code-Lösungen für die Aufgabenserie 5
 
 # Benötigte Pakete laden

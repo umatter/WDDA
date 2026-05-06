@@ -1,0 +1,388 @@
+---
+title: "R Code Examples from WDDA Lecture 07 (Chapter 7)"
+subtitle: "WDDA -- Data Management and Data Analysis"
+author: "Prof. Dr. Ulrich Matter"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: ../style/notes_preamble.tex
+lang: en
+---
+
+# Introduction
+
+This document collects all R code examples from the slides of WDDA FS2026 Lecture 07 (Chapter 7). The focus is on inference in regression models, in particular on confidence intervals, significance tests, and predictions.
+
+Statistical inference allows us to draw conclusions about the population from a sample. In regression analysis, we are interested in the uncertainty of the estimated coefficients and the reliability of our predictions.
+
+Key concepts in this area are:
+
+1. **Confidence intervals for regression coefficients**: How precise are our estimates?
+2. **Bootstrap methods**: How can we simulate the distribution of the coefficients?
+3. **Significance tests**: Are the observed effects statistically significant?
+4. **Prediction intervals**: How reliable are our predictions?
+
+# Preparation
+
+```{r vorbereitung-sichtbar, eval=FALSE}
+# Load packages
+library(mosaic)    # for do(), resample()
+library(ggplot2)   # for visualisations
+library(readxl)    # for reading Excel files
+
+# Load data
+Advertising <- read_excel("data/WDDA_07.xlsx", sheet = "Advertising")
+```
+
+```{r vorbereitung, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+# Load packages
+library(mosaic)    # for do(), resample()
+library(ggplot2)   # for visualisations
+library(readxl)    # for reading Excel files
+
+# Load data
+Advertising <- read_excel("../../data/WDDA_07.xlsx", sheet = "Advertising")
+
+# Inspect the data structure
+str(Advertising)
+```
+
+**R explanation**:
+
+- The function `library()` loads an installed package into the current R session.
+- The package `mosaic` provides functions for statistical simulations, in particular `do()` and `resample()`.
+- The package `ggplot2` enables the creation of attractive visualisations.
+- With `read_excel()` from the `readxl` package, Excel files can be imported.
+- The function `str()` shows the structure of an object, including data types and dimensions.
+
+**Note on data paths**: In R Markdown files, relative paths are interpreted from the location of the file, hence the path `"../data/WDDA_07.xlsx"`. In regular R scripts, the path would be specified relative to the working directory.
+
+# Bootstrap and Confidence Intervals
+
+The bootstrap method is a resampling procedure that allows us to estimate the sampling distribution of a statistic without making assumptions about the underlying distribution.
+
+## Simple Linear Regression
+
+```{r bootstrap_einfach, eval=TRUE}
+# Simple regression model (TV)
+md1 <- lm(sales ~ TV, data = Advertising)
+summary(md1)
+
+# Classical confidence interval
+confint(md1)
+
+# Bootstrap simulation for coefficients
+set.seed(123)  # for reproducibility
+simcoef <- do(5000) * coef(lm(sales ~ TV, data = resample(Advertising)))
+CI_intercept <- quantile(simcoef$Intercept, c(0.025, 0.975))
+CI_tv <- quantile(simcoef$TV, c(0.025, 0.975))
+cat("Bootstrap 95% CI for intercept:", round(CI_intercept, 3), "\n")
+cat("Bootstrap 95% CI for slope (TV):", round(CI_tv, 3), "\n\n")
+```
+
+**Statistical explanation**:
+
+- **Confidence intervals** specify a range in which the true parameter value lies with a certain probability (e.g., 95%).
+- The **bootstrap method** generates many samples by drawing with replacement from the original sample.
+- For each bootstrap sample, the regression model is refitted and the coefficients are stored.
+- The distribution of these coefficients approximates the sampling distribution of the estimators.
+- The **95% confidence interval** is determined by the 2.5% and 97.5% quantiles of this distribution.
+- Compared to the classical confidence interval (based on the t-distribution), the bootstrap method makes fewer assumptions about the distribution of the data.
+
+**R explanation**:
+
+- The function `lm()` (linear model) fits a linear regression model to the data.
+- The function `confint()` computes confidence intervals for the coefficients of a regression model based on the t-distribution.
+- The function `set.seed()` sets the seed for the random number generator in order to obtain reproducible results.
+- The function `resample()` from the `mosaic` package draws a sample with replacement from the data.
+- The function `do()` from the `mosaic` package repeats an expression multiple times and collects the results.
+- The function `quantile()` computes quantiles of a distribution.
+
+## Visualising the Bootstrap Distributions
+
+```{r bootstrap_visualisierung, eval=TRUE, fig.width=12, fig.height=4}
+# Visualise the bootstrap distributions
+par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.6, cex.axis = 1.4, mar = c(4, 4, 3, 1))
+
+# Define common axis limits
+tv_range <- range(simcoef$TV)
+intercept_range <- range(simcoef$Intercept)
+
+# Histogram for slope (beta1)
+hist(simcoef$TV, main = "Simulated beta1", xlab = "simulated beta1",
+     col = "lightgray", border = "white", breaks = 20,
+     xaxt = "n") # No axis labelling at first
+axis(1, at = axTicks(1)) # Explicit axis labelling
+tv_ticks <- axTicks(1)
+abline(v = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+
+# Histogram for intercept (beta0)
+hist(simcoef$Intercept, main = "Simulated intercepts", xlab = "simulated intercepts",
+     col = "lightgray", border = "white", breaks = 20,
+     xaxt = "n") # No axis labelling at first
+axis(1, at = axTicks(1)) # Explicit axis labelling
+intercept_ticks <- axTicks(1)
+abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+
+# Scatterplot of the coefficients
+plot(simcoef$Intercept, simcoef$TV, pch = 1, cex = 0.7,
+     xlab = "simulated intercepts", ylab = "simulated slopes",
+     xaxt = "n", yaxt = "n") # No axis labelling at first
+axis(1, at = intercept_ticks) # Same ticks as in the intercept histogram
+axis(2, at = tv_ticks) # Same ticks as in the TV histogram
+abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+abline(h = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+par(mfrow = c(1, 1))
+```
+
+**Statistical explanation**:
+
+- The **histograms** show the distribution of the bootstrap estimates for the intercept and the slope (TV coefficient).
+- The **red dashed lines** mark the bounds of the 95% confidence interval.
+- The **scatterplot** shows the joint distribution of the two coefficients.
+- The **negative correlation** between intercept and slope is typical for regression models and arises from the structure of the data and the estimation method.
+- These visualisations help to understand the uncertainty of the estimates and the relationships between the coefficients.
+
+**R explanation**:
+
+- The function `par()` with the parameter `mfrow = c(1, 3)` divides the graphics window into 1 row and 3 columns.
+- The parameters `cex.main`, `cex.lab`, and `cex.axis` in `par()` control the font size of titles, axis labels, and axis values.
+- The function `hist()` creates a histogram.
+- The function `abline()` with the parameter `v` adds vertical lines to the plot.
+- The function `plot()` creates a scatterplot.
+
+## Multiple Regression
+
+```{r bootstrap_multiple, eval=TRUE}
+# Multiple regression (TV + radio)
+md2 <- lm(sales ~ TV + radio, data = Advertising)
+summary(md2)
+confint(md2)
+
+# Bootstrap for multiple regression
+set.seed(456)
+simcoef_multi <- do(5000) * coef(lm(sales ~ TV + radio, data = resample(Advertising)))
+CI_tv_multi <- quantile(simcoef_multi$TV, c(0.025, 0.975))
+CI_radio_multi <- quantile(simcoef_multi$radio, c(0.025, 0.975))
+cat("95% CI for TV (multi):", round(CI_tv_multi, 3), "\n")
+cat("95% CI for Radio (multi):", round(CI_radio_multi, 3), "\n\n")
+```
+
+**Statistical explanation**:
+
+- In **multiple regression**, confidence intervals are computed for each coefficient, taking into account the other predictors in the model.
+- The interpretation of a confidence interval in multiple regression is: "Holding all other predictors constant, the true effect of the predictor lies within this interval with 95% probability."
+- The bootstrap method can also be applied to multiple regression models in order to estimate the distribution of the coefficients.
+- Compared to simple regression, the confidence intervals for a predictor can change when other predictors are added to the model, especially when the predictors are correlated.
+
+**R explanation**:
+
+- The formula `sales ~ TV + radio` in `lm()` specifies that `sales` is the dependent variable and `TV` and `radio` are the independent variables.
+- The expression `simcoef_multi$TV` extracts the column `TV` from the data frame `simcoef_multi`.
+
+## Visualising the Bootstrap Distributions for Multiple Regression
+
+```{r bootstrap_visualisierung_multi, eval=TRUE, fig.width=12, fig.height=4}
+# Visualise the bootstrap distributions for multiple regression
+par(mfrow = c(1, 3), cex.main = 1.8, cex.lab = 1.6, cex.axis = 1.4, mar = c(4, 4, 3, 1))
+
+# Define common axis limits
+tv_multi_range <- range(simcoef_multi$TV)
+radio_multi_range <- range(simcoef_multi$radio)
+
+# Histogram for the TV coefficient
+hist(simcoef_multi$TV, main = "TV coefficient", xlab = "simulated TV coef",
+     col = "lightgray", border = "white", breaks = 20,
+     xaxt = "n") # No axis labelling at first
+axis(1, at = axTicks(1)) # Explicit axis labelling
+tv_multi_ticks <- axTicks(1)
+abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+
+# Histogram for the Radio coefficient
+hist(simcoef_multi$radio, main = "Radio coefficient", xlab = "simulated radio coef",
+     col = "lightgray", border = "white", breaks = 20,
+     xaxt = "n") # No axis labelling at first
+axis(1, at = axTicks(1)) # Explicit axis labelling
+radio_multi_ticks <- axTicks(1)
+abline(v = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+
+# Scatterplot of the coefficients
+plot(simcoef_multi$TV, simcoef_multi$radio, pch = 1, cex = 0.7,
+     xlab = "TV coefficient", ylab = "Radio coefficient",
+     xaxt = "n", yaxt = "n") # No axis labelling at first
+axis(1, at = tv_multi_ticks) # Same ticks as in the TV histogram
+axis(2, at = radio_multi_ticks) # Same ticks as in the Radio histogram
+abline(v = quantile(simcoef_multi$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+abline(h = quantile(simcoef_multi$radio, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+par(mfrow = c(1, 1))
+```
+
+**Statistical explanation**:
+
+- The **histograms** show the distribution of the bootstrap estimates for the TV and Radio coefficients.
+- The **scatterplot** shows the joint distribution of the two coefficients.
+- A **correlation between the coefficients** can indicate multicollinearity, i.e., the predictors are correlated.
+- In the presence of strong multicollinearity, the confidence intervals can become wider, which reduces the precision of the estimates.
+- Visualising the joint distribution can help to recognise complex relationships between the coefficients that are not visible in the individual confidence intervals.
+
+# Inference and Significance Tests
+
+Significance tests make it possible to assess the statistical significance of the estimated coefficients and to test hypotheses about the parameters.
+
+## t-Tests for Regression Coefficients
+
+```{r t_tests, eval=TRUE}
+# t-tests for regression coefficients
+cat("t-values and p-values for md2:\n")
+print(summary(md2)$coefficients)
+```
+
+**Statistical explanation**:
+
+- The **t-test** for a regression coefficient tests the null hypothesis H0: beta = 0 against the alternative hypothesis H1: beta != 0.
+- The **t-value** is the ratio of the estimated coefficient to its standard error: t = beta_hat / SE(beta_hat).
+- The **p-value** specifies the probability of observing a t-value at least as extreme as the one computed, assuming the null hypothesis is true.
+- A **small p-value** (typically < 0.05) leads to the rejection of the null hypothesis and indicates that the predictor has a significant influence on the dependent variable.
+- The **standard errors** of the coefficients indicate the precision of the estimates. Smaller standard errors mean more precise estimates.
+- In multiple regression, the t-tests are carried out for each coefficient, taking the other predictors in the model into account.
+
+**R explanation**:
+
+- The expression `summary(md2)$coefficients` extracts the coefficient table from the regression object.
+- This table contains the estimated coefficients, their standard errors, t-values, and p-values.
+
+## F-Statistic and Model Comparison
+
+```{r f_test, eval=TRUE}
+# F-statistic of the overall model
+f_stat <- summary(md2)$fstatistic
+f_value <- f_stat["value"]
+df1 <- f_stat["numdf"]
+df2 <- f_stat["dendf"]
+cat("\nF-statistic:", f_value, " (df1 =", df1, ", df2 =", df2, ")\n")
+
+# Model comparison with an additional predictor (Newspaper)
+md3 <- lm(sales ~ TV + radio + newspaper, data = Advertising)
+anova(md2, md3)  # Comparison via F-test
+```
+
+**Statistical explanation**:
+
+- The **F-statistic** tests the null hypothesis that all regression coefficients (except the intercept) are equal to zero, against the alternative hypothesis that at least one coefficient is different from zero.
+- The F-statistic is defined as: F = (ESS/p) / (RSS/(n-p-1)), where ESS is the explained sum of squares, RSS is the residual sum of squares, n is the number of observations, and p is the number of predictors.
+- A **large F-value** and a **small p-value** indicate that the model is significantly better than a model without predictors.
+- The **ANOVA F-test** compares two nested models and tests whether the more complex model is significantly better than the simpler one.
+- In this example, we compare a model with TV and Radio as predictors to a model that additionally includes Newspaper.
+- A **non-significant F-test** (p > 0.05) suggests that the additional predictor (Newspaper) does not contribute significantly to the explanatory power of the model.
+
+**R explanation**:
+
+- The expression `summary(md2)$fstatistic` extracts the F-statistic from the regression object.
+- The function `anova()` performs an F-test for comparing two nested models.
+- The models must be nested, i.e., all predictors of the simpler model must also be contained in the more complex model.
+
+## Prediction with Confidence and Prediction Intervals
+
+```{r prognose, eval=TRUE}
+# Prediction: point estimate & intervals
+new_values <- data.frame(TV = 230.1, radio = 37.8)
+pred <- predict(md2, newdata = new_values, interval = "confidence")  # Confidence interval
+pred2 <- predict(md2, newdata = new_values, interval = "prediction") # Prediction interval
+cat("\nConfidence interval for the expected value (mean sales):\n")
+print(pred)
+cat("\nPrediction interval for an individual observation:\n")
+print(pred2)
+```
+
+**Statistical explanation**:
+
+- The **point prediction** is the predicted value of the dependent variable for given values of the independent variables: y_hat = beta_0 + beta_1*x_1 + beta_2*x_2 + ... + beta_p*x_p
+- The **confidence interval for the expected value** specifies the range in which the true expected value lies with a certain probability.
+- The **prediction interval** specifies the range in which an individual new observation will lie with a certain probability.
+- Prediction intervals are **wider** than confidence intervals for the expected value, because they additionally account for the variation of individual observations around the expected value.
+- The width of both intervals depends on several factors:
+  - Sample size: larger samples lead to narrower intervals.
+  - Variability of the data: higher variability leads to wider intervals.
+  - Position of the predictor values: intervals are narrowest near the mean of the predictors and become wider the further away one moves from it.
+
+**R explanation**:
+
+- The function `predict()` computes predicted values for a regression model.
+- The parameter `newdata` in `predict()` specifies a data frame with the values of the predictors for which predictions are to be made.
+- The parameter `interval` in `predict()` specifies whether confidence or prediction intervals should be computed.
+- The output contains three columns: `fit` (the point prediction), `lwr` (the lower bound of the interval), and `upr` (the upper bound of the interval).
+
+## Visualising Confidence and Prediction Intervals
+
+```{r visualisierung_intervalle, eval=TRUE, fig.width=10, fig.height=6}
+# Create a grid of TV values for prediction
+tv_grid <- seq(min(Advertising$TV), max(Advertising$TV), length.out = 100)
+radio_mean <- mean(Advertising$radio)
+newdata <- data.frame(TV = tv_grid, radio = radio_mean)
+
+# Confidence interval for the expected value
+conf_int <- predict(md2, newdata = newdata, interval = "confidence")
+conf_df <- data.frame(TV = tv_grid, fit = conf_int[, "fit"],
+                     lwr = conf_int[, "lwr"], upr = conf_int[, "upr"])
+
+# Prediction interval
+pred_int <- predict(md2, newdata = newdata, interval = "prediction")
+pred_df <- data.frame(TV = tv_grid, fit = pred_int[, "fit"],
+                     lwr = pred_int[, "lwr"], upr = pred_int[, "upr"])
+
+# Visualisation
+ggplot() +
+  geom_point(data = Advertising, aes(x = TV, y = sales), alpha = 0.5) +
+  geom_line(data = conf_df, aes(x = TV, y = fit), color = "blue", size = 1) +
+  geom_ribbon(data = conf_df, aes(x = TV, ymin = lwr, ymax = upr),
+              fill = "blue", alpha = 0.2) +
+  geom_ribbon(data = pred_df, aes(x = TV, ymin = lwr, ymax = upr),
+              fill = "red", alpha = 0.1) +
+  labs(title = "Regression line with confidence and prediction intervals",
+       subtitle = "Radio = mean value",
+       x = "TV spending (in 1000 USD)", y = "Sales (in 1000 USD)") +
+  theme_minimal() +
+  theme(text = element_text(size = 16),
+        axis.title = element_text(size = 18),
+        axis.text = element_text(size = 14),
+        plot.title = element_text(size = 20))
+```
+
+**Statistical explanation**:
+
+- The **blue line** is the regression line, showing the predicted value of `sales` for different values of `TV` when `radio` is held at its mean.
+- The **blue band** is the 95% confidence interval for the expected value.
+- The **red band** is the 95% prediction interval for individual observations.
+- The confidence interval is **narrowest** near the mean of the predictors and becomes wider the further away one moves from it.
+- The prediction interval is **considerably wider** than the confidence interval, because it additionally accounts for the variation of individual observations around the expected value.
+- Most data points lie within the prediction interval, which suggests that the model describes the data well.
+
+**R explanation**:
+
+- The function `seq()` generates a sequence of values.
+- The function `ggplot()` initialises a ggplot object.
+- The function `geom_point()` adds points to the plot.
+- The function `geom_line()` adds a line to the plot.
+- The function `geom_ribbon()` adds a shaded area to the plot, defined by lower and upper bounds.
+- The function `theme_minimal()` sets a minimalist theme for the plot.
+- The function `theme()` adjusts various aspects of the plot, such as font sizes and styles.
+
+# Summary
+
+In this lecture we have studied statistical inference in regression models. The most important concepts were:
+
+1. **Confidence intervals for regression coefficients**: Confidence intervals quantify the uncertainty of the estimated coefficients and specify a range in which the true parameter value lies with a certain probability.
+
+2. **Bootstrap methods**: The bootstrap method is a resampling procedure that allows us to estimate the sampling distribution of a statistic without making assumptions about the underlying distribution.
+
+3. **Significance tests**: t-tests for individual coefficients and F-tests for the overall model or for comparing nested models make it possible to assess the statistical significance of the estimated effects.
+
+4. **Prediction with confidence and prediction intervals**: Confidence intervals for the expected value and prediction intervals for individual observations quantify the uncertainty of the predictions.
+
+Statistical inference is an important component of regression analysis, since it allows us to draw conclusions about the population from the sample and to assess the reliability of estimates and predictions. The bootstrap method offers a flexible alternative to classical parametric methods, in particular when the assumptions of the classical methods are not met.

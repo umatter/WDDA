@@ -1,0 +1,364 @@
+---
+title: "Causality and Simple Experiments"
+subtitle: "WDDA -- Data Management and Data Analysis"
+author: "Prof. Dr. Ulrich Matter"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: ../style/notes_preamble.tex
+lang: en
+---
+
+```{r knitr-setup, include=FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  out.width = "70%"
+)
+```
+
+# Introduction
+
+This document complements the lecture notes with two topics that are only mentioned briefly in Chapters 1–7:
+
+1. **Causality** — when can an observed association be interpreted as a cause-and-effect relationship?
+2. **Simple experiments** — how do we analyse the data from an experiment (such as an A/B test)?
+
+We build directly on the material covered so far:
+
+- Bootstrap methods for estimating standard errors and confidence intervals → **Chapter 4**
+- Simple linear regression as a model of $Y$ on a predictor $X$ → **Chapter 5**
+- Bootstrap confidence intervals for regression coefficients → **Chapter 7**
+
+The guiding question: *Does an intervention actually cause the observed change in the outcome — or are we merely observing a correlation?*
+
+\begin{keybox}[Core Idea]
+A \textbf{statistical association} only tells us \textbf{that} two variables move together --- e.\,g.\ a correlation between two numerical variables or a difference in means between two groups. \textbf{Causality} tells us \textbf{why}: that one variable actually causes the other. Only under specific conditions --- in particular, with random treatment assignment --- may we interpret such an association as a causal effect.
+\end{keybox}
+
+# Preparation
+
+We first load the required packages and set the seed of the random number generator. The `readxl` package is needed to read the Excel file containing the A/B-test data. The `mosaic` package (already familiar from Chapter 4) provides the functions `do()` and `resample()`, which we use to draw bootstrap samples; we use `ggplot2` for the visualisations. With `set.seed()` we fix the seed of the random number generator, so that all bootstrap results are exactly reproducible.
+
+```{r setup-sichtbar, eval=FALSE}
+library(readxl)   # read_excel()
+library(mosaic)   # do(), resample()
+library(ggplot2)  # for visualisations
+set.seed(123)     # for reproducible results
+```
+
+```{r setup, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(mosaic)
+library(ggplot2)
+set.seed(123)
+```
+
+# Correlation vs. Causality
+
+In Chapter 3 we already cautioned: *"Correlation does not imply causation."* What is actually behind this?
+
+## The Fundamental Problem
+
+Imagine an insurance company observes that customers who use its app report fewer claims. Does this mean that the app *reduces* the risk of claims?
+
+There are at least three alternative explanations:
+
+1. **Reverse causation** — the arrow points in the other direction: it is not the app that reduces claims; rather, customers are more likely to switch the app on **after** they have had a claim-free year (e.g. because they actively manage their tariff or have received a bonus).
+2. **Confounder (third variable)** — a *third* variable causes both: younger, tech-savvy customers use the app more often **and** drive more safely anyway. There is no direct effect of the app on the claims risk, only a common driver.
+3. **Selection (selection effect)** — we do not observe all customers, but a *pre-selected* subgroup: only smartphone owners can use the app at all, and this group differs systematically from the remaining customers (e.g. different age, different driving behaviour). The comparison between app users and non-users therefore compares two structurally different populations.
+
+In all three cases we observe a correlation without the app actually affecting claims.
+
+## Potential Outcomes
+
+For each person $i$ there exist — conceptually — two possible outcomes:
+
+- $Y_i(1)$: outcome *if* the person receives the treatment ($T = 1$)
+- $Y_i(0)$: outcome *if* the person does **not** receive the treatment ($T = 0$)
+
+The individual causal effect is $Y_i(1) - Y_i(0)$. **The fundamental problem of causality**: we always observe only **one** of the two outcomes per person — never both at the same time.
+
+## Randomization as a Solution
+
+If we assign people **randomly** to the groups, the treatment and control groups are on average identical in *all* other characteristics --- including those we do not measure at all. Confounders, selection and reverse causation are eliminated; apart from the treatment itself, there is no systematic difference between the groups. The experiment itself thus generates the "comparability" that is often lacking in observational studies.
+
+This allows the average causal effect to be estimated directly from the **observed** group means --- the **Average Treatment Effect (ATE)**:
+
+$$
+\text{ATE} = \bar{Y}_{\,T=1} - \bar{Y}_{\,T=0}
+$$
+
+Here $\bar{Y}_{\,T=1}$ is the mean of the observed outcomes $Y_i$ in the treatment group and $\bar{Y}_{\,T=0}$ is the mean in the control group. The simple **difference in means between the two groups** therefore estimates the causal effect directly --- this is precisely what makes a randomized experiment so valuable.
+
+## Observational Study vs. Experiment
+
+In the previous chapters we worked with **observational data** --- e.g. with the Advertising dataset, in which we simply found advertising expenditures and sales figures as they emerged in reality. Such data allow us to describe associations and to make predictions, but a clean causal conclusion is not possible because confounders, selection and reverse causation cannot be ruled out.
+
+In an **experiment**, by contrast, the treatment is assigned actively and randomly. It is precisely this difference --- *who* controls the assignment --- that turns a correlation into a causal effect. The following table contrasts the two types of study:
+
+| | Observational study | Experiment |
+|---|---|---|
+| Treatment assignment | Self-selected (confounders possible) | Random (by the researchers) |
+| Suitable for | Description, prediction | Causal claims |
+| Example from the notes | Advertising dataset (Chapters 5–7) | The A/B test in this document |
+
+# A Simple A/B-Test Example
+
+We consider an A/B test from an online shop:
+
+- 600 users were assigned **randomly** to two versions of the checkout page:
+    - **Control** ($T = 0$): the old version, $n = 300$
+    - **Treatment** ($T = 1$): the new version, $n = 300$
+- Two outcomes are recorded per person:
+    - `time_min` (numeric): time spent on the page in minutes
+    - `purchase` (0/1): did the person complete the purchase?
+
+\begin{examplebox}[Example: A/B Test]
+A/B tests are the most common form of experiment in practice. Examples: two variants of a newsletter subject line, two price variants, two layouts of a landing page. The underlying logic is always the same: random assignment to two groups, measure the outcome, estimate the difference.
+\end{examplebox}
+
+The data are in `WDDA_AB_Test.xlsx` (sheet `AB_Test`). We read them in as usual with `read_excel()`:
+
+```{r load-ab-test-sichtbar, eval=FALSE}
+ab_test <- read_excel("data/WDDA_AB_Test.xlsx", sheet = "AB_Test")
+```
+
+```{r load-ab-test, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+ab_test <- read_excel("../../data/WDDA_AB_Test.xlsx", sheet = "AB_Test")
+```
+
+```{r ab_test_inspect, eval=TRUE}
+head(ab_test)
+table(ab_test$treatment)
+```
+
+# Mean Comparison (Continuous Outcome) via Bootstrap
+
+**Question**: Do users spend more time on the page with the new checkout page?
+
+In Chapter 4 we already encountered a bootstrap confidence interval for a *difference* of means — back then for training times between men and women. We apply the same technique here, but now to experimental data.
+
+## Point Estimate
+
+```{r mean_diff, eval=TRUE}
+treat <- ab_test$time_min[ab_test$treatment == 1]
+ctrl  <- ab_test$time_min[ab_test$treatment == 0]
+
+mean_t <- mean(treat)
+mean_c <- mean(ctrl)
+diff_hat <- mean_t - mean_c
+
+# Means of treatment, control and difference (T - C)
+round(c(treatment = mean_t, control = mean_c, diff = diff_hat), 3)
+```
+
+## Bootstrap Confidence Interval
+
+```{r bootstrap_mean_diff, eval=TRUE}
+boot_diff <- do(3000) * (mean(resample(treat)) - mean(resample(ctrl)))
+ci_diff <- quantile(boot_diff$result, probs = c(0.025, 0.975), type = 1)
+
+# 95% bootstrap CI for the difference in means
+round(ci_diff, 3)
+```
+
+**Statistical explanation**:
+
+- We resample **within each group** with replacement (so the group sizes stay fixed), compute the difference of the two means for each bootstrap sample, and collect 3000 values.
+- The 95% confidence interval is given by the 2.5% and 97.5% quantiles of this distribution — exactly as in Chapter 4.
+- If **zero** lies outside the interval, there is evidence that the treatment has an effect on the outcome.
+- Because the treatment was assigned **randomly**, we may interpret the estimated difference as the **causal effect** of the treatment — this is the decisive difference compared to the analysis of an observational study.
+
+**R explanation**:
+
+- `resample(treat)` draws a bootstrap sample (with replacement) from the treatment vector.
+- `do(3000) * (...)` runs the expression 3000 times and collects the results in a data frame with the column `result` (cf. `boot3000.diff` from Chapter 4).
+- `type = 1` in `quantile()` is the same argument as in the previous notes and ensures a consistent quantile definition.
+
+## Alternative: Classical t-Test
+
+Classically, a mean difference between two groups is tested with the **t-test**. R provides the function `t.test()`, which can be applied to the data set directly using the formula notation:
+
+```{r ttest_alternative, eval=TRUE}
+t.test(time_min ~ treatment, data = ab_test)
+```
+
+The output contains three key quantities that we have already encountered in the bootstrap analysis above:
+
+- the **estimated mean difference** (visible as the difference between the two group means in the `mean in group ...` line),
+- a **95% confidence interval** for the difference (based on the $t$-distribution),
+- a **p-value** for the null hypothesis that the true difference is zero.
+
+The t-test assumes that the outcome is approximately normally distributed *within each group*; for sufficiently large samples, the central limit theorem ensures that this assumption also holds for strongly skewed data. Since each group in our A/B test contains $n = 300$ observations, this assumption is unproblematic. The CI and p-value should therefore lead to practically the same conclusion as the bootstrap procedure above.
+
+## Alternative: Regression with a Treatment Dummy
+
+An alternative --- and particularly flexible --- view of the A/B test is **regression**: we model the outcome as a function of the treatment. The treatment here is a 0/1 variable, a so-called **dummy**. The advantage of this perspective: the same logic carries over directly to more complex models (multiple covariates, interactions, continuous treatments).
+
+Concretely, we run the comparison with `lm()`, which we already know from Chapters 5 to 7:
+
+```{r reg_alternative, eval=TRUE}
+md_time <- lm(time_min ~ treatment, data = ab_test)
+summary(md_time)$coefficients
+confint(md_time)["treatment", ]
+```
+
+The results are algebraically identical to the manual difference in means above:
+
+- The **intercept** ($b_0$) is the mean `time_min` in the control group.
+- The **coefficient of `treatment`** ($b_1$) is the difference in means treatment − control.
+- `confint()` provides a classical 95% confidence interval (based on the $t$-distribution), which is usually very close to the bootstrap CI above.
+
+```{r reg_alternative_compare, eval=TRUE}
+# Difference in means vs. regression coefficient
+round(c(
+  Mittelwertdifferenz    = unname(diff_hat),
+  Regressionskoeffizient = unname(coef(md_time)["treatment"])
+), 4)
+```
+
+The regression therefore yields the **same** point estimate and a comparable confidence interval for our simple two-group comparison.
+
+# Comparing Proportions (Binary Outcome)
+
+**Question**: Does the new checkout page increase the purchase probability?
+
+We first compute the purchase rates in the two groups and display them as a simple bar chart:
+
+```{r purchase_barplot, eval=TRUE, fig.width=4.5, fig.height=3.8}
+purch_t <- ab_test$purchase[ab_test$treatment == 1]
+purch_c <- ab_test$purchase[ab_test$treatment == 0]
+
+prop_t <- mean(purch_t)
+prop_c <- mean(purch_c)
+
+prop_df <- data.frame(
+  group = factor(c("Control", "Treatment"), levels = c("Control", "Treatment")),
+  prop  = c(prop_c, prop_t)
+)
+
+ggplot(prop_df, aes(x = group, y = prop, fill = group)) +
+  geom_col(width = 0.5) +
+  scale_fill_manual(values = c(Control = "lightgray", Treatment = "steelblue")) +
+  coord_cartesian(ylim = c(0, 0.55)) +
+  labs(x = NULL, y = "Purchase rate",
+       title = "Purchase rates: Treatment vs. Control") +
+  theme_minimal(base_size = 11) +
+  theme(legend.position = "none")
+```
+
+In the treatment group, around **47%** of people made a purchase; in the control group only **32%** --- a difference of about **15 percentage points** in favour of the new checkout page. But how reliable is this estimate? In a different sample the bars would have been somewhat higher or lower.
+
+## Bootstrap CI and p-Value for the Difference
+
+To make the uncertainty visible, we bootstrap the two purchase rates and draw the 95% confidence intervals directly onto the bars:
+
+```{r purchase_barplot_ci, eval=TRUE, fig.width=4.5, fig.height=3.8}
+boot_t <- do(3000) * mean(resample(purch_t))
+boot_c <- do(3000) * mean(resample(purch_c))
+ci_t <- quantile(boot_t$mean, c(0.025, 0.975), type = 1)
+ci_c <- quantile(boot_c$mean, c(0.025, 0.975), type = 1)
+
+prop_df_ci <- data.frame(
+  group = factor(c("Control", "Treatment"), levels = c("Control", "Treatment")),
+  prop  = c(prop_c, prop_t),
+  lower = c(ci_c[1], ci_t[1]),
+  upper = c(ci_c[2], ci_t[2])
+)
+
+ggplot(prop_df_ci, aes(x = group, y = prop, fill = group)) +
+  geom_col(width = 0.5) +
+  geom_errorbar(aes(ymin = lower, ymax = upper),
+                width = 0.15, colour = "darkred", linewidth = 0.8) +
+  scale_fill_manual(values = c(Control = "lightgray", Treatment = "steelblue")) +
+  coord_cartesian(ylim = c(0, 0.55)) +
+  labs(x = NULL, y = "Purchase rate",
+       title = "Purchase rates with 95% bootstrap CIs") +
+  theme_minimal(base_size = 11) +
+  theme(legend.position = "none")
+```
+
+The two intervals **do not overlap** --- a strong indication that the difference in purchase rates is not a chance artefact.[^ci-overlap]
+
+[^ci-overlap]: Caution with the converse: from *overlapping* individual confidence intervals one **cannot** conclude that the difference is statistically not different from zero. The standard error of a difference $\sqrt{SE_T^2 + SE_C^2}$ is smaller than the sum of the individual margins; the confidence interval *for the difference* may therefore well exclude zero, even when the individual intervals overlap slightly. Clearly separated intervals are sufficient for significance, but a small overlap on its own says little.
+
+What ultimately interests us is a confidence interval *for the difference itself*. Instead of bootstrapping each proportion separately, we draw **the difference** of the two purchase rates per bootstrap round:
+
+```{r bootstrap_prop_diff, eval=TRUE}
+boot_prop <- do(3000) * (mean(resample(purch_t)) - mean(resample(purch_c)))
+ci_prop <- quantile(boot_prop$result, probs = c(0.025, 0.975), type = 1)
+
+# 95% bootstrap CI for the difference in purchase rates (in percentage points)
+round(ci_prop, 3)
+```
+
+The interval **does not contain zero** --- the difference of about 15 percentage points is therefore clearly different from zero even when sampling uncertainty is taken into account. From the bootstrap distribution we can additionally derive an approximate **p-value**: we mentally shift the distribution to 0 (as if the treatment had no effect) and count how often a difference occurs that is at least as extreme as the observed one:
+
+```{r bootstrap_pvalue, eval=TRUE}
+diff_obs <- prop_t - prop_c
+shifted  <- boot_prop$result - diff_obs            # centred at zero
+p_boot   <- mean(abs(shifted) >= abs(diff_obs))    # two-sided
+round(c(diff_obs = diff_obs, p_boot = p_boot), 4)
+```
+
+A very small p-value confirms the conclusion: a difference of 15 percentage points would be extremely unlikely under the assumption of "no effect". An important advantage of this bootstrap approach: we obtain both an **effect size with a confidence interval** and a **p-value** in percentage points of the purchase rate --- not just an abstract "significant yes/no".
+
+## Alternative: Contingency Table and $\chi^2$ Test
+
+The classical approach for two groups with a binary outcome is the $\chi^2$ test of independence. It tests the **null hypothesis** that `treatment` and `purchase` are independent of each other --- in our context: that the treatment has **no effect** on the purchase decision. The test statistic compares the *observed* frequencies in a cross-table with those that would be *expected under independence* and sums the squared deviations, normalised by the expected frequencies:
+
+$$
+\chi^2 = \sum \frac{(O_{ij} - E_{ij})^2}{E_{ij}}
+$$
+
+The larger this value, the more strongly the observed data deviate from the picture of "perfect independence". A small p-value ($< 0.05$) leads to rejection of the null hypothesis.
+
+```{r chisq_test, eval=TRUE}
+tab <- table(treatment = ab_test$treatment, purchase = ab_test$purchase)
+print(tab)
+
+chisq.test(tab)
+```
+
+The p-value should be very close to the value from the bootstrap --- both methods answer the same question. The advantage of the bootstrap approach above is that it additionally provides an **effect size with an uncertainty interval**, while the $\chi^2$ test only delivers a binary statement of "significant" or "not significant".
+
+## Alternative: Regression (Linear Probability Model)
+
+Here, too, we can formulate the same comparison as a **linear regression** on the 0/1 dummy `treatment` --- analogous to the procedure in the *Mean Comparison* section. With a binary outcome, the resulting model is called the **Linear Probability Model (LPM)**:
+
+```{r reg_binary, eval=TRUE}
+md_purchase <- lm(purchase ~ treatment, data = ab_test)
+summary(md_purchase)$coefficients
+confint(md_purchase)["treatment", ]
+```
+
+The coefficient of `treatment` directly estimates the difference in purchase rates and should agree with the point difference from the proportion comparison above. The LPM has well-known weaknesses (predicted values can in theory be $< 0$ or $> 1$); for the **average treatment effect** in a randomized experiment it nevertheless usually delivers very usable estimates. A methodologically cleaner alternative is **logistic regression** (`glm(purchase ~ treatment, family = binomial)`), which we will not pursue further here.
+
+# Summary
+
+In this document we have seen:
+
+1. **Causality $\neq$ correlation**: A pure observation says nothing about the direction of causation. Confounders, reverse causation and selection can produce an apparent effect.
+
+2. **Randomization solves the problem**: Through random treatment assignment, the groups are on average equal in all other characteristics. The simple difference in means then estimates the average treatment effect (ATE).
+
+3. **Which method for which outcome?** The appropriate procedures depend on the type of outcome variable. In a randomized two-group experiment, all of the methods listed here yield the same estimate of the causal effect.
+
+    - **Continuous outcome** (e.g. `time_min`):
+        - Difference in means with **bootstrap CI** (Chapter 4)
+        - **Classical t-test** (`t.test()`) as the standard procedure
+        - **Linear regression** with a treatment dummy (Chapter 5)
+    - **Binary outcome** (e.g. `purchase`):
+        - Difference in proportions with **bootstrap CI** and bootstrap p-value
+        - **$\chi^2$ test** of independence (classical alternative)
+        - **Linear Probability Model**: linear regression with a binary outcome

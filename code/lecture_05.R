@@ -92,6 +92,8 @@ b1 <- cor(sales, TV) * sd(sales) / sd(TV)
 b0 <- mean(sales) - b1 * mean(TV)
 lbf <- function(x) { b0 + b1 * x }
 
+lm(sales ~ TV, data=data)
+
 # Zeichne Schätzgerade
 plot(sales ~ TV, main = "Beste Gerade (Least Squares)", xlab = "TV", ylab = "Sales")
 curve(lbf(x), add = TRUE, col = "darkgreen", lwd = 2)
@@ -121,7 +123,9 @@ abline(md1, col = "orange", lwd = 2, lty = 1)
 tv_val <- 230.1
 sales_obs <- 22.1
 
-7.03259 + 0.04753 * tv_val
+# Vorhersage: einmal manuell mit b0, b1 (aus Section 5) und einmal via predict()
+sales_pred <- b0 + b1 * tv_val
+cat("Vorhergesagter Wert (manuell) bei TV =", tv_val, ":", round(sales_pred, 2), "\n")
 
 sales_hat <- predict(md1, newdata = data.frame(TV = tv_val))
 resid1 <- sales_obs - sales_hat

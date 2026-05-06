@@ -1,0 +1,364 @@
+---
+title: "Kausalität und einfache Experimente"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
+---
+
+```{r knitr-setup, include=FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  out.width = "70%"
+)
+```
+
+# Einleitung
+
+Dieses Dokument ergänzt die Vorlesungsnotizen um zwei Themen, die in den Kapiteln 1–7 nur am Rande erwähnt werden:
+
+1. **Kausalität** – wann lässt sich ein beobachteter Zusammenhang als Ursache-Wirkungs-Beziehung interpretieren?
+2. **Einfache Experimente** – wie analysiert man die Daten eines Experiments (etwa eines A/B-Tests)?
+
+Wir bauen direkt auf den bisherigen Stoff auf:
+
+- Bootstrap-Methoden zur Schätzung von Standardfehlern und Konfidenzintervallen → **Kapitel 4**
+- Einfache lineare Regression als Modell von $Y$ auf einen Prädiktor $X$ → **Kapitel 5**
+- Bootstrap-Konfidenzintervalle für Regressionskoeffizienten → **Kapitel 7**
+
+Die Leitfrage: *Verursacht eine Massnahme tatsächlich die beobachtete Veränderung im Outcome — oder beobachten wir nur eine Korrelation?*
+
+\begin{keybox}[Kernidee]
+Ein \textbf{statistischer Zusammenhang} sagt nur, \textbf{dass} sich zwei Variablen gemeinsam verändern --- z.\,B. eine Korrelation zwischen zwei numerischen Variablen oder ein Mittelwertunterschied zwischen zwei Gruppen. \textbf{Kausalität} sagt, \textbf{warum}: dass die eine Variable die andere tatsächlich verursacht. Nur unter bestimmten Bedingungen --- insbesondere bei zufälliger Behandlungszuteilung --- dürfen wir einen solchen Zusammenhang als Kausaleffekt interpretieren.
+\end{keybox}
+
+# Vorbereitung
+
+Wir laden zunächst die benötigten Pakete und setzen den Startwert des Zufallszahlengenerators. Das Paket `readxl` benötigen wir, um die Excel-Datei mit den A/B-Test-Daten einzulesen. Das Paket `mosaic` (bereits aus Kapitel 4 bekannt) stellt die Funktionen `do()` und `resample()` zur Verfügung, mit denen wir Bootstrap-Stichproben ziehen; `ggplot2` verwenden wir für die Visualisierungen. Mit `set.seed()` legen wir den Startwert des Zufallszahlengenerators fest, sodass alle Bootstrap-Resultate exakt reproduzierbar sind.
+
+```{r setup-sichtbar, eval=FALSE}
+library(readxl)   # read_excel()
+library(mosaic)   # do(), resample()
+library(ggplot2)  # für Visualisierungen
+set.seed(123)     # für reproduzierbare Resultate
+```
+
+```{r setup, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(mosaic)
+library(ggplot2)
+set.seed(123)
+```
+
+# Korrelation vs. Kausalität
+
+In Kapitel 3 haben wir bereits gewarnt: *"Korrelation impliziert nicht Kausalität."* Was steckt eigentlich dahinter?
+
+## Das fundamentale Problem
+
+Stellen wir uns vor, eine Versicherung beobachtet, dass Kundinnen und Kunden, die ihre App nutzen, weniger Schadensfälle melden. Bedeutet das, dass die App das Schadensrisiko *senkt*?
+
+Es gibt mindestens drei alternative Erklärungen:
+
+1. **Umkehrung der Kausalität (Reverse Causation)** — der Pfeil zeigt in die andere Richtung: Nicht die App senkt die Schäden, sondern *umgekehrt* schalten Kunden die App eher ein, **nachdem** sie ein schadenfreies Jahr hinter sich haben (z.B. weil sie sich aktiv um ihren Tarif kümmern oder einen Bonus erhalten haben).
+2. **Confounder (Drittvariable)** — eine *dritte* Variable verursacht beides: Jüngere, technikaffine Kunden nutzen häufiger die App **und** fahren ohnehin sicherer. Es gibt keinen direkten Effekt der App auf das Schadensrisiko, sondern nur einen gemeinsamen Treiber.
+3. **Selektion (Auswahleffekt)** — wir beobachten nicht alle Kunden, sondern eine *vorselektierte* Untergruppe: Nur Smartphone-Besitzer können die App überhaupt verwenden, und diese Gruppe unterscheidet sich systematisch von den übrigen Kunden (z.B. anderes Alter, anderes Fahrverhalten). Der Vergleich App-Nutzer vs. Nicht-Nutzer vergleicht damit zwei strukturell verschiedene Populationen.
+
+In allen drei Fällen sehen wir eine Korrelation, ohne dass die App die Schäden tatsächlich beeinflusst.
+
+## Potential Outcomes
+
+Für jede Person $i$ existieren — gedanklich — zwei mögliche Outcomes:
+
+- $Y_i(1)$: Outcome, *wenn* die Person das Treatment erhält ($T = 1$)
+- $Y_i(0)$: Outcome, *wenn* die Person das Treatment **nicht** erhält ($T = 0$)
+
+Der individuelle Kausaleffekt ist $Y_i(1) - Y_i(0)$. **Das fundamentale Problem der Kausalität**: Wir beobachten immer nur **eines** der beiden Outcomes pro Person — nie beide gleichzeitig.
+
+## Randomisierung als Lösung
+
+Wenn wir Personen **zufällig** den Gruppen zuteilen, sind Treatment- und Control-Gruppe im Mittel in *allen* anderen Eigenschaften identisch --- auch in solchen, die wir gar nicht messen. Confounder, Selektion und Reverse Causation werden ausgeschaltet; abgesehen vom Treatment selbst gibt es keinen systematischen Unterschied zwischen den Gruppen. Damit erzeugt das Experiment selbst die "Vergleichbarkeit", die in Beobachtungsstudien oft fehlt.
+
+Damit lässt sich der durchschnittliche Kausaleffekt direkt aus den **beobachteten** Gruppenmitteln schätzen --- den **Average Treatment Effect (ATE)**:
+
+$$
+\text{ATE} = \bar{Y}_{\,T=1} - \bar{Y}_{\,T=0}
+$$
+
+Dabei ist $\bar{Y}_{\,T=1}$ der Mittelwert der beobachteten Outcomes $Y_i$ in der Treatment-Gruppe und $\bar{Y}_{\,T=0}$ der Mittelwert in der Control-Gruppe. Der einfache **Mittelwertunterschied zwischen den beiden Gruppen** schätzt also den Kausaleffekt direkt --- genau das macht ein randomisiertes Experiment so wertvoll.
+
+## Beobachtungsstudie vs. Experiment
+
+In den vorherigen Kapiteln haben wir mit **Beobachtungsdaten** gearbeitet --- z.B. mit dem Advertising-Datensatz, in dem wir Werbeausgaben und Verkaufszahlen einfach so vorgefunden haben, wie sie in der Realität entstanden sind. Solche Daten erlauben uns, Zusammenhänge zu beschreiben und Prognosen zu erstellen, aber kein Kausalschluss ist sauber möglich, weil Confounder, Selektion und Reverse Causation nicht ausgeschlossen sind.
+
+In einem **Experiment** wird die Behandlung dagegen aktiv und zufällig zugeteilt. Genau dieser Unterschied --- *wer* die Zuteilung kontrolliert --- macht aus einer Korrelation einen Kausaleffekt. Die folgende Tabelle stellt beide Studientypen gegenüber:
+
+| | Beobachtungsstudie | Experiment |
+|---|---|---|
+| Zuteilung zur Behandlung | Selbstgewählt (Confounder möglich) | Zufällig (durch die Forscher\*innen) |
+| Geeignet für | Beschreibung, Prognose | Kausale Aussagen |
+| Beispiel aus den Notizen | Advertising-Datensatz (Kapitel 5–7) | Der A/B-Test in diesem Dokument |
+
+# Ein einfaches A/B-Test-Beispiel
+
+Wir betrachten einen A/B-Test eines Online-Shops:
+
+- 600 Nutzerinnen und Nutzer wurden **zufällig** auf zwei Versionen der Checkout-Seite verteilt:
+    - **Control** ($T = 0$): die alte Version, $n = 300$
+    - **Treatment** ($T = 1$): die neue Version, $n = 300$
+- Pro Person sind zwei Outcomes erhoben:
+    - `time_min` (numerisch): Zeit auf der Seite in Minuten
+    - `purchase` (0/1): hat die Person den Kauf abgeschlossen?
+
+\begin{examplebox}[Beispiel: A/B-Test]
+A/B-Tests sind die in der Praxis häufigste Form eines Experiments. Beispiele: zwei Varianten einer Newsletter-Betreffzeile, zwei Preisvarianten, zwei Layouts einer Landing Page. Im Hintergrund steckt immer dieselbe Logik: Zufallsteilung in zwei Gruppen, Outcome messen, Differenz schätzen.
+\end{examplebox}
+
+Die Daten liegen in `WDDA_AB_Test.xlsx` (Tabellenblatt `AB_Test`). Wir lesen sie wie gewohnt mit `read_excel()` ein:
+
+```{r load-ab-test-sichtbar, eval=FALSE}
+ab_test <- read_excel("data/WDDA_AB_Test.xlsx", sheet = "AB_Test")
+```
+
+```{r load-ab-test, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+ab_test <- read_excel("../data/WDDA_AB_Test.xlsx", sheet = "AB_Test")
+```
+
+```{r ab_test_inspect, eval=TRUE}
+head(ab_test)
+table(ab_test$treatment)
+```
+
+# Mittelwertvergleich (kontinuierliches Outcome) per Bootstrap
+
+**Frage**: Verbringen Nutzer\*innen mit der neuen Checkout-Seite mehr Zeit auf der Seite?
+
+In Kapitel 4 haben wir bereits ein Bootstrap-Konfidenzintervall für eine *Differenz* von Mittelwerten kennengelernt — damals für Trainingszeiten zwischen Männern und Frauen. Wir wenden hier dieselbe Technik an, jetzt aber auf experimentelle Daten.
+
+## Punktschätzung
+
+```{r mean_diff, eval=TRUE}
+treat <- ab_test$time_min[ab_test$treatment == 1]
+ctrl  <- ab_test$time_min[ab_test$treatment == 0]
+
+mean_t <- mean(treat)
+mean_c <- mean(ctrl)
+diff_hat <- mean_t - mean_c
+
+# Mittelwerte Treatment, Control und Differenz (T - C)
+round(c(treatment = mean_t, control = mean_c, diff = diff_hat), 3)
+```
+
+## Bootstrap-Konfidenzintervall
+
+```{r bootstrap_mean_diff, eval=TRUE}
+boot_diff <- do(3000) * (mean(resample(treat)) - mean(resample(ctrl)))
+ci_diff <- quantile(boot_diff$result, probs = c(0.025, 0.975), type = 1)
+
+# 95%-Bootstrap-CI für Mittelwertdifferenz
+round(ci_diff, 3)
+```
+
+**Statistische Erklärung**:
+
+- Wir resamplen **innerhalb jeder Gruppe** mit Zurücklegen (so bleibt die Gruppengrösse fix), berechnen pro Bootstrap-Stichprobe die Differenz der beiden Mittelwerte und sammeln 3000 Werte.
+- Das 95%-Konfidenzintervall ergibt sich aus den 2.5%- und 97.5%-Quantilen dieser Verteilung — genau wie in Kapitel 4.
+- Liegt die **Null** ausserhalb des Intervalls, gibt es Evidenz dafür, dass das Treatment einen Effekt auf die Zielgrösse hat.
+- Da die Behandlung **zufällig** zugeteilt wurde, dürfen wir die geschätzte Differenz als **Kausaleffekt** des Treatments interpretieren — das ist der entscheidende Unterschied zur Analyse einer Beobachtungsstudie.
+
+**R-Erklärung**:
+
+- `resample(treat)` zieht eine Bootstrap-Stichprobe (mit Zurücklegen) aus dem Treatment-Vektor.
+- `do(3000) * (...)` führt den Ausdruck 3000-mal aus und sammelt die Ergebnisse in einem Dataframe mit der Spalte `result` (vgl. `boot3000.diff` aus Kapitel 4).
+- `type = 1` in `quantile()` ist das gleiche Argument wie in den bisherigen Notizen und sorgt für eine konsistente Quantil-Definition.
+
+## Alternative: Klassischer t-Test
+
+Klassisch wird eine Mittelwertdifferenz zwischen zwei Gruppen mit dem **t-Test** geprüft. R bietet dafür die Funktion `t.test()` an, die sich direkt mit der Formel-Notation auf den Datensatz anwenden lässt:
+
+```{r ttest_alternative, eval=TRUE}
+t.test(time_min ~ treatment, data = ab_test)
+```
+
+Die Ausgabe enthält drei Kerngrössen, die wir auch oben aus dem Bootstrap kennen:
+
+- die **geschätzte Mittelwertdifferenz** (in der `mean in group ...`-Zeile als Differenz der beiden Gruppenmittelwerte),
+- ein **95%-Konfidenzintervall** für die Differenz (basierend auf der $t$-Verteilung),
+- einen **p-Wert** für die Nullhypothese, dass die wahre Differenz Null ist.
+
+Der t-Test setzt voraus, dass die Outcome-Verteilung *innerhalb der Gruppen* annähernd normal ist; bei ausreichend grossen Stichproben gilt das nach dem zentralen Grenzwertsatz aber auch für stark schiefe Daten. Da in unserem A/B-Test pro Gruppe $n=300$ Beobachtungen vorliegen, ist diese Voraussetzung unproblematisch. CI und p-Wert sollten daher praktisch denselben Schluss liefern wie das Bootstrap-Verfahren oben.
+
+## Alternative: Regression mit Treatment-Dummy
+
+Eine alternative --- und besonders flexible --- Sicht auf den A/B-Test ist die **Regression**: Wir modellieren das Outcome als Funktion des Treatments. Das Treatment ist hier eine 0/1-Variable, ein sogenannter **Dummy**. Der Vorteil dieser Sichtweise: dieselbe Logik trägt unmittelbar in komplexere Modelle (mehrere Kovariaten, Interaktionen, kontinuierliche Treatments).
+
+Konkret rechnen wir den Vergleich mit `lm()`, das wir aus den Kapiteln 5 bis 7 bereits kennen:
+
+```{r reg_alternative, eval=TRUE}
+md_time <- lm(time_min ~ treatment, data = ab_test)
+summary(md_time)$coefficients
+confint(md_time)["treatment", ]
+```
+
+Die Ergebnisse sind algebraisch identisch zur händischen Mittelwertdifferenz oben:
+
+- Der **Achsenabschnitt** ($b_0$) ist der mittlere `time_min`-Wert in der Control-Gruppe.
+- Der **Koeffizient von `treatment`** ($b_1$) ist die Mittelwertdifferenz Treatment − Control.
+- `confint()` liefert ein klassisches 95%-Konfidenzintervall (basierend auf der $t$-Verteilung), das in der Regel sehr nahe am Bootstrap-CI oben liegt.
+
+```{r reg_alternative_compare, eval=TRUE}
+# Mittelwertdifferenz vs. Regressionskoeffizient
+round(c(
+  Mittelwertdifferenz    = unname(diff_hat),
+  Regressionskoeffizient = unname(coef(md_time)["treatment"])
+), 4)
+```
+
+Die Regression liefert für unseren einfachen 2-Gruppen-Vergleich also **denselben** Punktschätzer und ein vergleichbares Konfidenzintervall.
+
+# Vergleich von Anteilen (binäres Outcome)
+
+**Frage**: Steigert die neue Checkout-Seite die Kaufwahrscheinlichkeit?
+
+Zuerst berechnen wir die Kaufquoten in den beiden Gruppen und stellen sie als einfaches Balkendiagramm dar:
+
+```{r purchase_barplot, eval=TRUE, fig.width=4.5, fig.height=3.8}
+purch_t <- ab_test$purchase[ab_test$treatment == 1]
+purch_c <- ab_test$purchase[ab_test$treatment == 0]
+
+prop_t <- mean(purch_t)
+prop_c <- mean(purch_c)
+
+prop_df <- data.frame(
+  group = factor(c("Control", "Treatment"), levels = c("Control", "Treatment")),
+  prop  = c(prop_c, prop_t)
+)
+
+ggplot(prop_df, aes(x = group, y = prop, fill = group)) +
+  geom_col(width = 0.5) +
+  scale_fill_manual(values = c(Control = "lightgray", Treatment = "steelblue")) +
+  coord_cartesian(ylim = c(0, 0.55)) +
+  labs(x = NULL, y = "Kaufquote",
+       title = "Kaufquoten Treatment vs. Control") +
+  theme_minimal(base_size = 11) +
+  theme(legend.position = "none")
+```
+
+In der Treatment-Gruppe haben rund **47 %** der Personen gekauft, in der Control-Gruppe nur **32 %** --- ein Unterschied von etwa **15 Prozentpunkten** zugunsten der neuen Checkout-Seite. Doch wie sicher ist diese Schätzung? In einer anderen Stichprobe wären die Balken etwas höher oder tiefer ausgefallen.
+
+## Bootstrap-CI und p-Wert für die Differenz
+
+Um die Unsicherheit sichtbar zu machen, bootstrappen wir die beiden Kaufquoten und zeichnen die 95%-Konfidenzintervalle direkt in die Balken ein:
+
+```{r purchase_barplot_ci, eval=TRUE, fig.width=4.5, fig.height=3.8}
+boot_t <- do(3000) * mean(resample(purch_t))
+boot_c <- do(3000) * mean(resample(purch_c))
+ci_t <- quantile(boot_t$mean, c(0.025, 0.975), type = 1)
+ci_c <- quantile(boot_c$mean, c(0.025, 0.975), type = 1)
+
+prop_df_ci <- data.frame(
+  group = factor(c("Control", "Treatment"), levels = c("Control", "Treatment")),
+  prop  = c(prop_c, prop_t),
+  lower = c(ci_c[1], ci_t[1]),
+  upper = c(ci_c[2], ci_t[2])
+)
+
+ggplot(prop_df_ci, aes(x = group, y = prop, fill = group)) +
+  geom_col(width = 0.5) +
+  geom_errorbar(aes(ymin = lower, ymax = upper),
+                width = 0.15, colour = "darkred", linewidth = 0.8) +
+  scale_fill_manual(values = c(Control = "lightgray", Treatment = "steelblue")) +
+  coord_cartesian(ylim = c(0, 0.55)) +
+  labs(x = NULL, y = "Kaufquote",
+       title = "Kaufquoten mit 95%-Bootstrap-CIs") +
+  theme_minimal(base_size = 11) +
+  theme(legend.position = "none")
+```
+
+Die beiden Intervalle **überlappen sich nicht** --- ein deutliches Indiz dafür, dass der Unterschied der Kaufquoten kein Zufallsartefakt ist.[^ci-overlap]
+
+[^ci-overlap]: Vorsicht bei der Umkehrung: Aus *überlappenden* Einzel-Konfidenzintervallen lässt sich **nicht** schliessen, dass die Differenz statistisch nicht von Null verschieden ist. Der Standardfehler einer Differenz $\sqrt{SE_T^2 + SE_C^2}$ ist kleiner als die Summe der einzelnen Margins; das Konfidenzintervall *für die Differenz* kann also durchaus die Null ausschliessen, selbst wenn die Einzel-Intervalle leicht überlappen. Klar getrennte Intervalle sind hinreichend für Signifikanz, eine kleine Überlappung sagt für sich allein wenig aus.
+
+Was uns letztlich interessiert, ist ein Konfidenzintervall *für die Differenz selbst*. Statt jeden Anteil einzeln zu bootstrappen, ziehen wir pro Bootstrap-Runde **die Differenz** der beiden Kaufquoten:
+
+```{r bootstrap_prop_diff, eval=TRUE}
+boot_prop <- do(3000) * (mean(resample(purch_t)) - mean(resample(purch_c)))
+ci_prop <- quantile(boot_prop$result, probs = c(0.025, 0.975), type = 1)
+
+# 95%-Bootstrap-CI für Differenz der Kaufquoten (in Prozentpunkten)
+round(ci_prop, 3)
+```
+
+Das Intervall enthält die **Null nicht** --- die Differenz von rund 15 Prozentpunkten ist also auch unter Berücksichtigung der Stichprobenunsicherheit klar von Null verschieden. Aus der Bootstrap-Verteilung können wir zusätzlich einen approximativen **p-Wert** ableiten: Wir verschieben die Verteilung gedanklich auf 0 (so, als ob das Treatment keinen Effekt hätte) und zählen, wie oft eine Differenz auftritt, die mindestens so extrem ist wie die beobachtete:
+
+```{r bootstrap_pvalue, eval=TRUE}
+diff_obs <- prop_t - prop_c
+shifted  <- boot_prop$result - diff_obs            # auf Null zentriert
+p_boot   <- mean(abs(shifted) >= abs(diff_obs))    # zweiseitig
+round(c(diff_obs = diff_obs, p_boot = p_boot), 4)
+```
+
+Ein sehr kleiner p-Wert bestätigt die Schlussfolgerung: Eine Differenz von 15 Prozentpunkten wäre unter der Annahme "kein Effekt" extrem unwahrscheinlich. Ein wichtiger Vorteil dieses Bootstrap-Ansatzes: Wir bekommen sowohl eine **Effektgrösse mit Konfidenzintervall** als auch einen **p-Wert** in Prozentpunkten der Kaufquote --- nicht nur ein abstraktes "signifikant ja/nein".
+
+## Alternative: Kontingenztafel und $\chi^2$-Test
+
+Klassisch wird bei zwei Gruppen mit binärem Outcome häufig der $\chi^2$-Test auf Unabhängigkeit eingesetzt. Er prüft die **Nullhypothese**, dass `treatment` und `purchase` unabhängig voneinander sind --- in unserem Kontext also: dass das Treatment **keinen Effekt** auf die Kaufentscheidung hat. Die Teststatistik vergleicht die *beobachteten* Häufigkeiten in einer Kreuztabelle mit jenen, die *unter Unabhängigkeit zu erwarten* wären, und summiert die quadrierten Abweichungen, normiert durch die erwarteten Häufigkeiten:
+
+$$
+\chi^2 = \sum \frac{(O_{ij} - E_{ij})^2}{E_{ij}}
+$$
+
+Je grösser dieser Wert, desto stärker weichen die beobachteten Daten vom Bild der "perfekten Unabhängigkeit" ab. Ein kleiner p-Wert ($< 0.05$) führt zur Ablehnung der Nullhypothese.
+
+```{r chisq_test, eval=TRUE}
+tab <- table(treatment = ab_test$treatment, purchase = ab_test$purchase)
+print(tab)
+
+chisq.test(tab)
+```
+
+Der p-Wert sollte sehr nahe am Wert aus dem Bootstrap liegen --- beide Methoden beantworten dieselbe Frage. Der Vorteil des Bootstrap-Ansatzes oben ist, dass er zusätzlich eine **Effektgrösse mit Unsicherheitsintervall** liefert, während der $\chi^2$-Test nur eine binäre Aussage über "signifikant" oder "nicht signifikant" macht.
+
+## Alternative: Regression (Linear Probability Model)
+
+Auch hier können wir denselben Vergleich als **lineare Regression** auf den 0/1-Dummy `treatment` formulieren --- analog zum Vorgehen in Abschnitt *Mittelwertvergleich*. Bei einer binären Zielgrösse heisst das resultierende Modell **Linear Probability Model (LPM)**:
+
+```{r reg_binary, eval=TRUE}
+md_purchase <- lm(purchase ~ treatment, data = ab_test)
+summary(md_purchase)$coefficients
+confint(md_purchase)["treatment", ]
+```
+
+Der Koeffizient von `treatment` schätzt direkt die Differenz der Kaufquoten und sollte mit der Punktdifferenz aus dem Anteilsvergleich oben übereinstimmen. Das LPM hat bekannte Schwächen (vorhergesagte Werte können theoretisch $< 0$ oder $> 1$ werden); für den **durchschnittlichen Behandlungseffekt** in einem randomisierten Experiment liefert es dennoch in der Regel sehr brauchbare Schätzungen. Eine methodisch sauberere Alternative ist die **logistische Regression** (`glm(purchase ~ treatment, family = binomial)`), die wir hier nicht weiter vertiefen.
+
+# Zusammenfassung
+
+In diesem Dokument haben wir gesehen:
+
+1. **Kausalität $\neq$ Korrelation**: Eine reine Beobachtung sagt noch nichts über die Wirkungsrichtung. Confounder, Reverse Causation und Selektion können einen scheinbaren Effekt erzeugen.
+
+2. **Randomisierung löst das Problem**: Durch zufällige Behandlungszuordnung sind die Gruppen im Mittel in allen anderen Eigenschaften gleich. Der einfache Mittelwertunterschied schätzt dann den durchschnittlichen Behandlungseffekt (ATE).
+
+3. **Welche Methode für welches Outcome?** Die geeigneten Verfahren hängen vom Typ der Zielgrösse ab. Bei einem randomisierten 2-Gruppen-Experiment liefern dabei alle hier genannten Methoden dieselbe Schätzung des Kausaleffekts.
+
+    - **Kontinuierliches Outcome** (z.B. `time_min`):
+        - Mittelwertdifferenz mit **Bootstrap-CI** (Kapitel 4)
+        - **Klassischer t-Test** (`t.test()`) als Standardverfahren
+        - **Lineare Regression** mit Treatment-Dummy (Kapitel 5)
+    - **Binäres Outcome** (z.B. `purchase`):
+        - Differenz der Anteile mit **Bootstrap-CI** und Bootstrap-p-Wert
+        - **$\chi^2$-Test** auf Unabhängigkeit (klassische Alternative)
+        - **Linear Probability Model**: lineare Regression mit binärer Zielgrösse

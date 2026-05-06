@@ -1,8 +1,18 @@
 ---
 title: "R-Code Beispiele aus WDDA Vorlesung 6 (Kapitel 6)"
-author: "Ulrich Matter"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
 ---
 
 # Einleitung
@@ -19,7 +29,7 @@ Zentrale Konzepte in diesem Bereich sind:
 4. **Nichtlineare und polynomiale Regression**: Wie modelliert man nichtlineare Zusammenhänge?
 5. **Modellvergleich**: Wie vergleicht man verschiedene Regressionsmodelle?
 
-# 0. Vorbereitung
+# Vorbereitung
 
 ```{r vorbereitung-sichtbar, eval=FALSE}
 # Pakete laden
@@ -64,7 +74,7 @@ str(data)
 
 **Hinweis zu Datenpfaden**: In R-Markdown-Dateien werden relative Pfade vom Speicherort der Datei aus interpretiert, daher der Pfad `"../data/WDDA_06.xlsx"`. In regulären R-Skripten würde der Pfad relativ zum Arbeitsverzeichnis angegeben werden.
 
-# 1. Untersuchung der erklärenden Variablen
+# Untersuchung der erklärenden Variablen
 
 Bevor wir mit der multiplen Regression beginnen, untersuchen wir die Beziehungen zwischen den Variablen.
 
@@ -110,7 +120,7 @@ scatter3d(x = TV, z = radio, y = sales, surface = FALSE)
 - Die Funktion `scatter3d()` aus dem Paket `car` erstellt ein interaktives 3D-Streudiagramm.
 - Die Funktion `pairs()` erstellt eine Matrix von paarweisen Streudiagrammen.
 
-# 2. Multiple lineare Regression (TV und Radio)
+# Multiple lineare Regression (TV und Radio)
 
 Nun führen wir eine multiple Regression mit zwei Prädiktoren durch: TV und Radio.
 
@@ -159,7 +169,7 @@ cat("- Radio-Koeffizient:", round(B[3], 4),
 - Die Funktion `summary()` liefert eine detaillierte Zusammenfassung des Regressionsmodells, einschliesslich Koeffizienten, Standardfehler, t-Werte, p-Werte und R².
 - Die Funktion `coef()` extrahiert die Koeffizienten aus einem Regressionsmodell.
 
-# 3. Vorhersage mit dem Modell
+# Vorhersage mit dem Modell
 
 Mit dem Regressionsmodell können wir Vorhersagen für neue Werte der unabhängigen Variablen treffen.
 
@@ -204,7 +214,7 @@ cat("95%-Konfidenzintervall für den Erwartungswert:",
 - Der Parameter `level` in `predict()` gibt das Konfidenzniveau an.
 - Der Ausdruck `summary(md2)$sigma` extrahiert den RSE aus dem Regressionsobjekt.
 
-# 4. Regressionsfläche (Plane of Best Fit)
+# Regressionsfläche (Plane of Best Fit)
 
 Bei der multiplen Regression mit zwei Prädiktoren können wir die Regressionsfläche in einem 3D-Raum visualisieren.
 
@@ -242,7 +252,7 @@ s3d$plane3d(my.lm, lty.box = "solid")
 - Die Funktion `scatterplot3d()` erstellt ein statisches 3D-Streudiagramm.
 - Die Methode `plane3d()` fügt eine Regressionsfläche zu einem `scatterplot3d`-Objekt hinzu.
 
-# 5. Modellgüte und Erklärungskraft
+# Modellgüte und Erklärungskraft
 
 Wir untersuchen nun, wie gut das Modell die Variation in den Daten erklärt.
 
@@ -286,7 +296,7 @@ cat("Zunahme von R² durch Hinzufügen von Radio:",
 - Der Ausdruck `summary(md2)$r.squared` extrahiert den R²-Wert aus dem Regressionsobjekt.
 - Die Berechnung von R² erfolgt direkt nach der Formel R² = 1 - (RSS / TSS).
 
-# 6. Residuenanalyse
+# Residuenanalyse
 
 Die Analyse der Residuen ist ein wichtiger Schritt, um die Annahmen der linearen Regression zu überprüfen.
 
@@ -332,7 +342,7 @@ qqline(resid(md2), col = "red")
 - Die Funktion `qqnorm()` erstellt einen Q-Q-Plot, der die Verteilung der Residuen mit der Normalverteilung vergleicht.
 - Die Funktion `qqline()` fügt eine Referenzlinie zum Q-Q-Plot hinzu.
 
-# 7. Erweiterung: Multiple Regression mit drei Prädiktoren
+# Erweiterung: Multiple Regression mit drei Prädiktoren
 
 Wir erweitern nun das Modell um einen dritten Prädiktor: Newspaper.
 
@@ -370,7 +380,7 @@ cat("Adjustiertes R² (TV + Radio + Newspaper):", round(summary(md3)$adj.r.squar
 - Der Ausdruck `summary(md2)$adj.r.squared` extrahiert das adjustierte R² aus dem Regressionsobjekt.
 - Der Ausdruck `summary(md2)$sigma` extrahiert den RSE aus dem Regressionsobjekt.
 
-# 8. Nichtlineare Modelle: Quadratische und polynomiale Regression
+# Nichtlineare Modelle: Quadratische und polynomiale Regression
 
 Nicht alle Zusammenhänge sind linear. Wir untersuchen nun nichtlineare Modelle, insbesondere quadratische und polynomiale Regression.
 
@@ -429,7 +439,7 @@ legend("bottomright",
 - Die Funktion `lines()` fügt Linien zu einem bestehenden Plot hinzu.
 - Die Parameter `col`, `lwd` und `lty` in `lines()` geben die Farbe, Breite und den Typ der Linie an.
 
-# 9. Modellvergleich: R², Adjustiertes R² und RSE
+# Modellvergleich: R², Adjustiertes R² und RSE
 
 Wir vergleichen nun systematisch die verschiedenen Modelle anhand von R², adjustiertem R² und RSE.
 
