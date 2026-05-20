@@ -1,10 +1,10 @@
 ##############################################################
-# WDDA Lecture 08 – Nichtlineare Zusammenhänge
+# WDDA Lecture 08 – Nichtlineare Zusammenhänge & kategoriale Prädiktoren
 # Themen:
-# - Konfidenzintervalle (CI) und Bootstrap
-# - Inferenz in einfacher und multipler Regression
-# - Signifikanztests (p-Werte), t-Tests, F-Statistik
-# - Prognose mit CI und PI
+# - Nichtlineare Transformationen (Polynom, Wurzel, Log)
+# - Vergleich von Modellgüte (R²)
+# - Dummy-Variablen und kategoriale Prädiktoren
+# - Interaktionseffekte zwischen Prädiktoren
 ##############################################################
 
 # Pakete laden
@@ -118,6 +118,7 @@ legend("bottomright",
 # Package laden und Datensatz einlesen
 library(ISLR)
 data(Credit)
+attach(Credit)  # Variablen direkt verfügbar machen
 
 # 3.1 Vergleich der Salden nach Geschlecht mithilfe von Bootstrap
 
@@ -167,7 +168,7 @@ confint(md.BG)
 
 
 
-# 4. Zweiewertige Prädiktoren (Dummy-Variablen)
+# 4. Zweiwertige Prädiktoren (Dummy-Variablen)
 
 # Dummy-Variable für Gender: 1 = Female, 0 = Male
 FM10 <- ifelse(Gender == "Female", 1, 0)

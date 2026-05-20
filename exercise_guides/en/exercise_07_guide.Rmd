@@ -1,0 +1,292 @@
+---
+title: "WDDA FS 2026: Guide for Problem Set 7"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: true
+    latex_engine: xelatex
+lang: en
+---
+
+# Introduction
+
+This guide provides detailed explanations for the exercises in WDDA FS 2026 Problem Set 7. The set focuses on **inference in regression models** -- that is, confidence intervals, significance tests, and prediction intervals. We learn how reliable estimated coefficients and predictions are and how to test hypotheses about model parameters.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(mosaic)
+```
+
+# Exercise 1: Advertising -- Confidence intervals and bootstrap
+
+**Task:**
+Analyse the advertising dataset and compare classical and bootstrap confidence intervals for the coefficients of simple and multiple regressions. Examine the significance of the predictors and perform a model comparison.
+
+## Step 1: Read data and fit a simple model (a)
+
+```{r}
+Advertising <- read_excel("../../data/WDDA_07.xlsx", sheet = "Advertising")
+head(Advertising)
+
+mod_tv <- lm(sales ~ TV, data = Advertising)
+summary(mod_tv)
+```
+
+**Interpretation:**
+
+- **Intercept ($\beta_0 \approx 7.03$):** expected sales when `TV = 0`.
+- **TV coefficient ($\beta_1 \approx 0.048$):** for each additional 1\$ of TV spending, sales increase by about 0.048 units on average.
+- Both coefficients are highly significant ($p < 0.001$).
+
+## Step 2: Classical confidence interval (b)
+
+```{r}
+confint(mod_tv)
+```
+
+**Interpretation:** The 95\% confidence interval for the TV coefficient is roughly between 0.042 and 0.053 -- i.e. we are 95\% confident that the true effect of TV spending on sales lies in this range.
+
+## Step 3: Bootstrap confidence interval (c)
+
+```{r}
+set.seed(123)
+simcoef <- do(5000) * coef(lm(sales ~ TV, data = resample(Advertising)))
+
+CI_intercept <- quantile(simcoef$Intercept, c(0.025, 0.975))
+CI_tv <- quantile(simcoef$TV, c(0.025, 0.975))
+
+cat("Bootstrap 95% CI for Intercept:", round(CI_intercept, 3), "\n")
+cat("Bootstrap 95% CI for TV:       ", round(CI_tv, 3), "\n")
+```
+
+**Comparison:** The bootstrap intervals agree closely with the classical intervals. This is expected when the classical assumptions (normality of residuals, constant variance) are reasonably well met.
+
+## Step 4: Visualising the bootstrap distribution (d)
+
+```{r, fig.width=7, fig.height=4}
+par(mfrow = c(1, 2))
+hist(simcoef$TV, main = "Bootstrap distribution: TV", xlab = "TV coefficient",
+     col = "lightgray", border = "white", breaks = 25)
+abline(v = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+
+hist(simcoef$Intercept, main = "Bootstrap distribution: Intercept", xlab = "Intercept",
+     col = "lightgray", border = "white", breaks = 25)
+abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+par(mfrow = c(1, 1))
+```
+
+**Assessment:** Both distributions are approximately bell-shaped (central limit theorem). The red lines mark the 95\% confidence bounds.
+
+## Step 5: Multiple regression (e)
+
+```{r}
+mod_full <- lm(sales ~ TV + radio + newspaper, data = Advertising)
+summary(mod_full)
+```
+
+**Interpretation:**
+
+- `TV` and `radio` are highly significant ($p < 0.001$).
+- `newspaper` is **not significant** ($p \approx 0.86$) -- its effect is statistically indistinguishable from zero.
+- The F-test ($p < 2.2 \cdot 10^{-16}$) shows that the model overall explains sales significantly.
+
+## Step 6: Model comparison via ANOVA F-test (f)
+
+```{r}
+mod_red <- lm(sales ~ TV + radio, data = Advertising)
+anova(mod_red, mod_full)
+```
+
+**Interpretation:**
+
+- The F-test compares the reduced model (`TV + radio`) with the full model.
+- $p > 0.05$ means: `newspaper` does not contribute significant additional explanatory power.
+- **Conclusion:** we can drop `newspaper` from the model without losing meaningful explanatory power.
+
+## Step 7: Prediction with confidence and prediction intervals (g)
+
+```{r}
+new_values <- data.frame(TV = 200, radio = 30)
+
+ci_mean <- predict(mod_red, newdata = new_values, interval = "confidence")
+pi_obs  <- predict(mod_red, newdata = new_values, interval = "prediction")
+
+cat("Confidence interval for mean sales:\n")
+print(ci_mean)
+cat("\nPrediction interval for an individual observation:\n")
+print(pi_obs)
+```
+
+**Interpretation:**
+
+- The **confidence interval** (`lwr`, `upr` in `ci_mean`) refers to the **expected value** of sales at the given predictor values -- i.e. the mean over many hypothetical observations.
+- The **prediction interval** is wider because it additionally accounts for the spread of **individual** observations around the regression surface.
+
+# Exercise 2: Diamond Rings -- Inference and prediction
+
+**Task:**
+For the Diamond Rings dataset, investigate the relationship between weight and price. Compute confidence and prediction intervals and test the significance of the slope.
+
+## Step 1: Data and model (a)
+
+```{r}
+diamonds <- read_excel("../../data/WDDA_07.xlsx", sheet = "Diamonds Rings")
+names(diamonds) <- c("weight", "price")
+head(diamonds)
+
+mod_dr <- lm(price ~ weight, data = diamonds)
+summary(mod_dr)
+```
+
+**Interpretation:**
+
+- **Slope ($\approx 3721$):** for each additional carat, the price increases on average by about 3721 SGD.
+- The t-value for `weight` is large, $p$ is extremely small -- the effect is highly significant.
+
+## Step 2: Confidence interval for the slope (b)
+
+```{r}
+confint(mod_dr)
+```
+
+**Interpretation:** The 95\% confidence interval for the slope is narrow and clearly above zero -- the relationship is statistically well established.
+
+## Step 3: Bootstrap confidence interval (c)
+
+```{r}
+set.seed(42)
+simcoef_dr <- do(5000) * coef(lm(price ~ weight, data = resample(diamonds)))
+
+CI_weight <- quantile(simcoef_dr$weight, c(0.025, 0.975))
+cat("Bootstrap 95% CI for slope (weight):", round(CI_weight, 1), "\n")
+```
+
+**Comparison:** Bootstrap and classical intervals are very similar in this case.
+
+## Step 4: Prediction for a new ring (d)
+
+```{r}
+newr <- data.frame(weight = 0.25)
+
+ci_mean <- predict(mod_dr, newdata = newr, interval = "confidence")
+pi_obs  <- predict(mod_dr, newdata = newr, interval = "prediction")
+
+cat("Mean expected price (95% CI):\n")
+print(ci_mean)
+cat("\nPrediction interval for a single ring (95% PI):\n")
+print(pi_obs)
+```
+
+**Interpretation:** The prediction interval is wider than the confidence interval because it also accounts for the individual variability around the regression line.
+
+## Step 5: Visualisation with intervals (e)
+
+```{r, fig.width=8, fig.height=5}
+grid <- data.frame(weight = seq(min(diamonds$weight), max(diamonds$weight), length.out = 100))
+ci <- predict(mod_dr, newdata = grid, interval = "confidence")
+pi <- predict(mod_dr, newdata = grid, interval = "prediction")
+
+plot(diamonds$weight, diamonds$price, pch = 16, col = "gray50",
+     xlab = "Weight (carats)", ylab = "Price (SGD)",
+     main = "Regression with 95% CI and PI")
+lines(grid$weight, ci[, "fit"], col = "blue", lwd = 2)
+lines(grid$weight, ci[, "lwr"], col = "blue", lty = 2)
+lines(grid$weight, ci[, "upr"], col = "blue", lty = 2)
+lines(grid$weight, pi[, "lwr"], col = "red",  lty = 3)
+lines(grid$weight, pi[, "upr"], col = "red",  lty = 3)
+legend("topleft", legend = c("Fit", "95% CI", "95% PI"),
+       col = c("blue", "blue", "red"), lty = c(1, 2, 3), lwd = c(2, 1, 1))
+```
+
+**Assessment:** The PI band (red) is clearly wider than the CI band (blue). Both are narrowest at the centre of the data and widen towards the edges.
+
+# Exercise 3: SAT -- Multiple regression and the F-test
+
+**Task:**
+For the SAT dataset, examine which educational variables best explain the average SAT score of a US state. Perform model comparisons using an F-test.
+
+## Step 1: Read and inspect the data (a)
+
+```{r}
+sat <- read_excel("../../data/WDDA_07.xlsx", sheet = "SAT")
+head(sat)
+summary(sat[, c("expend", "ratio", "salary", "frac", "sat")])
+```
+
+**Description:**
+
+- `expend`: per-pupil education spending (in 1000\$)
+- `ratio`: pupil-teacher ratio
+- `salary`: average teacher salary (in 1000\$)
+- `frac`: fraction of students taking the SAT (in \%)
+- `sat`: average SAT score
+
+## Step 2: Simple model (b)
+
+```{r}
+mod1 <- lm(sat ~ expend, data = sat)
+summary(mod1)
+```
+
+**Surprise:** The slope on `expend` is **negative**! Higher education spending is associated with lower SAT scores? This looks paradoxical -- a hint at a confounding variable.
+
+## Step 3: Multiple regression (c)
+
+```{r}
+mod2 <- lm(sat ~ expend + ratio + salary + frac, data = sat)
+summary(mod2)
+```
+
+**Interpretation:**
+
+- After controlling for `frac` (fraction of students participating), **the sign of many coefficients flips**.
+- `frac` is highly significant and negative: states where more students take the SAT have lower average scores (self-selection).
+- `expend` and `salary` now have positive signs -- the true effect of additional resources is actually positive once we control for the selection effect.
+
+## Step 4: F-test of the overall model (d)
+
+```{r}
+f <- summary(mod2)$fstatistic
+cat("F statistic:", round(f["value"], 2),
+    "  (df1 =", f["numdf"], ", df2 =", f["dendf"], ")\n")
+```
+
+**Interpretation:** The F-test checks the global null hypothesis that **all** slopes are zero. A high F-value with a small $p$ rejects this hypothesis -- at least one predictor explains significant variance.
+
+## Step 5: ANOVA comparison of nested models (e)
+
+```{r}
+mod_small <- lm(sat ~ frac, data = sat)
+mod_large <- lm(sat ~ expend + ratio + salary + frac, data = sat)
+anova(mod_small, mod_large)
+```
+
+**Interpretation:**
+
+- Compares the reduced model (only `frac`) with the full model.
+- A significant $p$-value would mean that the extra predictors jointly contribute significantly to the explanation.
+- If $p > 0.05$: the extra variables provide no significant gain -- `frac` alone captures most of the variation.
+
+## Step 6: Prediction for a hypothetical state (f)
+
+```{r}
+hypothetical <- data.frame(expend = 6, ratio = 16, salary = 35, frac = 30)
+pred <- predict(mod_large, newdata = hypothetical, interval = "prediction")
+print(pred)
+```
+
+**Interpretation:** Expected SAT score plus 95\% prediction interval for a state with the specified characteristics.
+
+# Summary
+
+This problem set has shown:
+
+1. **Classical and bootstrap confidence intervals** yield very similar results when model assumptions hold. Bootstrap is more robust when assumptions are violated.
+2. **t-tests** check individual coefficients, **F-tests** check the overall model or model comparisons.
+3. **Confidence vs. prediction intervals**: the CI refers to the expected value, the PI to a single new observation -- the PI is always wider.
+4. **Multiple regression** allows estimating effects of individual predictors controlling for other variables -- important for avoiding confounding (SAT example).
+5. **ANOVA F-tests** compare nested models and help with model selection: simpler models are preferred unless they are significantly worse.

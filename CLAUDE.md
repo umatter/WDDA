@@ -8,17 +8,18 @@ Teaching repository for the WDDA (Datenmanagement und Datenanalyse) course at BU
 
 ## Repository Structure
 
-- `code/` - Standalone R scripts: `lecture_01.R` through `lecture_08.R` and `exercise_*_solutions.R`
-- `notes/` - R Markdown lecture notes (`notes_lecture_*.Rmd`) rendered to HTML, plus special topics
-- `exercise_guides/` - Exercise instructions as Rmd source + compiled PDF
-- `solutions/` - Additional solution materials (Rmd)
+- `code/` - Standalone R scripts: `lecture_01.R` through `lecture_08.R` and `exercise_01_solutions.R` through `exercise_06_solutions.R`
+- `notes/` - R Markdown lecture notes (`notes_lecture_01.Rmd` through `notes_lecture_07.Rmd`) rendered to HTML, plus special topics (e.g., `galton_ox_problem.Rmd` as Beamer slides)
+- `exercise_guides/` - Exercise instructions as Rmd source + compiled PDF (`exercise_01_guide` through `exercise_06_guide`)
+- `solutions/` - Additional solution materials (`solutions_set_chapter1.Rmd`, `solutions_set_chapter2.Rmd`)
 - `data/` - Excel workbooks (`WDDA_01.xlsx` through `WDDA_08.xlsx`) with multiple sheets per file
+- `materials/` - Moodle semester overview (`moodle_materials_formatted.Rmd` with `moodle_preamble.tex`), rendered to PDF via pdflatex
 - `img/` - Images referenced in notes
 
 ## Key Technical Details
 
 - **R >= 4.1.0** required (uses native pipe `|>`)
-- Core packages: `readxl`, `tidyverse`, `mosaic`, `plotrix`, `scatterplot3d`, `rgl`, `car`, `corrplot`
+- Core packages: `readxl`, `tidyverse`, `mosaic`, `e1071`, `plotrix`, `corrplot`, `scatterplot3d`, `rgl`, `car`, `ISLR`, `lubridate`, `vioplot`
 - Data is loaded from Excel files via `readxl::read_excel()` with sheet names
 - Code intentionally demonstrates both classic nested R syntax and modern pipe syntax for pedagogical purposes
 

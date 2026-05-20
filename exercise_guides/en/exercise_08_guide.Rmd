@@ -1,0 +1,280 @@
+---
+title: "WDDA FS 2026: Guide for Problem Set 8"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: true
+    latex_engine: xelatex
+lang: en
+---
+
+# Introduction
+
+This guide provides detailed explanations for the exercises in WDDA FS 2026 Problem Set 8. The set focuses on **non-linear relationships** (variable transformations) and **categorical predictors** (dummy variables, interactions). We learn how the linear regression model can be extended to also handle non-linear and non-numeric relationships.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(mosaic)
+```
+
+# Exercise 1: Advertising -- Non-linear models for TV and sales
+
+**Task:**
+Compare different model forms for the relationship between TV spending and sales. Check whether a transformation improves model fit and whether the linear regression assumptions are better satisfied.
+
+## Step 1: Read and visualise the data (a)
+
+```{r}
+adv <- read_excel("../../data/WDDA_08.xlsx", sheet = "Advertising")
+plot(adv$TV, adv$sales, pch = 16, col = "gray50",
+     xlab = "TV spending", ylab = "Sales",
+     main = "Sales vs. TV")
+```
+
+**Assessment:** The data show a clearly positive but curved relationship -- the effect of additional TV spending appears to flatten at high values (diminishing marginal returns).
+
+## Step 2: Fit six models (b)
+
+```{r}
+attach(adv)
+
+md1 <- lm(sales ~ TV)                                     # Linear
+md2 <- lm(sales ~ poly(TV, 2, raw = TRUE))                # Quadratic
+md3 <- lm(sales ~ sqrt(TV))                               # Square-root
+md4 <- lm(sales ~ log(TV))                                # Log(x)
+md5 <- lm(log(sales) ~ log(TV))                           # Log-log
+md6 <- lm(log(sales) ~ TV)                                # Log(y)
+
+cat("R-squared values:\n")
+cat("Linear:       ", round(summary(md1)$r.squared, 4), "\n")
+cat("Quadratic:    ", round(summary(md2)$r.squared, 4), "\n")
+cat("Square-root:  ", round(summary(md3)$r.squared, 4), "\n")
+cat("Log(x):       ", round(summary(md4)$r.squared, 4), "\n")
+cat("Log-log:      ", round(summary(md5)$r.squared, 4), "\n")
+cat("Log(y):       ", round(summary(md6)$r.squared, 4), "\n")
+```
+
+**Important warning:** $R^2$ is only **directly comparable** between models with the same response. Models md5 and md6 (with $\log(y)$ as response) explain the variance of $\log(\text{sales})$, not of sales itself -- their $R^2$ is therefore **not** directly comparable to the other models.
+
+## Step 3: Visualisation of the model curves (c)
+
+```{r, fig.width=8, fig.height=5}
+f1 <- function(x) coef(md1)[1] + coef(md1)[2] * x
+f3 <- function(x) coef(md3)[1] + coef(md3)[2] * sqrt(x)
+f5 <- function(x) exp(coef(md5)[1] + coef(md5)[2] * log(x))
+
+plot(TV, sales, pch = 16, col = "gray60",
+     xlab = "TV spending", ylab = "Sales",
+     main = "Comparison of regression models")
+curve(f1, add = TRUE, col = "red",   lwd = 2)
+curve(f3, add = TRUE, col = "blue",  lwd = 2)
+curve(f5, add = TRUE, col = "green", lwd = 2)
+legend("bottomright", legend = c("Linear", "Square-root", "Log-log"),
+       col = c("red", "blue", "green"), lwd = 2)
+```
+
+**Assessment:** Square-root and log-log models track the data cloud better than the linear model, especially in the upper range (high TV spending).
+
+## Step 4: Residual analysis (d)
+
+```{r, fig.width=8, fig.height=4}
+par(mfrow = c(1, 2))
+plot(fitted(md1), resid(md1), pch = 16, col = "gray50",
+     main = "Linear model", xlab = "Fitted", ylab = "Residuals")
+abline(h = 0, lty = 2, col = "red")
+
+plot(fitted(md3), resid(md3), pch = 16, col = "gray50",
+     main = "Square-root model", xlab = "Fitted", ylab = "Residuals")
+abline(h = 0, lty = 2, col = "red")
+par(mfrow = c(1, 1))
+```
+
+**Assessment:**
+
+- For the linear model the residuals often show a **U-shaped pattern** -- a hint at non-linear structure that the linear model fails to capture.
+- For the square-root model the residuals are usually more evenly scattered around zero.
+
+## Step 5: Interpretation of the log-log model (e)
+
+```{r}
+summary(md5)
+```
+
+**Interpretation:**
+
+- The slope on `log(TV)` is an **elasticity**: a 1\% increase in TV spending leads on average to roughly $\beta_1$\% change in sales.
+- This is an economically very intuitive quantity, especially for marketing decisions.
+
+# Exercise 2: Default -- Categorical predictors
+
+**Task:**
+For the Default dataset, examine how account balance (`balance`) depends on student status (`student`) and income (`income`). Use dummy variables and interactions.
+
+## Step 1: Read the data (a)
+
+```{r}
+default <- read_excel("../../data/WDDA_08.xlsx", sheet = "Default")
+default$student <- factor(default$student, levels = c("No", "Yes"))
+head(default)
+table(default$student)
+```
+
+## Step 2: Simple model with a categorical predictor (b)
+
+```{r}
+mod_s <- lm(balance ~ student, data = default)
+summary(mod_s)
+```
+
+**Interpretation:**
+
+- **Intercept:** mean balance for non-students (baseline).
+- **studentYes:** difference between students and non-students.
+- The p-value tests whether this difference is significant.
+
+## Step 3: Manual dummy coding (c)
+
+```{r}
+default$st10 <- ifelse(default$student == "Yes", 1, 0)
+mod_s_dummy <- lm(balance ~ st10, data = default)
+
+cat("Factor-model coefficients:\n")
+print(coef(mod_s))
+cat("\nDummy-model coefficients:\n")
+print(coef(mod_s_dummy))
+```
+
+**Assessment:** Both models are **identical**. The manual dummy variable is just an alternative notation.
+
+## Step 4: Multiple regression with income (d)
+
+```{r}
+mod_si <- lm(balance ~ income + student, data = default)
+summary(mod_si)
+```
+
+**Interpretation:**
+
+- **income**: expected change in `balance` per unit increase in income, **at constant student status**.
+- **studentYes**: difference in balance between students and non-students, **at constant income**.
+- Geometrically: two **parallel** regression lines -- only the level (intercept) differs.
+
+## Step 5: Model with interaction (e)
+
+```{r}
+mod_si_int <- lm(balance ~ income * student, data = default)
+summary(mod_si_int)
+```
+
+**Interpretation:**
+
+- **income**: income effect for non-students (baseline).
+- **studentYes**: difference in intercept between the two groups.
+- **income:studentYes**: difference in the **slope coefficient** -- how strongly does the income effect differ between students and non-students?
+- A **significant interaction** means: the effect of one predictor depends on the value of the other; the regression lines are **no longer parallel**.
+
+## Step 6: Visualisation of the interaction (f)
+
+```{r, fig.width=8, fig.height=5}
+plot(default$income, default$balance,
+     col = ifelse(default$student == "Yes", "red", "blue"),
+     pch = 16, cex = 0.6,
+     xlab = "Income", ylab = "Balance",
+     main = "Income vs. Balance by student status")
+
+abline(a = coef(mod_si_int)[1],
+       b = coef(mod_si_int)[2],
+       col = "blue", lwd = 2)
+abline(a = coef(mod_si_int)[1] + coef(mod_si_int)[3],
+       b = coef(mod_si_int)[2] + coef(mod_si_int)[4],
+       col = "red", lwd = 2)
+
+legend("topright", legend = c("Non-students", "Students"),
+       col = c("blue", "red"), pch = 16, lwd = 2)
+```
+
+**Assessment:** Are the two lines roughly parallel? Then the interaction is small. If the slopes differ markedly, this argues for a genuine interaction.
+
+## Step 7: Model comparison (g)
+
+```{r}
+anova(mod_si, mod_si_int)
+```
+
+**Interpretation:** The F-test checks whether the model with interaction is significantly better than the one without. If $p > 0.05$: the added value of the interaction is not statistically supported -- the simpler model is preferred.
+
+# Exercise 3: Polynomial -- Polynomial fitting
+
+**Task:**
+For the Polynomial dataset, investigate which polynomial degree best describes the relationship between `x` and `y`.
+
+## Step 1: Read and visualise the data (a)
+
+```{r}
+poly_dat <- read_excel("../../data/WDDA_08.xlsx", sheet = "Polynomial")
+plot(poly_dat$x, poly_dat$y, pch = 16, col = "gray50",
+     xlab = "x", ylab = "y",
+     main = "Scatterplot Polynomial")
+```
+
+**Assessment:** Clearly non-linear shape -- a linear model will not describe the data well.
+
+## Step 2: Fit polynomials of various degrees (b)
+
+```{r}
+m1 <- lm(y ~ x, data = poly_dat)                    # Linear
+m2 <- lm(y ~ poly(x, 2, raw = TRUE), data = poly_dat)  # Quadratic
+m3 <- lm(y ~ poly(x, 3, raw = TRUE), data = poly_dat)  # Cubic
+m4 <- lm(y ~ poly(x, 4, raw = TRUE), data = poly_dat)  # Degree 4
+
+cat("R-squared values:\n")
+cat("Degree 1: ", round(summary(m1)$r.squared, 4), "\n")
+cat("Degree 2: ", round(summary(m2)$r.squared, 4), "\n")
+cat("Degree 3: ", round(summary(m3)$r.squared, 4), "\n")
+cat("Degree 4: ", round(summary(m4)$r.squared, 4), "\n")
+```
+
+## Step 3: Model comparison with F-tests (c)
+
+```{r}
+anova(m1, m2, m3, m4)
+```
+
+**Interpretation:** The ANOVA table shows whether the next-higher polynomial degree adds significant improvement. From the degree at which $p > 0.05$, the additional complexity is no longer worthwhile.
+
+## Step 4: Visualisation of the fitted curves (d)
+
+```{r, fig.width=8, fig.height=5}
+x_grid <- seq(min(poly_dat$x), max(poly_dat$x), length.out = 200)
+
+plot(poly_dat$x, poly_dat$y, pch = 16, col = "gray60",
+     xlab = "x", ylab = "y",
+     main = "Polynomial fits of various degrees")
+lines(x_grid, predict(m1, newdata = data.frame(x = x_grid)),
+      col = "red", lwd = 2)
+lines(x_grid, predict(m2, newdata = data.frame(x = x_grid)),
+      col = "blue", lwd = 2)
+lines(x_grid, predict(m3, newdata = data.frame(x = x_grid)),
+      col = "green", lwd = 2)
+lines(x_grid, predict(m4, newdata = data.frame(x = x_grid)),
+      col = "purple", lwd = 2)
+legend("topright", legend = c("Degree 1", "Degree 2", "Degree 3", "Degree 4"),
+       col = c("red", "blue", "green", "purple"), lwd = 2)
+```
+
+**Assessment:** Higher degrees follow the data more closely, but beware: too high a polynomial degree leads to **overfitting** -- the model adapts to random fluctuations without better describing the true relationship.
+
+# Summary
+
+This problem set has shown:
+
+1. **Variable transformations** (square-root, logarithm, polynomials) extend the linear model to non-linear relationships.
+2. **$R^2$ comparisons** are only meaningful when the response variable is the same (caution with log transformations of the response).
+3. **Residual analyses** are essential for assessing whether a model fits the data well -- patterns in the residuals reveal model misspecification.
+4. **Categorical predictors** are coded via dummy variables. The choice of baseline affects the interpretation of the coefficients but not the predictions.
+5. **Interactions** allow the effect of one predictor to depend on the value of another -- geometrically this corresponds to non-parallel regression lines.
+6. **F-tests** for model comparison help to choose the right complexity -- simpler is better unless the simpler model is significantly worse.

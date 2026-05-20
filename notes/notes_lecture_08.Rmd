@@ -1,0 +1,382 @@
+---
+title: "R-Code Beispiele aus WDDA Vorlesung 8 (Kapitel 8)"
+subtitle: "WDDA -- Datenmanagement und Datenanalyse"
+author: "Prof. Dr. Ulrich Matter"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: style/notes_preamble.tex
+lang: de
+---
+
+# Einleitung
+
+Dieses Dokument fasst alle R-Code-Beispiele der Folien aus der WDDA FS2026 Vorlesung 8 (Kapitel 8) zusammen. Der Fokus liegt auf **nichtlinearen Zusammenhängen** und **kategorialen Prädiktoren** in der Regressionsanalyse.
+
+Bisher haben wir uns auf lineare Beziehungen zwischen Prädiktoren und Response konzentriert. In der Praxis sind viele Zusammenhänge jedoch nicht linear, oder die erklärenden Variablen sind nicht numerisch, sondern kategorial (z.B. Geschlecht, Ethnizität, Studentenstatus). In dieser Vorlesung erweitern wir das Regressionsmodell, um auch diese Fälle abdecken zu können.
+
+Zentrale Konzepte in diesem Bereich sind:
+
+1. **Nichtlineare Transformationen**: Polynome, Wurzel- und Log-Transformationen
+2. **Vergleich verschiedener Modellformen** über $R^2$
+3. **Dummy-Variablen** für zweiwertige (binäre) Prädiktoren
+4. **Kategoriale Prädiktoren** mit mehreren Ausprägungen
+5. **Interaktionseffekte** zwischen Prädiktoren
+
+# Vorbereitung
+
+```{r vorbereitung-sichtbar, eval=FALSE}
+# Pakete laden
+library(mosaic)    # für do(), resample()
+library(ggplot2)   # für Visualisierungen
+library(readxl)    # zum Einlesen von Excel-Dateien
+library(ISLR)      # für den Credit-Datensatz
+
+# Daten laden
+Advertising <- read_excel("data/WDDA_08.xlsx", sheet = "Advertising")
+```
+
+```{r vorbereitung, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+# Pakete laden
+library(mosaic)    # für do(), resample()
+library(ggplot2)   # für Visualisierungen
+library(readxl)    # zum Einlesen von Excel-Dateien
+library(ISLR)      # für den Credit-Datensatz
+
+# Daten laden
+Advertising <- read_excel("../data/WDDA_08.xlsx", sheet = "Advertising")
+
+# Überprüfen der Datenstruktur
+str(Advertising)
+```
+
+**R-Erklärung**:
+
+- Mit `library()` werden die benötigten Pakete geladen.
+- `read_excel()` aus dem Paket `readxl` liest eine bestimmte Excel-Tabelle (`sheet = "Advertising"`) ein.
+- Das Paket `ISLR` enthält den `Credit`-Datensatz, der später für die Analyse kategorialer Prädiktoren verwendet wird.
+- Die Funktion `str()` zeigt die Struktur eines Objekts.
+
+# Nichtlineare Zusammenhänge
+
+Eine lineare Regression unterstellt einen geradlinigen Zusammenhang zwischen Prädiktor und Response. Wenn dieser Zusammenhang in Wahrheit gekrümmt ist, liefert das lineare Modell systematisch verzerrte Vorhersagen. Über **Variablentransformationen** lassen sich viele nichtlineare Zusammenhänge dennoch innerhalb des linearen Regressionsrahmens abbilden.
+
+## Sechs Modelle für `sales ~ TV`
+
+```{r modelle, eval=TRUE}
+# Variablen für die folgenden Modelle direkt verfügbar machen
+attach(Advertising)
+
+# Einfache lineare Regression
+md1 <- lm(sales ~ TV)
+
+# Quadratisches Modell (Polynom 2. Grades)
+md2 <- lm(sales ~ poly(TV, degree = 2, raw = TRUE))
+
+# Modell mit Wurzeltransformation
+md3 <- lm(sales ~ sqrt(TV))
+
+# Modell mit Log-Transformation der erklärenden Variable
+md4 <- lm(sales ~ log(TV))
+
+# Modell mit Log-Transformation beider Variablen
+md5 <- lm(log(sales) ~ log(TV))
+
+# Modell mit Log-Transformation nur der Response
+md6 <- lm(log(sales) ~ TV)
+```
+
+**Statistische Erklärung**:
+
+- **Polynom 2. Grades**: $y = \beta_0 + \beta_1 x + \beta_2 x^2$ -- erlaubt Krümmungen, etwa abnehmenden Grenzertrag.
+- **Wurzeltransformation** ($\sqrt{x}$): wirkt ähnlich wie ein Logarithmus -- Effekte werden für grosse $x$-Werte abgeschwächt.
+- **Log(x)**: $y = \beta_0 + \beta_1 \log(x)$ -- prozentuale Änderungen in $x$ haben einen konstanten Effekt auf $y$.
+- **Log-Log**: $\log(y) = \beta_0 + \beta_1 \log(x)$ -- $\beta_1$ ist eine **Elastizität**: 1\% Änderung in $x$ entspricht ca. $\beta_1$\% Änderung in $y$.
+- **Log(y)**: $\log(y) = \beta_0 + \beta_1 x$ -- $\beta_1$ ist eine **Wachstumsrate**: eine Einheit Änderung in $x$ entspricht ca. $100 \cdot \beta_1$\% Änderung in $y$.
+
+**R-Erklärung**:
+
+- `attach(Advertising)` macht die Spalten des Datensatzes direkt als Variablen verfügbar (z.B. `TV`, `sales`).
+- `poly(TV, degree = 2, raw = TRUE)` erzeugt einen Polynom-Term zweiten Grades.
+- `sqrt()`, `log()`, und `exp()` sind die Standardfunktionen für Wurzel-, Logarithmus- und Exponentialtransformationen.
+
+## Vergleich der Modellgüte
+
+```{r modellvergleich, eval=TRUE}
+# R²-Werte der sechs Modelle
+cat("=== Vergleich der Modellgüte ===\n")
+cat("Lineares Modell R²:    ", round(summary(md1)$r.squared, 4), "\n")
+cat("Quadratisches Modell R²:", round(summary(md2)$r.squared, 4), "\n")
+cat("Wurzel-Modell R²:      ", round(summary(md3)$r.squared, 4), "\n")
+cat("Log(x)-Modell R²:      ", round(summary(md4)$r.squared, 4), "\n")
+cat("Log-Log-Modell R²:     ", round(summary(md5)$r.squared, 4), "\n")
+cat("Log(y)-Modell R²:      ", round(summary(md6)$r.squared, 4), "\n")
+```
+
+**Statistische Erklärung**:
+
+- $R^2$ misst den durch das Modell **erklärten Anteil der Varianz** in der Response.
+- Ein **direkter Vergleich von $R^2$** ist nur sinnvoll, wenn die abhängige Variable dieselbe ist. Modelle mit $\log(y)$ als Response (md5, md6) erklären die Varianz von $\log(y)$, nicht von $y$ -- ihr $R^2$ ist also nicht 1:1 mit den anderen Modellen vergleichbar.
+- Trotz dieser Einschränkung liefert das **Log-Log-Modell** in diesem Beispiel den höchsten $R^2$-Wert, was darauf hindeutet, dass eine multiplikative Beziehung den Zusammenhang zwischen TV-Ausgaben und Sales gut beschreibt.
+- Zusätzlich zu $R^2$ sollten auch **Residuenplots**, **Restandardfehler** und inhaltliche Interpretierbarkeit zur Modellwahl herangezogen werden.
+
+## Detailanalyse des linearen Modells
+
+```{r md1_summary, eval=TRUE}
+# Detaillierte Ausgabe für das lineare Modell
+summary(md1)
+
+# Konfidenzintervalle für die Koeffizienten
+confint(md1)
+```
+
+**Statistische Erklärung**:
+
+- **Intercept**: erwartete Sales, wenn `TV = 0` -- nicht immer sinnvoll interpretierbar, wenn $TV = 0$ ausserhalb der Datenrange liegt.
+- **TV-Koeffizient**: erwartete Änderung in Sales pro Einheit zusätzlicher TV-Ausgaben.
+- **p-Werte**: prüfen, ob die Koeffizienten signifikant von Null verschieden sind.
+- **Konfidenzintervalle** geben einen Bereich an, in dem die wahren Parameterwerte mit 95\% Wahrscheinlichkeit liegen.
+
+## Visualisierung der Modelle im Originaldatenraum
+
+```{r modell_visualisierung, eval=TRUE, fig.width=10, fig.height=6}
+# Funktionen für die einzelnen Modelle
+f1 <- function(x) {                         # Lineares Modell
+  coef(md1)[1] + coef(md1)[2] * x
+}
+
+f3 <- function(x) {                         # Wurzel-Modell
+  coef(md3)[1] + coef(md3)[2] * sqrt(x)
+}
+
+f5 <- function(x) {                         # Log-Log-Modell (rücktransformiert)
+  exp(coef(md5)[1] + coef(md5)[2] * log(x))
+}
+
+# Streudiagramm mit den drei Modellkurven
+plot(TV, sales, main = "Vergleich verschiedener Regressionsmodelle",
+     xlab = "TV Advertising", ylab = "Sales",
+     pch = 16, col = "gray60")
+
+curve(f1, add = TRUE, col = "red",   lwd = 2)  # Linear
+curve(f3, add = TRUE, col = "blue",  lwd = 2)  # Wurzel
+curve(f5, add = TRUE, col = "green", lwd = 2)  # Log-Log
+
+legend("bottomright",
+       legend = c("Linear", "Wurzel", "Log-Log"),
+       col = c("red", "blue", "green"),
+       lwd = 2)
+```
+
+**Statistische Erklärung**:
+
+- Im **Originaldatenraum** sieht man unmittelbar, wo die Modelle die Datenwolke gut bzw. schlecht approximieren.
+- Das **lineare Modell** (rot) übersteigt für hohe TV-Werte tendenziell die Datenpunkte und unterschätzt sie für mittlere Werte.
+- **Wurzel- und Log-Log-Modell** modellieren den **abnehmenden Grenzertrag**: Eine zusätzliche Einheit TV-Ausgaben bringt weniger Mehrumsatz, je höher das Ausgabenniveau bereits ist.
+- Für das Log-Log-Modell wird die Modellgleichung **rücktransformiert** ($\hat y = \exp(\beta_0 + \beta_1 \log x)$), um die Vorhersage im Originaldatenraum darzustellen.
+
+**R-Erklärung**:
+
+- `curve()` zeichnet die Funktion einer Variable $x$ über einen Wertebereich.
+- Mehrere Kurven können durch `add = TRUE` in dasselbe Plotfenster gezeichnet werden.
+- `legend()` ergänzt eine Legende.
+
+# Kategoriale Prädiktoren
+
+Bisher waren alle Prädiktoren numerisch. In vielen Anwendungen sind die erklärenden Variablen jedoch **kategorial**, z.B. Geschlecht, Studentenstatus oder Ethnizität. Wir verwenden den `Credit`-Datensatz aus dem Paket `ISLR`, um diese Fälle zu untersuchen.
+
+```{r credit_laden, eval=TRUE}
+# Credit-Datensatz laden
+data(Credit)
+attach(Credit)
+
+# Überblick
+str(Credit)
+```
+
+## Bootstrap-Vergleich zweier Gruppen
+
+Eine erste Frage: Unterscheiden sich die mittleren Kreditkarten-Salden zwischen Männern und Frauen?
+
+```{r boot_diff, eval=TRUE}
+# Salden nach Geschlecht extrahieren
+Balance.m <- Balance[Gender != "Female"]
+Balance.f <- Balance[Gender == "Female"]
+
+# Bootstrap-Differenz der Mittelwerte (10.000 Wiederholungen)
+set.seed(123)
+boot.diff <- do(10000) * (mean(resample(Balance.f)) - mean(resample(Balance.m)))
+
+# 95%-Konfidenzintervall der Differenz
+ci_diff <- quantile(boot.diff$result, c(0.025, 0.975))
+cat("=== Bootstrap-Konfidenzintervall für Mittelwertsdifferenz ===\n")
+print(ci_diff)
+
+# Deskriptive Statistiken
+cat("\nMittlerer Saldo Männer:", round(mean(Balance.m), 2), "\n")
+cat("Mittlerer Saldo Frauen:", round(mean(Balance.f), 2), "\n")
+cat("Differenz (F - M):     ", round(mean(Balance.f) - mean(Balance.m), 2), "\n")
+```
+
+**Statistische Erklärung**:
+
+- Die **Bootstrap-Methode** schätzt die Verteilung der Mittelwertsdifferenz durch wiederholtes Ziehen mit Zurücklegen aus den beiden Gruppen.
+- Das **95\%-Konfidenzintervall** für die Differenz wird über die 2.5\%- und 97.5\%-Quantile der Bootstrap-Verteilung gebildet.
+- Wenn das Intervall die **Null nicht enthält**, ist die Differenz signifikant.
+- Wenn die Null im Intervall liegt, sind die Daten **mit der Nullhypothese vereinbar**, dass es keinen Unterschied gibt.
+
+## Lineares Modell mit kategorialem Prädiktor
+
+Genau dieselbe Frage lässt sich auch als lineares Regressionsmodell formulieren:
+
+```{r credit_lm_gender, eval=TRUE}
+# Lineares Modell mit kategorialem Prädiktor
+md.BG <- lm(Balance ~ Gender)
+summary(md.BG)
+
+# Konfidenzintervalle
+confint(md.BG)
+```
+
+**Statistische Erklärung**:
+
+- R wandelt einen kategorialen Faktor automatisch in eine **Dummy-Variable** um. Eine Kategorie dient als **Referenz** (Baseline), die anderen Kategorien werden über zusätzliche Indikator-Variablen kodiert.
+- Im Output bedeutet `GenderMale` den Unterschied zwischen Männern und der Baseline-Kategorie (`Female`).
+- **Intercept**: mittlerer Saldo der Baseline-Kategorie (`Female`).
+- **GenderMale**: Differenz zwischen Männern und Frauen.
+- Der **p-Wert** für `GenderMale` testet, ob der Geschlechterunterschied signifikant ist.
+- Das **Konfidenzintervall aus dem Regressionsmodell** sollte näherungsweise mit dem Bootstrap-Intervall übereinstimmen.
+
+## Dummy-Kodierung von Hand
+
+Was R automatisch macht, lässt sich auch manuell kodieren:
+
+```{r credit_dummy, eval=TRUE}
+# Dummy-Variable für Gender: 1 = Female, 0 = Male
+FM10 <- ifelse(Gender == "Female", 1, 0)
+
+# Regressionsmodell mit der manuellen Dummy-Variable
+md.BGdummy <- lm(Balance ~ FM10)
+summary(md.BGdummy)
+
+# Vergleich der Koeffizienten
+cat("\nGender-Modell Koeffizienten:\n")
+print(coef(md.BG))
+cat("Dummy-Modell Koeffizienten:\n")
+print(coef(md.BGdummy))
+```
+
+**Statistische Erklärung**:
+
+- Die manuelle Dummy-Variable `FM10` ist nur eine **Umkodierung** des Faktors `Gender`. Sie führt zum selben Modell, nur mit umgekehrter Referenzkategorie (hier: `Male` ist Baseline).
+- **Vorzeichen und Bedeutung der Koeffizienten ändern sich entsprechend**, die Modellgüte bleibt identisch.
+- Wichtig: Welche Kategorie als Baseline gewählt wird, beeinflusst die Interpretation der Koeffizienten, nicht jedoch die Vorhersagen oder die Modellgüte.
+
+## Kategoriale Prädiktoren mit drei oder mehr Ausprägungen
+
+```{r credit_ethnicity, eval=TRUE}
+# Modell mit kategorialer Variable (3 Kategorien)
+md.BE <- lm(Balance ~ Ethnicity)
+summary(md.BE)
+
+# Mittlere Salden nach Ethnicity
+aggregate(Balance, by = list(Ethnicity), FUN = mean)
+```
+
+**Statistische Erklärung**:
+
+- Für eine kategoriale Variable mit $k$ Ausprägungen erzeugt R $k - 1$ Dummy-Variablen.
+- Die **Referenzkategorie** ist standardmässig die erste alphabetisch geordnete Kategorie -- hier `African American`.
+- **Intercept**: mittlerer Saldo für `African American`.
+- `EthnicityAsian` und `EthnicityCaucasian`: Unterschiede zur Baseline.
+- Der **F-Test** in der `summary()`-Ausgabe testet, ob mindestens eine der Kategorien einen signifikanten Effekt hat (Gesamtsignifikanz der kategorialen Variable).
+
+# Multiple Regression mit Haupt- und Interaktionseffekten
+
+Das Konzept der Dummy-Variablen lässt sich nahtlos in die multiple Regression integrieren. Spannend wird es, wenn die **Wirkung eines Prädiktors vom Wert eines anderen Prädiktors abhängt** -- man spricht dann von einer **Interaktion**.
+
+## Haupteffekte: Einkommen und Studentenstatus
+
+```{r credit_haupteffekte, eval=TRUE}
+# Modell mit Income und Student (ohne Interaktion)
+md.BIS <- lm(Balance ~ Income + Student)
+summary(md.BIS)
+
+confint(md.BIS)
+```
+
+**Statistische Erklärung**:
+
+- **Intercept**: erwarteter Saldo bei `Income = 0` und `Student = "No"`.
+- **Income**: erwartete Änderung des Saldos pro Einheit Einkommenszuwachs, **bei konstantem Studentenstatus** (ceteris paribus).
+- **StudentYes**: Unterschied zwischen Studenten und Nicht-Studenten, **bei konstantem Einkommen**.
+- Das Modell unterstellt: der Einkommenseffekt ist für Studenten und Nicht-Studenten **identisch** -- nur das Niveau (der Intercept) unterscheidet sich. Geometrisch entspricht das zwei **parallelen** Regressionsgeraden.
+
+## Modell mit Interaktion
+
+```{r credit_interaktion, eval=TRUE}
+# Modell mit Interaktion zwischen Income und Student
+md.BIS2 <- lm(Balance ~ Income + Student + Income:Student)
+summary(md.BIS2)
+
+# Separate Einkommenseffekte für Studenten und Nicht-Studenten
+cat("\nIncome-Effekt für Nicht-Studenten:", coef(md.BIS2)["Income"], "\n")
+cat("Income-Effekt für Studenten:    ",
+    coef(md.BIS2)["Income"] + coef(md.BIS2)["Income:StudentYes"], "\n")
+```
+
+**Statistische Erklärung**:
+
+- **Income**: Einkommenseffekt für die Baseline-Gruppe (Nicht-Studenten).
+- **StudentYes**: Unterschied im **Intercept** zwischen Studenten und Nicht-Studenten.
+- **Income:StudentYes**: Unterschied im **Steigungskoeffizienten** -- wie stark unterscheidet sich der Einkommenseffekt zwischen den beiden Gruppen?
+- Eine **signifikante Interaktion** bedeutet, dass der Effekt eines Prädiktors vom Wert des anderen abhängt. Die beiden Regressionsgeraden sind dann **nicht mehr parallel**.
+- Ist die Interaktion **nicht signifikant** (wie hier mit $p = 0.249$), sprechen die Daten eher gegen ein nicht-paralleles Modell.
+
+## Visualisierung der Interaktion
+
+```{r interaktion_visualisierung, eval=TRUE, fig.width=10, fig.height=6}
+# Streudiagramm: Income vs. Balance, gefärbt nach Studentenstatus
+plot(Income, Balance,
+     col = ifelse(Student == "Yes", "red", "blue"),
+     pch = 16,
+     main = "Interaktion zwischen Income und Student",
+     xlab = "Income", ylab = "Balance")
+
+# Regressionsgeraden hinzufügen
+abline(a = coef(md.BIS2)[1],
+       b = coef(md.BIS2)[2],
+       col = "blue", lwd = 2)                          # Nicht-Studenten
+abline(a = coef(md.BIS2)[1] + coef(md.BIS2)[3],
+       b = coef(md.BIS2)[2] + coef(md.BIS2)[4],
+       col = "red", lwd = 2)                           # Studenten
+
+legend("topleft",
+       legend = c("Nicht-Studenten", "Studenten"),
+       col = c("blue", "red"), pch = 16, lwd = 2)
+```
+
+**Statistische Erklärung**:
+
+- Die beiden Regressionsgeraden zeigen den geschätzten Zusammenhang zwischen `Income` und `Balance` **getrennt nach Studentenstatus**.
+- **Parallelität** der Geraden würde bedeuten, dass nur das Niveau (Intercept), nicht aber die Steigung zwischen den Gruppen variiert -- d.h. keine Interaktion.
+- **Unterschiedliche Steigungen** signalisieren eine Interaktion: der Einkommenseffekt unterscheidet sich zwischen den Gruppen.
+- In diesem Beispiel sind die Steigungen leicht unterschiedlich, der Unterschied ist aber statistisch nicht signifikant.
+
+# Zusammenfassung
+
+In dieser Vorlesung haben wir das lineare Regressionsmodell um zwei wichtige Erweiterungen ergänzt:
+
+1. **Nichtlineare Transformationen**: Über Polynome, Wurzel- und Logarithmus-Transformationen lassen sich auch nichtlineare Zusammenhänge im linearen Regressionsrahmen modellieren. Die Wahl der passenden Transformation richtet sich nach der inhaltlichen Interpretation, der Form des Streudiagramms und der Modellgüte.
+
+2. **Kategoriale Prädiktoren**: Über Dummy-Variablen können nicht-numerische Prädiktoren wie Geschlecht, Studentenstatus oder Ethnizität in die Regression einbezogen werden. R übernimmt die Kodierung automatisch, wobei eine Kategorie als Baseline dient.
+
+3. **Interaktionseffekte**: Mit Interaktionstermen ($x_1 \cdot x_2$) lässt sich modellieren, dass der Effekt eines Prädiktors vom Wert eines anderen abhängt. Geometrisch entsprechen Interaktionen nicht-parallelen Regressionsgeraden (bzw. -flächen).
+
+Diese Erweiterungen erhöhen die **Flexibilität** des linearen Modells erheblich, ohne den vertrauten Schätz- und Inferenzrahmen zu verlassen. Damit deckt die multiple Regression einen sehr grossen Teil der praktischen Anwendungsfälle in der Datenanalyse ab.

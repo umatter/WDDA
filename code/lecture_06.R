@@ -8,8 +8,8 @@
 # - Modellvergleich: R², Adjustiertes R² und RSE
 ##############################################################
 
-# Pakete laden
-library(scatterplot3d)
+# Pakete laden (müssen allenfalls noch installiert werden!)
+library(scatterplot3d) 
 library(rgl)
 library(car)
 library(readxl)
@@ -60,6 +60,25 @@ scatter3d(x = TV, z = radio, y = sales, surface = FALSE)
 md2 <- lm(sales ~ TV + radio)
 summary(md2)
 
+# Einfache Modelle:
+md1_tv <- lm(sales~TV)
+summary(md1_tv)
+md1_radio <- lm(sales~radio)
+summary(md1_radio)
+
+
+
+# warum die Veränderung beim TV coef
+coef(md2)
+coef(md1_tv)
+
+# und bei radio
+coef(md2)
+coef(md1_radio)
+
+
+# es gibt einen schwachen Zusammenhang zwischen radio und TV
+cor(radio,TV)
 
 
 

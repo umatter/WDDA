@@ -1,0 +1,382 @@
+---
+title: "R Code Examples from WDDA Lecture 08 (Chapter 8)"
+subtitle: "WDDA -- Data Management and Data Analysis"
+author: "Prof. Dr. Ulrich Matter"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+    md_extensions: "+lists_without_preceding_blankline"
+    includes:
+      in_header: ../style/notes_preamble.tex
+lang: en
+---
+
+# Introduction
+
+This document collects all R code examples from the slides of WDDA FS2026 Lecture 08 (Chapter 8). The focus is on **non-linear relationships** and **categorical predictors** in regression analysis.
+
+So far we have focused on linear relationships between predictors and the response. In practice many relationships are not linear, or the explanatory variables are not numeric but categorical (e.g. gender, ethnicity, student status). In this lecture we extend the regression model to cover these cases.
+
+Key concepts in this area are:
+
+1. **Non-linear transformations**: polynomials, square-root and log transformations
+2. **Comparing different model forms** via $R^2$
+3. **Dummy variables** for two-valued (binary) predictors
+4. **Categorical predictors** with several categories
+5. **Interaction effects** between predictors
+
+# Preparation
+
+```{r preparation-visible, eval=FALSE}
+# Load packages
+library(mosaic)    # for do(), resample()
+library(ggplot2)   # for visualisations
+library(readxl)    # for reading Excel files
+library(ISLR)      # for the Credit dataset
+
+# Load data
+Advertising <- read_excel("data/WDDA_08.xlsx", sheet = "Advertising")
+```
+
+```{r preparation, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+# Load packages
+library(mosaic)    # for do(), resample()
+library(ggplot2)   # for visualisations
+library(readxl)    # for reading Excel files
+library(ISLR)      # for the Credit dataset
+
+# Load data
+Advertising <- read_excel("../../data/WDDA_08.xlsx", sheet = "Advertising")
+
+# Check the data structure
+str(Advertising)
+```
+
+**R explanation**:
+
+- `library()` loads the required packages.
+- `read_excel()` from the `readxl` package reads a specific Excel sheet (`sheet = "Advertising"`).
+- The `ISLR` package contains the `Credit` dataset, which we use later for the analysis of categorical predictors.
+- `str()` displays the structure of an object.
+
+# Non-linear relationships
+
+A linear regression assumes a straight-line relationship between predictor and response. If this relationship is in fact curved, the linear model produces systematically biased predictions. Using **variable transformations** many non-linear relationships can still be captured within the linear regression framework.
+
+## Six models for `sales ~ TV`
+
+```{r models, eval=TRUE}
+# Make the variables in Advertising directly available
+attach(Advertising)
+
+# Simple linear regression
+md1 <- lm(sales ~ TV)
+
+# Quadratic model (polynomial of degree 2)
+md2 <- lm(sales ~ poly(TV, degree = 2, raw = TRUE))
+
+# Model with square-root transformation
+md3 <- lm(sales ~ sqrt(TV))
+
+# Model with log transformation of the predictor
+md4 <- lm(sales ~ log(TV))
+
+# Model with log transformation of both variables
+md5 <- lm(log(sales) ~ log(TV))
+
+# Model with log transformation of the response only
+md6 <- lm(log(sales) ~ TV)
+```
+
+**Statistical explanation**:
+
+- **Polynomial of degree 2**: $y = \beta_0 + \beta_1 x + \beta_2 x^2$ -- allows curvature, e.g. diminishing marginal returns.
+- **Square-root transformation** ($\sqrt{x}$): acts similarly to a logarithm -- effects are dampened for large values of $x$.
+- **Log(x)**: $y = \beta_0 + \beta_1 \log(x)$ -- a percentage change in $x$ has a constant effect on $y$.
+- **Log-log**: $\log(y) = \beta_0 + \beta_1 \log(x)$ -- $\beta_1$ is an **elasticity**: a 1\% change in $x$ corresponds to roughly $\beta_1$\% change in $y$.
+- **Log(y)**: $\log(y) = \beta_0 + \beta_1 x$ -- $\beta_1$ is a **growth rate**: one unit change in $x$ corresponds to roughly $100 \cdot \beta_1$\% change in $y$.
+
+**R explanation**:
+
+- `attach(Advertising)` makes the columns of the dataset directly available as variables (e.g. `TV`, `sales`).
+- `poly(TV, degree = 2, raw = TRUE)` creates a polynomial term of degree 2.
+- `sqrt()`, `log()`, and `exp()` are the standard functions for square-root, logarithm, and exponential transformations.
+
+## Comparing model fit
+
+```{r model_comparison, eval=TRUE}
+# R-squared values of the six models
+cat("=== Model fit comparison ===\n")
+cat("Linear model R^2:      ", round(summary(md1)$r.squared, 4), "\n")
+cat("Quadratic model R^2:   ", round(summary(md2)$r.squared, 4), "\n")
+cat("Square-root model R^2: ", round(summary(md3)$r.squared, 4), "\n")
+cat("Log(x) model R^2:      ", round(summary(md4)$r.squared, 4), "\n")
+cat("Log-log model R^2:     ", round(summary(md5)$r.squared, 4), "\n")
+cat("Log(y) model R^2:      ", round(summary(md6)$r.squared, 4), "\n")
+```
+
+**Statistical explanation**:
+
+- $R^2$ measures the **proportion of variance explained** by the model.
+- A **direct comparison of $R^2$** is only meaningful when the response variable is the same. Models with $\log(y)$ as response (md5, md6) explain the variance of $\log(y)$, not of $y$ -- their $R^2$ is therefore not directly comparable to the other models.
+- Despite this caveat, the **log-log model** has the highest $R^2$ in this example, which suggests that a multiplicative relationship describes the link between TV expenditure and sales well.
+- In addition to $R^2$, **residual plots**, **residual standard errors**, and substantive interpretability should also inform model choice.
+
+## Detailed analysis of the linear model
+
+```{r md1_summary, eval=TRUE}
+# Detailed output for the linear model
+summary(md1)
+
+# Confidence intervals for the coefficients
+confint(md1)
+```
+
+**Statistical explanation**:
+
+- **Intercept**: expected sales when `TV = 0` -- not always meaningfully interpretable when $TV = 0$ lies outside the data range.
+- **TV coefficient**: expected change in sales for one unit increase in TV expenditure.
+- **p-values**: test whether the coefficients differ significantly from zero.
+- **Confidence intervals** give a range in which the true parameter values lie with 95\% probability.
+
+## Visualising the models in the original data space
+
+```{r model_visualisation, eval=TRUE, fig.width=10, fig.height=6}
+# Functions for the individual models
+f1 <- function(x) {                         # Linear model
+  coef(md1)[1] + coef(md1)[2] * x
+}
+
+f3 <- function(x) {                         # Square-root model
+  coef(md3)[1] + coef(md3)[2] * sqrt(x)
+}
+
+f5 <- function(x) {                         # Log-log model (back-transformed)
+  exp(coef(md5)[1] + coef(md5)[2] * log(x))
+}
+
+# Scatterplot with the three model curves
+plot(TV, sales, main = "Comparison of regression models",
+     xlab = "TV advertising", ylab = "Sales",
+     pch = 16, col = "gray60")
+
+curve(f1, add = TRUE, col = "red",   lwd = 2)  # Linear
+curve(f3, add = TRUE, col = "blue",  lwd = 2)  # Square-root
+curve(f5, add = TRUE, col = "green", lwd = 2)  # Log-log
+
+legend("bottomright",
+       legend = c("Linear", "Square-root", "Log-log"),
+       col = c("red", "blue", "green"),
+       lwd = 2)
+```
+
+**Statistical explanation**:
+
+- In the **original data space** one can immediately see where the models approximate the data cloud well or poorly.
+- The **linear model** (red) tends to overshoot the data for high TV values and underpredicts in the middle range.
+- The **square-root and log-log models** capture the **diminishing marginal returns**: each additional unit of TV expenditure yields less extra sales the higher the spending level already is.
+- For the log-log model the equation is **back-transformed** ($\hat y = \exp(\beta_0 + \beta_1 \log x)$) to display the prediction in the original data space.
+
+**R explanation**:
+
+- `curve()` plots a function of one variable $x$ over a value range.
+- Multiple curves can be added to the same plot with `add = TRUE`.
+- `legend()` adds a legend.
+
+# Categorical predictors
+
+Up to now all predictors were numeric. In many applications, however, the explanatory variables are **categorical**, e.g. gender, student status, or ethnicity. We use the `Credit` dataset from the `ISLR` package to explore these cases.
+
+```{r credit_load, eval=TRUE}
+# Load the Credit dataset
+data(Credit)
+attach(Credit)
+
+# Overview
+str(Credit)
+```
+
+## Bootstrap comparison of two groups
+
+A first question: do mean credit-card balances differ between men and women?
+
+```{r boot_diff, eval=TRUE}
+# Extract balances by gender
+Balance.m <- Balance[Gender != "Female"]
+Balance.f <- Balance[Gender == "Female"]
+
+# Bootstrap difference of means (10,000 replicates)
+set.seed(123)
+boot.diff <- do(10000) * (mean(resample(Balance.f)) - mean(resample(Balance.m)))
+
+# 95% confidence interval for the difference
+ci_diff <- quantile(boot.diff$result, c(0.025, 0.975))
+cat("=== Bootstrap CI for the mean difference ===\n")
+print(ci_diff)
+
+# Descriptive statistics
+cat("\nMean balance (men):  ", round(mean(Balance.m), 2), "\n")
+cat("Mean balance (women):", round(mean(Balance.f), 2), "\n")
+cat("Difference (F - M):  ", round(mean(Balance.f) - mean(Balance.m), 2), "\n")
+```
+
+**Statistical explanation**:
+
+- The **bootstrap method** estimates the distribution of the mean difference by repeated resampling (with replacement) from the two groups.
+- The **95\% confidence interval** for the difference is given by the 2.5\% and 97.5\% quantiles of the bootstrap distribution.
+- If the interval **does not contain zero**, the difference is significant.
+- If zero lies inside the interval, the data are **consistent with the null hypothesis** that there is no difference.
+
+## Linear model with a categorical predictor
+
+The same question can also be phrased as a linear regression:
+
+```{r credit_lm_gender, eval=TRUE}
+# Linear model with a categorical predictor
+md.BG <- lm(Balance ~ Gender)
+summary(md.BG)
+
+# Confidence intervals
+confint(md.BG)
+```
+
+**Statistical explanation**:
+
+- R automatically converts a categorical factor into a **dummy variable**. One category serves as the **reference** (baseline); the other categories are coded via additional indicator variables.
+- In the output `GenderMale` denotes the difference between men and the baseline category (`Female`).
+- **Intercept**: mean balance of the baseline category (`Female`).
+- **GenderMale**: difference between men and women.
+- The **p-value** for `GenderMale` tests whether the gender difference is significant.
+- The **confidence interval from the regression model** should approximately match the bootstrap interval.
+
+## Dummy coding by hand
+
+What R does automatically can also be coded manually:
+
+```{r credit_dummy, eval=TRUE}
+# Dummy variable for Gender: 1 = Female, 0 = Male
+FM10 <- ifelse(Gender == "Female", 1, 0)
+
+# Regression with the manual dummy variable
+md.BGdummy <- lm(Balance ~ FM10)
+summary(md.BGdummy)
+
+# Compare coefficients
+cat("\nFactor-model coefficients:\n")
+print(coef(md.BG))
+cat("Dummy-model coefficients:\n")
+print(coef(md.BGdummy))
+```
+
+**Statistical explanation**:
+
+- The manual dummy variable `FM10` is only a **re-coding** of the `Gender` factor. It yields the same model, only with a switched reference category (here: `Male` is baseline).
+- **Sign and meaning of the coefficients change accordingly**, but the model fit stays the same.
+- Important: the choice of baseline affects the interpretation of the coefficients, not the predictions or the model fit.
+
+## Categorical predictors with three or more categories
+
+```{r credit_ethnicity, eval=TRUE}
+# Model with a categorical variable (3 categories)
+md.BE <- lm(Balance ~ Ethnicity)
+summary(md.BE)
+
+# Mean balances by ethnicity
+aggregate(Balance, by = list(Ethnicity), FUN = mean)
+```
+
+**Statistical explanation**:
+
+- For a categorical variable with $k$ levels R creates $k - 1$ dummy variables.
+- The **reference category** by default is the first alphabetically ordered category -- here `African American`.
+- **Intercept**: mean balance for `African American`.
+- `EthnicityAsian` and `EthnicityCaucasian`: differences relative to the baseline.
+- The **F-test** in the `summary()` output tests whether at least one of the categories has a significant effect (overall significance of the categorical variable).
+
+# Multiple regression with main and interaction effects
+
+The concept of dummy variables integrates seamlessly with multiple regression. It becomes interesting when the **effect of one predictor depends on the value of another predictor** -- this is called an **interaction**.
+
+## Main effects: income and student status
+
+```{r credit_main_effects, eval=TRUE}
+# Model with Income and Student (no interaction)
+md.BIS <- lm(Balance ~ Income + Student)
+summary(md.BIS)
+
+confint(md.BIS)
+```
+
+**Statistical explanation**:
+
+- **Intercept**: expected balance at `Income = 0` and `Student = "No"`.
+- **Income**: expected change in balance per unit increase in income, **at constant student status** (ceteris paribus).
+- **StudentYes**: difference between students and non-students, **at constant income**.
+- The model assumes that the income effect is **identical** for students and non-students -- only the level (intercept) differs. Geometrically this corresponds to two **parallel** regression lines.
+
+## Model with interaction
+
+```{r credit_interaction, eval=TRUE}
+# Model with interaction between Income and Student
+md.BIS2 <- lm(Balance ~ Income + Student + Income:Student)
+summary(md.BIS2)
+
+# Separate income effects for students and non-students
+cat("\nIncome effect (non-students):", coef(md.BIS2)["Income"], "\n")
+cat("Income effect (students):    ",
+    coef(md.BIS2)["Income"] + coef(md.BIS2)["Income:StudentYes"], "\n")
+```
+
+**Statistical explanation**:
+
+- **Income**: income effect for the baseline group (non-students).
+- **StudentYes**: difference in **intercept** between students and non-students.
+- **Income:StudentYes**: difference in the **slope coefficient** -- how strongly does the income effect differ between the two groups?
+- A **significant interaction** means that the effect of one predictor depends on the value of the other. The two regression lines are then **no longer parallel**.
+- If the interaction is **not significant** (as here with $p = 0.249$), the data do not support a non-parallel model.
+
+## Visualising the interaction
+
+```{r interaction_visualisation, eval=TRUE, fig.width=10, fig.height=6}
+# Scatterplot: Income vs. Balance, coloured by student status
+plot(Income, Balance,
+     col = ifelse(Student == "Yes", "red", "blue"),
+     pch = 16,
+     main = "Interaction between Income and Student",
+     xlab = "Income", ylab = "Balance")
+
+# Add regression lines
+abline(a = coef(md.BIS2)[1],
+       b = coef(md.BIS2)[2],
+       col = "blue", lwd = 2)                          # Non-students
+abline(a = coef(md.BIS2)[1] + coef(md.BIS2)[3],
+       b = coef(md.BIS2)[2] + coef(md.BIS2)[4],
+       col = "red", lwd = 2)                           # Students
+
+legend("topleft",
+       legend = c("Non-students", "Students"),
+       col = c("blue", "red"), pch = 16, lwd = 2)
+```
+
+**Statistical explanation**:
+
+- The two regression lines show the estimated relationship between `Income` and `Balance` **separately by student status**.
+- **Parallel lines** would mean that only the level (intercept), not the slope, varies between groups -- i.e. no interaction.
+- **Different slopes** signal an interaction: the income effect differs between groups.
+- In this example the slopes differ slightly, but the difference is not statistically significant.
+
+# Summary
+
+In this lecture we extended the linear regression model with two important additions:
+
+1. **Non-linear transformations**: via polynomials, square-root and logarithm transformations, non-linear relationships can also be modelled within the linear regression framework. The choice of transformation depends on substantive interpretation, the shape of the scatterplot, and model fit.
+
+2. **Categorical predictors**: via dummy variables, non-numeric predictors such as gender, student status, or ethnicity can be included in the regression. R handles the coding automatically, with one category serving as the baseline.
+
+3. **Interaction effects**: with interaction terms ($x_1 \cdot x_2$) one can model that the effect of one predictor depends on the value of another. Geometrically interactions correspond to non-parallel regression lines (or surfaces).
+
+These extensions substantially increase the **flexibility** of the linear model without leaving the familiar estimation and inference framework. Multiple regression therefore covers a very large share of practical use cases in data analysis.

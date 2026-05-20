@@ -1,0 +1,280 @@
+---
+title: "WDDA FS 2026: Leitfaden für Aufgabenserie 8"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: true
+    latex_engine: xelatex
+lang: de
+---
+
+# Einleitung
+
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2026 Aufgabenserie/Übungsblatt 8. Die Serie konzentriert sich auf **nichtlineare Zusammenhänge** (Variablentransformationen) und **kategoriale Prädiktoren** (Dummy-Variablen, Interaktionen). Wir lernen, wie das lineare Regressionsmodell erweitert werden kann, um auch nicht-lineare und nicht-numerische Zusammenhänge abzubilden.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(mosaic)
+```
+
+# Aufgabe 1: Advertising -- Nichtlineare Modelle für TV und Sales
+
+**Aufgabenstellung:**
+Vergleichen Sie verschiedene Modellformen für den Zusammenhang zwischen TV-Ausgaben und Sales. Untersuchen Sie, ob eine Transformation die Modellgüte verbessert und ob die Annahmen der linearen Regression besser erfüllt werden.
+
+## Schritt 1: Daten einlesen und visualisieren (a)
+
+```{r}
+adv <- read_excel("../data/WDDA_08.xlsx", sheet = "Advertising")
+plot(adv$TV, adv$sales, pch = 16, col = "gray50",
+     xlab = "TV-Ausgaben", ylab = "Sales",
+     main = "Sales vs. TV")
+```
+
+**Bewertung:** Die Daten zeigen einen klar positiven, aber gekrümmten Zusammenhang -- der Effekt zusätzlicher TV-Ausgaben scheint bei hohen Werten abzuflachen (abnehmender Grenzertrag).
+
+## Schritt 2: Sechs Modelle anpassen (b)
+
+```{r}
+attach(adv)
+
+md1 <- lm(sales ~ TV)                                     # Linear
+md2 <- lm(sales ~ poly(TV, 2, raw = TRUE))                # Quadratisch
+md3 <- lm(sales ~ sqrt(TV))                               # Wurzel
+md4 <- lm(sales ~ log(TV))                                # Log(x)
+md5 <- lm(log(sales) ~ log(TV))                           # Log-Log
+md6 <- lm(log(sales) ~ TV)                                # Log(y)
+
+cat("R²-Werte:\n")
+cat("Linear:       ", round(summary(md1)$r.squared, 4), "\n")
+cat("Quadratisch:  ", round(summary(md2)$r.squared, 4), "\n")
+cat("Wurzel:       ", round(summary(md3)$r.squared, 4), "\n")
+cat("Log(x):       ", round(summary(md4)$r.squared, 4), "\n")
+cat("Log-Log:      ", round(summary(md5)$r.squared, 4), "\n")
+cat("Log(y):       ", round(summary(md6)$r.squared, 4), "\n")
+```
+
+**Wichtige Warnung:** $R^2$ ist nur **direkt vergleichbar** zwischen Modellen mit identischer Response. Die Modelle md5 und md6 (mit $\log(y)$ als Response) erklären die Varianz von $\log(\text{sales})$, nicht von $\text{sales}$ selbst -- ihr $R^2$ ist also **nicht** direkt mit den anderen Modellen vergleichbar.
+
+## Schritt 3: Visualisierung der Modellkurven (c)
+
+```{r, fig.width=8, fig.height=5}
+f1 <- function(x) coef(md1)[1] + coef(md1)[2] * x
+f3 <- function(x) coef(md3)[1] + coef(md3)[2] * sqrt(x)
+f5 <- function(x) exp(coef(md5)[1] + coef(md5)[2] * log(x))
+
+plot(TV, sales, pch = 16, col = "gray60",
+     xlab = "TV-Ausgaben", ylab = "Sales",
+     main = "Vergleich der Regressionsmodelle")
+curve(f1, add = TRUE, col = "red",   lwd = 2)
+curve(f3, add = TRUE, col = "blue",  lwd = 2)
+curve(f5, add = TRUE, col = "green", lwd = 2)
+legend("bottomright", legend = c("Linear", "Wurzel", "Log-Log"),
+       col = c("red", "blue", "green"), lwd = 2)
+```
+
+**Bewertung:** Wurzel- und Log-Log-Modell folgen der Datenwolke besser als das lineare Modell, insbesondere im rechten Bereich (hohe TV-Ausgaben).
+
+## Schritt 4: Residuenanalyse (d)
+
+```{r, fig.width=8, fig.height=4}
+par(mfrow = c(1, 2))
+plot(fitted(md1), resid(md1), pch = 16, col = "gray50",
+     main = "Lineares Modell", xlab = "Fitted", ylab = "Residuen")
+abline(h = 0, lty = 2, col = "red")
+
+plot(fitted(md3), resid(md3), pch = 16, col = "gray50",
+     main = "Wurzel-Modell", xlab = "Fitted", ylab = "Residuen")
+abline(h = 0, lty = 2, col = "red")
+par(mfrow = c(1, 1))
+```
+
+**Bewertung:**
+
+- Beim linearen Modell zeigen die Residuen häufig ein **U-förmiges Muster** -- ein Hinweis auf nichtlineare Strukturen, die das lineare Modell nicht erfasst.
+- Beim Wurzel-Modell sind die Residuen meist gleichmässiger um Null gestreut.
+
+## Schritt 5: Interpretation des Log-Log-Modells (e)
+
+```{r}
+summary(md5)
+```
+
+**Interpretation:**
+
+- Die Steigung von `log(TV)` ist eine **Elastizität**: eine Steigerung der TV-Ausgaben um 1\% führt im Mittel zu einer Änderung der Sales um etwa $\beta_1$\%.
+- Dies ist eine ökonomisch sehr intuitive Grösse, besonders für Marketing-Entscheidungen.
+
+# Aufgabe 2: Default -- Kategoriale Prädiktoren
+
+**Aufgabenstellung:**
+Untersuchen Sie für den Default-Datensatz, wie der Kontostand (`balance`) vom Studentenstatus (`student`) und Einkommen (`income`) abhängt. Verwenden Sie Dummy-Variablen und Interaktionen.
+
+## Schritt 1: Daten einlesen (a)
+
+```{r}
+default <- read_excel("../data/WDDA_08.xlsx", sheet = "Default")
+default$student <- factor(default$student, levels = c("No", "Yes"))
+head(default)
+table(default$student)
+```
+
+## Schritt 2: Einfaches Modell mit kategorialem Prädiktor (b)
+
+```{r}
+mod_s <- lm(balance ~ student, data = default)
+summary(mod_s)
+```
+
+**Interpretation:**
+
+- **Intercept:** mittlerer Saldo für Nicht-Studenten (Baseline).
+- **studentYes:** Differenz zwischen Studenten und Nicht-Studenten.
+- Der p-Wert prüft, ob dieser Unterschied signifikant ist.
+
+## Schritt 3: Manuelle Dummy-Kodierung (c)
+
+```{r}
+default$st10 <- ifelse(default$student == "Yes", 1, 0)
+mod_s_dummy <- lm(balance ~ st10, data = default)
+
+cat("Koeffizienten Faktor-Modell:\n")
+print(coef(mod_s))
+cat("\nKoeffizienten Dummy-Modell:\n")
+print(coef(mod_s_dummy))
+```
+
+**Bewertung:** Beide Modelle sind **identisch**. Die manuelle Dummy-Variable ist nur eine alternative Schreibweise.
+
+## Schritt 4: Multiple Regression mit Income (d)
+
+```{r}
+mod_si <- lm(balance ~ income + student, data = default)
+summary(mod_si)
+```
+
+**Interpretation:**
+
+- **income**: erwartete Änderung in `balance` pro Einheit Einkommenszuwachs, **bei konstantem Studentenstatus**.
+- **studentYes**: Unterschied im Saldo zwischen Studenten und Nicht-Studenten, **bei konstantem Einkommen**.
+- Geometrisch: zwei **parallele** Regressionsgeraden -- nur das Niveau (Intercept) unterscheidet sich.
+
+## Schritt 5: Modell mit Interaktion (e)
+
+```{r}
+mod_si_int <- lm(balance ~ income * student, data = default)
+summary(mod_si_int)
+```
+
+**Interpretation:**
+
+- **income**: Einkommenseffekt für Nicht-Studenten (Baseline).
+- **studentYes**: Differenz im Intercept zwischen den Gruppen.
+- **income:studentYes**: Differenz im **Steigungskoeffizienten** -- wie stark unterscheidet sich der Einkommenseffekt zwischen Studenten und Nicht-Studenten?
+- Eine **signifikante Interaktion** bedeutet: der Effekt eines Prädiktors hängt vom Wert des anderen ab; die Regressionsgeraden sind **nicht mehr parallel**.
+
+## Schritt 6: Visualisierung der Interaktion (f)
+
+```{r, fig.width=8, fig.height=5}
+plot(default$income, default$balance,
+     col = ifelse(default$student == "Yes", "red", "blue"),
+     pch = 16, cex = 0.6,
+     xlab = "Income", ylab = "Balance",
+     main = "Income vs. Balance nach Studentenstatus")
+
+abline(a = coef(mod_si_int)[1],
+       b = coef(mod_si_int)[2],
+       col = "blue", lwd = 2)
+abline(a = coef(mod_si_int)[1] + coef(mod_si_int)[3],
+       b = coef(mod_si_int)[2] + coef(mod_si_int)[4],
+       col = "red", lwd = 2)
+
+legend("topright", legend = c("Nicht-Studenten", "Studenten"),
+       col = c("blue", "red"), pch = 16, lwd = 2)
+```
+
+**Bewertung:** Sind die beiden Geraden ungefähr parallel? Dann ist die Interaktion gering. Unterscheiden sich die Steigungen deutlich, spricht das für eine echte Interaktion.
+
+## Schritt 7: Modellvergleich (g)
+
+```{r}
+anova(mod_si, mod_si_int)
+```
+
+**Interpretation:** Der F-Test prüft, ob das Modell mit Interaktion signifikant besser ist als das Modell ohne Interaktion. Falls $p > 0.05$: der Zusatznutzen der Interaktion ist statistisch nicht belegbar -- das einfachere Modell wird bevorzugt.
+
+# Aufgabe 3: Polynomial -- Polynomanpassung
+
+**Aufgabenstellung:**
+Untersuchen Sie für den Polynomial-Datensatz, welcher Polynomgrad den Zusammenhang zwischen `x` und `y` am besten beschreibt.
+
+## Schritt 1: Daten einlesen und visualisieren (a)
+
+```{r}
+poly_dat <- read_excel("../data/WDDA_08.xlsx", sheet = "Polynomial")
+plot(poly_dat$x, poly_dat$y, pch = 16, col = "gray50",
+     xlab = "x", ylab = "y",
+     main = "Streudiagramm Polynomial")
+```
+
+**Bewertung:** Klar nichtlinearer Verlauf -- ein lineares Modell wird die Daten nicht gut beschreiben.
+
+## Schritt 2: Polynome verschiedener Grade anpassen (b)
+
+```{r}
+m1 <- lm(y ~ x, data = poly_dat)                    # Linear
+m2 <- lm(y ~ poly(x, 2, raw = TRUE), data = poly_dat)  # Quadratisch
+m3 <- lm(y ~ poly(x, 3, raw = TRUE), data = poly_dat)  # Kubisch
+m4 <- lm(y ~ poly(x, 4, raw = TRUE), data = poly_dat)  # Grad 4
+
+cat("R²-Werte:\n")
+cat("Grad 1: ", round(summary(m1)$r.squared, 4), "\n")
+cat("Grad 2: ", round(summary(m2)$r.squared, 4), "\n")
+cat("Grad 3: ", round(summary(m3)$r.squared, 4), "\n")
+cat("Grad 4: ", round(summary(m4)$r.squared, 4), "\n")
+```
+
+## Schritt 3: Modellvergleich mit F-Tests (c)
+
+```{r}
+anova(m1, m2, m3, m4)
+```
+
+**Interpretation:** Die ANOVA-Tabelle zeigt, ob jeweils der nächsthöhere Polynomgrad eine signifikante Verbesserung bringt. Ab dem Polynomgrad, bei dem $p > 0.05$, lohnt sich die zusätzliche Komplexität nicht mehr.
+
+## Schritt 4: Visualisierung der angepassten Kurven (d)
+
+```{r, fig.width=8, fig.height=5}
+x_grid <- seq(min(poly_dat$x), max(poly_dat$x), length.out = 200)
+
+plot(poly_dat$x, poly_dat$y, pch = 16, col = "gray60",
+     xlab = "x", ylab = "y",
+     main = "Polynomanpassungen verschiedener Grade")
+lines(x_grid, predict(m1, newdata = data.frame(x = x_grid)),
+      col = "red", lwd = 2)
+lines(x_grid, predict(m2, newdata = data.frame(x = x_grid)),
+      col = "blue", lwd = 2)
+lines(x_grid, predict(m3, newdata = data.frame(x = x_grid)),
+      col = "green", lwd = 2)
+lines(x_grid, predict(m4, newdata = data.frame(x = x_grid)),
+      col = "purple", lwd = 2)
+legend("topright", legend = c("Grad 1", "Grad 2", "Grad 3", "Grad 4"),
+       col = c("red", "blue", "green", "purple"), lwd = 2)
+```
+
+**Bewertung:** Höhere Grade folgen den Daten enger, aber Vorsicht: zu hohe Polynomgrade führen zu **Overfitting** -- das Modell passt sich an zufällige Schwankungen an, ohne den wahren Zusammenhang besser zu beschreiben.
+
+# Zusammenfassung
+
+Diese Aufgabenserie hat gezeigt:
+
+1. **Variablentransformationen** (Wurzel, Logarithmus, Polynome) erweitern das lineare Modell auf nichtlineare Zusammenhänge.
+2. **$R^2$-Vergleiche** sind nur sinnvoll, wenn die abhängige Variable dieselbe ist (Vorsicht bei Log-Transformation der Response).
+3. **Residuenanalysen** sind unverzichtbar, um zu beurteilen, ob ein Modell die Daten gut beschreibt -- Muster in den Residuen verraten Modellfehler.
+4. **Kategoriale Prädiktoren** werden über Dummy-Variablen kodiert. Die Wahl der Baseline beeinflusst die Interpretation der Koeffizienten, aber nicht die Vorhersagen.
+5. **Interaktionen** erlauben es, dass der Effekt eines Prädiktors vom Wert eines anderen abhängt -- geometrisch entspricht das nicht-parallelen Regressionsgeraden.
+6. **F-Tests** zum Modellvergleich helfen, den richtigen Komplexitätsgrad zu wählen -- einfacher ist besser, solange das einfachere Modell nicht signifikant schlechter passt.

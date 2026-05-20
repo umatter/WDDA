@@ -1,0 +1,292 @@
+---
+title: "WDDA FS 2026: Leitfaden für Aufgabenserie 7"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: true
+    latex_engine: xelatex
+lang: de
+---
+
+# Einleitung
+
+Dieser Leitfaden bietet detaillierte Erklärungen für die Übungen in WDDA FS 2026 Aufgabenserie/Übungsblatt 7. Die Serie konzentriert sich auf die **Inferenz in Regressionsmodellen** -- also auf Konfidenzintervalle, Signifikanztests und Prognoseintervalle. Wir lernen, wie zuverlässig die geschätzten Koeffizienten und Vorhersagen sind und wie Hypothesen über Modellparameter getestet werden.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(mosaic)
+```
+
+# Aufgabe 1: Advertising -- Konfidenzintervalle und Bootstrap
+
+**Aufgabenstellung:**
+Analysieren Sie den Werbedatensatz und vergleichen Sie klassische und Bootstrap-Konfidenzintervalle für die Koeffizienten der einfachen und multiplen Regression. Untersuchen Sie die Signifikanz der Prädiktoren und führen Sie einen Modellvergleich durch.
+
+## Schritt 1: Daten einlesen und einfaches Modell schätzen (a)
+
+```{r}
+Advertising <- read_excel("../data/WDDA_07.xlsx", sheet = "Advertising")
+head(Advertising)
+
+mod_tv <- lm(sales ~ TV, data = Advertising)
+summary(mod_tv)
+```
+
+**Interpretation:**
+
+- **Intercept ($\beta_0 \approx 7.03$):** erwartete Sales bei `TV = 0`.
+- **TV-Koeffizient ($\beta_1 \approx 0.048$):** pro 1\$ TV-Ausgaben steigen die Sales im Durchschnitt um ca. 0.048 Einheiten.
+- Beide Koeffizienten sind hoch signifikant ($p < 0.001$).
+
+## Schritt 2: Klassisches Konfidenzintervall (b)
+
+```{r}
+confint(mod_tv)
+```
+
+**Interpretation:** Das 95\%-Konfidenzintervall für den TV-Koeffizienten liegt etwa zwischen 0.042 und 0.053 -- d.h. wir sind zu 95\% sicher, dass der wahre Effekt von TV-Ausgaben auf Sales in diesem Bereich liegt.
+
+## Schritt 3: Bootstrap-Konfidenzintervall (c)
+
+```{r}
+set.seed(123)
+simcoef <- do(5000) * coef(lm(sales ~ TV, data = resample(Advertising)))
+
+CI_intercept <- quantile(simcoef$Intercept, c(0.025, 0.975))
+CI_tv <- quantile(simcoef$TV, c(0.025, 0.975))
+
+cat("Bootstrap 95%-CI für Intercept:", round(CI_intercept, 3), "\n")
+cat("Bootstrap 95%-CI für TV:       ", round(CI_tv, 3), "\n")
+```
+
+**Vergleich:** Die Bootstrap-Intervalle stimmen sehr gut mit den klassischen Intervallen überein. Das ist erwartet, wenn die klassischen Annahmen (Normalverteilung der Residuen, konstante Varianz) hinreichend gut erfüllt sind.
+
+## Schritt 4: Visualisierung der Bootstrap-Verteilung (d)
+
+```{r, fig.width=7, fig.height=4}
+par(mfrow = c(1, 2))
+hist(simcoef$TV, main = "Bootstrap-Verteilung TV", xlab = "TV-Koeffizient",
+     col = "lightgray", border = "white", breaks = 25)
+abline(v = quantile(simcoef$TV, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+
+hist(simcoef$Intercept, main = "Bootstrap-Verteilung Intercept", xlab = "Intercept",
+     col = "lightgray", border = "white", breaks = 25)
+abline(v = quantile(simcoef$Intercept, c(0.025, 0.975)), col = "red", lty = 2, lwd = 2)
+par(mfrow = c(1, 1))
+```
+
+**Bewertung:** Beide Verteilungen sind annähernd glockenförmig (zentraler Grenzwertsatz). Die roten Linien markieren die 95\%-Konfidenzgrenzen.
+
+## Schritt 5: Multiple Regression (e)
+
+```{r}
+mod_full <- lm(sales ~ TV + radio + newspaper, data = Advertising)
+summary(mod_full)
+```
+
+**Interpretation:**
+
+- `TV` und `radio` sind hoch signifikant ($p < 0.001$).
+- `newspaper` ist **nicht signifikant** ($p \approx 0.86$) -- der Effekt ist statistisch nicht von Null unterscheidbar.
+- Der F-Test ($p < 2.2 \cdot 10^{-16}$) zeigt: insgesamt erklärt das Modell die Sales signifikant.
+
+## Schritt 6: Modellvergleich mittels ANOVA F-Test (f)
+
+```{r}
+mod_red <- lm(sales ~ TV + radio, data = Advertising)
+anova(mod_red, mod_full)
+```
+
+**Interpretation:**
+
+- Der F-Test vergleicht das reduzierte Modell (`TV + radio`) mit dem vollen Modell.
+- $p > 0.05$ bedeutet: `newspaper` liefert keinen signifikanten zusätzlichen Erklärungsbeitrag.
+- **Fazit:** Wir können `newspaper` aus dem Modell entfernen, ohne wesentlich Erklärungskraft zu verlieren.
+
+## Schritt 7: Prognose mit Konfidenz- und Prognoseintervall (g)
+
+```{r}
+neue_werte <- data.frame(TV = 200, radio = 30)
+
+ci_mean <- predict(mod_red, newdata = neue_werte, interval = "confidence")
+pi_obs <- predict(mod_red, newdata = neue_werte, interval = "prediction")
+
+cat("Konfidenzintervall für mittlere Sales:\n")
+print(ci_mean)
+cat("\nPrognoseintervall für einzelne Beobachtung:\n")
+print(pi_obs)
+```
+
+**Interpretation:**
+
+- Das **Konfidenzintervall** ($\text{lwr}, \text{upr}$ in `ci_mean`) bezieht sich auf den **Erwartungswert** der Sales bei den vorgegebenen Werten -- d.h. den Mittelwert über viele hypothetische Beobachtungen.
+- Das **Prognoseintervall** ist breiter, da es zusätzlich die Streuung **einzelner** Beobachtungen um die Regressionsfläche berücksichtigt.
+
+# Aufgabe 2: Diamond Rings -- Inferenz und Prognose
+
+**Aufgabenstellung:**
+Untersuchen Sie für den Diamond-Rings-Datensatz die Zusammenhänge zwischen Gewicht und Preis. Berechnen Sie Konfidenz- und Prognoseintervalle, und testen Sie die Signifikanz der Steigung.
+
+## Schritt 1: Daten und Modell (a)
+
+```{r}
+diamonds <- read_excel("../data/WDDA_07.xlsx", sheet = "Diamonds Rings")
+names(diamonds) <- c("weight", "price")
+head(diamonds)
+
+mod_dr <- lm(price ~ weight, data = diamonds)
+summary(mod_dr)
+```
+
+**Interpretation:**
+
+- **Steigung ($\approx 3721$):** pro 1 Karat Mehrgewicht steigt der Preis im Durchschnitt um etwa 3721 SGD.
+- Der t-Wert für `weight` ist gross, $p$ extrem klein -- der Effekt ist hoch signifikant.
+
+## Schritt 2: Konfidenzintervall für die Steigung (b)
+
+```{r}
+confint(mod_dr)
+```
+
+**Interpretation:** Das 95\%-Konfidenzintervall für die Steigung ist eng und liegt deutlich oberhalb von Null -- der Zusammenhang ist statistisch klar gesichert.
+
+## Schritt 3: Bootstrap-Konfidenzintervall (c)
+
+```{r}
+set.seed(42)
+simcoef_dr <- do(5000) * coef(lm(price ~ weight, data = resample(diamonds)))
+
+CI_weight <- quantile(simcoef_dr$weight, c(0.025, 0.975))
+cat("Bootstrap 95%-CI für Steigung (weight):", round(CI_weight, 1), "\n")
+```
+
+**Vergleich:** Bootstrap- und klassisches Intervall sollten in dieser Grössenordnung sehr ähnlich sein.
+
+## Schritt 4: Prognose für ein neues Ring (d)
+
+```{r}
+neu <- data.frame(weight = 0.25)
+
+ci_mean <- predict(mod_dr, newdata = neu, interval = "confidence")
+pi_obs <- predict(mod_dr, newdata = neu, interval = "prediction")
+
+cat("Mittlerer erwarteter Preis (95%-CI):\n")
+print(ci_mean)
+cat("\nPrognose-Intervall für einzelnen Ring (95%-PI):\n")
+print(pi_obs)
+```
+
+**Interpretation:** Das Prognoseintervall ist breiter als das Konfidenzintervall, weil es auch die individuelle Streuung um die Regressionsgerade berücksichtigt.
+
+## Schritt 5: Visualisierung mit Intervallen (e)
+
+```{r, fig.width=8, fig.height=5}
+grid <- data.frame(weight = seq(min(diamonds$weight), max(diamonds$weight), length.out = 100))
+ci  <- predict(mod_dr, newdata = grid, interval = "confidence")
+pi  <- predict(mod_dr, newdata = grid, interval = "prediction")
+
+plot(diamonds$weight, diamonds$price, pch = 16, col = "gray50",
+     xlab = "Weight (carats)", ylab = "Price (SGD)",
+     main = "Regression mit 95%-CI und PI")
+lines(grid$weight, ci[, "fit"], col = "blue", lwd = 2)
+lines(grid$weight, ci[, "lwr"], col = "blue", lty = 2)
+lines(grid$weight, ci[, "upr"], col = "blue", lty = 2)
+lines(grid$weight, pi[, "lwr"], col = "red",  lty = 3)
+lines(grid$weight, pi[, "upr"], col = "red",  lty = 3)
+legend("topleft", legend = c("Fit", "95%-CI", "95%-PI"),
+       col = c("blue", "blue", "red"), lty = c(1, 2, 3), lwd = c(2, 1, 1))
+```
+
+**Bewertung:** Das PI-Band (rot) ist deutlich breiter als das CI-Band (blau). Beide sind in der Mitte der Daten am engsten und werden zu den Rändern hin breiter.
+
+# Aufgabe 3: SAT -- Multiple Regression und F-Test
+
+**Aufgabenstellung:**
+Untersuchen Sie für den SAT-Datensatz, welche Bildungsvariablen den durchschnittlichen SAT-Score eines Bundesstaates am besten erklären. Führen Sie Modellvergleiche mittels F-Test durch.
+
+## Schritt 1: Daten einlesen und erkunden (a)
+
+```{r}
+sat <- read_excel("../data/WDDA_07.xlsx", sheet = "SAT")
+head(sat)
+summary(sat[, c("expend", "ratio", "salary", "frac", "sat")])
+```
+
+**Beschreibung:**
+
+- `expend`: Bildungsausgaben pro Schüler (in 1000\$)
+- `ratio`: Schüler-Lehrer-Verhältnis
+- `salary`: durchschnittliches Lehrergehalt (in 1000\$)
+- `frac`: Anteil Schüler, die den SAT ablegen (in \%)
+- `sat`: durchschnittlicher SAT-Score
+
+## Schritt 2: Einfaches Modell (b)
+
+```{r}
+mod1 <- lm(sat ~ expend, data = sat)
+summary(mod1)
+```
+
+**Überraschung:** Die Steigung von `expend` ist **negativ**! Höhere Bildungsausgaben gehen mit niedrigeren SAT-Scores einher? Das wirkt paradox -- Hinweis auf eine Confounding-Variable.
+
+## Schritt 3: Multiple Regression (c)
+
+```{r}
+mod2 <- lm(sat ~ expend + ratio + salary + frac, data = sat)
+summary(mod2)
+```
+
+**Interpretation:**
+
+- Nach Kontrolle für `frac` (Anteil teilnehmender Schüler) **kehrt sich das Vorzeichen** vieler Koeffizienten um.
+- `frac` ist hoch signifikant negativ: Bundesstaaten, in denen mehr Schüler den SAT ablegen, haben niedrigere Durchschnitts-Scores (Selbstselektion).
+- `expend` und `salary` haben jetzt positive Vorzeichen -- der wahre Effekt zusätzlicher Ressourcen ist also positiv, sobald wir den Selektionseffekt kontrollieren.
+
+## Schritt 4: F-Test des Gesamtmodells (d)
+
+```{r}
+f <- summary(mod2)$fstatistic
+cat("F-Statistik:", round(f["value"], 2),
+    "  (df1 =", f["numdf"], ", df2 =", f["dendf"], ")\n")
+```
+
+**Interpretation:** Der F-Test prüft die globale Nullhypothese, dass **alle** Steigungen Null sind. Ein hoher F-Wert mit kleinem $p$ verwirft diese Hypothese -- mindestens ein Prädiktor erklärt signifikant Varianz.
+
+## Schritt 5: ANOVA-Vergleich geschachtelter Modelle (e)
+
+```{r}
+mod_klein <- lm(sat ~ frac, data = sat)
+mod_gross <- lm(sat ~ expend + ratio + salary + frac, data = sat)
+anova(mod_klein, mod_gross)
+```
+
+**Interpretation:**
+
+- Vergleich des reduzierten Modells (nur `frac`) mit dem vollen Modell.
+- Ein signifikanter $p$-Wert würde bedeuten, dass die zusätzlichen Prädiktoren gemeinsam signifikant zur Erklärung beitragen.
+- Falls $p > 0.05$: Die zusätzlichen Variablen liefern keinen signifikanten Mehrgewinn -- `frac` allein erklärt den Grossteil der Variation.
+
+## Schritt 6: Prognose für einen hypothetischen Bundesstaat (f)
+
+```{r}
+hypothetisch <- data.frame(expend = 6, ratio = 16, salary = 35, frac = 30)
+pred <- predict(mod_gross, newdata = hypothetisch, interval = "prediction")
+print(pred)
+```
+
+**Interpretation:** Erwarteter SAT-Score plus 95\%-Prognoseintervall für einen Bundesstaat mit den angegebenen Charakteristika.
+
+# Zusammenfassung
+
+Diese Aufgabenserie hat gezeigt:
+
+1. **Klassische und Bootstrap-Konfidenzintervalle** liefern bei erfüllten Modellannahmen sehr ähnliche Ergebnisse. Bootstrap ist robuster, wenn Annahmen verletzt sind.
+2. **t-Tests** prüfen einzelne Koeffizienten, **F-Tests** prüfen das Gesamtmodell oder Modellvergleiche.
+3. **Konfidenz- vs. Prognoseintervalle**: das CI bezieht sich auf den Erwartungswert, das PI auf eine einzelne neue Beobachtung -- das PI ist immer breiter.
+4. **Multiple Regression** ermöglicht es, Effekte einzelner Prädiktoren unter Kontrolle anderer Variablen zu schätzen -- wichtig zur Vermeidung von Confounding (SAT-Beispiel).
+5. **ANOVA-F-Tests** vergleichen geschachtelte Modelle und helfen bei der Modellwahl: einfache Modelle sind bevorzugt, solange sie nicht signifikant schlechter sind.
