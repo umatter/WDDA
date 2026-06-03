@@ -1,0 +1,102 @@
+% BFH / Metropolis preamble for the WDDA regression walkthrough deck.
+% Brand colours and logo handling adapted from the BSAN "litmus/bfh" theme.
+
+% === BRAND COLORS ===
+\usepackage{xcolor}
+\definecolor{LitmusPrimary}{HTML}{697D91}
+\definecolor{LitmusSecondary}{HTML}{FAC300}
+\definecolor{LitmusAccent}{HTML}{699673}
+\definecolor{LitmusDark}{HTML}{697D91}
+\definecolor{LitmusCorrect}{HTML}{699673}
+\definecolor{LitmusIncorrect}{HTML}{B41428}
+\definecolor{LitmusAlert}{HTML}{F7931E}
+
+% === GRAPHICS / LOGOS ===
+\usepackage{graphicx}
+\newcommand{\litmuslogo}{bfh-logo.pdf}
+\newcommand{\litmoslockup}{bfh-lockup.pdf}
+
+% === MATH ===
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+
+% === CODE LISTINGS (R) ===
+\usepackage{listings}
+\lstdefinestyle{Rcode}{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{LitmusAccent}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{LitmusPrimary},
+  numberstyle=\tiny\color{gray},
+  frame=single,
+  framerule=0.5pt,
+  rulecolor=\color{LitmusAccent!30},
+  backgroundcolor=\color{LitmusDark!5},
+  breaklines=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+}
+% Console-output style (no syntax colours)
+\lstdefinestyle{Rout}{
+  basicstyle=\ttfamily\footnotesize\color{black!80},
+  frame=single,
+  framerule=0.5pt,
+  rulecolor=\color{LitmusPrimary!25},
+  backgroundcolor=\color{LitmusPrimary!4},
+  breaklines=true,
+  showstringspaces=false,
+}
+\lstnewenvironment{rcode}{\lstset{style=Rcode}}{}
+\lstnewenvironment{rout}{\lstset{style=Rout}}{}
+
+% === METROPOLIS / BEAMER TWEAKS ===
+\setbeamercolor{progress bar}{fg=LitmusSecondary}
+\setbeamercolor{alerted text}{fg=LitmusAlert}
+\setbeamercolor{example text}{fg=LitmusAccent}
+\setbeamercolor{frametitle}{bg=LitmusPrimary}
+
+% Footer logo on regular slides (skip the title page)
+\setbeamertemplate{frame footer}{%
+  \ifnum\value{page}>1\relax
+    \IfFileExists{\litmuslogo}{\includegraphics[height=0.3cm]{\litmuslogo}}{}%
+  \fi
+}
+
+% Title page with the BFH lockup logo
+\makeatletter
+\setbeamertemplate{title page}{
+  \begin{minipage}[b][\paperheight]{\textwidth}
+    \vfill
+    \ifx\inserttitle\@empty\else\usebeamertemplate*{title}\fi
+    \ifx\insertsubtitle\@empty\else\usebeamertemplate*{subtitle}\fi
+    \usebeamertemplate*{title separator}
+    \ifx\beamer@shortauthor\@empty\else\usebeamertemplate*{author}\fi
+    \ifx\insertdate\@empty\else\usebeamertemplate*{date}\fi
+    \ifx\insertinstitute\@empty\else\usebeamertemplate*{institute}\fi
+    \vfill
+    \IfFileExists{\litmoslockup}{\includegraphics[height=1cm]{\litmoslockup}}{}
+    \vspace*{1em}
+  \end{minipage}
+}
+\makeatother
+
+% === CONTENT BOXES (concept / takeaway / warning) ===
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\newtcolorbox{konzept}[1][Kernkonzept]{
+  colback=LitmusAccent!6, colframe=LitmusAccent,
+  fonttitle=\bfseries, title={#1}, boxrule=0.8pt, arc=2pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt,
+}
+\newtcolorbox{merke}[1][Merke]{
+  colback=LitmusSecondary!12, colframe=LitmusSecondary!85!black,
+  fonttitle=\bfseries, title={#1}, boxrule=0.8pt, arc=2pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt,
+}
+\newtcolorbox{warnung}[1][Achtung]{
+  colback=LitmusIncorrect!6, colframe=LitmusIncorrect,
+  fonttitle=\bfseries, title={#1}, boxrule=0.8pt, arc=2pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt,
+}
